@@ -1,0 +1,34 @@
+[
+  {
+    "id": "card-001",
+    "name": "Great Hall Pillars",
+    "category": "Landmarks",
+    "rarity": "Legendary",
+    "stats": { "attack": 85, "defense": 95, "speed": 40, "brains": 90 },
+    "image": "/assets/cards/great_hall.webp"
+  },
+  {
+    "id": "card-002",
+    "name": "Quantum Physics Lab",
+    "category": "Science",
+    "rarity": "Epic",
+    "stats": { "attack": 90, "defense": 60, "speed": 75, "brains": 98 },
+    "image": "/assets/cards/science_lab.webp"
+  },
+  {
+    "id": "card-003",
+    "name": "Matrix Food Court",
+    "category": "Lifestyle",
+    "rarity": "Common",
+    "stats": { "attack": 50, "defense": 45, "speed": 80, "brains": 40 },
+    "image": "/assets/cards/matrix.webp"
+  },
+  {
+    "id": "card-004",
+    "name": "Library Law Section",
+    "category": "History",
+    "rarity": "Rare",
+    "stats": { "attack": 65, "defense": 85, "speed": 50, "brains": 92 },
+    "image": "/assets/cards/law_library.webp"
+  }
+]

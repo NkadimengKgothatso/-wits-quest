@@ -1,0 +1,25 @@
+/* Wits Quest - Anime Realism Design Tokens */
+:root {
+  /* Color Palette (Pale Blue Mountain Lake Theme) */
+  --color-bg-midnight: #1d3156;       /* Primary Deep Twilight Background */
+  --color-panel-slate: #496894;       /* Glass Containers & Card Frames */
+  --color-border-periwinkle: #a4b5d1;  /* Subtle Borders & Subtitles */
+  --color-sky-blue: #b0cbe6;          /* Active Markers & Sky Glow */
+  --color-accent-peach: #fed6ce;      /* Energy Glow, Hero Buttons & Legendary Rarity */
+
+  /* Derived Glassmorphic Colors */
+  --glass-panel-bg: rgba(29, 49, 86, 0.75);
+  --glass-panel-border: rgba(164, 181, 209, 0.3);
+  --glass-panel-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glow-peach-accent: 0 0 20px rgba(254, 214, 206, 0.45);
+  --glow-sky-accent: 0 0 15px rgba(176, 203, 230, 0.4);
+
+  /* Card Rarity Colors */
+  --rarity-common: #8a9ba8;
+  --rarity-rare: #b0cbe6;
+  --rarity-epic: #a4b5d1;
+  --rarity-legendary: #fed6ce;
+
+  /* Typography */
+  --font-family-base: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}

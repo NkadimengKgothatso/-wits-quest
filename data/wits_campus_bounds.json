@@ -1,0 +1,17 @@
+{
+  "campus": "University of the Witwatersrand (Braamfontein Main Campus)",
+  "center": {
+    "lat": -26.1929,
+    "lng": 28.0305
+  },
+  "boundingBox": {
+    "northEast": { "lat": -26.1850, "lng": 28.0380 },
+    "southWest": { "lat": -26.1990, "lng": 28.0220 }
+  },
+  "landmarks": [
+    { "id": "lm-1", "name": "Great Hall", "lat": -26.1912, "lng": 28.0302, "radius": 25 },
+    { "id": "lm-2", "name": "Solomon Mahlangu House", "lat": -26.1935, "lng": 28.0315, "radius": 30 },
+    { "id": "lm-3", "name": "Science Stadium", "lat": -26.1895, "lng": 28.0275, "radius": 35 },
+    { "id": "lm-4", "name": "Matrix Student Centre", "lat": -26.1920, "lng": 28.0290, "radius": 20 }
+  ]
+}
