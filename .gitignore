@@ -1,0 +1,26 @@
+# Project Plan & Notes (Local only)
+WITS_QUEST_PROJECT_PLAN.md
+wits_quest.pdf
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Build Outputs
+dist/
+build/
+.next/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS & IDE Files
+.DS_Store
+.vscode/
+.idea/
