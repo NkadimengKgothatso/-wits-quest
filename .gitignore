@@ -1,7 +1,7 @@
 # Project Plan & Notes (Local only)
 WITS_QUEST_PROJECT_PLAN.md
 wits_quest.pdf
-
+.env.example
 # Dependencies
 node_modules/
 .pnpm-store/
