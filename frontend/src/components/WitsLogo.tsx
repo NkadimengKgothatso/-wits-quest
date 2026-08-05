@@ -133,7 +133,7 @@ export default function WitsLogo({
               textShadow: '0 2px 10px rgba(0,0,0,0.5)'
             }}
           >
-            WITS
+            Wits Quest
           </h2>
           <p
             style={{
@@ -146,7 +146,7 @@ export default function WitsLogo({
               marginTop: 2
             }}
           >
-            UNIVERSITY
+
           </p>
         </div>
       )}

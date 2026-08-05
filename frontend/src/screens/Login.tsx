@@ -84,12 +84,10 @@ export default function Login({ onLogin }: LoginProps) {
       {/* Hero Official Wits University Branding Header */}
       <div className="slide-up text-center mb-6" style={{ position: 'relative', zIndex: 10 }}>
         <WitsLogo width={160} height={180} showText={true} />
-        
+
         <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/50">
           <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#fed6ce' }} />
-          <span style={{ color: '#fed6ce', fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-            Official Campus Anime RPG
-          </span>
+
         </div>
       </div>
 

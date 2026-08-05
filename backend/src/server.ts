@@ -44,5 +44,5 @@ io.on('connection', (socket) => {
 });
 
 httpServer.listen(PORT, () => {
-  console.log(`⚡ Wits Quest Backend API running on http://localhost:${PORT}`);
+  console.log(`Wits Quest Backend API running on http://localhost:${PORT}`);
 });
