@@ -201,7 +201,7 @@ export default function Leaderboard() {
               <button onClick={() => setSelectedPlayer(null)} style={{ background: 'none', border: 'none', color: '#a4b5d1', fontSize: 18, cursor: 'pointer' }}>✕</button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 16, textCenter: 'center' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 16, textAlign: 'center' }}>
               <div className="glass-dark" style={{ padding: 10, borderRadius: 10, textAlign: 'center' }}>
                 <div style={{ fontSize: 9, color: '#a4b5d1' }}>TOTAL XP</div>
                 <div style={{ fontSize: 14, fontWeight: 800, color: '#fed6ce' }}>{selectedPlayer.xp.toLocaleString()}</div>

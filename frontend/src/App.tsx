@@ -37,6 +37,7 @@ const ADMIN_NAV: { id: AdminScreen; label: string }[] = [
 
 const ADVANCED_NAV = [
   { id: 'map', label: 'Campus Map' },
+  { id: 'battle', label: 'CPU Battle AI' },
   { id: 'livepvp', label: 'Live Arena' },
   { id: 'territory', label: 'Territories' },
   { id: 'ranked', label: 'Ranked Elo' },
