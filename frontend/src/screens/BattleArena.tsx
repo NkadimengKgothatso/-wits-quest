@@ -11,6 +11,7 @@ import {
   RoundOutcome,
 } from '../utils/battleEngine';
 import { selectAIAction, selectAICounterCard } from '../utils/battleAI';
+import { saveMockBattleResult } from '../services/mockDbClient';
 
 const PLAYER_CARDS: BattleCard[] = [
   { id: 1, name: 'Great Hall Pillars', rarity: 'Legendary', stats: { attack: 85, defense: 95, speed: 40, brains: 90 }, category: 'Landmarks' },
@@ -75,6 +76,31 @@ export default function BattleArena() {
     }, 1000);
     return () => clearInterval(t);
   }, [lastOutcome, battleState.isGameOver, playerCardIdx]);
+
+  // Persist battle results to Mock DB on Game Over
+  useEffect(() => {
+    if (battleState.isGameOver && battleState.winner) {
+      const rewards = calculateRewards(battleState);
+      saveMockBattleResult({
+        userId: 'usr_kagiso',
+        matchType: 'CPU',
+        opponentId: 'CPU_BOT',
+        outcome: battleState.winner === 'player' ? 'win' : battleState.winner === 'cpu' ? 'lose' : 'tie',
+        xpAwarded: rewards.xp,
+        essenceAwarded: rewards.essence,
+        eloDelta: rewards.eloChange,
+        roundsData: battleState.rounds.map((r) => ({
+          roundNumber: r.roundNumber,
+          statChosen: r.stat,
+          challengerCardId: String(r.playerCard.id),
+          opponentCardId: String(r.cpuCard.id),
+          challengerStatVal: r.playerStatValue,
+          opponentStatVal: r.cpuStatValue,
+          outcome: r.outcome,
+        })),
+      });
+    }
+  }, [battleState.isGameOver]);
 
   function handleDifficultyChange(newDiff: AIDifficulty) {
     setDifficulty(newDiff);
