@@ -36,6 +36,29 @@ export interface MockCard {
   imageUrl: string;
 }
 
+export interface MockAsyncChallenge {
+  id: string;
+  challengerId: string;
+  challengerName: string;
+  defenderId: string;
+  defenderName: string;
+  defenderLevel: number;
+  currentRound: number;
+  maxRounds: number;
+  score: string;
+  expiresIn: string;
+  status: 'YOUR_TURN' | 'WAITING' | 'PENDING' | 'COMPLETED';
+  outcome?: 'Win' | 'Loss' | 'Tie';
+  xpReward?: number;
+  defensiveTelemetry?: {
+    failedStat: string;
+    losingCardName: string;
+    winningEnemyCardName: string;
+    statDeficit: number;
+    adviceMessage: string;
+  };
+}
+
 const BACKEND_URL = 'http://localhost:3000';
 
 // Track online active session user IDs
@@ -214,6 +237,72 @@ const INITIAL_TEST_USERS: MockUser[] = [
 
 let localMockUsers: MockUser[] = [...INITIAL_TEST_USERS];
 
+let localAsyncChallenges: MockAsyncChallenge[] = [
+  {
+    id: 'async_1',
+    challengerId: 'usr_lesedi',
+    challengerName: 'Lesedi Mokoena',
+    defenderId: 'usr_thabo',
+    defenderName: 'Thabo Nkosi',
+    defenderLevel: 28,
+    currentRound: 2,
+    maxRounds: 5,
+    score: '1-0',
+    expiresIn: '18h 42m',
+    status: 'YOUR_TURN',
+  },
+  {
+    id: 'async_2',
+    challengerId: 'usr_thabo',
+    challengerName: 'Thabo Nkosi',
+    defenderId: 'usr_kagiso',
+    defenderName: 'Kagiso Mthembu',
+    defenderLevel: 12,
+    currentRound: 1,
+    maxRounds: 5,
+    score: '0-0',
+    expiresIn: '23h 15m',
+    status: 'WAITING',
+  },
+  {
+    id: 'async_3',
+    challengerId: 'usr_sipho',
+    challengerName: 'Sipho Zulu',
+    defenderId: 'usr_thabo',
+    defenderName: 'Thabo Nkosi',
+    defenderLevel: 28,
+    currentRound: 5,
+    maxRounds: 5,
+    score: '3-1',
+    expiresIn: 'Completed',
+    status: 'COMPLETED',
+    outcome: 'Win',
+    xpReward: 150,
+  },
+  {
+    id: 'async_4',
+    challengerId: 'usr_thabo',
+    challengerName: 'Thabo Nkosi',
+    defenderId: 'usr_lerato',
+    defenderName: 'Lerato Dlamini',
+    defenderLevel: 25,
+    currentRound: 5,
+    maxRounds: 5,
+    score: '1-3',
+    expiresIn: 'Completed',
+    status: 'COMPLETED',
+    outcome: 'Loss',
+    xpReward: -30,
+    defensiveTelemetry: {
+      failedStat: 'defense',
+      losingCardName: 'Quantum Physics Lab',
+      winningEnemyCardName: 'Great Hall Pillars',
+      statDeficit: 35,
+      adviceMessage: 'Your Defense failed by 35 points against Great Hall Pillars. Upgrade card Defense level in the Forge or equip a higher DEF card.',
+    },
+  },
+];
+
 /**
  * Dynamically set online status when user logs in or logs out
  */
@@ -349,6 +438,103 @@ export async function insertMockUser(user: Partial<MockUser> & { username: strin
   const formatted = formatUserMeta(newUserRaw);
   localMockUsers.push(formatted);
   return formatted;
+}
+
+/**
+ * Fetch async challenges for a given user.
+ */
+export async function getMockAsyncChallenges(userId: string): Promise<MockAsyncChallenge[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/mock/async/user/${userId}`);
+    if (res.ok) {
+      const rawChallenges = await res.json();
+      if (Array.isArray(rawChallenges) && rawChallenges.length > 0) {
+        return rawChallenges.map((c) => ({
+          id: c.id,
+          challengerId: c.challengerId,
+          challengerName: c.challengerName || 'Challenger',
+          defenderId: c.defenderId,
+          defenderName: c.defenderName || 'Defender',
+          defenderLevel: c.defenderLevel || 5,
+          currentRound: c.currentRound || 1,
+          maxRounds: c.maxRounds || 5,
+          score: c.score || '0-0',
+          expiresIn: '23h 45m',
+          status: c.status === 'COMPLETED' ? 'COMPLETED' : c.challengerId === userId ? 'WAITING' : 'YOUR_TURN',
+        }));
+      }
+    }
+  } catch (err) {
+    // API offline
+  }
+
+  return localAsyncChallenges
+    .filter((c) => c.challengerId === userId || c.defenderId === userId)
+    .map((c) => {
+      let userStatus: 'YOUR_TURN' | 'WAITING' | 'PENDING' | 'COMPLETED' = c.status;
+      if (c.status !== 'COMPLETED') {
+        if (c.challengerId === userId) {
+          userStatus = 'WAITING';
+        } else {
+          userStatus = 'YOUR_TURN';
+        }
+      }
+      return {
+        ...c,
+        status: userStatus,
+      };
+    });
+}
+
+/**
+ * Update async challenge state in local database store
+ */
+export function updateMockAsyncChallenge(id: string, updates: Partial<MockAsyncChallenge>): MockAsyncChallenge | undefined {
+  const idx = localAsyncChallenges.findIndex((c) => c.id === id);
+  if (idx >= 0) {
+    localAsyncChallenges[idx] = { ...localAsyncChallenges[idx], ...updates };
+    return localAsyncChallenges[idx];
+  }
+  return undefined;
+}
+
+/**
+ * Create a new async challenge between challenger and defender.
+ */
+export async function createMockAsyncChallenge(
+  challengerId: string,
+  defenderId: string
+): Promise<MockAsyncChallenge> {
+  const allUsers = await getMockUsers();
+  const challenger = allUsers.find((u) => u.id === challengerId);
+  const defender = allUsers.find((u) => u.id === defenderId);
+
+  const newChallenge: MockAsyncChallenge = {
+    id: `async_${Date.now()}`,
+    challengerId,
+    challengerName: challenger?.name || challenger?.username || 'Challenger',
+    defenderId,
+    defenderName: defender?.name || defender?.username || 'Defender',
+    defenderLevel: defender?.level || 5,
+    currentRound: 1,
+    maxRounds: 5,
+    score: '0-0',
+    expiresIn: '23h 59m',
+    status: 'WAITING',
+  };
+
+  try {
+    await fetch(`${BACKEND_URL}/api/mock/async/challenge`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ challengerId, defenderId }),
+    });
+  } catch (err) {
+    // fallback
+  }
+
+  localAsyncChallenges.unshift(newChallenge);
+  return newChallenge;
 }
 
 /**
