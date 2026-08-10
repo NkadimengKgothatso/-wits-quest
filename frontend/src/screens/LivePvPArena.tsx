@@ -43,6 +43,8 @@ const DEFAULT_PLAYER_CARDS: LivePlayerCard[] = [
   { id: 'c101', name: 'Great Hall Pillars', rarity: 'Legendary', stats: { attack: 85, defense: 95, speed: 40, brains: 90 } },
   { id: 'c102', name: "Solomon's Torch", rarity: 'Epic', stats: { attack: 90, defense: 70, speed: 85, brains: 88 } },
   { id: 'c103', name: 'Quantum Physics Lab', rarity: 'Rare', stats: { attack: 75, defense: 60, speed: 70, brains: 95 } },
+  { id: 'c104', name: 'Wits Springbok', rarity: 'Common', stats: { attack: 72, defense: 55, speed: 92, brains: 60 } },
+  { id: 'c105', name: 'Ancient Tome', rarity: 'Epic', stats: { attack: 55, defense: 72, speed: 30, brains: 99 } },
 ];
 
 function getCanonicalMatchId(id1: string, id2: string): string {
@@ -312,7 +314,7 @@ export default function LivePvPArena() {
             }}
           >
             <Search size={14} />
-            <span>Select Student Opponent</span>
+            <span>Choose Opponent</span>
           </button>
         </div>
       </div>
@@ -399,33 +401,15 @@ export default function LivePvPArena() {
           </div>
         ) : roomState === 'LOCKED_IN' ? (
           <div className="glass-dark" style={{ padding: 28, borderRadius: 16, textAlign: 'center' }}>
-            <Check size={32} color="#4ade80" style={{ marginBottom: 10 }} />
-            <div style={{ fontSize: 15, fontWeight: 800, color: '#4ade80' }}>Your Turn Secret Locked In!</div>
-            <div style={{ fontSize: 11, color: '#a4b5d1', marginTop: 4, marginBottom: 14 }}>
-              You picked <b>{myLockedAttr?.toUpperCase()}</b> in secret. Waiting for {opponentUser.username} to lock in pick...
+            <Check size={32} color="#4ade80" style={{ margin: '0 auto 10px' }} />
+            <div style={{ fontSize: 15, fontWeight: 800, color: '#4ade80' }}>Card Submitted!</div>
+            <div style={{ fontSize: 11, color: '#a4b5d1', marginTop: 4 }}>
+              You selected <b>{activeCard.name}</b> ({myLockedAttr?.toUpperCase()}: {activeCard.stats[myLockedAttr || 'attack']}).
             </div>
-            <button
-              onClick={() => {
-                const oppVal = Math.floor(Math.random() * 30) + 70;
-                const myVal = activeCard.stats[myLockedAttr || 'attack'];
-                const outcome = myVal > oppVal ? 'win' : myVal < oppVal ? 'lose' : 'tie';
-                if (outcome === 'win') setMyScore((s) => s + 1);
-                else if (outcome === 'lose') setOpponentScore((s) => s + 1);
-
-                setDualRevealData({
-                  myChoice: { cardId: activeCard.id, stat: myLockedAttr || 'attack' },
-                  opponentChoice: { cardId: 'opp_1', stat: myLockedAttr || 'attack', cardName: 'Solomon\'s Torch', statVal: oppVal },
-                  outcome,
-                });
-                setRoomState('REVEALED');
-              }}
-              style={{
-                background: 'rgba(250,204,21,0.2)', border: '1px solid #facc15',
-                color: '#facc15', borderRadius: 10, padding: '10px 20px', fontSize: 11, fontWeight: 800, cursor: 'pointer',
-              }}
-            >
-              Simulate {opponentUser.username} Lock Pick →
-            </button>
+            <div style={{ fontSize: 11, color: '#fed6ce', fontWeight: 700, marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              <RefreshCw size={14} className="spin" />
+              Waiting for {opponentUser.username} to select...
+            </div>
           </div>
         ) : (
           <div>
@@ -440,6 +424,9 @@ export default function LivePvPArena() {
                   {activeCard.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div style={{ fontSize: 12, fontWeight: 800, color: 'white', marginTop: 6, textAlign: 'center' }}>{activeCard.name}</div>
+                <div style={{ fontSize: 9, color: activeCard.rarity === 'Legendary' ? '#fed6ce' : activeCard.rarity === 'Epic' ? '#a78bfa' : '#60a5fa', fontWeight: 800, textTransform: 'uppercase', marginTop: 2 }}>
+                  {activeCard.rarity}
+                </div>
                 {dualRevealData?.myChoice && (
                   <div style={{ marginTop: 8, background: 'rgba(254,214,206,0.2)', padding: '4px 8px', borderRadius: 6, fontSize: 11, fontWeight: 800, color: '#fed6ce' }}>
                     {dualRevealData.myChoice.stat.toUpperCase()} {activeCard.stats[dualRevealData.myChoice.stat]}
@@ -485,29 +472,79 @@ export default function LivePvPArena() {
                 </button>
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                {(['attack', 'defense', 'speed', 'brains'] as AttrKey[]).map((attr) => {
-                  const meta = ATTR_META[attr];
-                  const IconComp = meta.icon;
-                  return (
-                    <button
-                      key={attr}
-                      onClick={() => handleLockInTurn(attr)}
-                      style={{
-                        background: 'rgba(73, 104, 148, 0.35)',
-                        border: '1.5px solid rgba(164,181,209,0.2)',
-                        borderRadius: 12, padding: 12, color: 'white', cursor: 'pointer',
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <IconComp size={16} color={meta.color} />
-                        <span style={{ fontSize: 11, fontWeight: 700, color: meta.color }}>{meta.label}</span>
-                      </div>
-                      <span style={{ fontSize: 14, fontWeight: 900 }}>{activeCard.stats[attr]}</span>
-                    </button>
-                  );
-                })}
+              <div>
+                {/* Deck Card Switcher Carousel */}
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontSize: 10, fontWeight: 800, color: '#fed6ce', letterSpacing: '0.05em', marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>CHOOSE CARD TO PLAY:</span>
+                    <span style={{ color: '#a4b5d1', fontWeight: 600 }}>{mySelectedCardIdx + 1} of {DEFAULT_PLAYER_CARDS.length} Selected</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 6 }}>
+                    {DEFAULT_PLAYER_CARDS.map((card, idx) => {
+                      const isSelected = idx === mySelectedCardIdx;
+                      const rarityColor = card.rarity === 'Legendary' ? '#fed6ce' : card.rarity === 'Epic' ? '#a78bfa' : card.rarity === 'Rare' ? '#60a5fa' : '#a4b5d1';
+                      return (
+                        <button
+                          key={card.id}
+                          onClick={() => setMySelectedCardIdx(idx)}
+                          style={{
+                            flex: '0 0 110px',
+                            background: isSelected ? 'rgba(254,214,206,0.18)' : 'rgba(17, 30, 54, 0.65)',
+                            border: isSelected ? `2px solid ${rarityColor}` : '1px solid rgba(164,181,209,0.2)',
+                            borderRadius: 12,
+                            padding: 8,
+                            cursor: 'pointer',
+                            textAlign: 'center',
+                            transition: 'all 0.2s',
+                            boxShadow: isSelected ? `0 0 12px ${rarityColor}40` : 'none',
+                          }}
+                        >
+                          <div style={{ fontSize: 9, color: rarityColor, fontWeight: 800, textTransform: 'uppercase' }}>
+                            {card.rarity}
+                          </div>
+                          <div style={{ fontSize: 11, fontWeight: 800, color: 'white', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {card.name}
+                          </div>
+                          <div style={{ fontSize: 9, color: '#a4b5d1', marginTop: 4, display: 'flex', justifyContent: 'space-around' }}>
+                            <span>ATK:{card.stats.attack}</span>
+                            <span>DEF:{card.stats.defense}</span>
+                          </div>
+                          {isSelected && (
+                            <div style={{ fontSize: 8, background: rarityColor, color: '#0f1a2e', fontWeight: 900, borderRadius: 4, padding: '1px 0', marginTop: 4 }}>
+                              ACTIVE
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Attribute Stat Lock In Buttons */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  {(['attack', 'defense', 'speed', 'brains'] as AttrKey[]).map((attr) => {
+                    const meta = ATTR_META[attr];
+                    const IconComp = meta.icon;
+                    return (
+                      <button
+                        key={attr}
+                        onClick={() => handleLockInTurn(attr)}
+                        style={{
+                          background: 'rgba(73, 104, 148, 0.35)',
+                          border: '1.5px solid rgba(164,181,209,0.2)',
+                          borderRadius: 12, padding: 12, color: 'white', cursor: 'pointer',
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <IconComp size={16} color={meta.color} />
+                          <span style={{ fontSize: 11, fontWeight: 700, color: meta.color }}>{meta.label}</span>
+                        </div>
+                        <span style={{ fontSize: 14, fontWeight: 900 }}>{activeCard.stats[attr]}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
