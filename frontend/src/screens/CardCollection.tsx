@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Search } from 'lucide-react'
 
 const CARDS = [
   { id: 1, name: 'Great Hall Pillars', category: 'Landmarks', rarity: 'Legendary', emoji: '🏛️', attack: 85, defense: 95, speed: 40, brains: 90, owned: 1 },
@@ -141,7 +142,7 @@ export default function CardCollection() {
         {/* Search + Essence */}
         <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
           <div style={{ flex: 1, position: 'relative' }}>
-            <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', fontSize: 14, opacity: 0.5 }}>🔍</span>
+            <Search size={14} color="#a4b5d1" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }} />
             <input
               className="input-glass"
               placeholder="Search cards..."

@@ -29,9 +29,9 @@ class WebSocketClient {
     s.emit('join_battle', { matchId, userId, username });
   }
 
-  public submitTurn(matchId: string, userId: string, cardId: string, stat: string) {
+  public submitTurn(matchId: string, userId: string, cardId: string, stat: string, cardName?: string, statVal?: number) {
     const s = this.connect();
-    s.emit('submit_turn', { matchId, userId, cardId, stat });
+    s.emit('submit_turn', { matchId, userId, cardId, stat, cardName, statVal });
   }
 
   public disconnect() {

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Swords, Shield, Zap, Brain, User, RefreshCw, Radio, Check, Users, Swords as ChallengeIcon } from 'lucide-react';
+import { Swords, Shield, Zap, Brain, User, RefreshCw, Radio, Check, Users, Swords as ChallengeIcon, Search } from 'lucide-react';
 import { battleSocketClient } from '../utils/websocketClient';
+import { useAuth } from '../context/AuthContext';
+import { saveMockBattleResult, MockUser } from '../services/mockDbClient';
+import StudentOpponentDrawer from '../components/StudentOpponentDrawer';
 
 type AttrKey = 'attack' | 'defense' | 'speed' | 'brains';
 
@@ -17,10 +20,14 @@ interface StudentOpponent {
   level: number;
   divisionTier: string;
   eloRating: number;
+  name?: string;
+  initials?: string;
+  isOnline?: boolean;
 }
 
 const AVAILABLE_STUDENTS: StudentOpponent[] = [
   { id: 'usr_thabo', username: 'Thabo_Engineer', level: 4, divisionTier: 'GOLD', eloRating: 1120 },
+  { id: 'usr_kagiso', username: 'Kagiso_Scholar', level: 5, divisionTier: 'GOLD', eloRating: 1250 },
   { id: 'usr_lesedi', username: 'Lesedi_Grandmaster', level: 12, divisionTier: 'PLATINUM', eloRating: 1650 },
   { id: 'usr_sipho', username: 'Sipho_Tactician', level: 8, divisionTier: 'GOLD', eloRating: 1420 },
 ];
@@ -38,13 +45,22 @@ const DEFAULT_PLAYER_CARDS: LivePlayerCard[] = [
   { id: 'c103', name: 'Quantum Physics Lab', rarity: 'Rare', stats: { attack: 75, defense: 60, speed: 70, brains: 95 } },
 ];
 
+function getCanonicalMatchId(id1: string, id2: string): string {
+  const sorted = [id1, id2].sort();
+  return `room_pvp_${sorted[0]}_vs_${sorted[1]}`;
+}
+
 export default function LivePvPArena() {
-  const [currentUser, setCurrentUser] = useState<{ id: string; username: string }>({
-    id: 'usr_kagiso',
-    username: 'Kagiso_Scholar',
-  });
-  const [matchId, setMatchId] = useState('room_live_wits_1');
-  const [opponentUser, setOpponentUser] = useState<StudentOpponent>(AVAILABLE_STUDENTS[0]);
+  const { currentUser: authUser, updateUserLocally } = useAuth();
+  const currentUser = authUser
+    ? { id: authUser.id, username: authUser.username }
+    : { id: 'usr_kagiso', username: 'Kagiso_Scholar' };
+
+  const defaultOpponent = AVAILABLE_STUDENTS.find((s) => s.id !== currentUser.id) || AVAILABLE_STUDENTS[0];
+  const initialRoomId = getCanonicalMatchId(currentUser.id, defaultOpponent.id);
+  const [matchId, setMatchId] = useState(initialRoomId);
+  const [opponentUser, setOpponentUser] = useState<StudentOpponent>(defaultOpponent);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [roomState, setRoomState] = useState<'WAITING' | 'READY' | 'LOCKED_IN' | 'REVEALED'>('WAITING');
   const [spectators, setSpectators] = useState(0);
@@ -116,25 +132,54 @@ export default function LivePvPArena() {
       const myTurn = isP1 ? p1 : p2;
       const oppTurn = isP1 ? p2 : p1;
 
-      const myVal = activeCard.stats[myTurn.stat as AttrKey] || 80;
-      const oppVal = Math.floor(Math.random() * 30) + 70;
+      const myVal = myTurn.statVal !== undefined ? Number(myTurn.statVal) : (activeCard.stats[myTurn.stat as AttrKey] || 80);
+      const oppVal = oppTurn.statVal !== undefined ? Number(oppTurn.statVal) : 75;
 
       let outcome: 'win' | 'lose' | 'tie' = 'tie';
+      let updatedMyScore = myScore;
+      let updatedOppScore = opponentScore;
+
       if (myVal > oppVal) {
         outcome = 'win';
-        setMyScore((s) => s + 1);
+        updatedMyScore = myScore + 1;
+        setMyScore(updatedMyScore);
       } else if (oppVal > myVal) {
         outcome = 'lose';
-        setOpponentScore((s) => s + 1);
+        updatedOppScore = opponentScore + 1;
+        setOpponentScore(updatedOppScore);
       }
 
       setDualRevealData({
         myChoice: { cardId: myTurn.cardId, stat: myTurn.stat as AttrKey },
-        opponentChoice: { cardId: oppTurn.cardId, stat: oppTurn.stat as AttrKey, cardName: 'Opponent Card', statVal: oppVal },
+        opponentChoice: {
+          cardId: oppTurn.cardId,
+          stat: oppTurn.stat as AttrKey,
+          cardName: oppTurn.cardName || 'Opponent Card',
+          statVal: oppVal,
+        },
         outcome,
       });
 
       setRoomState('REVEALED');
+
+      // Check if 5-round match has completed or a player won best-of-5 (3 points)
+      const isMatchFinished = data.roundNumber >= 5 || updatedMyScore >= 3 || updatedOppScore >= 3;
+      if (isMatchFinished) {
+        const matchOutcome: 'win' | 'lose' | 'tie' =
+          updatedMyScore > updatedOppScore ? 'win' : updatedMyScore < updatedOppScore ? 'lose' : 'tie';
+
+        saveMockBattleResult({
+          userId: currentUser.id,
+          matchType: 'LIVE_PVP',
+          opponentId: opponentUser.id,
+          outcome: matchOutcome,
+          xpAwarded: matchOutcome === 'win' ? 150 : matchOutcome === 'tie' ? 0 : -30,
+          essenceAwarded: matchOutcome === 'win' ? 40 : matchOutcome === 'tie' ? 15 : 0,
+          eloDelta: matchOutcome === 'win' ? 25 : matchOutcome === 'lose' ? -25 : 0,
+        }).then((updatedUser) => {
+          if (updatedUser) updateUserLocally(updatedUser);
+        });
+      }
     });
 
     return () => {
@@ -151,18 +196,27 @@ export default function LivePvPArena() {
       setTurnTime((t) => {
         if (t <= 1) {
           clearInterval(timer);
-          if (!myLockedAttr) handleLockInTurn('attack');
           return 15;
         }
         return t - 1;
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [turnTime, roomState, myLockedAttr]);
+  }, [turnTime, roomState]);
 
-  function handleSelectOpponentToChallenge(student: StudentOpponent) {
-    setOpponentUser(student);
-    const newRoomId = `room_pvp_${currentUser.id}_vs_${student.id}`;
+  function handleSelectOpponentFromDrawer(student: MockUser) {
+    const opp: StudentOpponent = {
+      id: student.id,
+      username: student.username,
+      level: student.level,
+      divisionTier: student.divisionTier,
+      eloRating: student.eloRating,
+      name: student.name,
+      initials: student.initials,
+      isOnline: student.isOnline,
+    };
+    setOpponentUser(opp);
+    const newRoomId = getCanonicalMatchId(currentUser.id, student.id);
     setMatchId(newRoomId);
     setRoomState('WAITING');
     setMyLockedAttr(null);
@@ -171,25 +225,19 @@ export default function LivePvPArena() {
     battleSocketClient.joinRoom(newRoomId, currentUser.id, currentUser.username);
   }
 
-  function handleSwitchUser(account: 'kagiso' | 'thabo') {
-    if (account === 'kagiso') {
-      setCurrentUser({ id: 'usr_kagiso', username: 'Kagiso_Scholar' });
-      setOpponentUser(AVAILABLE_STUDENTS[0]); // Thabo
-    } else {
-      setCurrentUser({ id: 'usr_thabo', username: 'Thabo_Engineer' });
-      setOpponentUser({ id: 'usr_kagiso', username: 'Kagiso_Scholar', level: 5, divisionTier: 'GOLD', eloRating: 1250 });
-    }
-    setRoomState('WAITING');
-    setMyLockedAttr(null);
-    setDualRevealData(null);
-    setTurnTime(15);
-  }
-
   function handleLockInTurn(stat: AttrKey) {
     if (myLockedAttr || roomState !== 'READY') return;
     setMyLockedAttr(stat);
     setRoomState('LOCKED_IN');
-    battleSocketClient.submitTurn(matchId, currentUser.id, activeCard.id, stat);
+    const statVal = activeCard.stats[stat] || 80;
+    battleSocketClient.submitTurn(
+      matchId,
+      currentUser.id,
+      activeCard.id,
+      stat,
+      activeCard.name,
+      statVal
+    );
   }
 
   function handleNextRound() {
@@ -209,69 +257,74 @@ export default function LivePvPArena() {
       background: 'radial-gradient(ellipse at 50% 20%, #253d6a 0%, #1d3156 50%, #0f1a2e 100%)',
       paddingTop: 16, paddingBottom: 80,
     }}>
-      {/* User Switcher Bar */}
+      {/* Active User Status Banner */}
       <div style={{ padding: '0 16px 8px', maxWidth: 600, margin: '0 auto' }}>
         <div className="glass-dark" style={{ padding: 10, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#a4b5d1', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <User size={12} color="#60a5fa" /> LOGGED IN AS:
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#a4b5d1', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <User size={14} color="#fed6ce" />
+            <span>ACTIVE ARENA PLAYER:</span>
+            <span style={{ color: '#fed6ce', fontWeight: 800 }}>{currentUser.username}</span>
           </div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            <button
-              onClick={() => handleSwitchUser('kagiso')}
-              style={{
-                background: currentUser.id === 'usr_kagiso' ? 'rgba(254,214,206,0.25)' : 'transparent',
-                border: `1px solid ${currentUser.id === 'usr_kagiso' ? '#fed6ce' : 'rgba(164,181,209,0.2)'}`,
-                color: currentUser.id === 'usr_kagiso' ? '#fed6ce' : '#a4b5d1',
-                borderRadius: 6, padding: '3px 8px', fontSize: 10, fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              Kagiso_Scholar
-            </button>
-            <button
-              onClick={() => handleSwitchUser('thabo')}
-              style={{
-                background: currentUser.id === 'usr_thabo' ? 'rgba(96,165,250,0.25)' : 'transparent',
-                border: `1px solid ${currentUser.id === 'usr_thabo' ? '#60a5fa' : 'rgba(164,181,209,0.2)'}`,
-                color: currentUser.id === 'usr_thabo' ? '#60a5fa' : '#a4b5d1',
-                borderRadius: 6, padding: '3px 8px', fontSize: 10, fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              Thabo_Engineer
-            </button>
+          <div style={{ fontSize: 10, background: 'rgba(254,214,206,0.15)', color: '#fed6ce', padding: '3px 8px', borderRadius: 6, fontWeight: 700 }}>
+            {authUser?.divisionTier || 'GOLD'} TIER ({authUser?.eloRating || 1000} ELO)
           </div>
         </div>
       </div>
 
-      {/* Select Opponent to Challenge Bar */}
+      {/* UX Student Opponent Selection Bar */}
       <div style={{ padding: '0 16px 14px', maxWidth: 600, margin: '0 auto' }}>
-        <div className="glass-dark" style={{ padding: 12, borderRadius: 12 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#fed6ce', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 4 }}>
-            <Users size={12} color="#fed6ce" /> SELECT A STUDENT TO CHALLENGE TO LIVE MATCH:
+        <div className="glass-dark" style={{ padding: 14, borderRadius: 14, border: '1px solid rgba(254, 214, 206, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #496894, #1d3156)',
+              border: '2px solid #fed6ce', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontWeight: 800, color: '#fed6ce', fontSize: 12, flexShrink: 0
+            }}>
+              {opponentUser.initials || opponentUser.username.substring(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <div style={{ fontSize: 10, color: '#a4b5d1', fontWeight: 700, letterSpacing: '0.05em' }}>TARGETED OPPONENT</div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: 'white', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>{opponentUser.name || opponentUser.username}</span>
+                <span style={{ fontSize: 9, background: 'rgba(254,214,206,0.2)', color: '#fed6ce', padding: '1px 5px', borderRadius: 4 }}>
+                  {opponentUser.divisionTier}
+                </span>
+              </div>
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: 6, overflowX: 'auto' }}>
-            {AVAILABLE_STUDENTS.map((student) => {
-              const isSelected = opponentUser.id === student.id;
-              return (
-                <button
-                  key={student.id}
-                  onClick={() => handleSelectOpponentToChallenge(student)}
-                  style={{
-                    flexShrink: 0,
-                    background: isSelected ? 'rgba(254,214,206,0.2)' : 'rgba(17,30,54,0.6)',
-                    border: `1px solid ${isSelected ? '#fed6ce' : 'rgba(164,181,209,0.25)'}`,
-                    color: isSelected ? '#fed6ce' : 'white',
-                    borderRadius: 8, padding: '6px 10px', fontSize: 10, fontWeight: 700, cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', gap: 6,
-                  }}
-                >
-                  <ChallengeIcon size={12} color={isSelected ? '#fed6ce' : '#a4b5d1'} />
-                  <span>{student.username} (Lv.{student.level})</span>
-                </button>
-              );
-            })}
-          </div>
+
+          <button
+            onClick={() => setIsDrawerOpen(true)}
+            style={{
+              padding: '8px 14px',
+              borderRadius: 10,
+              background: 'linear-gradient(135deg, rgba(254,214,206,0.25), rgba(73,104,148,0.4))',
+              border: '1px solid #fed6ce',
+              color: '#fed6ce',
+              fontSize: 12,
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              boxShadow: '0 0 12px rgba(254,214,206,0.25)',
+              transition: 'all 0.2s',
+            }}
+          >
+            <Search size={14} />
+            <span>Select Student Opponent</span>
+          </button>
         </div>
       </div>
+
+      {/* Student Directory Side Drawer */}
+      <StudentOpponentDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        currentUserId={currentUser.id}
+        selectedOpponentId={opponentUser.id}
+        onSelectStudent={handleSelectOpponentFromDrawer}
+      />
 
       {/* Header bar */}
       <div style={{ padding: '0 16px 14px', maxWidth: 600, margin: '0 auto' }}>

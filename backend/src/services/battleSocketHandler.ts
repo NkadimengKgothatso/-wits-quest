@@ -7,7 +7,9 @@ interface LiveRoomPlayer {
   score: number;
   submittedTurn?: {
     cardId: string;
+    cardName: string;
     stat: string;
+    statVal: number;
   };
 }
 
@@ -75,36 +77,58 @@ export function setupBattleSocketHandler(io: Server) {
       });
     });
 
-    // 2. Submit secret turn pick (15s turn lock-in)
-    socket.on('submit_turn', (data: { matchId: string; userId: string; cardId: string; stat: string }) => {
-      const { matchId, userId, cardId, stat } = data;
-      const room = activeRooms.get(matchId);
-      if (!room || room.status !== 'PLAYING') return;
+    // 2. Submit secret turn pick with card details & stat value
+    socket.on(
+      'submit_turn',
+      (data: { matchId: string; userId: string; cardId: string; cardName?: string; stat: string; statVal: number }) => {
+        const { matchId, userId, cardId, cardName, stat, statVal } = data;
+        const room = activeRooms.get(matchId);
+        if (!room || room.status !== 'PLAYING') return;
 
-      const player = room.players.find((p) => p.userId === userId);
-      if (player) {
-        player.submittedTurn = { cardId, stat };
+        const player = room.players.find((p) => p.userId === userId);
+        if (player) {
+          player.submittedTurn = {
+            cardId,
+            cardName: cardName || 'Card',
+            stat,
+            statVal,
+          };
+        }
+
+        // Check if both players locked in secret picks
+        const allSubmitted = room.players.every((p) => p.submittedTurn !== undefined);
+        if (allSubmitted && room.players.length === 2) {
+          const p1 = room.players[0];
+          const p2 = room.players[1];
+
+          // Simultaneous dual reveal event broadcast to all clients in match
+          io.to(matchId).emit('round_outcome', {
+            roundNumber: room.currentRound,
+            player1Turn: {
+              userId: p1.userId,
+              username: p1.username,
+              cardId: p1.submittedTurn?.cardId,
+              cardName: p1.submittedTurn?.cardName,
+              stat: p1.submittedTurn?.stat,
+              statVal: p1.submittedTurn?.statVal,
+            },
+            player2Turn: {
+              userId: p2.userId,
+              username: p2.username,
+              cardId: p2.submittedTurn?.cardId,
+              cardName: p2.submittedTurn?.cardName,
+              stat: p2.submittedTurn?.stat,
+              statVal: p2.submittedTurn?.statVal,
+            },
+          });
+
+          // Reset turn submissions for next round
+          p1.submittedTurn = undefined;
+          p2.submittedTurn = undefined;
+          room.currentRound += 1;
+        }
       }
-
-      // Check if both players locked in secret picks
-      const allSubmitted = room.players.every((p) => p.submittedTurn !== undefined);
-      if (allSubmitted && room.players.length === 2) {
-        const p1 = room.players[0];
-        const p2 = room.players[1];
-
-        // Simultaneous dual reveal event
-        io.to(matchId).emit('round_outcome', {
-          roundNumber: room.currentRound,
-          player1Turn: { userId: p1.userId, cardId: p1.submittedTurn?.cardId, stat: p1.submittedTurn?.stat },
-          player2Turn: { userId: p2.userId, cardId: p2.submittedTurn?.cardId, stat: p2.submittedTurn?.stat },
-        });
-
-        // Reset turn submissions for next round
-        p1.submittedTurn = undefined;
-        p2.submittedTurn = undefined;
-        room.currentRound += 1;
-      }
-    });
+    );
 
     // 3. Disconnect resilience
     socket.on('disconnect', () => {
@@ -114,7 +138,7 @@ export function setupBattleSocketHandler(io: Server) {
         if (pIdx !== -1) {
           io.to(matchId).emit('player_disconnected', {
             userId: room.players[pIdx].userId,
-            message: 'Opponent disconnected. 15s reconnect window active.',
+            message: 'Opponent disconnected.',
           });
         }
       });

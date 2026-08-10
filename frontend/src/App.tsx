@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './screens/Login';
 import MapExplorer from './screens/MapExplorer';
 import TriviaModal from './screens/TriviaModal';
@@ -47,16 +48,34 @@ const ADVANCED_NAV = [
   { id: 'trades', label: 'Peer Trades' },
 ];
 
-export default function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+function AppContent() {
+  const { loggedIn, loading } = useAuth();
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
   const [adminScreen, setAdminScreen] = useState<AdminScreen>('events');
   const [triviaLandmark, setTriviaLandmark] = useState<any>(null);
   const [cardsEarned, setCardsEarned] = useState(0);
 
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#1d3156',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#fed6ce',
+        fontFamily: 'Outfit, sans-serif',
+        fontSize: 16,
+        fontWeight: 700,
+      }}>
+        Initializing Wits Quest...
+      </div>
+    );
+  }
+
   if (!loggedIn) {
-    return <Login onLogin={() => setLoggedIn(true)} />;
+    return <Login />;
   }
 
   return (
@@ -214,5 +233,13 @@ export default function App() {
         </>
       )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }

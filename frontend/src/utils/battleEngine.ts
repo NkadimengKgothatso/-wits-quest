@@ -162,10 +162,10 @@ export function calculateRewards(state: BattleState): BattleReward {
     };
   } else if (state.winner === 'cpu') {
     return {
-      xp: 40,
-      essence: 10,
-      eloChange: -10,
-      message: 'Defeat. Earned +40 Consolation XP.',
+      xp: -20,
+      essence: 0,
+      eloChange: -15,
+      message: 'Defeat. Lost -20 XP and -15 Elo (minimum 0).',
     };
   }
 

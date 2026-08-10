@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import WitsLogo from '../components/WitsLogo';
+import { useAuth } from '../context/AuthContext';
 
 interface LoginProps {
-  onLogin: () => void;
+  onLogin?: () => void;
 }
 
 const STARS = Array.from({ length: 40 }, (_, i) => ({
@@ -15,6 +16,7 @@ const STARS = Array.from({ length: 40 }, (_, i) => ({
 }));
 
 export default function Login({ onLogin }: LoginProps) {
+  const { login, register } = useAuth();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('kagiso@students.wits.ac.za');
   const [password, setPassword] = useState('password123');
@@ -26,13 +28,22 @@ export default function Login({ onLogin }: LoginProps) {
 
   const emailValid = email.endsWith('@students.wits.ac.za') || email.endsWith('@wits.ac.za');
 
-  function handleSelectQuickAccount(accEmail: string) {
+  async function handleQuickAccountLogin(accEmail: string) {
     setEmail(accEmail);
     setPassword('password123');
     setError('');
+    setLoading(true);
+    try {
+      await login(accEmail);
+      if (onLogin) onLogin();
+    } catch (err: any) {
+      setError(err.message || 'Failed to authenticate user');
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!emailValid) {
       setError('Email must be a valid @students.wits.ac.za address');
@@ -42,12 +53,25 @@ export default function Login({ onLogin }: LoginProps) {
       setError('Password must be at least 6 characters');
       return;
     }
+    if (mode === 'register' && !name.trim()) {
+      setError('Please provide your full student name');
+      return;
+    }
+
     setError('');
     setLoading(true);
-    setTimeout(() => {
+    try {
+      if (mode === 'register') {
+        await register(email, name, studentId || '2000000');
+      } else {
+        await login(email);
+      }
+      if (onLogin) onLogin();
+    } catch (err: any) {
+      setError(err.message || 'Authentication error');
+    } finally {
       setLoading(false);
-      onLogin();
-    }, 1000);
+    }
   }
 
   return (
@@ -100,14 +124,14 @@ export default function Login({ onLogin }: LoginProps) {
         {/* Quick Test Accounts Bar */}
         <div style={{ marginBottom: 16, background: 'rgba(15, 26, 46, 0.7)', borderRadius: 12, padding: 10, border: '1px solid rgba(164,181,209,0.2)' }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: '#a4b5d1', marginBottom: 6, letterSpacing: '0.05em' }}>
-            QUICK TEST ACCOUNTS (2 PLAYERS FOR TESTING):
+            SELECT STUDENT TO LOG IN:
           </div>
           <div style={{ display: 'flex', gap: 6 }}>
             <button
               type="button"
-              onClick={() => handleSelectQuickAccount('kagiso@students.wits.ac.za')}
+              onClick={() => handleQuickAccountLogin('kagiso@students.wits.ac.za')}
               style={{
-                flex: 1, padding: '6px 8px', borderRadius: 8,
+                flex: 1, padding: '8px 10px', borderRadius: 8,
                 background: email.includes('kagiso') ? 'rgba(254,214,206,0.25)' : 'rgba(73,104,148,0.3)',
                 border: `1px solid ${email.includes('kagiso') ? '#fed6ce' : 'rgba(164,181,209,0.2)'}`,
                 color: email.includes('kagiso') ? '#fed6ce' : '#a4b5d1',
@@ -118,9 +142,9 @@ export default function Login({ onLogin }: LoginProps) {
             </button>
             <button
               type="button"
-              onClick={() => handleSelectQuickAccount('thabo@students.wits.ac.za')}
+              onClick={() => handleQuickAccountLogin('thabo@students.wits.ac.za')}
               style={{
-                flex: 1, padding: '6px 8px', borderRadius: 8,
+                flex: 1, padding: '8px 10px', borderRadius: 8,
                 background: email.includes('thabo') ? 'rgba(96,165,250,0.25)' : 'rgba(73,104,148,0.3)',
                 border: `1px solid ${email.includes('thabo') ? '#60a5fa' : 'rgba(164,181,209,0.2)'}`,
                 color: email.includes('thabo') ? '#60a5fa' : '#a4b5d1',

@@ -259,9 +259,9 @@ class MockDatabase {
     const user = this.users.get(userId);
     if (!user) throw new Error(`User ${userId} not found`);
 
-    const newTotalXP = user.totalXP + xpAwarded;
+    const newTotalXP = Math.max(0, user.totalXP + xpAwarded);
     let level = user.level;
-    let currentXP = user.currentXP + xpAwarded;
+    let currentXP = Math.max(0, user.currentXP + xpAwarded);
     let xpTarget = level * 200;
 
     while (currentXP >= xpTarget) {
@@ -271,6 +271,7 @@ class MockDatabase {
     }
 
     const newElo = Math.max(0, user.eloRating + eloDelta);
+    const newEssence = Math.max(0, user.essenceBalance + essenceAwarded);
     const divisionTier = this.calculateDivisionTier(newElo);
     const maxStatBudget = level >= 20 ? 400 : level >= 10 ? 350 : 300;
 
@@ -279,7 +280,7 @@ class MockDatabase {
       level,
       currentXP,
       totalXP: newTotalXP,
-      essenceBalance: user.essenceBalance + essenceAwarded,
+      essenceBalance: newEssence,
       eloRating: newElo,
       divisionTier,
       maxStatBudget,

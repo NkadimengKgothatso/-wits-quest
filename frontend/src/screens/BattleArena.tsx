@@ -12,6 +12,7 @@ import {
 } from '../utils/battleEngine';
 import { selectAIAction, selectAICounterCard } from '../utils/battleAI';
 import { saveMockBattleResult } from '../services/mockDbClient';
+import { useAuth } from '../context/AuthContext';
 
 const PLAYER_CARDS: BattleCard[] = [
   { id: 1, name: 'Great Hall Pillars', rarity: 'Legendary', stats: { attack: 85, defense: 95, speed: 40, brains: 90 }, category: 'Landmarks' },
@@ -46,6 +47,7 @@ const RARITY_BORDER: Record<string, string> = {
 };
 
 export default function BattleArena() {
+  const { currentUser, updateUserLocally } = useAuth();
   const [difficulty, setDifficulty] = useState<AIDifficulty>('medium');
   const [battleState, setBattleState] = useState<BattleState>(() =>
     createBattleState(PLAYER_CARDS, CPU_CARDS, 'medium')
@@ -79,10 +81,10 @@ export default function BattleArena() {
 
   // Persist battle results to Mock DB on Game Over
   useEffect(() => {
-    if (battleState.isGameOver && battleState.winner) {
+    if (battleState.isGameOver && battleState.winner && currentUser) {
       const rewards = calculateRewards(battleState);
       saveMockBattleResult({
-        userId: 'usr_kagiso',
+        userId: currentUser.id,
         matchType: 'CPU',
         opponentId: 'CPU_BOT',
         outcome: battleState.winner === 'player' ? 'win' : battleState.winner === 'cpu' ? 'lose' : 'tie',
@@ -98,6 +100,8 @@ export default function BattleArena() {
           opponentStatVal: r.cpuStatValue,
           outcome: r.outcome,
         })),
+      }).then((updatedUser) => {
+        if (updatedUser) updateUserLocally(updatedUser);
       });
     }
   }, [battleState.isGameOver]);
