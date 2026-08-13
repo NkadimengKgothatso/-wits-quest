@@ -33,17 +33,17 @@ export default function AsyncPvP() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 40% 10%, #253d6a 0%, #1d3156 50%, #0f1a2e 100%)',
+      background: 'radial-gradient(ellipse at 40% 10%, #6b5630 0%, #54441b 50%, #3d2f12 100%)',
       paddingTop: 16, paddingBottom: 80,
     }}>
       <div style={{ padding: '14px 16px 0', maxWidth: 600, margin: '0 auto' }}>
         <h2 style={{ fontSize: 20, fontWeight: 900, color: 'white', margin: '0 0 4px' }}>Async PvP Challenges</h2>
-        <p style={{ fontSize: 12, color: '#a4b5d1', margin: '0 0 16px' }}>Turn-based challenges against fellow Wits students</p>
+        <p style={{ fontSize: 12, color: '#dca668', margin: '0 0 16px' }}>Turn-based challenges against fellow Wits students</p>
       </div>
 
       {/* Tabs */}
       <div style={{ padding: '0 16px 16px', maxWidth: 600, margin: '0 auto' }}>
-        <div style={{ display: 'flex', gap: 6, background: 'rgba(17,30,54,0.6)', padding: 4, borderRadius: 12 }}>
+        <div style={{ display: 'flex', gap: 6, background: 'rgba(63, 47, 18, 0.6)', padding: 4, borderRadius: 12 }}>
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -52,14 +52,14 @@ export default function AsyncPvP() {
                 flex: 1, padding: '8px 4px', borderRadius: 9, border: 'none', cursor: 'pointer',
                 fontSize: 11, fontWeight: 700, transition: 'all 0.2s',
                 background: tab === t.id ? 'rgba(254,214,206,0.2)' : 'transparent',
-                color: tab === t.id ? '#fed6ce' : '#a4b5d1',
+                color: tab === t.id ? '#dca668' : '#dca668',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
               }}
             >
               {t.label}
               {t.count !== undefined && t.count > 0 && (
                 <span style={{
-                  background: '#fed6ce', color: '#1d3156', borderRadius: '50%',
+                  background: '#dca668', color: '#54441b', borderRadius: '50%',
                   width: 16, height: 16, fontSize: 9, fontWeight: 800,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
@@ -76,12 +76,12 @@ export default function AsyncPvP() {
         {tab === 'yourturn' && YOUR_TURN_MATCHES.map((m) => (
           <div key={m.id} className="glass-dark" style={{ padding: 14, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ width: 38, height: 38, borderRadius: '50%', background: '#496894', border: '2px solid #fed6ce', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fed6ce', fontWeight: 800, fontSize: 13 }}>
+              <div style={{ width: 38, height: 38, borderRadius: '50%', background: '#6b7d2c', border: '2px solid #dca668', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#dca668', fontWeight: 800, fontSize: 13 }}>
                 {m.opponent.substring(0, 2).toUpperCase()}
               </div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{m.opponent}</div>
-                <div style={{ fontSize: 10, color: '#a4b5d1' }}>Turn {m.turn} · Score {m.score} · {m.expires} left</div>
+                <div style={{ fontSize: 10, color: '#dca668' }}>Turn {m.turn} · Score {m.score} · {m.expires} left</div>
               </div>
             </div>
             <button className="btn-peach" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 8 }}>
@@ -93,15 +93,15 @@ export default function AsyncPvP() {
         {tab === 'waiting' && WAITING_MATCHES.map((m) => (
           <div key={m.id} className="glass-dark" style={{ padding: 14, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ width: 38, height: 38, borderRadius: '50%', background: '#496894', border: '2px solid #b0cbe6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b0cbe6', fontWeight: 800, fontSize: 13 }}>
+              <div style={{ width: 38, height: 38, borderRadius: '50%', background: '#6b7d2c', border: '2px solid #e8c99a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e8c99a', fontWeight: 800, fontSize: 13 }}>
                 {m.opponent.substring(0, 2).toUpperCase()}
               </div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{m.opponent}</div>
-                <div style={{ fontSize: 10, color: '#a4b5d1' }}>Turn {m.turn} · Score {m.score} · Waiting for move</div>
+                <div style={{ fontSize: 10, color: '#dca668' }}>Turn {m.turn} · Score {m.score} · Waiting for move</div>
               </div>
             </div>
-            <span style={{ fontSize: 10, color: '#b0cbe6', background: 'rgba(176,203,230,0.15)', padding: '4px 10px', borderRadius: 10, fontWeight: 700 }}>
+            <span style={{ fontSize: 10, color: '#e8c99a', background: 'rgba(232, 201, 154, 0.15)', padding: '4px 10px', borderRadius: 10, fontWeight: 700 }}>
               {m.expires}
             </span>
           </div>
@@ -111,7 +111,7 @@ export default function AsyncPvP() {
           <div key={m.id} className="glass-dark" style={{ padding: 14, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{m.challenger}</div>
-              <div style={{ fontSize: 10, color: '#a4b5d1' }}>Challenged you {m.sent} · Lv.{m.level}</div>
+              <div style={{ fontSize: 10, color: '#dca668' }}>Challenged you {m.sent} · Lv.{m.level}</div>
             </div>
             <div style={{ display: 'flex', gap: 6 }}>
               <button className="btn-peach" style={{ fontSize: 11, padding: '6px 12px', borderRadius: 6 }}>Accept</button>
@@ -124,11 +124,11 @@ export default function AsyncPvP() {
           <div key={m.id} className="glass-dark" style={{ padding: 12, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <div style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>{m.opponent}</div>
-              <div style={{ fontSize: 10, color: '#a4b5d1' }}>{m.date} · Score {m.score}</div>
+              <div style={{ fontSize: 10, color: '#dca668' }}>{m.date} · Score {m.score}</div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: 12, fontWeight: 800, color: m.result === 'Win' ? '#fed6ce' : '#a4b5d1' }}>{m.result}</div>
-              <div style={{ fontSize: 10, color: '#b0cbe6' }}>{m.xp} XP</div>
+              <div style={{ fontSize: 12, fontWeight: 800, color: m.result === 'Win' ? '#dca668' : '#dca668' }}>{m.result}</div>
+              <div style={{ fontSize: 10, color: '#e8c99a' }}>{m.xp} XP</div>
             </div>
           </div>
         ))}

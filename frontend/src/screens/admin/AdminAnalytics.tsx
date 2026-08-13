@@ -40,7 +40,7 @@ export default function AdminAnalytics() {
     <div style={{ padding: '16px', overflowY: 'auto' }}>
       <div style={{ marginBottom: 14 }}>
         <h2 style={{ fontSize: 20, fontWeight: 800, color: 'white', margin: '0 0 4px' }}>Campus Analytics & Spatial Heatmaps</h2>
-        <p style={{ fontSize: 12, color: '#a4b5d1', margin: 0 }}>Campus foot-traffic density and card economy telemetry</p>
+        <p style={{ fontSize: 12, color: '#dca668', margin: 0 }}>Campus foot-traffic density and card economy telemetry</p>
       </div>
 
       {/* Time filter */}
@@ -61,19 +61,19 @@ export default function AdminAnalytics() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
         {/* Foot-traffic heatmap preview */}
         <div className="glass-dark" style={{ borderRadius: 14, padding: 14, gridColumn: 'span 2' }}>
-          <div style={{ fontSize: 12, fontWeight: 800, color: '#b0cbe6', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 12, fontWeight: 800, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Campus Foot-Traffic Heatmap Density
           </div>
           <div style={{
             height: 220, borderRadius: 10, position: 'relative', overflow: 'hidden',
-            background: 'radial-gradient(ellipse at 40% 50%, #1a2e4a 0%, #111e36 100%)',
-            border: '1px solid rgba(164, 181, 209, 0.2)',
+            background: 'radial-gradient(ellipse at 40% 50%, #6b5630 0%, #3d2f12 100%)',
+            border: '1px solid rgba(220, 166, 104, 0.2)',
           }}>
             {/* Road lines */}
             <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.12 }}>
-              <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="#b0cbe6" strokeWidth="6" />
-              <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="#b0cbe6" strokeWidth="6" />
-              <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="#b0cbe6" strokeWidth="2" />
+              <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="#e8c99a" strokeWidth="6" />
+              <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="#e8c99a" strokeWidth="6" />
+              <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="#e8c99a" strokeWidth="2" />
             </svg>
 
             {/* Heat zones */}
@@ -88,26 +88,26 @@ export default function AdminAnalytics() {
                   transform: 'translate(-50%, -50%)',
                   width: h.size,
                   height: h.size,
-                  background: `radial-gradient(circle, rgba(254, 214, 206, ${h.intensity * 0.7}) 0%, rgba(176, 203, 230, ${h.intensity * 0.3}) 50%, transparent 100%)`,
+                  background: `radial-gradient(circle, rgba(220, 166, 104, ${h.intensity * 0.7}) 0%, rgba(232, 201, 154, ${h.intensity * 0.3}) 50%, transparent 100%)`,
                 }}
               />
             ))}
 
             <div style={{
               position: 'absolute', bottom: 10, right: 10,
-              background: 'rgba(17, 30, 54, 0.85)', borderRadius: 8, padding: '4px 10px',
-              fontSize: 10, color: '#a4b5d1', border: '1px solid rgba(164, 181, 209, 0.2)',
+              background: 'rgba(63, 47, 18, 0.85)', borderRadius: 8, padding: '4px 10px',
+              fontSize: 10, color: '#dca668', border: '1px solid rgba(220, 166, 104, 0.2)',
               display: 'flex', gap: 10,
             }}>
-              <span>High Intensity (#fed6ce)</span>
-              <span>Moderate (#b0cbe6)</span>
+              <span>High Intensity (#dca668)</span>
+              <span>Moderate (#e8c99a)</span>
             </div>
           </div>
         </div>
 
         {/* Daily Active Student Players */}
         <div className="glass-dark" style={{ borderRadius: 14, padding: 14 }}>
-          <div style={{ fontSize: 12, fontWeight: 800, color: '#b0cbe6', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 12, fontWeight: 800, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Daily Active Players (DAP)
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 140, paddingTop: 10 }}>
@@ -116,11 +116,11 @@ export default function AdminAnalytics() {
                 <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end', width: '100%' }}>
                   <div style={{
                     width: '100%', height: `${(d.players / MAX_DAP) * 100}%`,
-                    background: 'linear-gradient(180deg, #fed6ce, #496894)',
+                    background: 'linear-gradient(180deg, #dca668, #6b7d2c)',
                     borderRadius: '4px 4px 0 0', minHeight: 4,
                   }} />
                 </div>
-                <div style={{ fontSize: 9, color: '#a4b5d1', marginTop: 4 }}>{d.day}</div>
+                <div style={{ fontSize: 9, color: '#dca668', marginTop: 4 }}>{d.day}</div>
               </div>
             ))}
           </div>
@@ -128,18 +128,18 @@ export default function AdminAnalytics() {
 
         {/* Card Circulation & Scrapping */}
         <div className="glass-dark" style={{ borderRadius: 14, padding: 14 }}>
-          <div style={{ fontSize: 12, fontWeight: 800, color: '#b0cbe6', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 12, fontWeight: 800, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Card Circulation & Scrapping Rates
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {CARD_ECONOMY.map((c) => (
               <div key={c.label}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#a4b5d1', marginBottom: 2 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#dca668', marginBottom: 2 }}>
                   <span>{c.label}</span>
-                  <span style={{ color: '#fed6ce' }}>{c.earned} awarded</span>
+                  <span style={{ color: '#dca668' }}>{c.earned} awarded</span>
                 </div>
                 <div className="stat-bar-track" style={{ height: 5 }}>
-                  <div className="stat-bar-fill" style={{ width: `${(c.earned / 450) * 100}%`, background: '#fed6ce' }} />
+                  <div className="stat-bar-fill" style={{ width: `${(c.earned / 450) * 100}%`, background: '#dca668' }} />
                 </div>
               </div>
             ))}

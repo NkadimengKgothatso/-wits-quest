@@ -7,8 +7,8 @@
 }
 
 body {
-  background-color: var(--color-bg-midnight);
-  color: #ffffff;
+  background-color: var(--color-night);
+  color: var(--color-snow);
   font-family: var(--font-family-base);
   min-height: 100vh;
   overflow-x: hidden;
@@ -26,14 +26,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-midnight);
+  background: var(--color-night);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-panel-slate);
+  background: var(--color-navy);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-border-periwinkle);
+  background: var(--color-mist);
 }

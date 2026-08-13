@@ -16,13 +16,13 @@ const CARDS = [
 ]
 
 const RARITY_STYLES: Record<string, { border: string; glow: string; label: string; labelColor: string }> = {
-  Legendary: { border: '#fed6ce', glow: 'rgba(254, 214, 206, 0.4)', label: '✦ LEGENDARY', labelColor: '#fed6ce' },
-  Epic: { border: '#a78bfa', glow: 'rgba(167, 139, 250, 0.3)', label: '◈ EPIC', labelColor: '#a78bfa' },
-  Rare: { border: '#60a5fa', glow: 'rgba(96, 165, 250, 0.3)', label: '◆ RARE', labelColor: '#60a5fa' },
-  Common: { border: 'rgba(164, 181, 209, 0.5)', glow: 'transparent', label: '○ COMMON', labelColor: '#a4b5d1' },
+  Legendary: { border: '#dca668', glow: 'rgba(220, 166, 104, 0.4)', label: '✦ LEGENDARY', labelColor: '#dca668' },
+  Epic: { border: '#c99255', glow: 'rgba(201, 146, 85, 0.3)', label: '◈ EPIC', labelColor: '#c99255' },
+  Rare: { border: '#a87d4d', glow: 'rgba(168, 125, 77, 0.3)', label: '◆ RARE', labelColor: '#a87d4d' },
+  Common: { border: 'rgba(220, 166, 104, 0.5)', glow: 'transparent', label: '○ COMMON', labelColor: '#dca668' },
 }
 
-const STAT_COLORS = { attack: '#f87171', defense: '#60a5fa', speed: '#facc15', brains: '#a78bfa' }
+const STAT_COLORS = { attack: '#f87171', defense: '#dca668', speed: '#facc15', brains: '#e8c99a' }
 
 function CardDetail({ card, onClose }: { card: typeof CARDS[0]; onClose: () => void }) {
   const rs = RARITY_STYLES[card.rarity]
@@ -30,7 +30,7 @@ function CardDetail({ card, onClose }: { card: typeof CARDS[0]; onClose: () => v
     <div
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(13, 22, 45, 0.9)',
+        background: 'rgba(63, 47, 18, 0.94)',
         backdropFilter: 'blur(16px)',
         zIndex: 200,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -42,7 +42,7 @@ function CardDetail({ card, onClose }: { card: typeof CARDS[0]; onClose: () => v
         {/* Card display */}
         <div style={{
           borderRadius: 16, border: `2px solid ${rs.border}`,
-          background: 'linear-gradient(135deg, #1d3156 0%, #253d6a 100%)',
+          background: 'linear-gradient(135deg, #54441b 0%, #6b5630 100%)',
           overflow: 'hidden', marginBottom: 20,
           boxShadow: `0 0 32px ${rs.glow}`,
         }}>
@@ -51,13 +51,13 @@ function CardDetail({ card, onClose }: { card: typeof CARDS[0]; onClose: () => v
             borderBottom: `1px solid ${rs.border}30`,
           }}>
             <span style={{ fontSize: 10, fontWeight: 700, color: rs.labelColor }}>{rs.label}</span>
-            <span style={{ fontSize: 10, color: '#a4b5d1' }}>{card.category}</span>
+            <span style={{ fontSize: 10, color: '#dca668' }}>{card.category}</span>
           </div>
           <div style={{
             height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center',
             background: `radial-gradient(ellipse at center, ${rs.glow} 0%, transparent 70%)`,
           }}>
-            <div className={card.rarity === 'Legendary' ? 'float' : ''} style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(29, 49, 86, 0.8)', border: `2px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 18 }}>
+            <div className={card.rarity === 'Legendary' ? 'float' : ''} style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(84, 68, 27, 0.8)', border: `2px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 18 }}>
               {card.name.substring(0, 2).toUpperCase()}
             </div>
           </div>
@@ -71,7 +71,7 @@ function CardDetail({ card, onClose }: { card: typeof CARDS[0]; onClose: () => v
             ].map(({ k, label, v }) => (
               <div key={k} style={{ marginBottom: 8 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
-                  <span style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 700 }}>{label}</span>
+                  <span style={{ fontSize: 11, color: '#dca668', fontWeight: 700 }}>{label}</span>
                   <span style={{ fontSize: 12, fontWeight: 800, color: STAT_COLORS[k as keyof typeof STAT_COLORS] }}>{v}</span>
                 </div>
                 <div className="stat-bar-track">
@@ -82,8 +82,8 @@ function CardDetail({ card, onClose }: { card: typeof CARDS[0]; onClose: () => v
           </div>
         </div>
 
-        <div style={{ fontSize: 12, color: '#a4b5d1', marginBottom: 16, textAlign: 'center' }}>
-          You own <strong style={{ color: '#fed6ce' }}>×{card.owned}</strong> copies
+        <div style={{ fontSize: 12, color: '#dca668', marginBottom: 16, textAlign: 'center' }}>
+          You own <strong style={{ color: '#dca668' }}>×{card.owned}</strong> copies
         </div>
 
         <div style={{ display: 'flex', gap: 10 }}>
@@ -100,7 +100,7 @@ function CardDetail({ card, onClose }: { card: typeof CARDS[0]; onClose: () => v
           onClick={onClose}
           style={{
             width: '100%', marginTop: 10, background: 'none', border: 'none',
-            color: '#a4b5d1', cursor: 'pointer', fontSize: 13, padding: 8,
+            color: '#dca668', cursor: 'pointer', fontSize: 13, padding: 8,
           }}
         >
           Close
@@ -127,14 +127,14 @@ export default function CardCollection() {
   })
 
   return (
-    <div style={{ minHeight: '100vh', background: 'radial-gradient(ellipse at 30% 10%, #253d6a 0%, #1d3156 45%, #0f1a2e 100%)', paddingTop: 70, paddingBottom: 80 }}>
+    <div style={{ minHeight: '100vh', background: 'radial-gradient(ellipse at 30% 10%, #6b5630 0%, #54441b 45%, #3d2f12 100%)', paddingTop: 70, paddingBottom: 80 }}>
       {/* Top control bar */}
       <div
         style={{
           padding: '12px 16px',
-          background: 'rgba(17, 30, 54, 0.8)',
+          background: 'rgba(63, 47, 18, 0.8)',
           backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(164, 181, 209, 0.15)',
+          borderBottom: '1px solid rgba(220, 166, 104, 0.15)',
           position: 'sticky', top: 56, zIndex: 20,
         }}
       >
@@ -151,9 +151,9 @@ export default function CardCollection() {
             />
           </div>
           <div style={{
-            background: 'rgba(167, 139, 250, 0.15)', border: '1px solid rgba(167, 139, 250, 0.4)',
+            background: 'rgba(220, 166, 104, 0.15)', border: '1px solid rgba(220, 166, 104, 0.4)',
             borderRadius: 12, padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 6,
-            color: '#a78bfa', fontSize: 14, fontWeight: 800, whiteSpace: 'nowrap',
+            color: '#dca668', fontSize: 14, fontWeight: 800, whiteSpace: 'nowrap',
           }}>
             💎 450
           </div>
@@ -187,7 +187,7 @@ export default function CardCollection() {
       </div>
 
       {/* Card count */}
-      <div style={{ padding: '10px 16px 6px', fontSize: 12, color: '#a4b5d1', fontWeight: 600 }}>
+      <div style={{ padding: '10px 16px 6px', fontSize: 12, color: '#dca668', fontWeight: 600 }}>
         {filtered.length} cards · {CARDS.reduce((s, c) => s + c.owned, 0)} total owned
       </div>
 
@@ -216,7 +216,7 @@ export default function CardCollection() {
                 style={{
                   borderRadius: 14,
                   border: `1.5px solid ${rs.border}`,
-                  background: 'linear-gradient(160deg, #1d3156 0%, #253d6a 100%)',
+                  background: 'linear-gradient(160deg, #54441b 0%, #6b5630 100%)',
                   overflow: 'hidden',
                   transition: 'transform 0.2s, box-shadow 0.2s',
                   boxShadow: card.rarity === 'Legendary' || card.rarity === 'Epic' ? `0 0 12px ${rs.glow}` : 'none',
@@ -249,14 +249,14 @@ export default function CardCollection() {
                   background: `radial-gradient(ellipse at center, ${rs.glow} 0%, transparent 70%)`,
                   position: 'relative',
                 }}>
-                  <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'rgba(17, 30, 54, 0.8)', border: `1.5px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 13 }}>
+                  <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'rgba(63, 47, 18, 0.8)', border: `1.5px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 13 }}>
                     {card.name.substring(0, 2).toUpperCase()}
                   </div>
                   {card.owned > 1 && (
                     <span style={{
                       position: 'absolute', top: 4, right: 6,
-                      fontSize: 9, color: '#a78bfa', fontWeight: 700,
-                      background: 'rgba(167, 139, 250, 0.15)',
+                      fontSize: 9, color: '#dca668', fontWeight: 700,
+                      background: 'rgba(220, 166, 104, 0.15)',
                       borderRadius: 6, padding: '1px 5px',
                     }}>
                       ×{card.owned}
@@ -284,7 +284,7 @@ export default function CardCollection() {
                       </div>
                     ))}
                   </div>
-                  <div style={{ fontSize: 9, color: '#a4b5d1', marginTop: 5 }}>{card.category}</div>
+                  <div style={{ fontSize: 9, color: '#dca668', marginTop: 5 }}>{card.category}</div>
                 </div>
               </div>
             </button>

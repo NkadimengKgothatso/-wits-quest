@@ -53,12 +53,12 @@ export default function QuestTrails() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 50% 10%, #253d6a 0%, #1d3156 50%, #0f1a2e 100%)',
+      background: 'radial-gradient(ellipse at 50% 10%, #6b5630 0%, #54441b 50%, #3d2f12 100%)',
       paddingTop: 16, paddingBottom: 80,
     }}>
       <div style={{ padding: '14px 16px 0', maxWidth: 600, margin: '0 auto' }}>
         <h2 style={{ fontSize: 20, fontWeight: 900, color: 'white', margin: '0 0 4px' }}>Quest Trails</h2>
-        <p style={{ fontSize: 12, color: '#a4b5d1', margin: '0 0 16px' }}>Complete sequential campus landmark stops to unlock legendary rewards</p>
+        <p style={{ fontSize: 12, color: '#dca668', margin: '0 0 16px' }}>Complete sequential campus landmark stops to unlock legendary rewards</p>
       </div>
 
       <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -71,7 +71,7 @@ export default function QuestTrails() {
               className="glass-dark"
               style={{
                 borderRadius: 16, padding: 16,
-                border: `1.5px solid ${isSelected ? '#fed6ce' : 'rgba(164,181,209,0.2)'}`,
+                border: `1.5px solid ${isSelected ? '#dca668' : 'rgba(220, 166, 104, 0.2)'}`,
                 cursor: 'pointer', transition: 'all 0.2s',
               }}
               onClick={() => setSelectedTrail(trail)}
@@ -79,16 +79,16 @@ export default function QuestTrails() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                 <div>
                   <div style={{ fontSize: 15, fontWeight: 800, color: 'white', marginBottom: 2 }}>{trail.name}</div>
-                  <div style={{ fontSize: 11, color: '#a4b5d1' }}>Reward: {trail.reward} ({trail.rewardRarity})</div>
+                  <div style={{ fontSize: 11, color: '#dca668' }}>Reward: {trail.reward} ({trail.rewardRarity})</div>
                 </div>
-                <div style={{ background: 'rgba(254, 214, 206, 0.15)', border: '1px solid rgba(254, 214, 206, 0.3)', borderRadius: 8, padding: '4px 10px', fontSize: 11, fontWeight: 800, color: '#fed6ce' }}>
+                <div style={{ background: 'rgba(220, 166, 104, 0.15)', border: '1px solid rgba(220, 166, 104, 0.3)', borderRadius: 8, padding: '4px 10px', fontSize: 11, fontWeight: 800, color: '#dca668' }}>
                   {trail.progress}/{trail.total} Completed
                 </div>
               </div>
 
               {/* Progress bar */}
               <div className="stat-bar-track" style={{ height: 6, marginBottom: 14 }}>
-                <div className="stat-bar-fill" style={{ width: `${percent}%`, background: 'linear-gradient(90deg, #b0cbe6, #fed6ce)' }} />
+                <div className="stat-bar-fill" style={{ width: `${percent}%`, background: 'linear-gradient(90deg, #e8c99a, #dca668)' }} />
               </div>
 
               {/* Sequential Stops */}
@@ -97,23 +97,23 @@ export default function QuestTrails() {
                   <div key={idx} style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     padding: '8px 12px', borderRadius: 10,
-                    background: loc.done ? 'rgba(176,203,230,0.12)' : loc.isNext ? 'rgba(254, 214, 206, 0.15)' : 'rgba(29,49,86,0.4)',
-                    border: `1px solid ${loc.done ? 'rgba(176,203,230,0.3)' : loc.isNext ? 'rgba(254, 214, 206, 0.4)' : 'rgba(164,181,209,0.1)'}`,
+                    background: loc.done ? 'rgba(220, 166, 104, 0.12)' : loc.isNext ? 'rgba(220, 166, 104, 0.15)' : 'rgba(84, 68, 27, 0.55)',
+                    border: `1px solid ${loc.done ? 'rgba(232, 201, 154, 0.3)' : loc.isNext ? 'rgba(220, 166, 104, 0.4)' : 'rgba(220, 166, 104, 0.1)'}`,
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <div style={{
                         width: 22, height: 22, borderRadius: '50%',
-                        background: loc.done ? '#b0cbe6' : loc.isNext ? '#fed6ce' : '#496894',
-                        color: '#1d3156', fontWeight: 800, fontSize: 10,
+                        background: loc.done ? '#e8c99a' : loc.isNext ? '#dca668' : '#6b7d2c',
+                        color: '#54441b', fontWeight: 800, fontSize: 10,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}>
                         {loc.done ? '✓' : idx + 1}
                       </div>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: loc.done ? '#b0cbe6' : loc.isNext ? '#fed6ce' : 'white' }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: loc.done ? '#e8c99a' : loc.isNext ? '#dca668' : 'white' }}>
                         {loc.name}
                       </span>
                     </div>
-                    <span style={{ fontSize: 10, color: '#a4b5d1' }}>{loc.distance}m</span>
+                    <span style={{ fontSize: 10, color: '#dca668' }}>{loc.distance}m</span>
                   </div>
                 ))}
               </div>

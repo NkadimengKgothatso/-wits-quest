@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import WitsLogo from '../components/WitsLogo';
+import KuduMascot from '../components/KuduMascot';
 
 interface LoginProps {
   onLogin: () => void;
 }
 
-const STARS = Array.from({ length: 40 }, (_, i) => ({
+/* Warm floating dust particles */
+const DUST = Array.from({ length: 30 }, (_, i) => ({
   id: i,
   top: Math.random() * 100,
   left: Math.random() * 100,
-  size: Math.random() * 2 + 1,
-  duration: (Math.random() * 3 + 2).toFixed(1),
-  delay: (Math.random() * 4).toFixed(1),
+  size: Math.random() * 3 + 1,
+  duration: (Math.random() * 4 + 3).toFixed(1),
+  delay: (Math.random() * 5).toFixed(1),
 }));
 
 export default function Login({ onLogin }: LoginProps) {
@@ -48,91 +50,102 @@ export default function Login({ onLogin }: LoginProps) {
     <div
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-4 py-8"
       style={{
-        background: 'radial-gradient(ellipse at 50% 20%, #253d6a 0%, #1d3156 50%, #0f1a2e 100%)',
+        background: 'radial-gradient(ellipse at 50% 0%, #6b5630 0%, #54441b 45%, #3d2f12 100%)',
       }}
     >
-      {/* Background Star Particles */}
-      {STARS.map((s) => (
+      {/* Floating golden dust */}
+      {DUST.map((d) => (
         <div
-          key={s.id}
-          className="star"
+          key={d.id}
+          className="dust-particle"
           style={{
-            top: `${s.top}%`,
-            left: `${s.left}%`,
-            width: s.size,
-            height: s.size,
-            '--duration': `${s.duration}s`,
-            '--delay': `${s.delay}s`,
+            top: `${d.top}%`,
+            left: `${d.left}%`,
+            width: d.size,
+            height: d.size,
+            '--duration': `${d.duration}s`,
+            '--delay': `${d.delay}s`,
           } as React.CSSProperties}
         />
       ))}
 
-      {/* Atmospheric Ambient Glow Orbs */}
+      {/* Soft ambient glow orbs */}
       <div style={{
-        position: 'absolute', top: '5%', left: '15%',
+        position: 'absolute', top: '2%', left: '10%',
+        width: 360, height: 360,
+        background: 'radial-gradient(circle, rgba(220, 166, 104, 0.12) 0%, transparent 70%)',
+        borderRadius: '50%', pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '5%', right: '5%',
         width: 320, height: 320,
-        background: 'radial-gradient(circle, rgba(176, 203, 230, 0.1) 0%, transparent 70%)',
-        borderRadius: '50%', pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '10%', right: '10%',
-        width: 280, height: 280,
-        background: 'radial-gradient(circle, rgba(254, 214, 206, 0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(232, 201, 154, 0.1) 0%, transparent 70%)',
         borderRadius: '50%', pointerEvents: 'none',
       }} />
 
-      {/* Hero Official Wits University Branding Header */}
-      <div className="slide-up text-center mb-6" style={{ position: 'relative', zIndex: 10 }}>
-        <WitsLogo width={160} height={180} showText={true} />
+      {/* Hero section */}
+      <div className="slide-up text-center mb-5" style={{ position: 'relative', zIndex: 10, maxWidth: 420 }}>
+        <div className="float" style={{ display: 'inline-block' }}>
+          <WitsLogo width={140} height={160} showText={true} />
+        </div>
 
-        <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/50">
-          <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#fed6ce' }} />
+        <h1 style={{
+          fontSize: 28, fontWeight: 800, color: '#f8f2e8',
+          margin: '16px 0 6px', letterSpacing: '-0.02em',
+        }}>
+          Welcome to Wits Quest
+        </h1>
+        <p style={{ fontSize: 14, color: '#dca668', margin: '0 0 18px', lineHeight: 1.5 }}>
+          Explore campus, collect legendary cards, and battle fellow Wits students.
+        </p>
 
+        <div className="flex justify-center mb-2">
+          <KuduMascot message="Hi there! I'm your kudu guide. Log in to start exploring." />
         </div>
       </div>
 
-      {/* Glassmorphic Auth Card */}
+      {/* Prominent mode toggle buttons - above the form */}
+      <div
+        className="slide-up flex gap-3 mb-4"
+        style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: 420 }}
+      >
+        {(['login', 'register'] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => { setMode(m); setError(''); }}
+            className="btn-peach"
+            style={{
+              flex: 1,
+              padding: '12px 16px',
+              fontSize: 14,
+              borderRadius: 12,
+              opacity: mode === m ? 1 : 0.7,
+              background: mode === m
+                ? 'linear-gradient(135deg, #dca668 0%, #c99255 100%)'
+                : 'rgba(107, 125, 44, 0.45)',
+              color: mode === m ? '#3d2f12' : '#f8f2e8',
+              boxShadow: mode === m ? '0 0 24px rgba(220, 166, 104, 0.45)' : 'none',
+            }}
+          >
+            {m === 'login' ? 'Log In' : 'Sign Up'}
+          </button>
+        ))}
+      </div>
+
+      {/* Glassmorphic auth card */}
       <div
         className="glass slide-up w-full"
-        style={{ maxWidth: 420, padding: 32, position: 'relative', zIndex: 10, borderRadius: 20, backdropFilter: 'blur(16px)' }}
+        style={{ maxWidth: 420, padding: 28, position: 'relative', zIndex: 10, borderRadius: 20, backdropFilter: 'blur(16px)' }}
       >
-        {/* Mode Selector Tabs */}
-        <div
-          className="flex mb-6"
-          style={{
-            background: 'rgba(29, 49, 86, 0.7)',
-            borderRadius: 12,
-            padding: 4,
-          }}
-        >
-          {(['login', 'register'] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => { setMode(m); setError(''); }}
-              style={{
-                flex: 1,
-                padding: '10px 12px',
-                borderRadius: 9,
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 700,
-                fontSize: 13,
-                transition: 'all 0.2s',
-                background: mode === m ? 'rgba(254, 214, 206, 0.2)' : 'transparent',
-                color: mode === m ? '#fed6ce' : '#a4b5d1',
-                boxShadow: mode === m ? '0 0 14px rgba(254, 214, 206, 0.25)' : 'none',
-              }}
-            >
-              {m === 'login' ? 'Student Sign In' : 'New Student Register'}
-            </button>
-          ))}
+        <div style={{ fontSize: 16, fontWeight: 700, color: '#f8f2e8', marginBottom: 18, textAlign: 'center' }}>
+          {mode === 'login' ? 'Sign in to your account' : 'Create your student account'}
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {mode === 'register' && (
             <>
               <div>
-                <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+                <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>
                   Full Name
                 </label>
                 <input
@@ -143,7 +156,7 @@ export default function Login({ onLogin }: LoginProps) {
                 />
               </div>
               <div>
-                <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+                <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>
                   Student Number
                 </label>
                 <input
@@ -158,7 +171,7 @@ export default function Login({ onLogin }: LoginProps) {
 
           {/* Student Email Field */}
           <div>
-            <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+            <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>
               Wits Student Email
             </label>
             <div style={{ position: 'relative' }}>
@@ -174,17 +187,17 @@ export default function Login({ onLogin }: LoginProps) {
                 <div style={{
                   position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
                   width: 20, height: 20, borderRadius: '50%',
-                  background: emailValid ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)',
-                  border: `1.5px solid ${emailValid ? '#4ade80' : '#f87171'}`,
+                  background: emailValid ? 'rgba(143, 174, 110, 0.25)' : 'rgba(232, 166, 166, 0.25)',
+                  border: `1.5px solid ${emailValid ? '#8fae6e' : '#e8a6a6'}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 11, color: emailValid ? '#4ade80' : '#f87171', fontWeight: 700
+                  fontSize: 11, color: emailValid ? '#8fae6e' : '#e8a6a6', fontWeight: 700
                 }}>
                   {emailValid ? '✓' : '✕'}
                 </div>
               )}
             </div>
             {email.length > 3 && !emailValid && (
-              <p style={{ fontSize: 11, color: '#f87171', marginTop: 4 }}>
+              <p style={{ fontSize: 11, color: '#e8a6a6', marginTop: 4 }}>
                 Must be an official @students.wits.ac.za address
               </p>
             )}
@@ -192,7 +205,7 @@ export default function Login({ onLogin }: LoginProps) {
 
           {/* Password Field */}
           <div>
-            <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+            <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>
               Password
             </label>
             <div style={{ position: 'relative' }}>
@@ -210,7 +223,7 @@ export default function Login({ onLogin }: LoginProps) {
                 style={{
                   position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
                   background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#b0cbe6', fontSize: 11, fontWeight: 700,
+                  color: '#e8c99a', fontSize: 11, fontWeight: 700,
                   textTransform: 'uppercase', letterSpacing: '0.05em'
                 }}
               >
@@ -222,11 +235,11 @@ export default function Login({ onLogin }: LoginProps) {
           {/* Validation Alert Box */}
           {error && (
             <div style={{
-              background: 'rgba(239, 68, 68, 0.15)',
-              border: '1px solid rgba(239, 68, 68, 0.4)',
+              background: 'rgba(232, 166, 166, 0.15)',
+              border: '1px solid rgba(232, 166, 166, 0.4)',
               borderRadius: 10,
               padding: '10px 14px',
-              color: '#f87171',
+              color: '#e8a6a6',
               fontSize: 12,
               fontWeight: 600,
             }}>
@@ -243,8 +256,8 @@ export default function Login({ onLogin }: LoginProps) {
             {loading ? (
               <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                 <span style={{
-                  width: 16, height: 16, border: '2px solid rgba(29,49,86,0.4)',
-                  borderTopColor: '#1d3156', borderRadius: '50%',
+                  width: 16, height: 16, border: '2px solid rgba(84, 68, 27, 0.4)',
+                  borderTopColor: '#dca668', borderRadius: '50%',
                   animation: 'spin 0.7s linear infinite',
                   display: 'inline-block',
                 }} />
@@ -254,11 +267,11 @@ export default function Login({ onLogin }: LoginProps) {
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 18, fontSize: 13, color: '#a4b5d1' }}>
+        <p style={{ textAlign: 'center', marginTop: 18, fontSize: 13, color: '#dca668' }}>
           {mode === 'login' ? "New to Wits Quest? " : "Already adventuring? "}
           <button
             onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}
-            style={{ background: 'none', border: 'none', color: '#fed6ce', fontWeight: 700, cursor: 'pointer' }}
+            style={{ background: 'none', border: 'none', color: '#e8c99a', fontWeight: 700, cursor: 'pointer' }}
           >
             {mode === 'login' ? 'Register here' : 'Sign in'}
           </button>
@@ -266,11 +279,27 @@ export default function Login({ onLogin }: LoginProps) {
       </div>
 
       {/* Footer Credentials */}
-      <p style={{ marginTop: 24, fontSize: 11, color: 'rgba(164, 181, 209, 0.5)', position: 'relative', zIndex: 10, textAlign: 'center' }}>
+      <p style={{ marginTop: 24, fontSize: 11, color: 'rgba(220, 166, 104, 0.5)', position: 'relative', zIndex: 10, textAlign: 'center' }}>
         Wits Quest v1.0 · Scientia et Labore · University of the Witwatersrand · 2026
       </p>
 
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes dust-float {
+          0%, 100% { transform: translateY(0) translateX(0); opacity: 0.35; }
+          25% { transform: translateY(-18px) translateX(6px); opacity: 0.7; }
+          50% { transform: translateY(-10px) translateX(-6px); opacity: 0.5; }
+          75% { transform: translateY(-24px) translateX(4px); opacity: 0.65; }
+        }
+        .dust-particle {
+          position: absolute;
+          background: #e8c99a;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: dust-float var(--duration, 4s) ease-in-out infinite;
+          animation-delay: var(--delay, 0s);
+        }
+      `}</style>
     </div>
   );
 }

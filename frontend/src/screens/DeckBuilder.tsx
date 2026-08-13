@@ -1,23 +1,23 @@
 import { useState } from 'react'
 
 const ALL_CARDS = [
-  { id: 1, name: 'Great Hall Pillars', rarity: 'Legendary', attack: 85, defense: 95, speed: 40, brains: 90, cost: 85, owned: 1 },
-  { id: 2, name: "Solomon's Torch", rarity: 'Epic', attack: 90, defense: 70, speed: 85, brains: 88, cost: 72, owned: 2 },
-  { id: 3, name: 'Quantum Reactor', rarity: 'Rare', attack: 75, defense: 60, speed: 70, brains: 95, cost: 55, owned: 3 },
-  { id: 4, name: 'Senate Seal', rarity: 'Rare', attack: 60, defense: 88, speed: 45, brains: 92, cost: 48, owned: 1 },
-  { id: 5, name: 'Cave Painting', rarity: 'Common', attack: 40, defense: 50, speed: 35, brains: 78, cost: 22, owned: 4 },
-  { id: 6, name: 'Ancient Tome', rarity: 'Epic', attack: 55, defense: 72, speed: 30, brains: 99, cost: 64, owned: 1 },
-  { id: 7, name: 'The Rock Drill', rarity: 'Legendary', attack: 98, defense: 80, speed: 65, brains: 75, cost: 88, owned: 1 },
-  { id: 8, name: 'Wits Springbok', rarity: 'Common', attack: 72, defense: 55, speed: 92, brains: 60, cost: 28, owned: 5 },
-  { id: 9, name: 'Wits Medical', rarity: 'Rare', attack: 50, defense: 85, speed: 55, brains: 96, cost: 58, owned: 2 },
-  { id: 10, name: 'Star Trails', rarity: 'Epic', attack: 65, defense: 65, speed: 78, brains: 88, cost: 68, owned: 1 },
+  { id: 1, name: 'Great Hall Pillars', emoji: '🏛️', rarity: 'Legendary', attack: 85, defense: 95, speed: 40, brains: 90, cost: 85, owned: 1 },
+  { id: 2, name: "Solomon's Torch", emoji: '🔥', rarity: 'Epic', attack: 90, defense: 70, speed: 85, brains: 88, cost: 72, owned: 2 },
+  { id: 3, name: 'Quantum Reactor', emoji: '⚛️', rarity: 'Rare', attack: 75, defense: 60, speed: 70, brains: 95, cost: 55, owned: 3 },
+  { id: 4, name: 'Senate Seal', emoji: '🏛', rarity: 'Rare', attack: 60, defense: 88, speed: 45, brains: 92, cost: 48, owned: 1 },
+  { id: 5, name: 'Cave Painting', emoji: '🪨', rarity: 'Common', attack: 40, defense: 50, speed: 35, brains: 78, cost: 22, owned: 4 },
+  { id: 6, name: 'Ancient Tome', emoji: '📚', rarity: 'Epic', attack: 55, defense: 72, speed: 30, brains: 99, cost: 64, owned: 1 },
+  { id: 7, name: 'The Rock Drill', emoji: '⛏️', rarity: 'Legendary', attack: 98, defense: 80, speed: 65, brains: 75, cost: 88, owned: 1 },
+  { id: 8, name: 'Wits Springbok', emoji: '🦌', rarity: 'Common', attack: 72, defense: 55, speed: 92, brains: 60, cost: 28, owned: 5 },
+  { id: 9, name: 'Wits Medical', emoji: '🩺', rarity: 'Rare', attack: 50, defense: 85, speed: 55, brains: 96, cost: 58, owned: 2 },
+  { id: 10, name: 'Star Trails', emoji: '✨', rarity: 'Epic', attack: 65, defense: 65, speed: 78, brains: 88, cost: 68, owned: 1 },
 ]
 
 const RARITY_BORDER: Record<string, string> = {
-  Legendary: '#fed6ce',
-  Epic: '#a78bfa',
-  Rare: '#60a5fa',
-  Common: 'rgba(164, 181, 209, 0.5)',
+  Legendary: '#dca668',
+  Epic: '#c99255',
+  Rare: '#a87d4d',
+  Common: 'rgba(220, 166, 104, 0.5)',
 }
 
 export default function DeckBuilder() {
@@ -54,7 +54,7 @@ export default function DeckBuilder() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 60% 0%, #253d6a 0%, #1d3156 50%, #0f1a2e 100%)',
+      background: 'radial-gradient(ellipse at 60% 0%, #6b5630 0%, #54441b 50%, #3d2f12 100%)',
       paddingTop: 70,
       paddingBottom: 80,
     }}>
@@ -63,7 +63,7 @@ export default function DeckBuilder() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <div>
             <h2 style={{ fontSize: 18, fontWeight: 800, color: 'white', margin: 0 }}>Active Deck</h2>
-            <p style={{ fontSize: 12, color: '#a4b5d1', margin: '2px 0 0' }}>Select 5 cards for battle</p>
+            <p style={{ fontSize: 12, color: '#dca668', margin: '2px 0 0' }}>Select 5 cards for battle</p>
           </div>
           <button
             className={canSave ? 'btn-peach' : 'btn-ghost'}
@@ -89,7 +89,7 @@ export default function DeckBuilder() {
                     height: '100%',
                     borderRadius: 12,
                     border: `1.5px solid ${RARITY_BORDER[card.rarity]}`,
-                    background: 'linear-gradient(160deg, #1d3156 0%, #253d6a 100%)',
+                    background: 'linear-gradient(160deg, #54441b 0%, #6b5630 100%)',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -123,12 +123,12 @@ export default function DeckBuilder() {
                   width: '100%',
                   height: '100%',
                   borderRadius: 12,
-                  border: '1.5px dashed rgba(164, 181, 209, 0.3)',
-                  background: 'rgba(29, 49, 86, 0.3)',
+                  border: '1.5px dashed rgba(220, 166, 104, 0.3)',
+                  background: 'rgba(84, 68, 27, 0.3)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'rgba(164, 181, 209, 0.4)',
+                  color: 'rgba(220, 166, 104, 0.4)',
                   fontSize: 20,
                   aspectRatio: '2/3',
                 }}>
@@ -145,7 +145,7 @@ export default function DeckBuilder() {
             {/* Slot count */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                <span style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600 }}>Card Slots</span>
+                <span style={{ fontSize: 12, color: '#dca668', fontWeight: 600 }}>Card Slots</span>
                 <span style={{ fontSize: 12, fontWeight: 800, color: filled === 5 ? '#4ade80' : 'white' }}>
                   {filled}/5
                 </span>
@@ -153,7 +153,7 @@ export default function DeckBuilder() {
               <div className="stat-bar-track">
                 <div className="stat-bar-fill" style={{
                   width: `${(filled / 5) * 100}%`,
-                  background: filled === 5 ? '#4ade80' : '#fed6ce',
+                  background: filled === 5 ? '#4ade80' : '#dca668',
                 }} />
               </div>
             </div>
@@ -161,15 +161,15 @@ export default function DeckBuilder() {
             {/* Total Stat Cost */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                <span style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600 }}>Deck Stat Cost</span>
-                <span style={{ fontSize: 12, fontWeight: 800, color: costOverLimit ? '#f87171' : '#b0cbe6' }}>
+                <span style={{ fontSize: 12, color: '#dca668', fontWeight: 600 }}>Deck Stat Cost</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: costOverLimit ? '#f87171' : '#e8c99a' }}>
                   {totalCost} / 300 Max
                 </span>
               </div>
               <div className="stat-bar-track">
                 <div className="stat-bar-fill" style={{
                   width: `${Math.min(100, (totalCost / 300) * 100)}%`,
-                  background: costOverLimit ? '#f87171' : 'linear-gradient(90deg, #b0cbe6, #fed6ce)',
+                  background: costOverLimit ? '#f87171' : 'linear-gradient(90deg, #e8c99a, #dca668)',
                 }} />
               </div>
             </div>
@@ -177,15 +177,15 @@ export default function DeckBuilder() {
             {/* Legendary Cap */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                <span style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600 }}>Legendary Cap</span>
-                <span style={{ fontSize: 12, fontWeight: 800, color: legendaryOverLimit ? '#f87171' : '#fed6ce' }}>
+                <span style={{ fontSize: 12, color: '#dca668', fontWeight: 600 }}>Legendary Cap</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: legendaryOverLimit ? '#f87171' : '#dca668' }}>
                   {legendaryCount} / 1 Max
                 </span>
               </div>
               <div className="stat-bar-track">
                 <div className="stat-bar-fill" style={{
                   width: legendaryCount > 0 ? '100%' : '0%',
-                  background: legendaryOverLimit ? '#f87171' : '#fed6ce',
+                  background: legendaryOverLimit ? '#f87171' : '#dca668',
                 }} />
               </div>
             </div>
@@ -194,11 +194,11 @@ export default function DeckBuilder() {
       </div>
 
       {/* Divider */}
-      <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(164,181,209,0.3), transparent)', margin: '4px 0' }} />
+      <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(220, 166, 104, 0.3), transparent)', margin: '4px 0' }} />
 
       {/* Bottom half — Collection drawer */}
       <div style={{ padding: '12px 16px 0' }}>
-        <div style={{ fontSize: 14, fontWeight: 700, color: '#a4b5d1', marginBottom: 10 }}>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#dca668', marginBottom: 10 }}>
           📦 Your Collection — tap to add
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -211,8 +211,8 @@ export default function DeckBuilder() {
               <div
                 key={card.id}
                 style={{
-                  background: alreadyIn ? 'rgba(176, 203, 230, 0.1)' : 'rgba(73, 104, 148, 0.35)',
-                  border: `1px solid ${alreadyIn ? 'rgba(176, 203, 230, 0.5)' : 'rgba(164, 181, 209, 0.2)'}`,
+                  background: alreadyIn ? 'rgba(232, 201, 154, 0.1)' : 'rgba(107, 125, 44, 0.35)',
+                  border: `1px solid ${alreadyIn ? 'rgba(232, 201, 154, 0.5)' : 'rgba(220, 166, 104, 0.2)'}`,
                   borderRadius: 12,
                   padding: '10px 14px',
                   display: 'flex',
@@ -222,7 +222,7 @@ export default function DeckBuilder() {
                   transition: 'all 0.2s',
                 }}
               >
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(29, 49, 86, 0.8)', border: `1px solid ${RARITY_BORDER[card.rarity]}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: RARITY_BORDER[card.rarity], fontWeight: 800, fontSize: 10, flexShrink: 0 }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(84, 68, 27, 0.8)', border: `1px solid ${RARITY_BORDER[card.rarity]}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: RARITY_BORDER[card.rarity], fontWeight: 800, fontSize: 10, flexShrink: 0 }}>
                   {card.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -234,14 +234,14 @@ export default function DeckBuilder() {
                   </div>
                   <div style={{ display: 'flex', gap: 10, fontSize: 11, fontWeight: 700 }}>
                     <span style={{ color: '#f87171' }}>ATK {card.attack}</span>
-                    <span style={{ color: '#60a5fa' }}>DEF {card.defense}</span>
+                    <span style={{ color: '#dca668' }}>DEF {card.defense}</span>
                     <span style={{ color: '#facc15' }}>SPD {card.speed}</span>
-                    <span style={{ color: '#a78bfa' }}>BRN {card.brains}</span>
+                    <span style={{ color: '#e8c99a' }}>BRN {card.brains}</span>
                   </div>
-                  <div style={{ fontSize: 10, color: '#a4b5d1', marginTop: 2 }}>Cost: {card.cost} pts · ×{card.owned} owned</div>
+                  <div style={{ fontSize: 10, color: '#dca668', marginTop: 2 }}>Cost: {card.cost} pts · ×{card.owned} owned</div>
                 </div>
                 {alreadyIn ? (
-                  <div style={{ fontSize: 11, color: '#b0cbe6', fontWeight: 700, flexShrink: 0 }}>✓ In Deck</div>
+                  <div style={{ fontSize: 11, color: '#e8c99a', fontWeight: 700, flexShrink: 0 }}>✓ In Deck</div>
                 ) : (
                   <button
                     className="btn-peach"

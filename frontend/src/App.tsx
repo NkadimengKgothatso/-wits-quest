@@ -20,6 +20,7 @@ import AdminAntiCheat from './screens/admin/AdminAntiCheat';
 import AdminAnalytics from './screens/admin/AdminAnalytics';
 import BottomNav from './components/BottomNav';
 import TopBar from './components/TopBar';
+import KuduMascot from './components/KuduMascot';
 
 type Screen =
   | 'map' | 'collection' | 'deck' | 'battle' | 'leaderboard'
@@ -59,7 +60,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1d3156', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: '#54441b', position: 'relative' }}>
       {/* Top bar */}
       <TopBar onAdminNav={() => setAdminMode(!adminMode)} />
 
@@ -69,9 +70,9 @@ export default function App() {
           {/* Admin nav */}
           <div style={{
             display: 'flex', gap: 0,
-            background: 'rgba(17, 30, 54, 0.95)',
+            background: 'rgba(63, 47, 18, 0.95)',
             backdropFilter: 'blur(16px)',
-            borderBottom: '1px solid rgba(164,181,209,0.18)',
+            borderBottom: '1px solid rgba(220, 166, 104, 0.15)',
             overflowX: 'auto',
           }}>
             {ADMIN_NAV.map((nav) => (
@@ -87,8 +88,8 @@ export default function App() {
                   fontFamily: 'Outfit, sans-serif',
                   fontSize: 12,
                   fontWeight: 700,
-                  color: adminScreen === nav.id ? '#fed6ce' : '#a4b5d1',
-                  borderBottom: `2px solid ${adminScreen === nav.id ? '#fed6ce' : 'transparent'}`,
+                  color: adminScreen === nav.id ? '#dca668' : '#dca668',
+                  borderBottom: `2px solid ${adminScreen === nav.id ? '#dca668' : 'transparent'}`,
                   transition: 'all 0.2s',
                 }}
               >
@@ -104,7 +105,7 @@ export default function App() {
                 border: 'none',
                 cursor: 'pointer',
                 fontSize: 11,
-                color: '#a4b5d1',
+                color: '#dca668',
                 fontFamily: 'Outfit, sans-serif',
                 flexShrink: 0,
               }}
@@ -128,9 +129,9 @@ export default function App() {
           {/* Mode Pill Switcher Bar */}
           <div style={{
             position: 'fixed', top: 56, left: 0, right: 0, zIndex: 35,
-            background: 'rgba(17, 30, 54, 0.92)',
+            background: 'rgba(63, 47, 18, 0.92)',
             backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(164, 181, 209, 0.15)',
+            borderBottom: '1px solid rgba(220, 166, 104, 0.12)',
             display: 'flex', gap: 6, padding: '6px 12px', overflowX: 'auto',
           }}>
             {ADVANCED_NAV.map((nav) => (
@@ -140,9 +141,9 @@ export default function App() {
                 style={{
                   padding: '4px 10px',
                   borderRadius: 8,
-                  border: `1px solid ${screen === nav.id ? '#fed6ce' : 'rgba(164,181,209,0.2)'}`,
-                  background: screen === nav.id ? 'rgba(254, 214, 206, 0.18)' : 'rgba(73, 104, 148, 0.2)',
-                  color: screen === nav.id ? '#fed6ce' : '#a4b5d1',
+                  border: `1px solid ${screen === nav.id ? '#dca668' : 'rgba(168,187,217,0.2)'}`,
+                  background: screen === nav.id ? 'rgba(220, 166, 104, 0.16)' : 'rgba(107, 125, 44, 0.2)',
+                  color: screen === nav.id ? '#dca668' : '#dca668',
                   fontSize: 11,
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -195,21 +196,54 @@ export default function App() {
                 position: 'fixed',
                 top: 100,
                 right: 16,
-                background: 'rgba(254, 214, 206, 0.2)',
-                border: '1px solid rgba(254, 214, 206, 0.5)',
+                background: 'rgba(220, 166, 104, 0.18)',
+                border: '1px solid rgba(220, 166, 104, 0.45)',
                 borderRadius: 10,
                 padding: '8px 14px',
-                color: '#fed6ce',
+                color: '#dca668',
                 fontSize: 12,
                 fontWeight: 700,
                 zIndex: 200,
                 backdropFilter: 'blur(8px)',
-                boxShadow: '0 0 16px rgba(254,214,206,0.3)',
+                boxShadow: '0 0 16px rgba(244,216,212,0.25)',
               }}
             >
               {cardsEarned} card{cardsEarned > 1 ? 's' : ''} earned!
             </div>
           )}
+
+          {/* Persistent Kudu Guide */}
+          <div style={{ position: 'fixed', bottom: 76, right: 12, zIndex: 45 }}>
+            <KuduMascot
+              message={
+                screen === 'map'
+                  ? 'Explore campus to find glowing landmarks.'
+                  : screen === 'collection'
+                  ? 'Tap a card to inspect its attributes.'
+                  : screen === 'deck'
+                  ? 'Balance attack, defense, speed and brains.'
+                  : screen === 'battle'
+                  ? 'Pick the right attribute to win the round.'
+                  : screen === 'leaderboard'
+                  ? 'Climb the ranks by winning battles.'
+                  : screen === 'livepvp'
+                  ? 'Live matches require quick decisions.'
+                  : screen === 'territory'
+                  ? 'Control zones by visiting them in person.'
+                  : screen === 'ranked'
+                  ? 'Ranked matches affect your Elo score.'
+                  : screen === 'forge'
+                  ? 'Forge new cards from duplicate shards.'
+                  : screen === 'pvp'
+                  ? 'Async battles run while you explore.'
+                  : screen === 'trails'
+                  ? 'Complete quest trails for bonus rewards.'
+                  : screen === 'trades'
+                  ? 'Trade fairly with other students.'
+                  : 'What would you like to do today?'
+              }
+            />
+          </div>
         </>
       )}
     </div>

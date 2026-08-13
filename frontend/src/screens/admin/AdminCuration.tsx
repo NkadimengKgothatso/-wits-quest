@@ -23,10 +23,10 @@ const INITIAL_ITEMS: ContentCard[] = [
 ];
 
 const COLUMNS: { id: Column; label: string; color: string }[] = [
-  { id: 'drafts', label: 'Drafts', color: '#a4b5d1' },
-  { id: 'review', label: 'Pending Review', color: '#b0cbe6' },
-  { id: 'published', label: 'Published', color: '#fed6ce' },
-  { id: 'retired', label: 'Retired', color: '#496894' },
+  { id: 'drafts', label: 'Drafts', color: '#dca668' },
+  { id: 'review', label: 'Pending Review', color: '#e8c99a' },
+  { id: 'published', label: 'Published', color: '#dca668' },
+  { id: 'retired', label: 'Retired', color: '#6b7d2c' },
 ];
 
 export default function AdminCuration() {
@@ -46,18 +46,18 @@ export default function AdminCuration() {
     <div style={{ padding: '16px', minHeight: '100%' }}>
       <div style={{ marginBottom: 16 }}>
         <h2 style={{ fontSize: 20, fontWeight: 800, color: 'white', margin: '0 0 4px' }}>Curation Governance Board</h2>
-        <p style={{ fontSize: 12, color: '#a4b5d1', margin: 0 }}>Review, approve, and manage Wits campus content lifecycle</p>
+        <p style={{ fontSize: 12, color: '#dca668', margin: 0 }}>Review, approve, and manage Wits campus content lifecycle</p>
       </div>
 
       {/* Campaign scheduler */}
       <div className="glass-dark" style={{ borderRadius: 14, padding: 14, marginBottom: 16 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: '#fed6ce', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: '#dca668', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
           Campaign Scheduler — Bulk Activation
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flex: 1 }}>
             <input type="date" className="input-glass" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ flex: 1 }} />
-            <span style={{ color: '#a4b5d1' }}>to</span>
+            <span style={{ color: '#dca668' }}>to</span>
             <input type="date" className="input-glass" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ flex: 1 }} />
           </div>
           <button className="btn-peach" style={{ fontSize: 12, padding: '10px 16px', whiteSpace: 'nowrap', borderRadius: 8 }}>
@@ -92,7 +92,7 @@ export default function AdminCuration() {
               {/* Column body */}
               <div style={{
                 flex: 1,
-                background: 'rgba(29, 49, 86, 0.4)',
+                background: 'rgba(84, 68, 27, 0.4)',
                 border: `1px solid ${col.color}25`,
                 borderTop: 'none',
                 borderRadius: '0 0 10px 10px',
@@ -104,8 +104,8 @@ export default function AdminCuration() {
                   <div
                     key={item.id}
                     style={{
-                      background: 'rgba(73, 104, 148, 0.35)',
-                      border: `1px solid ${item.failRate && item.failRate > 85 ? 'rgba(254, 214, 206, 0.5)' : 'rgba(164,181,209,0.2)'}`,
+                      background: 'rgba(107, 125, 44, 0.35)',
+                      border: `1px solid ${item.failRate && item.failRate > 85 ? 'rgba(220, 166, 104, 0.5)' : 'rgba(220, 166, 104, 0.2)'}`,
                       borderRadius: 10,
                       padding: 10,
                     }}
@@ -113,23 +113,23 @@ export default function AdminCuration() {
                     {/* Failure rate alert */}
                     {item.failRate && item.failRate > 85 && (
                       <div style={{
-                        background: 'rgba(254, 214, 206, 0.15)', borderRadius: 6,
+                        background: 'rgba(220, 166, 104, 0.15)', borderRadius: 6,
                         padding: '3px 7px', marginBottom: 6,
-                        fontSize: 9, color: '#fed6ce', fontWeight: 700,
+                        fontSize: 9, color: '#dca668', fontWeight: 700,
                         display: 'flex', alignItems: 'center', gap: 4,
-                        border: '1px solid rgba(254, 214, 206, 0.3)'
+                        border: '1px solid rgba(220, 166, 104, 0.3)'
                       }}>
                         HIGH FAIL RATE ({item.failRate}%)
                       </div>
                     )}
 
                     <div style={{ fontSize: 11, fontWeight: 600, color: 'white', marginBottom: 6, lineHeight: 1.3 }}>
-                      <span style={{ fontSize: 9, color: '#b0cbe6', fontWeight: 700, marginRight: 4 }}>[{item.type.toUpperCase()}]</span>
+                      <span style={{ fontSize: 9, color: '#e8c99a', fontWeight: 700, marginRight: 4 }}>[{item.type.toUpperCase()}]</span>
                       {item.text}
                     </div>
-                    <div style={{ fontSize: 9, color: '#a4b5d1', marginBottom: 8 }}>
+                    <div style={{ fontSize: 9, color: '#dca668', marginBottom: 8 }}>
                       {item.author} · {item.date}
-                      {item.failRate && <span style={{ marginLeft: 4, color: item.failRate > 85 ? '#fed6ce' : '#a4b5d1' }}>· {item.failRate}% fail</span>}
+                      {item.failRate && <span style={{ marginLeft: 4, color: item.failRate > 85 ? '#dca668' : '#dca668' }}>· {item.failRate}% fail</span>}
                     </div>
 
                     {/* Action buttons */}
@@ -138,35 +138,35 @@ export default function AdminCuration() {
                         <>
                           <button
                             onClick={() => moveItem(item.id, 'published')}
-                            style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(254, 214, 206, 0.4)', background: 'rgba(254, 214, 206, 0.2)', color: '#fed6ce', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
+                            style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(220, 166, 104, 0.4)', background: 'rgba(220, 166, 104, 0.2)', color: '#dca668', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
                           >Approve</button>
                           <button
                             onClick={() => moveItem(item.id, 'drafts')}
-                            style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(176, 203, 230, 0.4)', background: 'rgba(176, 203, 230, 0.2)', color: '#b0cbe6', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
+                            style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(232, 201, 154, 0.4)', background: 'rgba(232, 201, 154, 0.2)', color: '#e8c99a', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
                           >Edit</button>
                           <button
                             onClick={() => removeItem(item.id)}
-                            style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(164, 181, 209, 0.3)', background: 'rgba(73, 104, 148, 0.3)', color: '#a4b5d1', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
+                            style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(220, 166, 104, 0.3)', background: 'rgba(107, 125, 44, 0.3)', color: '#dca668', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
                           >Reject</button>
                         </>
                       )}
                       {col.id === 'drafts' && (
                         <button
                           onClick={() => moveItem(item.id, 'review')}
-                          style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(176, 203, 230, 0.4)', background: 'rgba(176, 203, 230, 0.2)', color: '#b0cbe6', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
+                          style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(232, 201, 154, 0.4)', background: 'rgba(232, 201, 154, 0.2)', color: '#e8c99a', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
                         >Submit for Review</button>
                       )}
                       {col.id === 'published' && (
                         <button
                           onClick={() => moveItem(item.id, 'retired')}
-                          style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(164, 181, 209, 0.3)', background: 'rgba(73, 104, 148, 0.3)', color: '#a4b5d1', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
+                          style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(220, 166, 104, 0.3)', background: 'rgba(107, 125, 44, 0.3)', color: '#dca668', fontSize: 10, fontWeight: 700, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}
                         >Archive</button>
                       )}
                     </div>
                   </div>
                 ))}
                 {colItems.length === 0 && (
-                  <div style={{ textAlign: 'center', padding: 20, color: 'rgba(164,181,209,0.3)', fontSize: 12 }}>No items</div>
+                  <div style={{ textAlign: 'center', padding: 20, color: 'rgba(220, 166, 104, 0.3)', fontSize: 12 }}>No items</div>
                 )}
               </div>
             </div>
