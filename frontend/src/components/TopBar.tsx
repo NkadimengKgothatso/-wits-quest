@@ -1,11 +1,13 @@
 import WitsLogo from './WitsLogo';
 import { IconFlame, IconSettings } from './IconSet';
+import { useAuth } from '../context/AuthContext';
 
 interface TopBarProps {
   onAdminNav?: () => void;
 }
 
 export default function TopBar({ onAdminNav }: TopBarProps) {
+  const { logout } = useAuth();
   return (
     <div
       className="fixed top-0 left-0 right-0 z-40 flex items-center gap-3 px-4 py-2"
@@ -73,27 +75,45 @@ export default function TopBar({ onAdminNav }: TopBarProps) {
 
 
 
-      {/* Admin Console Toggle */}
-      {onAdminNav && (
+      {/* Admin Console & Logout Controls */}
+      <div className="flex items-center gap-2" style={{ marginLeft: 'auto' }}>
+        {onAdminNav && (
+          <button
+            onClick={onAdminNav}
+            className="flex items-center gap-1"
+            style={{
+              background: 'rgba(73, 104, 148, 0.4)',
+              border: '1px solid rgba(164, 181, 209, 0.3)',
+              borderRadius: 8,
+              color: '#a4b5d1',
+              fontSize: 11,
+              fontWeight: 600,
+              padding: '4px 10px',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            <IconSettings size={12} color="#a4b5d1" />
+            <span>Admin</span>
+          </button>
+        )}
         <button
-          onClick={onAdminNav}
-          className="flex items-center gap-1"
+          onClick={logout}
           style={{
-            background: 'rgba(73, 104, 148, 0.4)',
-            border: '1px solid rgba(164, 181, 209, 0.3)',
+            background: 'rgba(239, 68, 68, 0.2)',
+            border: '1px solid rgba(239, 68, 68, 0.4)',
             borderRadius: 8,
-            color: '#a4b5d1',
+            color: '#f87171',
             fontSize: 11,
-            fontWeight: 600,
-            padding: '4px 10px',
+            fontWeight: 700,
+            padding: '4px 8px',
             cursor: 'pointer',
             flexShrink: 0,
           }}
         >
-          <IconSettings size={12} color="#a4b5d1" />
-          <span>Admin</span>
+          Logout
         </button>
-      )}
+      </div>
     </div>
   );
 }
