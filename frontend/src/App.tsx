@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './screens/Login';
 import MapExplorer from './screens/MapExplorer';
 import TriviaModal from './screens/TriviaModal';
@@ -6,56 +7,59 @@ import CardCollection from './screens/CardCollection';
 import DeckBuilder from './screens/DeckBuilder';
 import BattleArena from './screens/BattleArena';
 import Leaderboard from './screens/Leaderboard';
-import AsyncPvP from './screens/AsyncPvP';
-import QuestTrails from './screens/QuestTrails';
-import Trades from './screens/Trades';
-import LivePvPArena from './screens/LivePvPArena';
-import TerritoryMap from './screens/TerritoryMap';
 import RankedMatchmaking from './screens/RankedMatchmaking';
-import CardForge from './screens/CardForge';
 import AdminEvents from './screens/admin/AdminEvents';
 import AdminContent from './screens/admin/AdminContent';
-import AdminCuration from './screens/admin/AdminCuration';
 import AdminAntiCheat from './screens/admin/AdminAntiCheat';
-import AdminAnalytics from './screens/admin/AdminAnalytics';
 import BottomNav from './components/BottomNav';
 import TopBar from './components/TopBar';
 
-type Screen =
-  | 'map' | 'collection' | 'deck' | 'battle' | 'leaderboard'
-  | 'livepvp' | 'territory' | 'ranked' | 'forge' | 'pvp' | 'trails' | 'trades' | string;
-
-type AdminScreen = 'events' | 'content' | 'curation' | 'anticheat' | 'analytics';
+type Screen = 'map' | 'collection' | 'deck' | 'battle' | 'leaderboard' | 'ranked' | string;
+type AdminScreen = 'events' | 'content' | 'anticheat';
 
 const ADMIN_NAV: { id: AdminScreen; label: string }[] = [
   { id: 'events', label: 'Spatial Events' },
   { id: 'content', label: 'Question & Card Authoring' },
-  { id: 'curation', label: 'Curation Governance' },
   { id: 'anticheat', label: 'Anti-Cheat Telemetry' },
-  { id: 'analytics', label: 'Campus Heatmaps' },
 ];
 
-const ADVANCED_NAV = [
+const SPRINT1_NAV = [
   { id: 'map', label: 'Campus Map' },
-  { id: 'livepvp', label: 'Live Arena' },
-  { id: 'territory', label: 'Territories' },
+  { id: 'battle', label: 'CPU Battle AI' },
   { id: 'ranked', label: 'Ranked Elo' },
-  { id: 'forge', label: 'Card Forge' },
-  { id: 'pvp', label: 'Async PvP' },
-  { id: 'trails', label: 'Quest Trails' },
-  { id: 'trades', label: 'Peer Trades' },
+  { id: 'collection', label: 'Profile Cards' },
+  { id: 'deck', label: 'Deck Builder' },
+  { id: 'leaderboard', label: 'Leaderboard' },
 ];
 
-export default function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+function AppContent() {
+  const { loggedIn, loading } = useAuth();
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
   const [adminScreen, setAdminScreen] = useState<AdminScreen>('events');
   const [triviaLandmark, setTriviaLandmark] = useState<any>(null);
   const [cardsEarned, setCardsEarned] = useState(0);
 
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#1d3156',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#fed6ce',
+        fontFamily: 'Outfit, sans-serif',
+        fontSize: 16,
+        fontWeight: 700,
+      }}>
+        Initializing Wits Quest...
+      </div>
+    );
+  }
+
   if (!loggedIn) {
-    return <Login onLogin={() => setLoggedIn(true)} />;
+    return <Login />;
   }
 
   return (
@@ -117,9 +121,7 @@ export default function App() {
           <div style={{ flex: 1, overflow: 'auto' }}>
             {adminScreen === 'events' && <AdminEvents />}
             {adminScreen === 'content' && <AdminContent />}
-            {adminScreen === 'curation' && <AdminCuration />}
             {adminScreen === 'anticheat' && <AdminAntiCheat />}
-            {adminScreen === 'analytics' && <AdminAnalytics />}
           </div>
         </div>
       ) : (
@@ -133,7 +135,7 @@ export default function App() {
             borderBottom: '1px solid rgba(164, 181, 209, 0.15)',
             display: 'flex', gap: 6, padding: '6px 12px', overflowX: 'auto',
           }}>
-            {ADVANCED_NAV.map((nav) => (
+            {SPRINT1_NAV.map((nav) => (
               <button
                 key={nav.id}
                 onClick={() => setScreen(nav.id)}
@@ -164,13 +166,7 @@ export default function App() {
             {screen === 'deck' && <DeckBuilder />}
             {screen === 'battle' && <BattleArena />}
             {screen === 'leaderboard' && <Leaderboard />}
-            {screen === 'livepvp' && <LivePvPArena />}
-            {screen === 'territory' && <TerritoryMap />}
             {screen === 'ranked' && <RankedMatchmaking />}
-            {screen === 'forge' && <CardForge />}
-            {screen === 'pvp' && <AsyncPvP />}
-            {screen === 'trails' && <QuestTrails />}
-            {screen === 'trades' && <Trades />}
           </div>
 
           {/* Bottom nav */}
@@ -213,5 +209,13 @@ export default function App() {
         </>
       )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
