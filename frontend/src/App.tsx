@@ -33,35 +33,40 @@ const SPRINT1_NAV = [
   { id: 'login', label: 'Login Screen' },
 ];
 
+// function AppContent() {   uncomment
+//   const { loggedIn, loading } = useAuth();
+
 function AppContent() {
-  const { loggedIn, loading } = useAuth();
+  return <MapExplorer />;
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
   const [adminScreen, setAdminScreen] = useState<AdminScreen>('events');
   const [triviaLandmark, setTriviaLandmark] = useState<any>(null);
   const [cardsEarned, setCardsEarned] = useState(0);
 
-  if (loading) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        background: '#1d3156',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#fed6ce',
-        fontFamily: 'Outfit, sans-serif',
-        fontSize: 16,
-        fontWeight: 700,
-      }}>
-        Initializing Wits Quest...
-      </div>
-    );
-  }
+  
 
-  if (!loggedIn) {
-    return <Login />;
-  }
+  // if (loading) {  uncomment
+  //   return (
+  //     <div style={{
+  //       minHeight: '100vh',
+  //       background: '#1d3156',
+  //       display: 'flex',
+  //       alignItems: 'center',
+  //       justifyContent: 'center',
+  //       color: '#fed6ce',
+  //       fontFamily: 'Outfit, sans-serif',
+  //       fontSize: 16,
+  //       fontWeight: 700,
+  //     }}>
+  //       Initializing Wits Quest...
+  //     </div>
+  //   );
+  // }
+
+  // if (!loggedIn) {
+  //   return <Login />;
+  // }   uncomment
 
   return (
     <div style={{ minHeight: '100vh', background: '#1d3156', position: 'relative' }}>
