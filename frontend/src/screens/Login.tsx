@@ -18,8 +18,8 @@ const STARS = Array.from({ length: 40 }, (_, i) => ({
 export default function Login({ onLogin }: LoginProps) {
   const { login, register } = useAuth();
   const [mode, setMode] = useState<'login' | 'register'>('login');
-  const [email, setEmail] = useState('kagiso@students.wits.ac.za');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [name, setName] = useState('');
   const [studentId, setStudentId] = useState('');
@@ -121,41 +121,6 @@ export default function Login({ onLogin }: LoginProps) {
         className="glass slide-up w-full"
         style={{ maxWidth: 420, padding: 28, position: 'relative', zIndex: 10, borderRadius: 20, backdropFilter: 'blur(16px)' }}
       >
-        {/* Quick Test Accounts Bar */}
-        <div style={{ marginBottom: 16, background: 'rgba(15, 26, 46, 0.7)', borderRadius: 12, padding: 10, border: '1px solid rgba(164,181,209,0.2)' }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#a4b5d1', marginBottom: 6, letterSpacing: '0.05em' }}>
-            SELECT STUDENT TO LOG IN:
-          </div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            <button
-              type="button"
-              onClick={() => handleQuickAccountLogin('kagiso@students.wits.ac.za')}
-              style={{
-                flex: 1, padding: '8px 10px', borderRadius: 8,
-                background: email.includes('kagiso') ? 'rgba(254,214,206,0.25)' : 'rgba(73,104,148,0.3)',
-                border: `1px solid ${email.includes('kagiso') ? '#fed6ce' : 'rgba(164,181,209,0.2)'}`,
-                color: email.includes('kagiso') ? '#fed6ce' : '#a4b5d1',
-                fontSize: 11, fontWeight: 700, cursor: 'pointer', textAlign: 'center',
-              }}
-            >
-              Account 1 (Kagiso)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickAccountLogin('thabo@students.wits.ac.za')}
-              style={{
-                flex: 1, padding: '8px 10px', borderRadius: 8,
-                background: email.includes('thabo') ? 'rgba(96,165,250,0.25)' : 'rgba(73,104,148,0.3)',
-                border: `1px solid ${email.includes('thabo') ? '#60a5fa' : 'rgba(164,181,209,0.2)'}`,
-                color: email.includes('thabo') ? '#60a5fa' : '#a4b5d1',
-                fontSize: 11, fontWeight: 700, cursor: 'pointer', textAlign: 'center',
-              }}
-            >
-              Account 2 (Thabo)
-            </button>
-          </div>
-        </div>
-
         {/* Mode Selector Tabs */}
         <div
           className="flex mb-4"
