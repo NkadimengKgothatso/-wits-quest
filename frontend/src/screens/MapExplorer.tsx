@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const WITS_CENTER: [number, number] = [-26.1888, 28.0247];
+const WITS_CENTER: [number, number] = [ -26.192885679106496, 28.030521047594373];
 const DEFAULT_ZOOM = 18;
 
 const witsLabelIcon = new L.DivIcon({
@@ -18,12 +18,20 @@ const witsLabelIcon = new L.DivIcon({
 
 export default function MapExplorer() {
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#0a1128',
+      }}
+    >
       <style>{`
         .adventure-tiles {
           filter: sepia(0.4) saturate(1.3) hue-rotate(-10deg) contrast(1.05);
         }
-
         .wits-w-badge {
           width: 70px;
           height: 70px;
@@ -36,7 +44,6 @@ export default function MapExplorer() {
           box-shadow: 0 4px 14px rgba(0,0,0,0.5);
           animation: wits-pulse 2s ease-in-out infinite;
         }
-
         .wits-w-letter {
           font-family: Georgia, serif;
           font-weight: 900;
@@ -44,7 +51,6 @@ export default function MapExplorer() {
           color: #f9f7f4;
           text-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
-
         @keyframes wits-pulse {
           0%, 100% {
             transform: scale(1);
@@ -57,29 +63,38 @@ export default function MapExplorer() {
         }
       `}</style>
 
-      <MapContainer
-        center={WITS_CENTER}
-        zoom={DEFAULT_ZOOM}
-        maxZoom={19}
-        style={{ height: '100%', width: '100%' }}
+      {/* Rounded-rectangle clipped map window - no border, no glow */}
+      <div
+        style={{
+          width: 'min(92vw, 1100px)',
+          height: 'min(85vh, 800px)',
+          borderRadius: 32,
+          overflow: 'hidden',
+        }}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        <MapContainer
+          center={WITS_CENTER}
+          zoom={DEFAULT_ZOOM}
           maxZoom={19}
-          className="adventure-tiles"
-        />
-
-        <Marker position={WITS_CENTER} icon={witsLabelIcon}>
-          <Popup>
-            <div style={{ textAlign: 'center', fontFamily: 'Georgia, serif' }}>
-              <strong>Wits University</strong>
-              <br />
-              <em style={{ fontSize: 13 }}>Number 1 in Africa</em>
-            </div>
-          </Popup>
-        </Marker>
-      </MapContainer>
+          style={{ height: '100%', width: '100%' }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            maxZoom={19}
+            className="adventure-tiles"
+          />
+          <Marker position={WITS_CENTER} icon={witsLabelIcon}>
+            <Popup>
+              <div style={{ textAlign: 'center', fontFamily: 'Georgia, serif' }}>
+                <strong>Wits University</strong>
+                <br />
+                <em style={{ fontSize: 13 }}>Number 1 in Africa</em>
+              </div>
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </div>
     </div>
   );
 }
