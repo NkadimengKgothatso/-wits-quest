@@ -199,7 +199,7 @@ export default function DeckBuilder() {
       {/* Bottom half — Collection drawer */}
       <div style={{ padding: '12px 16px 0' }}>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#a4b5d1', marginBottom: 10 }}>
-          📦 Your Collection — tap to add
+          Your Collection — tap to add
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {ALL_CARDS.map((card) => {
