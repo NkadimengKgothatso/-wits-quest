@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import WitsLogo from '../components/WitsLogo';
+import { useAuth } from '../context/AuthContext';
 
 interface LoginProps {
-  onLogin: () => void;
+  onLogin?: () => void;
 }
 
 const STARS = Array.from({ length: 40 }, (_, i) => ({
@@ -15,9 +16,10 @@ const STARS = Array.from({ length: 40 }, (_, i) => ({
 }));
 
 export default function Login({ onLogin }: LoginProps) {
+  const { login, register } = useAuth();
   const [mode, setMode] = useState<'login' | 'register'>('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('kagiso@students.wits.ac.za');
+  const [password, setPassword] = useState('password123');
   const [showPw, setShowPw] = useState(false);
   const [name, setName] = useState('');
   const [studentId, setStudentId] = useState('');
@@ -26,7 +28,22 @@ export default function Login({ onLogin }: LoginProps) {
 
   const emailValid = email.endsWith('@students.wits.ac.za') || email.endsWith('@wits.ac.za');
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleQuickAccountLogin(accEmail: string) {
+    setEmail(accEmail);
+    setPassword('password123');
+    setError('');
+    setLoading(true);
+    try {
+      await login(accEmail);
+      if (onLogin) onLogin();
+    } catch (err: any) {
+      setError(err.message || 'Failed to authenticate user');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!emailValid) {
       setError('Email must be a valid @students.wits.ac.za address');
@@ -36,12 +53,25 @@ export default function Login({ onLogin }: LoginProps) {
       setError('Password must be at least 6 characters');
       return;
     }
+    if (mode === 'register' && !name.trim()) {
+      setError('Please provide your full student name');
+      return;
+    }
+
     setError('');
     setLoading(true);
-    setTimeout(() => {
+    try {
+      if (mode === 'register') {
+        await register(email, name, studentId || '2000000');
+      } else {
+        await login(email);
+      }
+      if (onLogin) onLogin();
+    } catch (err: any) {
+      setError(err.message || 'Authentication error');
+    } finally {
       setLoading(false);
-      onLogin();
-    }, 1200);
+    }
   }
 
   return (
@@ -84,21 +114,51 @@ export default function Login({ onLogin }: LoginProps) {
       {/* Hero Official Wits University Branding Header */}
       <div className="slide-up text-center mb-6" style={{ position: 'relative', zIndex: 10 }}>
         <WitsLogo width={160} height={180} showText={true} />
-
-        <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/50">
-          <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#fed6ce' }} />
-
-        </div>
       </div>
 
       {/* Glassmorphic Auth Card */}
       <div
         className="glass slide-up w-full"
-        style={{ maxWidth: 420, padding: 32, position: 'relative', zIndex: 10, borderRadius: 20, backdropFilter: 'blur(16px)' }}
+        style={{ maxWidth: 420, padding: 28, position: 'relative', zIndex: 10, borderRadius: 20, backdropFilter: 'blur(16px)' }}
       >
+        {/* Quick Test Accounts Bar */}
+        <div style={{ marginBottom: 16, background: 'rgba(15, 26, 46, 0.7)', borderRadius: 12, padding: 10, border: '1px solid rgba(164,181,209,0.2)' }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: '#a4b5d1', marginBottom: 6, letterSpacing: '0.05em' }}>
+            SELECT STUDENT TO LOG IN:
+          </div>
+          <div style={{ display: 'flex', gap: 6 }}>
+            <button
+              type="button"
+              onClick={() => handleQuickAccountLogin('kagiso@students.wits.ac.za')}
+              style={{
+                flex: 1, padding: '8px 10px', borderRadius: 8,
+                background: email.includes('kagiso') ? 'rgba(254,214,206,0.25)' : 'rgba(73,104,148,0.3)',
+                border: `1px solid ${email.includes('kagiso') ? '#fed6ce' : 'rgba(164,181,209,0.2)'}`,
+                color: email.includes('kagiso') ? '#fed6ce' : '#a4b5d1',
+                fontSize: 11, fontWeight: 700, cursor: 'pointer', textAlign: 'center',
+              }}
+            >
+              Account 1 (Kagiso)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleQuickAccountLogin('thabo@students.wits.ac.za')}
+              style={{
+                flex: 1, padding: '8px 10px', borderRadius: 8,
+                background: email.includes('thabo') ? 'rgba(96,165,250,0.25)' : 'rgba(73,104,148,0.3)',
+                border: `1px solid ${email.includes('thabo') ? '#60a5fa' : 'rgba(164,181,209,0.2)'}`,
+                color: email.includes('thabo') ? '#60a5fa' : '#a4b5d1',
+                fontSize: 11, fontWeight: 700, cursor: 'pointer', textAlign: 'center',
+              }}
+            >
+              Account 2 (Thabo)
+            </button>
+          </div>
+        </div>
+
         {/* Mode Selector Tabs */}
         <div
-          className="flex mb-6"
+          className="flex mb-4"
           style={{
             background: 'rgba(29, 49, 86, 0.7)',
             borderRadius: 12,
@@ -111,12 +171,12 @@ export default function Login({ onLogin }: LoginProps) {
               onClick={() => { setMode(m); setError(''); }}
               style={{
                 flex: 1,
-                padding: '10px 12px',
+                padding: '8px 10px',
                 borderRadius: 9,
                 border: 'none',
                 cursor: 'pointer',
                 fontWeight: 700,
-                fontSize: 13,
+                fontSize: 12,
                 transition: 'all 0.2s',
                 background: mode === m ? 'rgba(254, 214, 206, 0.2)' : 'transparent',
                 color: mode === m ? '#fed6ce' : '#a4b5d1',
@@ -128,22 +188,22 @@ export default function Login({ onLogin }: LoginProps) {
           ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           {mode === 'register' && (
             <>
               <div>
-                <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+                <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
                   Full Name
                 </label>
                 <input
                   className="input-glass"
-                  placeholder="Kagiso Mthembu"
+                  placeholder="Student Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div>
-                <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+                <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
                   Student Number
                 </label>
                 <input
@@ -158,7 +218,7 @@ export default function Login({ onLogin }: LoginProps) {
 
           {/* Student Email Field */}
           <div>
-            <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+            <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
               Wits Student Email
             </label>
             <div style={{ position: 'relative' }}>
@@ -173,26 +233,21 @@ export default function Login({ onLogin }: LoginProps) {
               {email.length > 3 && (
                 <div style={{
                   position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  width: 20, height: 20, borderRadius: '50%',
+                  width: 18, height: 18, borderRadius: '50%',
                   background: emailValid ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)',
                   border: `1.5px solid ${emailValid ? '#4ade80' : '#f87171'}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 11, color: emailValid ? '#4ade80' : '#f87171', fontWeight: 700
+                  fontSize: 10, color: emailValid ? '#4ade80' : '#f87171', fontWeight: 700
                 }}>
                   {emailValid ? '✓' : '✕'}
                 </div>
               )}
             </div>
-            {email.length > 3 && !emailValid && (
-              <p style={{ fontSize: 11, color: '#f87171', marginTop: 4 }}>
-                Must be an official @students.wits.ac.za address
-              </p>
-            )}
           </div>
 
           {/* Password Field */}
           <div>
-            <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 6 }}>
+            <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
               Password
             </label>
             <div style={{ position: 'relative' }}>
@@ -210,7 +265,7 @@ export default function Login({ onLogin }: LoginProps) {
                 style={{
                   position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
                   background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#b0cbe6', fontSize: 11, fontWeight: 700,
+                  color: '#b0cbe6', fontSize: 10, fontWeight: 700,
                   textTransform: 'uppercase', letterSpacing: '0.05em'
                 }}
               >
@@ -225,9 +280,9 @@ export default function Login({ onLogin }: LoginProps) {
               background: 'rgba(239, 68, 68, 0.15)',
               border: '1px solid rgba(239, 68, 68, 0.4)',
               borderRadius: 10,
-              padding: '10px 14px',
+              padding: '8px 12px',
               color: '#f87171',
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: 600,
             }}>
               {error}
@@ -237,24 +292,24 @@ export default function Login({ onLogin }: LoginProps) {
           <button
             type="submit"
             className="btn-peach mt-2"
-            style={{ width: '100%', fontSize: 15, padding: '14px', borderRadius: 10 }}
+            style={{ width: '100%', fontSize: 14, padding: '12px', borderRadius: 10 }}
             disabled={loading}
           >
             {loading ? (
               <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                 <span style={{
-                  width: 16, height: 16, border: '2px solid rgba(29,49,86,0.4)',
+                  width: 14, height: 14, border: '2px solid rgba(29,49,86,0.4)',
                   borderTopColor: '#1d3156', borderRadius: '50%',
                   animation: 'spin 0.7s linear infinite',
                   display: 'inline-block',
                 }} />
-                Authenticating Student Access...
+                Authenticating Access...
               </span>
             ) : mode === 'login' ? 'Enter Campus Quest →' : 'Create Wits Student Account →'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 18, fontSize: 13, color: '#a4b5d1' }}>
+        <p style={{ textAlign: 'center', marginTop: 14, fontSize: 12, color: '#a4b5d1' }}>
           {mode === 'login' ? "New to Wits Quest? " : "Already adventuring? "}
           <button
             onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}
@@ -264,11 +319,6 @@ export default function Login({ onLogin }: LoginProps) {
           </button>
         </p>
       </div>
-
-      {/* Footer Credentials */}
-      <p style={{ marginTop: 24, fontSize: 11, color: 'rgba(164, 181, 209, 0.5)', position: 'relative', zIndex: 10, textAlign: 'center' }}>
-        Wits Quest v1.0 · Scientia et Labore · University of the Witwatersrand · 2026
-      </p>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>

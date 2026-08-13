@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { saveMockBattleResult } from '../services/mockDbClient';
 
 interface Landmark {
   id: string;
@@ -74,6 +76,7 @@ function StatBar({ label, value, color }: { label: string; value: number; color:
 }
 
 export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaModalProps) {
+  const { currentUser, updateUserLocally } = useAuth();
   const qdata = QUESTIONS[landmark.id] ?? QUESTIONS.default;
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -83,6 +86,19 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
     if (selected === null) return;
     setSubmitted(true);
     if (selected === qdata.correct) {
+      if (currentUser) {
+        saveMockBattleResult({
+          userId: currentUser.id,
+          matchType: 'CPU',
+          opponentId: 'TRIVIA_CHALLENGE',
+          outcome: 'win',
+          xpAwarded: 50,
+          essenceAwarded: 15,
+          eloDelta: 10,
+        }).then((updatedUser) => {
+          if (updatedUser) updateUserLocally(updatedUser);
+        });
+      }
       setTimeout(() => {
         setShowReward(true);
         onCardEarned();

@@ -100,7 +100,7 @@ export default function DeckBuilder() {
                   }}
                   onClick={() => removeCard(i)}
                 >
-                  <div style={{ fontSize: 24 }}>{card.emoji}</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: 'white' }}>{card.name.substring(0, 2).toUpperCase()}</div>
                   <div style={{ fontSize: 8, fontWeight: 700, color: 'white', textAlign: 'center', padding: '0 4px', lineHeight: 1.2 }}>
                     {card.name}
                   </div>
