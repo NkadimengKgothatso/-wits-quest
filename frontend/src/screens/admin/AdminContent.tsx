@@ -209,10 +209,10 @@ export default function AdminContent() {
           <div>
             <label style={{ fontSize: 12, color: '#a4b5d1', fontWeight: 700, display: 'block', marginBottom: 10 }}>Card Stats</label>
             {[
-              { key: 'attack', label: 'Attack ⚔', color: '#f87171' },
-              { key: 'defense', label: 'Defense 🛡', color: '#60a5fa' },
-              { key: 'speed', label: 'Speed ⚡', color: '#facc15' },
-              { key: 'brains', label: 'Brains 🧠', color: '#a78bfa' },
+              { key: 'attack', label: 'Attack (ATK)', color: '#f87171' },
+              { key: 'defense', label: 'Defense (DEF)', color: '#60a5fa' },
+              { key: 'speed', label: 'Speed (SPD)', color: '#facc15' },
+              { key: 'brains', label: 'Brains (BRN)', color: '#a78bfa' },
             ].map(({ key, label, color }) => (
               <div key={key} style={{ marginBottom: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
