@@ -85,13 +85,13 @@
 
 ---
 
-### Nontobeko (Member 5)
+### Nontokozo (Member 5)
 * **Assigned Pages & Modules**:
   - [CardCollection.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/CardCollection.tsx)
   - [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx)
   - [Leaderboard.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/Leaderboard.tsx)
 * **UI and UX Ownership**:
-  - **100% Owned by Nontobeko**. Nontobeko is fully responsible for designing the user interface and user experience of the student profile, collection gallery, deck builder, and leaderboard.
+  - **100% Owned by Nontokozo**. Nontobeko is fully responsible for designing the user interface and user experience of the student profile, collection gallery, deck builder, and leaderboard.
   - Must design the student profile dashboard (level, XP progress bar, Essence currency meter), unlocked card gallery grid, dimmed locked card overlays with unlock requirement banners, collection completion progress bar, 5-card deck builder slots, budget counter meter, and leaderboard rankings table with division badges.
 * **Functional Logic & Integration**:
   - Render unlocked versus locked landmark cards with unlock location instructions.
