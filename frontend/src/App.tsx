@@ -30,6 +30,7 @@ const SPRINT1_NAV = [
   { id: 'collection', label: 'Profile Cards' },
   { id: 'deck', label: 'Deck Builder' },
   { id: 'leaderboard', label: 'Leaderboard' },
+  { id: 'login', label: 'Login Screen' },
 ];
 
 function AppContent() {
@@ -167,6 +168,7 @@ function AppContent() {
             {screen === 'battle' && <BattleArena />}
             {screen === 'leaderboard' && <Leaderboard />}
             {screen === 'ranked' && <RankedMatchmaking />}
+            {screen === 'login' && <Login />}
           </div>
 
           {/* Bottom nav */}
