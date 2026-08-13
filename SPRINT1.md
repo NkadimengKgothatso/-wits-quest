@@ -103,7 +103,7 @@
 
 ---
 
-### Keoratile (Member 6)
+### oratile (Member 6)
 * **Assigned Pages & Modules**:
   - [AdminAntiCheat.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminAntiCheat.tsx)
   - [RankedMatchmaking.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/RankedMatchmaking.tsx)
