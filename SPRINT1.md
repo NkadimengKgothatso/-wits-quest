@@ -85,7 +85,7 @@
 
 ---
 
-### Nontobeko (Member 5)
+### Nontokozo (Member 5)
 * **Assigned Pages & Modules**:
   - [CardCollection.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/CardCollection.tsx)
   - [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx)
