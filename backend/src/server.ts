@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { initDB } from './db/connection.js';
 import { createTables } from './db/schema.js';
 import { seed } from './db/seed.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -31,6 +32,9 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Auth + User + Card API Routes
+app.use('/api', authRoutes);
 
 // Real-Time WebSocket Battle Events
 io.on('connection', (socket) => {
