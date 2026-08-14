@@ -5,6 +5,9 @@
   "scripts": {
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
-    "install:all": "npm --prefix frontend install && npm --prefix backend install"
+    "install:all": "npm --prefix frontend install && npm --prefix backend install",
+    "deploy:app": "vercel --prod",
+    "deploy:docs": "mkdocs gh-deploy",
+    "deploy": "npm run deploy:docs && npm run deploy:app"
   }
 }

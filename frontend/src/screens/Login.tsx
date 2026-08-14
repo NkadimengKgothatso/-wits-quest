@@ -664,7 +664,7 @@ export default function Login({ onLogin }: LoginProps) {
           </div>
         </div>
       ) : (
-        <AuthForm mode={authMode} onSwitch={setAuthMode} onLogin={onLogin} />
+        <AuthForm mode={authMode} onSwitch={setAuthMode} onLogin={() => onLogin?.()} />
       )}
 
       <p className="fade-in" style={{ position: 'fixed', bottom: 12, left: 0, right: 0, textAlign: 'center', fontSize: 11, color: 'rgba(220, 166, 104, 0.45)', zIndex: 10 }}>
