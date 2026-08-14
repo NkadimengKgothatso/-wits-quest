@@ -5,7 +5,7 @@
 
 Wits Quest is an interactive, gamified educational web application designed to enhance the campus experience. 
 
-## 🚀 Live Deployments
+## Live Deployments
 
 - **Frontend Application (Vercel):** [https://wits-quest.vercel.app](https://wits-quest.vercel.app) *(Update this link if your actual Vercel project URL differs)*
 - **Documentation (GitHub Pages):** [https://mahlatseclayton.github.io/wits_quest/](https://mahlatseclayton.github.io/wits_quest/)
@@ -13,13 +13,13 @@ Wits Quest is an interactive, gamified educational web application designed to e
 
 ---
 
-## 📚 Local Documentation
+## Local Documentation
 - [SPRINT 1 Requirements](./SPRINT1.md)
 - [Database Plan](./WITS_QUEST_DATABASE_PLAN.md)
 - [Feature Handover Guide](./WITS_QUEST_FEATURE_HANDOVER_GUIDE.md)
 - [Vercel Deployment Guide](./personal/vercel_deployment.md)
 
-## 🛠️ Technology Stack
+## Technology Stack
 - **Frontend:** React, Vite, TypeScript, Leaflet Maps
 - **Backend:** Node.js, Express, Socket.IO
 - **Documentation:** MkDocs (Material Theme)
