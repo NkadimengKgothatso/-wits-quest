@@ -61,6 +61,12 @@ export interface MockAsyncChallenge {
 
 const BACKEND_URL = 'http://localhost:3000';
 
+/** Helper to get auth headers for API calls */
+function getAuthHeaders(): Record<string, string> {
+  const token = localStorage.getItem('wits_quest_jwt_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 // Track online active session user IDs
 const activeOnlineUserIds = new Set<string>(['usr_thabo']);
 
@@ -349,7 +355,9 @@ export function formatUserMeta(user: MockUser): MockUser {
  */
 export async function getMockUsers(): Promise<MockUser[]> {
   try {
-    const res = await fetch(`${BACKEND_URL}/api/mock/users`);
+    const res = await fetch(`${BACKEND_URL}/api/mock/users`, {
+      headers: getAuthHeaders(),
+    });
     if (res.ok) {
       const users: MockUser[] = await res.json();
       return users.map(formatUserMeta);
@@ -379,7 +387,9 @@ export async function getRegisteredStudentOpponents(currentUserId?: string): Pro
  */
 export async function getMockUserById(id: string): Promise<MockUser | undefined> {
   try {
-    const res = await fetch(`${BACKEND_URL}/api/mock/users/${id}`);
+    const res = await fetch(`${BACKEND_URL}/api/mock/users/${id}`, {
+      headers: getAuthHeaders(),
+    });
     if (res.ok) {
       const user: MockUser = await res.json();
       return formatUserMeta(user);

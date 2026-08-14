@@ -34,7 +34,7 @@ export default function Login({ onLogin }: LoginProps) {
     setError('');
     setLoading(true);
     try {
-      await login(accEmail);
+      await login(accEmail, 'password123');
       if (onLogin) onLogin();
     } catch (err: any) {
       setError(err.message || 'Failed to authenticate user');
@@ -62,9 +62,9 @@ export default function Login({ onLogin }: LoginProps) {
     setLoading(true);
     try {
       if (mode === 'register') {
-        await register(email, name, studentId || '2000000');
+        await register(email, name, studentId || '2000000', password);
       } else {
-        await login(email);
+        await login(email, password);
       }
       if (onLogin) onLogin();
     } catch (err: any) {
