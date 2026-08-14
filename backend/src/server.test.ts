@@ -6,7 +6,7 @@ describe('Backend Server API & Sockets', () => {
 
   beforeAll(async () => {
     // Dynamically import the server to start it
-    await import('./server');
+    await import('./server.js');
     // Give it a moment to start up
     await new Promise(resolve => setTimeout(resolve, 500));
   });
@@ -20,7 +20,7 @@ describe('Backend Server API & Sockets', () => {
     const response = await fetch('http://localhost:3000/api/health');
     expect(response.status).toBe(200);
     
-    const data = await response.json();
+    const data = await response.json() as any;
     expect(data.status).toBe('ok');
     expect(data.service).toBe('Wits Quest API Backend');
     expect(data.timestamp).toBeDefined();
