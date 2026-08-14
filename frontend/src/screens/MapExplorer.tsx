@@ -77,7 +77,11 @@ const LANDMARKS: Landmark[] = [
   { name: "John Moffat", position: [-26.190151568368808, 28.029334082969147] },
 ];
 
-export default function MapExplorer() {
+export interface MapExplorerProps {
+  onOpenTrivia?: (landmark: any) => void;
+}
+
+export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
 

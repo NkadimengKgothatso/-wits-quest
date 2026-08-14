@@ -161,7 +161,7 @@ function AppContent() {
           {/* Screen Content Wrapper */}
           <div style={{ paddingTop: 92, paddingBottom: 70, minHeight: '100vh' }}>
             {screen === 'map' && (
-              <MapExplorer onOpenTrivia={(landmark) => setTriviaLandmark(landmark)} />
+              <MapExplorer onOpenTrivia={(landmark: any) => setTriviaLandmark(landmark)} />
             )}
             {screen === 'collection' && <CardCollection />}
             {screen === 'deck' && <DeckBuilder />}
