@@ -1,5 +1,34 @@
 # Architecture
 
+## System Architecture Diagram
+
+```mermaid
+graph TD
+    subgraph Client Layer
+        PWA[Frontend PWA Client - React / Vite]
+        SW[ServiceWorker & IndexedDB Engine]
+        Map[Leaflet GIS Spatial Renderer]
+    end
+
+    subgraph API & Realtime Layer
+        API[Express / NestJS Node.js Backend API]
+        WS[Socket.io Real-Time Battle Server]
+    end
+
+    subgraph Data & Cache Layer
+        DB[(PostgreSQL / PostGIS Database)]
+        Cache[(Redis Battle State Store)]
+    end
+
+    PWA <--> SW
+    PWA <--> Map
+    PWA <-->|HTTPS / REST| API
+    PWA <-->|WebSockets| WS
+    API <--> DB
+    API <--> Cache
+    WS <--> Cache
+```
+
 ## Repository shape
 
 Wits Quest is a monorepo with a root orchestration `package.json`:
