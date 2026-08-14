@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --color-navy: #1d3156;
-  --color-slate: #496894;
-  --color-periwinkle: #a4b5d1;
-  --color-sky: #b0cbe6;
-  --color-peach: #fed6ce;
-  --color-navy-deep: #111e36;
-  --color-navy-light: #253d6a;
+  --color-night: #54441b;
+  --color-night-deep: #3d2f12;
+  --color-night-light: #6b5630;
+  --color-navy: #6b7d2c;
+  --color-slate: #a87d4d;
+  --color-mist: #dca668;
+  --color-frost: #e8c99a;
+  --color-snow: #f8f2e8;
+  --color-blush: #dca668;
+  --color-blush-deep: #c99255;
   --font-family-base: 'Outfit', sans-serif;
 }
 
@@ -43,72 +46,72 @@
 }
 
 body {
-  background: #1d3156;
-  color: #ffffff;
+  background: var(--color-night);
+  color: var(--color-snow);
   overflow-x: hidden;
 }
 
 /* Scrollbar styling */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(164, 181, 209, 0.3); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(164, 181, 209, 0.5); }
+::-webkit-scrollbar-thumb { background: rgba(220, 166, 104, 0.3); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(220, 166, 104, 0.5); }
 
-/* Glass panel */
+/* Glass panels */
 .glass {
-  background: rgba(73, 104, 148, 0.55);
+  background: rgba(107, 125, 44, 0.55);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(164, 181, 209, 0.25);
+  border: 1px solid rgba(220, 166, 104, 0.22);
   border-radius: 16px;
 }
 
 .glass-dark {
-  background: rgba(29, 49, 86, 0.75);
+  background: rgba(84, 68, 27, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(164, 181, 209, 0.2);
+  border: 1px solid rgba(220, 166, 104, 0.15);
   border-radius: 16px;
 }
 
 .glass-modal {
-  background: rgba(17, 30, 54, 0.92);
+  background: rgba(61, 47, 18, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(164, 181, 209, 0.3);
+  border: 1px solid rgba(220, 166, 104, 0.22);
   border-radius: 20px;
 }
 
-/* Peach glow button */
+/* Golden accent button */
 .btn-peach {
-  background: linear-gradient(135deg, #fed6ce 0%, #f5b8ac 100%);
-  color: #1d3156;
+  background: linear-gradient(135deg, var(--color-blush) 0%, var(--color-blush-deep) 100%);
+  color: var(--color-night);
   font-weight: 700;
   border-radius: 12px;
   padding: 12px 24px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(254, 214, 206, 0.45), 0 4px 16px rgba(254, 214, 206, 0.2);
+  box-shadow: 0 0 20px rgba(220, 166, 104, 0.4), 0 4px 16px rgba(220, 166, 104, 0.15);
   transition: all 0.2s ease;
 }
 .btn-peach:hover {
-  box-shadow: 0 0 32px rgba(254, 214, 206, 0.65), 0 6px 24px rgba(254, 214, 206, 0.3);
+  box-shadow: 0 0 32px rgba(220, 166, 104, 0.55), 0 6px 24px rgba(220, 166, 104, 0.25);
   transform: translateY(-1px);
 }
 .btn-peach:active { transform: translateY(0); }
 
 .btn-ghost {
-  background: rgba(73, 104, 148, 0.4);
-  color: #ffffff;
-  border: 1px solid rgba(164, 181, 209, 0.35);
+  background: rgba(107, 125, 44, 0.38);
+  color: var(--color-snow);
+  border: 1px solid rgba(220, 166, 104, 0.3);
   border-radius: 12px;
   padding: 10px 20px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 .btn-ghost:hover {
-  background: rgba(73, 104, 148, 0.7);
-  border-color: rgba(176, 203, 230, 0.6);
+  background: rgba(107, 125, 44, 0.6);
+  border-color: rgba(232, 201, 154, 0.5);
 }
 
 /* Pulsing dot animation */
@@ -126,7 +129,7 @@ body {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  background: rgba(176, 203, 230, 0.35);
+  background: rgba(232, 201, 154, 0.35);
   animation: pulse-ring 1.8s ease-out infinite;
 }
 .pulse-dot {
@@ -134,17 +137,17 @@ body {
   animation: pulse-dot 1.8s ease-in-out infinite;
 }
 
-/* Peach glow on pins */
-@keyframes peach-pulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(254, 214, 206, 0.5); }
-  50% { box-shadow: 0 0 18px rgba(254, 214, 206, 0.85); }
+/* Golden glow on pins */
+@keyframes blush-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(220, 166, 104, 0.45); }
+  50% { box-shadow: 0 0 18px rgba(220, 166, 104, 0.8); }
 }
-.pin-active { animation: peach-pulse 2s ease-in-out infinite; }
+.pin-active { animation: blush-pulse 2s ease-in-out infinite; }
 
 /* Card legendary glow */
 @keyframes legendary-glow {
-  0%, 100% { box-shadow: 0 0 12px rgba(254, 214, 206, 0.4), inset 0 0 12px rgba(254, 214, 206, 0.05); }
-  50% { box-shadow: 0 0 28px rgba(254, 214, 206, 0.75), inset 0 0 20px rgba(254, 214, 206, 0.1); }
+  0%, 100% { box-shadow: 0 0 12px rgba(220, 166, 104, 0.35), inset 0 0 12px rgba(220, 166, 104, 0.04); }
+  50% { box-shadow: 0 0 28px rgba(220, 166, 104, 0.65), inset 0 0 20px rgba(220, 166, 104, 0.08); }
 }
 .card-legendary { animation: legendary-glow 2.5s ease-in-out infinite; }
 
@@ -154,7 +157,7 @@ body {
   100% { background-position: 200% center; }
 }
 .xp-bar-fill {
-  background: linear-gradient(90deg, #b0cbe6 0%, #fed6ce 45%, #b0cbe6 100%);
+  background: linear-gradient(90deg, var(--color-frost) 0%, var(--color-blush) 45%, var(--color-frost) 100%);
   background-size: 200% auto;
   animation: shimmer 2.5s linear infinite;
 }
@@ -181,10 +184,10 @@ body {
 .card-flip { animation: card-flip 0.5s ease; }
 
 /* Rarity colors */
-.rarity-common { border-color: rgba(164, 181, 209, 0.5); }
-.rarity-rare { border-color: rgba(96, 165, 250, 0.7); box-shadow: 0 0 8px rgba(96, 165, 250, 0.3); }
-.rarity-epic { border-color: rgba(168, 85, 247, 0.7); box-shadow: 0 0 8px rgba(168, 85, 247, 0.3); }
-.rarity-legendary { border-color: rgba(254, 214, 206, 0.85); }
+.rarity-common { border-color: rgba(220, 166, 104, 0.55); }
+.rarity-rare { border-color: rgba(168, 125, 77, 0.75); box-shadow: 0 0 8px rgba(168, 125, 77, 0.25); }
+.rarity-epic { border-color: rgba(201, 146, 85, 0.75); box-shadow: 0 0 8px rgba(201, 146, 85, 0.25); }
+.rarity-legendary { border-color: rgba(220, 166, 104, 0.85); }
 
 /* Twinkle stars background */
 @keyframes twinkle {
@@ -202,11 +205,15 @@ body {
 
 /* Gradient backgrounds */
 .bg-twilight {
-  background: radial-gradient(ellipse at 20% 0%, #253d6a 0%, #1d3156 40%, #111e36 100%);
+  background: radial-gradient(ellipse at 20% 0%, var(--color-night-light) 0%, var(--color-night) 40%, var(--color-night-deep) 100%);
 }
 
 .bg-arena {
-  background: radial-gradient(ellipse at 50% 30%, #1e3a5f 0%, #1d3156 50%, #0f1a2e 100%);
+  background: radial-gradient(ellipse at 50% 30%, var(--color-navy) 0%, var(--color-night) 50%, var(--color-night-deep) 100%);
+}
+
+.bg-frost {
+  background: linear-gradient(180deg, var(--color-frost) 0%, #f5e8d6 50%, var(--color-mist) 100%);
 }
 
 /* Floating animation */
@@ -245,21 +252,21 @@ body {
 
 /* Input styles */
 .input-glass {
-  background: rgba(29, 49, 86, 0.6);
-  border: 1px solid rgba(164, 181, 209, 0.3);
+  background: rgba(84, 68, 27, 0.55);
+  border: 1px solid rgba(220, 166, 104, 0.28);
   border-radius: 12px;
-  color: white;
+  color: var(--color-snow);
   padding: 10px 14px;
   width: 100%;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.input-glass::placeholder { color: rgba(164, 181, 209, 0.6); }
-.input-glass:focus { border-color: rgba(254, 214, 206, 0.6); box-shadow: 0 0 0 3px rgba(254, 214, 206, 0.1); }
+.input-glass::placeholder { color: rgba(220, 166, 104, 0.6); }
+.input-glass:focus { border-color: rgba(220, 166, 104, 0.55); box-shadow: 0 0 0 3px rgba(220, 166, 104, 0.08); }
 
 /* Stat bar */
 .stat-bar-track {
-  background: rgba(29, 49, 86, 0.6);
+  background: rgba(84, 68, 27, 0.55);
   border-radius: 99px;
   height: 6px;
   overflow: hidden;
@@ -290,15 +297,28 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  color: rgba(164, 181, 209, 0.8);
+  color: rgba(220, 166, 104, 0.85);
   border: 1px solid transparent;
 }
 .tab-pill.active {
-  background: rgba(254, 214, 206, 0.15);
-  color: #fed6ce;
-  border-color: rgba(254, 214, 206, 0.3);
+  background: rgba(220, 166, 104, 0.15);
+  color: var(--color-blush);
+  border-color: rgba(220, 166, 104, 0.28);
 }
 .tab-pill:not(.active):hover {
-  background: rgba(73, 104, 148, 0.4);
-  color: white;
+  background: rgba(107, 125, 44, 0.4);
+  color: var(--color-snow);
 }
+
+/* Kudu guide animation */
+@keyframes kudu-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+@keyframes kudu-ear-twitch {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  92% { transform: rotate(-6deg); }
+  96% { transform: rotate(4deg); }
+}
+.kudu-breathe { animation: kudu-breathe 4s ease-in-out infinite; }
+.kudu-ear-twitch { animation: kudu-ear-twitch 5s ease-in-out infinite; transform-origin: bottom center; }

@@ -60,10 +60,10 @@ export default function BottomNav({ active, onNavigate }: BottomNavProps) {
     <div
       className="fixed bottom-0 left-0 right-0 z-50 flex"
       style={{
-        background: 'rgba(17, 30, 54, 0.92)',
+        background: 'rgba(63, 47, 18, 0.92)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderTop: '1px solid rgba(164, 181, 209, 0.18)',
+        borderTop: '1px solid rgba(220, 166, 104, 0.15)',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
@@ -75,7 +75,7 @@ export default function BottomNav({ active, onNavigate }: BottomNavProps) {
             onClick={() => onNavigate(item.id)}
             className="flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-200"
             style={{
-              color: isActive ? '#fed6ce' : 'rgba(164, 181, 209, 0.6)',
+              color: isActive ? '#dca668' : 'rgba(220, 166, 104, 0.6)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -91,9 +91,9 @@ export default function BottomNav({ active, onNavigate }: BottomNavProps) {
                   transform: 'translateX(-50%)',
                   width: 32,
                   height: 2,
-                  background: '#fed6ce',
+                  background: '#dca668',
                   borderRadius: '0 0 4px 4px',
-                  boxShadow: '0 0 8px rgba(254, 214, 206, 0.8)',
+                  boxShadow: '0 0 8px rgba(220, 166, 104, 0.75)',
                 }}
               />
             )}

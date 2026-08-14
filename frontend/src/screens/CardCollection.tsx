@@ -35,13 +35,13 @@ const ALL_MASTER_CARDS: CollectionCard[] = [
 ]
 
 const RARITY_STYLES: Record<string, { border: string; glow: string; label: string; labelColor: string }> = {
-  Legendary: { border: '#fed6ce', glow: 'rgba(254, 214, 206, 0.4)', label: 'LEGENDARY', labelColor: '#fed6ce' },
-  Epic: { border: '#a78bfa', glow: 'rgba(167, 139, 250, 0.3)', label: 'EPIC', labelColor: '#a78bfa' },
-  Rare: { border: '#60a5fa', glow: 'rgba(96, 165, 250, 0.3)', label: 'RARE', labelColor: '#60a5fa' },
-  Common: { border: 'rgba(164, 181, 209, 0.5)', glow: 'transparent', label: 'COMMON', labelColor: '#a4b5d1' },
+  Legendary: { border: '#dca668', glow: 'rgba(220, 166, 104, 0.4)', label: '✦ LEGENDARY', labelColor: '#dca668' },
+  Epic: { border: '#c99255', glow: 'rgba(201, 146, 85, 0.3)', label: '◈ EPIC', labelColor: '#c99255' },
+  Rare: { border: '#a87d4d', glow: 'rgba(168, 125, 77, 0.3)', label: '◆ RARE', labelColor: '#a87d4d' },
+  Common: { border: 'rgba(220, 166, 104, 0.5)', glow: 'transparent', label: '○ COMMON', labelColor: '#dca668' },
 }
 
-const STAT_COLORS = { attack: '#f87171', defense: '#60a5fa', speed: '#facc15', brains: '#a78bfa' }
+const STAT_COLORS = { attack: '#f87171', defense: '#dca668', speed: '#facc15', brains: '#e8c99a' }
 
 function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => void }) {
   const isLocked = card.owned === 0
@@ -51,7 +51,7 @@ function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => vo
     <div
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(13, 22, 45, 0.9)',
+        background: 'rgba(63, 47, 18, 0.94)',
         backdropFilter: 'blur(16px)',
         zIndex: 200,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -62,9 +62,8 @@ function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => vo
       <div className="glass-modal slide-up" style={{ width: '100%', maxWidth: 360, padding: 24 }}>
         {/* Card display */}
         <div style={{
-          borderRadius: 16,
-          border: `2px solid ${isLocked ? 'rgba(164, 181, 209, 0.3)' : rs.border}`,
-          background: isLocked ? 'linear-gradient(135deg, #111d35 0%, #172746 100%)' : 'linear-gradient(135deg, #1d3156 0%, #253d6a 100%)',
+          borderRadius: 16, border: `2px solid ${rs.border}`,
+          background: 'linear-gradient(135deg, #54441b 0%, #6b5630 100%)',
           overflow: 'hidden', marginBottom: 20,
           boxShadow: isLocked ? 'none' : `0 0 32px ${rs.glow}`,
           opacity: isLocked ? 0.85 : 1,
@@ -73,10 +72,8 @@ function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => vo
             padding: '8px 14px', display: 'flex', justifyContent: 'space-between',
             borderBottom: `1px solid ${rs.border}30`,
           }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: isLocked ? '#a4b5d1' : rs.labelColor }}>
-              {isLocked ? 'LOCKED CARD' : rs.label}
-            </span>
-            <span style={{ fontSize: 10, color: '#a4b5d1' }}>{card.category}</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: rs.labelColor }}>{rs.label}</span>
+            <span style={{ fontSize: 10, color: '#dca668' }}>{card.category}</span>
           </div>
 
           <div style={{
@@ -84,23 +81,9 @@ function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => vo
             background: isLocked ? 'rgba(15, 26, 46, 0.6)' : `radial-gradient(ellipse at center, ${rs.glow} 0%, transparent 70%)`,
             position: 'relative',
           }}>
-            {isLocked ? (
-              <div style={{ textAlign: 'center', padding: '0 16px' }}>
-                <div style={{
-                  width: 54, height: 54, borderRadius: '50%',
-                  background: 'rgba(239, 68, 68, 0.15)', border: '2px solid rgba(239, 68, 68, 0.4)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px',
-                  color: '#f87171', fontSize: 11, fontWeight: 800,
-                }}>
-                  LOCKED
-                </div>
-                <span style={{ fontSize: 11, color: '#fed6ce', fontWeight: 600 }}>{card.landmarkLocation}</span>
-              </div>
-            ) : (
-              <div className={card.rarity === 'Legendary' ? 'float' : ''} style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(29, 49, 86, 0.8)', border: `2px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 18 }}>
-                {card.name.substring(0, 2).toUpperCase()}
-              </div>
-            )}
+            <div className={card.rarity === 'Legendary' ? 'float' : ''} style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(84, 68, 27, 0.8)', border: `2px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 18 }}>
+              {card.name.substring(0, 2).toUpperCase()}
+            </div>
           </div>
 
           <div style={{ padding: '10px 14px', borderTop: `1px solid ${rs.border}20` }}>
@@ -116,8 +99,8 @@ function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => vo
             ].map(({ k, label, v }) => (
               <div key={k} style={{ marginBottom: 8 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
-                  <span style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 700 }}>{label}</span>
-                  <span style={{ fontSize: 12, fontWeight: 800, color: isLocked ? '#a4b5d1' : STAT_COLORS[k as keyof typeof STAT_COLORS] }}>{v}</span>
+                  <span style={{ fontSize: 11, color: '#dca668', fontWeight: 700 }}>{label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 800, color: STAT_COLORS[k as keyof typeof STAT_COLORS] }}>{v}</span>
                 </div>
                 <div className="stat-bar-track">
                   <div className="stat-bar-fill" style={{ width: `${v}%`, background: isLocked ? '#a4b5d1' : STAT_COLORS[k as keyof typeof STAT_COLORS] }} />
@@ -127,23 +110,8 @@ function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => vo
           </div>
         </div>
 
-        {/* Lock or Ownership status banner */}
-        <div style={{
-          padding: '10px 14px', borderRadius: 10, marginBottom: 16, textAlign: 'center', fontSize: 12,
-          background: isLocked ? 'rgba(239, 68, 68, 0.12)' : 'rgba(254, 214, 206, 0.12)',
-          border: `1px solid ${isLocked ? 'rgba(239, 68, 68, 0.3)' : 'rgba(254, 214, 206, 0.3)'}`,
-          color: isLocked ? '#f87171' : '#fed6ce', fontWeight: 600,
-        }}>
-          {isLocked ? (
-            <div>
-              <div style={{ fontWeight: 800, marginBottom: 4 }}>How to Unlock This Card:</div>
-              <div style={{ fontSize: 11, color: '#a4b5d1' }}>{card.unlockInstruction}</div>
-            </div>
-          ) : (
-            <div>
-              You own <strong>x{card.owned}</strong> copies of this card
-            </div>
-          )}
+        <div style={{ fontSize: 12, color: '#dca668', marginBottom: 16, textAlign: 'center' }}>
+          You own <strong style={{ color: '#dca668' }}>×{card.owned}</strong> copies
         </div>
 
         {!isLocked && (
@@ -163,7 +131,7 @@ function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => vo
           onClick={onClose}
           style={{
             width: '100%', marginTop: 10, background: 'none', border: 'none',
-            color: '#a4b5d1', cursor: 'pointer', fontSize: 13, padding: 8, fontWeight: 700,
+            color: '#dca668', cursor: 'pointer', fontSize: 13, padding: 8,
           }}
         >
           Close
@@ -197,14 +165,14 @@ export default function CardCollection() {
   })
 
   return (
-    <div style={{ minHeight: '100vh', background: 'radial-gradient(ellipse at 30% 10%, #253d6a 0%, #1d3156 45%, #0f1a2e 100%)', paddingTop: 70, paddingBottom: 80 }}>
+    <div style={{ minHeight: '100vh', background: 'radial-gradient(ellipse at 30% 10%, #6b5630 0%, #54441b 45%, #3d2f12 100%)', paddingTop: 70, paddingBottom: 80 }}>
       {/* Top control bar */}
       <div
         style={{
           padding: '12px 16px',
-          background: 'rgba(17, 30, 54, 0.8)',
+          background: 'rgba(63, 47, 18, 0.8)',
           backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(164, 181, 209, 0.15)',
+          borderBottom: '1px solid rgba(220, 166, 104, 0.15)',
           position: 'sticky', top: 56, zIndex: 20,
         }}
       >
@@ -220,9 +188,9 @@ export default function CardCollection() {
             />
           </div>
           <div style={{
-            background: 'rgba(167, 139, 250, 0.15)', border: '1px solid rgba(167, 139, 250, 0.4)',
+            background: 'rgba(220, 166, 104, 0.15)', border: '1px solid rgba(220, 166, 104, 0.4)',
             borderRadius: 12, padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 6,
-            color: '#a78bfa', fontSize: 13, fontWeight: 800, whiteSpace: 'nowrap',
+            color: '#dca668', fontSize: 14, fontWeight: 800, whiteSpace: 'nowrap',
           }}>
             450 ESSENCE
           </div>
@@ -278,19 +246,9 @@ export default function CardCollection() {
         </div>
       </div>
 
-      {/* Collection Progress & Stats Bar */}
-      <div style={{ padding: '12px 16px 6px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <span style={{ fontSize: 12, color: '#fed6ce', fontWeight: 800 }}>
-            Collection Progress: {unlockedCount} / {totalMasterCount} Cards Unlocked ({completionPercentage}%)
-          </span>
-          <span style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600 }}>
-            {filtered.length} Cards Shown
-          </span>
-        </div>
-        <div className="stat-bar-track" style={{ height: 6 }}>
-          <div className="stat-bar-fill" style={{ width: `${completionPercentage}%`, background: 'linear-gradient(90deg, #60a5fa, #fed6ce)', height: 6 }} />
-        </div>
+      {/* Card count */}
+      <div style={{ padding: '10px 16px 6px', fontSize: 12, color: '#dca668', fontWeight: 600 }}>
+        {filtered.length} cards · {ALL_MASTER_CARDS.reduce((s, c) => s + c.owned, 0)} total owned
       </div>
 
       {/* Card grid */}
@@ -319,8 +277,8 @@ export default function CardCollection() {
               <div
                 style={{
                   borderRadius: 14,
-                  border: `1.5px solid ${isLocked ? 'rgba(164, 181, 209, 0.25)' : rs.border}`,
-                  background: isLocked ? 'linear-gradient(160deg, #121f38 0%, #182949 100%)' : 'linear-gradient(160deg, #1d3156 0%, #253d6a 100%)',
+                  border: `1.5px solid ${rs.border}`,
+                  background: 'linear-gradient(160deg, #54441b 0%, #6b5630 100%)',
                   overflow: 'hidden',
                   transition: 'transform 0.2s, box-shadow 0.2s',
                   boxShadow: !isLocked && (card.rarity === 'Legendary' || card.rarity === 'Epic') ? `0 0 12px ${rs.glow}` : 'none',
@@ -348,25 +306,14 @@ export default function CardCollection() {
                   background: isLocked ? 'rgba(15, 26, 46, 0.8)' : `radial-gradient(ellipse at center, ${rs.glow} 0%, transparent 70%)`,
                   position: 'relative',
                 }}>
-                  {isLocked ? (
-                    <div style={{
-                      padding: '4px 8px', borderRadius: 6, background: 'rgba(239, 68, 68, 0.2)',
-                      border: '1px solid rgba(239, 68, 68, 0.4)', color: '#f87171',
-                      fontSize: 10, fontWeight: 800, textAlign: 'center',
-                    }}>
-                      LOCKED
-                    </div>
-                  ) : (
-                    <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'rgba(17, 30, 54, 0.8)', border: `1.5px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 13 }}>
-                      {card.name.substring(0, 2).toUpperCase()}
-                    </div>
-                  )}
-
-                  {!isLocked && card.owned > 1 && (
+                  <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'rgba(63, 47, 18, 0.8)', border: `1.5px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 13 }}>
+                    {card.name.substring(0, 2).toUpperCase()}
+                  </div>
+                  {card.owned > 1 && (
                     <span style={{
                       position: 'absolute', top: 4, right: 6,
-                      fontSize: 9, color: '#a78bfa', fontWeight: 700,
-                      background: 'rgba(167, 139, 250, 0.15)',
+                      fontSize: 9, color: '#dca668', fontWeight: 700,
+                      background: 'rgba(220, 166, 104, 0.15)',
                       borderRadius: 6, padding: '1px 5px',
                     }}>
                       x{card.owned}
@@ -394,14 +341,7 @@ export default function CardCollection() {
                       </div>
                     ))}
                   </div>
-
-                  {isLocked ? (
-                    <div style={{ fontSize: 8, color: '#f87171', marginTop: 5, fontWeight: 700 }}>
-                      Unlock: {card.landmarkLocation}
-                    </div>
-                  ) : (
-                    <div style={{ fontSize: 9, color: '#a4b5d1', marginTop: 5 }}>{card.category}</div>
-                  )}
+                  <div style={{ fontSize: 9, color: '#dca668', marginTop: 5 }}>{card.category}</div>
                 </div>
               </div>
             </button>

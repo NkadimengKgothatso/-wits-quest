@@ -51,16 +51,16 @@ const QUESTIONS: Record<string, {
 
 const STAT_COLORS: Record<string, string> = {
   attack: '#f87171',
-  defense: '#60a5fa',
+  defense: '#dca668',
   speed: '#facc15',
-  brains: '#a78bfa',
+  brains: '#e8c99a',
 };
 
 function StatBar({ label, value, color }: { label: string; value: number; color: string }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-        <span style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 700 }}>
+        <span style={{ fontSize: 11, color: '#dca668', fontWeight: 700 }}>
           {label}
         </span>
         <span style={{ fontSize: 13, fontWeight: 800, color }}>{value}</span>
@@ -111,18 +111,18 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
   const isWrong = submitted && selected !== qdata.correct;
 
   const rarityBorderColor = {
-    Legendary: '#fed6ce',
-    Epic: '#a78bfa',
-    Rare: '#60a5fa',
-    Common: '#a4b5d1',
-  }[card.rarity] ?? '#a4b5d1';
+    Legendary: '#dca668',
+    Epic: '#c99255',
+    Rare: '#a87d4d',
+    Common: '#dca668',
+  }[card.rarity] ?? '#dca668';
 
   return (
     <div
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(13, 22, 45, 0.88)',
+        background: 'rgba(63, 47, 18, 0.94)',
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
         zIndex: 100,
@@ -141,31 +141,31 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
           {/* Header image */}
           <div style={{
             height: 140,
-            background: 'linear-gradient(135deg, #253d6a 0%, #1a2e4a 60%, #111e36 100%)',
+            background: 'linear-gradient(135deg, #6b5630 0%, #54441b 60%, #3d2f12 100%)',
             position: 'relative',
             overflow: 'hidden',
           }}>
             {/* Architectural SVG background */}
             <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.3 }}>
               {[15, 25, 35, 45, 55, 65, 75, 85].map((x, i) => (
-                <rect key={i} x={`${x}%`} y="20%" width="4%" height="80%" fill="#a4b5d1" rx="2" />
+                <rect key={i} x={`${x}%`} y="20%" width="4%" height="80%" fill="#dca668" rx="2" />
               ))}
-              <polygon points="10%,20% 50%,2% 90%,20%" fill="none" stroke="#a4b5d1" strokeWidth="2" />
-              <rect x="5%" y="85%" width="90%" height="4%" fill="#a4b5d1" rx="1" />
+              <polygon points="10%,20% 50%,2% 90%,20%" fill="none" stroke="#dca668" strokeWidth="2" />
+              <rect x="5%" y="85%" width="90%" height="4%" fill="#dca668" rx="1" />
             </svg>
             {/* Gradient overlay */}
             <div style={{
               position: 'absolute', inset: 0,
-              background: 'linear-gradient(to bottom, transparent 40%, rgba(17,30,54,0.9) 100%)',
+              background: 'linear-gradient(to bottom, transparent 40%, rgba(63, 47, 18, 0.9) 100%)',
             }} />
             {/* Badges */}
             <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', gap: 8 }}>
-              <span className="badge" style={{ background: 'rgba(254, 214, 206, 0.15)', color: '#fed6ce', border: '1px solid rgba(254, 214, 206, 0.4)', fontSize: 10 }}>
+              <span className="badge" style={{ background: 'rgba(220, 166, 104, 0.15)', color: '#dca668', border: '1px solid rgba(220, 166, 104, 0.4)', fontSize: 10 }}>
                 IN-RANGE VERIFIED ({landmark.distance}m)
               </span>
             </div>
             <div style={{ position: 'absolute', bottom: 10, left: 12, right: 12 }}>
-              <span className="badge" style={{ background: 'rgba(176, 203, 230, 0.2)', color: '#b0cbe6', fontSize: 10 }}>
+              <span className="badge" style={{ background: 'rgba(232, 201, 154, 0.2)', color: '#e8c99a', fontSize: 10 }}>
                 {landmark.category.toUpperCase()}
               </span>
               <div style={{ fontSize: 18, fontWeight: 800, color: 'white', marginTop: 4 }}>
@@ -177,9 +177,9 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
               onClick={onClose}
               style={{
                 position: 'absolute', top: 12, right: 12,
-                background: 'rgba(29, 49, 86, 0.7)', border: 'none',
+                background: 'rgba(84, 68, 27, 0.7)', border: 'none',
                 borderRadius: '50%', width: 28, height: 28,
-                color: '#a4b5d1', cursor: 'pointer', fontSize: 16,
+                color: '#dca668', cursor: 'pointer', fontSize: 16,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
             >
@@ -196,24 +196,24 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
             {/* Answer options */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
               {qdata.options.map((opt, i) => {
-                let borderColor = 'rgba(164, 181, 209, 0.3)';
-                let bg = 'rgba(29, 49, 86, 0.6)';
+                let borderColor = 'rgba(220, 166, 104, 0.3)';
+                let bg = 'rgba(84, 68, 27, 0.6)';
                 let color = 'white';
 
                 if (submitted) {
                   if (i === qdata.correct) {
-                    borderColor = 'rgba(254, 214, 206, 0.8)';
-                    bg = 'rgba(254, 214, 206, 0.15)';
-                    color = '#fed6ce';
+                    borderColor = 'rgba(220, 166, 104, 0.8)';
+                    bg = 'rgba(220, 166, 104, 0.15)';
+                    color = '#dca668';
                   } else if (i === selected && i !== qdata.correct) {
-                    borderColor = 'rgba(164, 181, 209, 0.5)';
-                    bg = 'rgba(73, 104, 148, 0.3)';
-                    color = '#a4b5d1';
+                    borderColor = 'rgba(220, 166, 104, 0.5)';
+                    bg = 'rgba(107, 125, 44, 0.3)';
+                    color = '#dca668';
                   }
                 } else if (selected === i) {
-                  borderColor = 'rgba(176, 203, 230, 0.8)';
-                  bg = 'rgba(176, 203, 230, 0.15)';
-                  color = '#b0cbe6';
+                  borderColor = 'rgba(232, 201, 154, 0.8)';
+                  bg = 'rgba(232, 201, 154, 0.15)';
+                  color = '#e8c99a';
                 }
 
                 return (
@@ -239,7 +239,7 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
                   >
                     <span style={{
                       width: 24, height: 24, borderRadius: '50%',
-                      background: selected === i && !submitted ? 'rgba(176, 203, 230, 0.3)' : 'rgba(73, 104, 148, 0.4)',
+                      background: selected === i && !submitted ? 'rgba(232, 201, 154, 0.3)' : 'rgba(107, 125, 44, 0.4)',
                       border: `1.5px solid ${borderColor}`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 11, fontWeight: 800, flexShrink: 0,
@@ -255,8 +255,8 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
             {/* Feedback */}
             {isWrong && (
               <div style={{
-                background: 'rgba(73, 104, 148, 0.3)', border: '1px solid rgba(164, 181, 209, 0.3)',
-                borderRadius: 10, padding: '10px 14px', color: '#a4b5d1', fontSize: 13, marginBottom: 16,
+                background: 'rgba(107, 125, 44, 0.3)', border: '1px solid rgba(220, 166, 104, 0.3)',
+                borderRadius: 10, padding: '10px 14px', color: '#dca668', fontSize: 13, marginBottom: 16,
               }}>
                 Incorrect — Visit this landmark again to retry the challenge.
               </div>
@@ -292,10 +292,10 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
           className="glass-modal slide-up"
           style={{ width: '100%', maxWidth: 360, padding: 28, textAlign: 'center' }}
         >
-          <div style={{ fontSize: 13, color: '#fed6ce', fontWeight: 800, marginBottom: 8, letterSpacing: '0.1em' }}>
+          <div style={{ fontSize: 13, color: '#dca668', fontWeight: 800, marginBottom: 8, letterSpacing: '0.1em' }}>
             CARD UNLOCKED
           </div>
-          <div style={{ fontSize: 11, color: '#a4b5d1', marginBottom: 20 }}>
+          <div style={{ fontSize: 11, color: '#dca668', marginBottom: 20 }}>
             Added to your collection
           </div>
 
@@ -307,7 +307,7 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
               margin: '0 auto 24px',
               borderRadius: 16,
               border: `2px solid ${rarityBorderColor}`,
-              background: 'linear-gradient(135deg, #1d3156 0%, #253d6a 100%)',
+              background: 'linear-gradient(135deg, #54441b 0%, #6b5630 100%)',
               overflow: 'hidden',
               boxShadow: `0 0 32px ${rarityBorderColor}60`,
             }}
@@ -327,19 +327,19 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
               }}>
                 {card.rarity.toUpperCase()}
               </span>
-              <span style={{ fontSize: 9, color: '#a4b5d1' }}>Landmarks</span>
+              <span style={{ fontSize: 9, color: '#dca668' }}>Landmarks</span>
             </div>
 
             {/* Card artwork emblem */}
             <div style={{
               height: 110,
-              background: 'linear-gradient(135deg, #253d6a 0%, #1a2e4a 60%, #111e36 100%)',
+              background: 'linear-gradient(135deg, #6b5630 0%, #a87d4d 60%, #3d2f12 100%)',
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <div className="float" style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(29, 49, 86, 0.8)', border: `2px solid ${rarityBorderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rarityBorderColor, fontWeight: 900, fontSize: 16 }}>
+              <div className="float" style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(84, 68, 27, 0.8)', border: `2px solid ${rarityBorderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rarityBorderColor, fontWeight: 900, fontSize: 16 }}>
                 {card.name.substring(0, 2).toUpperCase()}
               </div>
               {/* Glow aura */}
@@ -363,7 +363,7 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
             </div>
           </div>
 
-          <div style={{ fontSize: 13, color: '#a4b5d1', marginBottom: 20 }}>
+          <div style={{ fontSize: 13, color: '#dca668', marginBottom: 20 }}>
             +50 Essence · +320 XP
           </div>
 

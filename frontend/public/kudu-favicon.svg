@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6b5630"/>
+      <stop offset="100%" stop-color="#3d2f12"/>
+    </radialGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#bg)" stroke="#dca668" stroke-width="3"/>
+  <!-- Back horn -->
+  <path d="M58 28c5-3 11-10 13-17 1-3 1-7-1-9s-7-2-8 2c-1 2-2 7-4 11-2 4-7 9-9 11" fill="none" stroke="#8a7a6a" stroke-width="4" stroke-linecap="round"/>
+  <!-- Front horn -->
+  <path d="M42 28c-5-3-11-10-13-17-1-3-1-7 1-9s7-2 8 2c1 2 2 7 4 11 2 4 7 9 9 11" fill="none" stroke="#8a7a6a" stroke-width="4" stroke-linecap="round"/>
+  <!-- Ears -->
+  <ellipse cx="30" cy="46" rx="10" ry="14" transform="rotate(-25 30 46)" fill="#c9a889"/>
+  <ellipse cx="70" cy="46" rx="10" ry="14" transform="rotate(25 70 46)" fill="#c9a889"/>
+  <!-- Head -->
+  <ellipse cx="50" cy="56" rx="22" ry="26" fill="#c9a889"/>
+  <ellipse cx="50" cy="58" rx="14" ry="18" fill="#b89a7a"/>
+  <!-- Muzzle -->
+  <ellipse cx="50" cy="74" rx="10" ry="9" fill="#e8d5c4"/>
+  <!-- Nose -->
+  <ellipse cx="50" cy="78" rx="5" ry="3.5" fill="#5d4e44"/>
+  <!-- Eyes -->
+  <ellipse cx="41" cy="54" rx="3.5" ry="4" fill="#3d322a"/>
+  <ellipse cx="59" cy="54" rx="3.5" ry="4" fill="#3d322a"/>
+  <circle cx="42" cy="53" r="1.2" fill="#f8f2e8"/>
+  <circle cx="60" cy="53" r="1.2" fill="#f8f2e8"/>
+  <!-- Collar tag -->
+  <rect x="44" y="82" width="12" height="6" rx="3" fill="#dca668"/>
+</svg>

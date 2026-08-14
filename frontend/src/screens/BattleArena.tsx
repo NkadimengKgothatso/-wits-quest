@@ -14,37 +14,39 @@ import { selectAIAction, selectAICounterCard } from '../utils/battleAI';
 import { saveMockBattleResult } from '../services/mockDbClient';
 import { useAuth } from '../context/AuthContext';
 
-const PLAYER_CARDS: BattleCard[] = [
-  { id: 1, name: 'Great Hall Pillars', rarity: 'Legendary', stats: { attack: 85, defense: 95, speed: 40, brains: 90 }, category: 'Landmarks' },
-  { id: 2, name: "Solomon's Torch", rarity: 'Epic', stats: { attack: 90, defense: 70, speed: 85, brains: 88 }, category: 'Landmarks' },
-  { id: 3, name: 'Quantum Reactor', rarity: 'Rare', stats: { attack: 75, defense: 60, speed: 70, brains: 95 }, category: 'Science' },
-  { id: 4, name: 'Wits Springbok', rarity: 'Common', stats: { attack: 72, defense: 55, speed: 92, brains: 60 }, category: 'Sports' },
-  { id: 5, name: 'Ancient Tome', rarity: 'Epic', stats: { attack: 55, defense: 72, speed: 30, brains: 99 }, category: 'History' },
-];
+const PLAYER_CARDS: any[] = [
+  { id: 1, name: 'Great Hall Pillars', emoji: '🏛️', attack: 85, defense: 95, speed: 40, brains: 90, rarity: 'Legendary', stats: { attack: 85, defense: 95, speed: 40, brains: 90 } },
+  { id: 2, name: "Solomon's Torch", emoji: '🔥', attack: 90, defense: 70, speed: 85, brains: 88, rarity: 'Epic', stats: { attack: 90, defense: 70, speed: 85, brains: 88 } },
+  { id: 3, name: 'Quantum Reactor', emoji: '⚛️', attack: 75, defense: 60, speed: 70, brains: 95, rarity: 'Rare', stats: { attack: 75, defense: 60, speed: 70, brains: 95 } },
+  { id: 4, name: 'Wits Springbok', emoji: '🦌', attack: 72, defense: 55, speed: 92, brains: 60, rarity: 'Common', stats: { attack: 72, defense: 55, speed: 92, brains: 60 } },
+  { id: 5, name: 'Ancient Tome', emoji: '📚', attack: 55, defense: 72, speed: 30, brains: 99, rarity: 'Epic', stats: { attack: 55, defense: 72, speed: 30, brains: 99 } },
+]
 
-const CPU_CARDS: BattleCard[] = [
-  { id: 101, name: 'Joburg Skyline', rarity: 'Epic', stats: { attack: 80, defense: 88, speed: 55, brains: 82 }, category: 'Landmarks' },
-  { id: 102, name: 'Reef Gold', rarity: 'Legendary', stats: { attack: 95, defense: 65, speed: 72, brains: 78 }, category: 'History' },
-  { id: 103, name: 'Ubuntu Spirit', rarity: 'Rare', stats: { attack: 60, defense: 90, speed: 60, brains: 92 }, category: 'Lifestyle' },
-  { id: 104, name: 'Voortrekker', rarity: 'Common', stats: { attack: 78, defense: 75, speed: 68, brains: 70 }, category: 'History' },
-  { id: 105, name: 'Kruger Leopard', rarity: 'Epic', stats: { attack: 92, defense: 58, speed: 96, brains: 65 }, category: 'Sports' },
-];
+const CPU_CARDS: any[] = [
+  { id: 101, name: 'Joburg Skyline', emoji: '🌆', attack: 80, defense: 88, speed: 55, brains: 82, rarity: 'Epic', stats: { attack: 80, defense: 88, speed: 55, brains: 82 } },
+  { id: 102, name: 'Reef Gold', emoji: '🥇', attack: 95, defense: 65, speed: 72, brains: 78, rarity: 'Legendary', stats: { attack: 95, defense: 65, speed: 72, brains: 78 } },
+  { id: 103, name: 'Ubuntu Spirit', emoji: '🤝', attack: 60, defense: 90, speed: 60, brains: 92, rarity: 'Rare', stats: { attack: 60, defense: 90, speed: 60, brains: 92 } },
+  { id: 104, name: 'Voortrekker', emoji: '🐂', attack: 78, defense: 75, speed: 68, brains: 70, rarity: 'Common', stats: { attack: 78, defense: 75, speed: 68, brains: 70 } },
+  { id: 105, name: 'Kruger Leopard', emoji: '🐆', attack: 92, defense: 58, speed: 96, brains: 65, rarity: 'Epic', stats: { attack: 92, defense: 58, speed: 96, brains: 65 } },
+]
 
 const ATTR_KEYS: StatAttribute[] = ['attack', 'defense', 'speed', 'brains'];
+type AttrKey = StatAttribute;
 
-const ATTR_META: Record<StatAttribute, { icon: typeof Swords; label: string; color: string }> = {
-  attack: { icon: Swords, label: 'ATK', color: '#f87171' },
-  defense: { icon: Shield, label: 'DEF', color: '#60a5fa' },
-  speed: { icon: Zap, label: 'SPD', color: '#facc15' },
-  brains: { icon: Brain, label: 'BRN', color: '#a78bfa' },
-};
+const ATTR_META: Record<AttrKey, { icon: any; label: string; color: string }> = {
+  attack: { icon: Swords, label: 'Attack', color: '#f87171' },
+  defense: { icon: Shield, label: 'Defense', color: '#dca668' },
+  speed: { icon: Zap, label: 'Speed', color: '#facc15' },
+  brains: { icon: Brain, label: 'Brains', color: '#e8c99a' },
+}
 
 const RARITY_BORDER: Record<string, string> = {
-  Legendary: '#fed6ce',
-  Epic: '#a78bfa',
-  Rare: '#60a5fa',
-  Common: 'rgba(164,181,209,0.5)',
-};
+  Legendary: '#dca668', Epic: '#c99255', Rare: '#a87d4d', Common: 'rgba(220, 166, 104, 0.5)'
+}
+
+type RoundResult = 'win' | 'lose' | 'tie' | null
+
+interface RoundRecord { playerCard: typeof PLAYER_CARDS[0]; cpuCard: typeof CPU_CARDS[0]; attr: AttrKey; result: RoundResult }
 
 export default function BattleArena() {
   const { currentUser, updateUserLocally } = useAuth();
@@ -179,7 +181,7 @@ export default function BattleArena() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 50% 20%, #1e3a5f 0%, #1d3156 50%, #0f1a2e 100%)',
+      background: 'radial-gradient(ellipse at 50% 20%, #1e3a5f 0%, #54441b 50%, #3d2f12 100%)',
       paddingTop: 70,
       paddingBottom: 80,
       display: 'flex',
@@ -222,13 +224,11 @@ export default function BattleArena() {
             {/* Player */}
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{
-                width: 36, height: 36, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #b0cbe6, #496894)',
-                border: '2px solid rgba(176, 203, 230, 0.7)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <User size={18} color="#ffffff" />
-              </div>
+                width: 38, height: 38, borderRadius: '50%',
+                background: 'linear-gradient(135deg, #e8c99a, #6b7d2c)',
+                border: '2px solid rgba(232, 201, 154, 0.7)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
+              }}>🧙</div>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>Player</div>
                 <div style={{ fontSize: 11, color: '#4ade80', fontWeight: 700 }}>{battleState.playerWins} wins</div>
@@ -237,22 +237,22 @@ export default function BattleArena() {
 
             {/* Round info + clock */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#a4b5d1', fontWeight: 700, letterSpacing: '0.1em' }}>
-                BEST OF {battleState.maxRounds} · ROUND {battleState.currentRound}
+              <div style={{ fontSize: 10, color: '#dca668', fontWeight: 700, letterSpacing: '0.1em' }}>
+                BEST OF 5 · ROUND {battleState.currentRound}
               </div>
               {/* Circular countdown */}
-              <div style={{ position: 'relative', width: 56, height: 56 }}>
-                <svg width="56" height="56" style={{ transform: 'rotate(-90deg)' }}>
-                  <circle cx="28" cy="28" r={radius} fill="none" stroke="rgba(164,181,209,0.2)" strokeWidth="4" />
+              <div style={{ position: 'relative', width: 64, height: 64 }}>
+                <svg width="64" height="64" style={{ transform: 'rotate(-90deg)' }}>
+                  <circle cx="32" cy="32" r={radius} fill="none" stroke="rgba(220, 166, 104, 0.2)" strokeWidth="4" />
                   <circle
                     cx="28" cy="28" r={radius}
                     fill="none"
-                    stroke={timeLeft <= 10 ? '#f87171' : '#fed6ce'}
+                    stroke={timeLeft <= 10 ? '#f87171' : '#dca668'}
                     strokeWidth="4"
                     strokeDasharray={circumference}
                     strokeDashoffset={dashOffset}
                     strokeLinecap="round"
-                    style={{ transition: 'stroke-dashoffset 1s linear' }}
+                    style={{ transition: 'stroke-dashoffset 1s linear', filter: `drop-shadow(0 0 4px ${timeLeft <= 10 ? '#f87171' : '#dca668'})` }}
                   />
                 </svg>
                 <div style={{
@@ -269,9 +269,9 @@ export default function BattleArena() {
                   const r = battleState.rounds[i];
                   return (
                     <div key={i} style={{
-                      width: 8, height: 8, borderRadius: '50%',
-                      background: !r ? 'rgba(164,181,209,0.2)' : r.outcome === 'win' ? '#4ade80' : r.outcome === 'lose' ? '#f87171' : '#facc15',
-                      border: '1px solid rgba(164,181,209,0.3)',
+                      width: 10, height: 10, borderRadius: '50%',
+                      background: !r ? 'rgba(220, 166, 104, 0.2)' : r.outcome === 'win' ? '#4ade80' : r.outcome === 'lose' ? '#f87171' : '#facc15',
+                      border: '1px solid rgba(220, 166, 104, 0.3)',
                     }} />
                   );
                 })}
@@ -338,8 +338,8 @@ export default function BattleArena() {
             <div style={{ fontSize: 24, fontWeight: 900, color: battleState.winner === 'player' ? '#4ade80' : battleState.winner === 'cpu' ? '#f87171' : '#facc15' }}>
               {battleState.winner === 'player' ? 'VICTORY' : battleState.winner === 'cpu' ? 'DEFEATED' : 'DRAW'}
             </div>
-            <div style={{ fontSize: 13, color: '#a4b5d1', margin: '8px 0 16px' }}>
-              {battleState.playerWins} - {battleState.cpuWins} · Best of {battleState.maxRounds}
+            <div style={{ fontSize: 14, color: '#dca668', margin: '8px 0 16px' }}>
+              {battleState.playerWins} — {battleState.cpuWins} · Best of 5
             </div>
             <div style={{ fontSize: 12, color: '#facc15', marginBottom: 20, fontWeight: 700 }}>
               {rewards.message}
@@ -366,27 +366,24 @@ export default function BattleArena() {
         ) : (
           <div style={{ display: 'flex', gap: 12, height: 260 }}>
             {/* Player card */}
-            <div style={{
-              flex: 1,
-              borderRadius: 16,
-              border: `2px solid ${RARITY_BORDER[playerCard.rarity]}`,
-              background: 'linear-gradient(160deg, #1d3156 0%, #253d6a 100%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
-              <div style={{ fontSize: 9, color: '#b0cbe6', fontWeight: 700, letterSpacing: '0.1em' }}>YOUR CARD</div>
-              <div style={{
-                width: 40, height: 40, borderRadius: '50%',
-                background: 'rgba(29, 49, 86, 0.8)',
+            <div
+              className={animating ? 'clash-left' : ''}
+              style={{
+                flex: 1,
+                borderRadius: 16,
                 border: `2px solid ${RARITY_BORDER[playerCard.rarity]}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: RARITY_BORDER[playerCard.rarity], fontWeight: 800, fontSize: 13,
-              }}>
+                background: 'linear-gradient(160deg, #54441b 0%, #6b5630 100%)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+            >
+              <div style={{ fontSize: 9, color: '#e8c99a', fontWeight: 700, letterSpacing: '0.1em' }}>YOUR CARD</div>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(84, 68, 27, 0.8)', border: `2px solid ${RARITY_BORDER[playerCard.rarity]}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: RARITY_BORDER[playerCard.rarity], fontWeight: 800, fontSize: 14 }} className="float">
                 {playerCard.name.substring(0, 2).toUpperCase()}
               </div>
               <div style={{ fontSize: 11, fontWeight: 800, color: 'white', textAlign: 'center', padding: '0 8px' }}>
@@ -423,16 +420,14 @@ export default function BattleArena() {
             {/* VS divider */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6, flexShrink: 0 }}>
               <div style={{
-                fontSize: 16, fontWeight: 900, color: '#fed6ce',
-                textShadow: '0 0 16px rgba(254, 214, 206, 0.7)',
-              }}>
-                VS
-              </div>
+                fontSize: 18, fontWeight: 900, color: '#dca668',
+                textShadow: '0 0 16px rgba(220, 166, 104, 0.7)',
+              }}>VS</div>
               {lastOutcome && (
-                <div style={{
+                <div className="slide-up" style={{
                   background: lastOutcome === 'win' ? 'rgba(34,197,94,0.25)' : lastOutcome === 'lose' ? 'rgba(239,68,68,0.25)' : 'rgba(250,204,21,0.25)',
                   border: `1px solid ${lastOutcome === 'win' ? '#4ade80' : lastOutcome === 'lose' ? '#f87171' : '#facc15'}`,
-                  borderRadius: 6, padding: '4px 6px',
+                  borderRadius: 8, padding: '4px 8px',
                   color: lastOutcome === 'win' ? '#4ade80' : lastOutcome === 'lose' ? '#f87171' : '#facc15',
                   fontSize: 9, fontWeight: 900, textAlign: 'center',
                 }}>
@@ -498,8 +493,8 @@ export default function BattleArena() {
                   onClick={() => !lastOutcome && executeRound(attr)}
                   disabled={!!lastOutcome}
                   style={{
-                    background: isSelected ? `${meta.color}25` : 'rgba(73, 104, 148, 0.4)',
-                    border: `1.5px solid ${isSelected ? meta.color : 'rgba(164,181,209,0.3)'}`,
+                    background: isSelected ? `${meta.color}25` : 'rgba(107, 125, 44, 0.4)',
+                    border: `1.5px solid ${isSelected ? meta.color : 'rgba(220, 166, 104, 0.3)'}`,
                     borderRadius: 12,
                     padding: '10px 6px',
                     color: isSelected ? meta.color : 'white',
@@ -517,8 +512,8 @@ export default function BattleArena() {
                 >
                   <IconComp size={16} color={meta.color} />
                   <span style={{ fontSize: 10 }}>{meta.label}</span>
-                  <span style={{ fontSize: 11, color: isSelected ? meta.color : '#a4b5d1' }}>
-                    {playerCard.stats[attr]}
+                  <span style={{ fontSize: 11, color: isSelected ? meta.color : '#dca668' }}>
+                    {playerCard[attr]}
                   </span>
                 </button>
               );
@@ -535,18 +530,16 @@ export default function BattleArena() {
                   flexShrink: 0,
                   width: 56,
                   borderRadius: 10,
-                  border: `1.5px solid ${i === playerCardIdx ? RARITY_BORDER[card.rarity] : 'rgba(164,181,209,0.25)'}`,
-                  background: i === playerCardIdx ? 'rgba(73,104,148,0.6)' : 'rgba(29,49,86,0.4)',
-                  padding: '8px 4px',
+                  border: `1.5px solid ${i === playerCardIdx ? RARITY_BORDER[card.rarity] : 'rgba(168,187,217,0.25)'}`,
+                  background: i === playerCardIdx ? 'rgba(61,90,128,0.6)' : 'rgba(44,62,80,0.4)',
+                  padding: '6px 4px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                 }}
               >
-                <div style={{ fontSize: 11, color: RARITY_BORDER[card.rarity], fontWeight: 800 }}>
-                  {card.name.substring(0, 2).toUpperCase()}
-                </div>
-                <div style={{ fontSize: 8, color: i === playerCardIdx ? 'white' : '#a4b5d1', fontWeight: 700, lineHeight: 1.2, marginTop: 2 }}>
+                <div style={{ fontSize: 22 }}>{card.emoji}</div>
+                <div style={{ fontSize: 8, color: i === playerCardIdx ? 'white' : '#dca668', fontWeight: 700, lineHeight: 1.2, marginTop: 2 }}>
                   {card.name.split(' ')[0]}
                 </div>
               </div>

@@ -60,34 +60,30 @@ export default function RankedMatchmaking() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 50% 20%, #253d6a 0%, #1d3156 50%, #0f1a2e 100%)',
+      background: 'radial-gradient(ellipse at 50% 20%, #6b5630 0%, #54441b 50%, #3d2f12 100%)',
       paddingTop: 16, paddingBottom: 80,
     }}>
       <div style={{ padding: '14px 16px', maxWidth: 600, margin: '0 auto' }}>
         <h2 style={{ fontSize: 20, fontWeight: 900, color: 'white', margin: '0 0 4px' }}>Ranked Elo Seasons</h2>
-        <p style={{ fontSize: 12, color: '#a4b5d1', margin: 0 }}>Competitive seasonal ladder & Elo rating matchmaking</p>
+        <p style={{ fontSize: 12, color: '#dca668', margin: 0 }}>Competitive seasonal ladder & Elo rating matchmaking</p>
       </div>
 
       {/* User Rank Card */}
       <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 16 }}>
-        <div className="glass-dark" style={{ borderRadius: 16, padding: 18, border: '1.5px solid #fed6ce', textAlign: 'center' }}>
-          <div style={{ fontSize: 10, color: '#a4b5d1', fontWeight: 700, letterSpacing: '0.1em' }}>YOUR CURRENT RATING</div>
-          <div style={{ fontSize: 32, fontWeight: 900, color: '#fed6ce', margin: '4px 0' }}>
-            {userElo.toLocaleString()} Elo
-          </div>
-          <div style={{ fontSize: 12, fontWeight: 800, color: '#b0cbe6' }}>
-            {userTier} Tier · Rank #{userRank} Campuswide
-          </div>
-          <div style={{ fontSize: 10, color: '#a4b5d1', marginTop: 8 }}>Season 1 ends in 12 days</div>
+        <div className="glass-dark" style={{ borderRadius: 16, padding: 18, border: '1.5px solid #dca668', textAlign: 'center' }}>
+          <div style={{ fontSize: 10, color: '#dca668', fontWeight: 700, letterSpacing: '0.1em' }}>YOUR CURRENT RATING</div>
+          <div style={{ fontSize: 32, fontWeight: 900, color: '#dca668', margin: '4px 0' }}>1,540 Elo</div>
+          <div style={{ fontSize: 12, fontWeight: 800, color: '#e8c99a' }}>Diamond Tier · Rank #4 Campuswide</div>
+          <div style={{ fontSize: 10, color: '#dca668', marginTop: 8 }}>Season 1 ends in 12 days</div>
         </div>
       </div>
 
       {/* Queue Action Button */}
       <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 20 }}>
         {inQueue ? (
-          <div className="glass-dark" style={{ borderRadius: 14, padding: 16, textAlign: 'center', border: '1px solid #b0cbe6' }}>
-            <div style={{ fontSize: 13, fontWeight: 800, color: '#b0cbe6', marginBottom: 6 }}>Searching for Opponent...</div>
-            <div style={{ fontSize: 11, color: '#a4b5d1' }}>Matching within ±50 Elo range</div>
+          <div className="glass-dark" style={{ borderRadius: 14, padding: 16, textAlign: 'center', border: '1px solid #e8c99a' }}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: '#e8c99a', marginBottom: 6 }}>Searching for Opponent...</div>
+            <div style={{ fontSize: 11, color: '#dca668' }}>Matching within ±50 Elo range</div>
             <button className="btn-ghost" style={{ fontSize: 11, padding: '8px 16px', borderRadius: 8, marginTop: 12 }} onClick={() => setInQueue(false)}>
               Cancel Queue
             </button>
@@ -102,7 +98,7 @@ export default function RankedMatchmaking() {
       {/* Leaderboard preview */}
       <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto' }}>
         <div className="glass-dark" style={{ borderRadius: 14, padding: 14 }}>
-          <div style={{ fontSize: 11, fontWeight: 800, color: '#b0cbe6', marginBottom: 10, textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 800, color: '#e8c99a', marginBottom: 10, textTransform: 'uppercase' }}>
             Top Season 1 Ranked Competitors
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -110,17 +106,17 @@ export default function RankedMatchmaking() {
               <div key={s.id || s.rank} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '8px 12px', borderRadius: 8,
-                background: s.isUser ? 'rgba(254, 214, 206, 0.15)' : 'rgba(73,104,148,0.25)',
-                border: `1px solid ${s.isUser ? '#fed6ce' : 'rgba(164,181,209,0.15)'}`,
+                background: s.isUser ? 'rgba(220, 166, 104, 0.15)' : 'rgba(107, 125, 44, 0.25)',
+                border: `1px solid ${s.isUser ? '#dca668' : 'rgba(220, 166, 104, 0.15)'}`,
               }}>
                 <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: s.isUser ? '#fed6ce' : 'white' }}>
-                    #{s.rank} {s.name} {s.isUser && '(You)'}
+                  <div style={{ fontSize: 12, fontWeight: 700, color: s.isUser ? '#dca668' : 'white' }}>
+                    #{s.rank} {s.name}
                   </div>
-                  <div style={{ fontSize: 10, color: '#a4b5d1' }}>{s.tier}</div>
+                  <div style={{ fontSize: 10, color: '#dca668' }}>{s.tier}</div>
                 </div>
-                <div style={{ fontSize: 13, fontWeight: 900, color: s.isUser ? '#fed6ce' : 'white' }}>
-                  {s.elo.toLocaleString()} Elo
+                <div style={{ fontSize: 13, fontWeight: 900, color: s.isUser ? '#dca668' : 'white' }}>
+                  {s.elo} Elo
                 </div>
               </div>
             ))}
