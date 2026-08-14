@@ -7,9 +7,9 @@ Wits Quest is an interactive, gamified educational web application designed to e
 
 ## Live Deployments
 
-- **Frontend Application (Vercel):** https://wits-quest-p62wezxun-bytebinder.vercel.app/
-- **Documentation (GitHub Pages):** https://mahlatseclayton.github.io/wits_quest/
-- **Documentation (Gitea Pages):** https://sdp.ms.wits.ac.za/pages/big-o/Wits-Quest/
+- **Frontend Application (Vercel):** [https://wits-quest.vercel.app](https://wits-quest.vercel.app)
+- **Documentation (GitHub Pages):** [https://mahlatseclayton.github.io/wits_quest/](https://mahlatseclayton.github.io/wits_quest/)
+- **Documentation (Gitea Pages):** [https://sdp.ms.wits.ac.za/pages/big-o/Wits-Quest/](https://sdp.ms.wits.ac.za/pages/big-o/Wits-Quest/)
 
 ---
 
