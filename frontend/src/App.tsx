@@ -33,7 +33,7 @@ const SPRINT1_NAV = [
   { id: 'leaderboard', label: 'Leaderboard' },
 ];
 
-function AppContent() {
+function AppContent() {   
   const { loggedIn, loading } = useAuth();
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
@@ -41,7 +41,9 @@ function AppContent() {
   const [triviaLandmark, setTriviaLandmark] = useState<any>(null);
   const [cardsEarned, setCardsEarned] = useState(0);
 
-  if (loading) {
+  
+
+  if (loading) {  
     return (
       <div style={{
         minHeight: '100vh',
@@ -61,7 +63,7 @@ function AppContent() {
 
   if (!loggedIn) {
     return <Login />;
-  }
+  }   
 
   return (
     <div style={{ minHeight: '100vh', background: '#54441b', position: 'relative' }}>
