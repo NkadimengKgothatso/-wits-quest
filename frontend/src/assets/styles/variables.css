@@ -1,24 +1,36 @@
-/* Wits Quest - Anime Realism Design Tokens */
+/* Wits Quest - Savanna Earth Design Tokens */
 :root {
-  /* Color Palette (Pale Blue Mountain Lake Theme) */
-  --color-bg-midnight: #1d3156;       /* Primary Deep Twilight Background */
-  --color-panel-slate: #496894;       /* Glass Containers & Card Frames */
-  --color-border-periwinkle: #a4b5d1;  /* Subtle Borders & Subtitles */
-  --color-sky-blue: #b0cbe6;          /* Active Markers & Sky Glow */
-  --color-accent-peach: #fed6ce;      /* Energy Glow, Hero Buttons & Legendary Rarity */
+  /* Core Savanna Palette */
+  --color-night: #54441b;            /* Deepest olive-brown - primary dark surfaces */
+  --color-night-deep: #3d2f12;       /* Shadow earth */
+  --color-night-light: #6b5630;      /* Lighter bark brown */
+  --color-navy: #6b7d2c;             /* Olive green - panels and elevated surfaces */
+  --color-slate: #a87d4d;            /* Warm tan - secondary elements */
+  --color-mist: #dca668;             /* Golden tan - borders and subtle text */
+  --color-frost: #e8c99a;            /* Pale gold - highlights and light surfaces */
+  --color-snow: #f8f2e8;             /* Cream - primary text on dark */
+  --color-blush: #dca668;            /* Golden tan accent energy */
+  --color-blush-deep: #c99255;       /* Deeper gold for hover states */
 
   /* Derived Glassmorphic Colors */
-  --glass-panel-bg: rgba(29, 49, 86, 0.75);
-  --glass-panel-border: rgba(164, 181, 209, 0.3);
-  --glass-panel-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --glow-peach-accent: 0 0 20px rgba(254, 214, 206, 0.45);
-  --glow-sky-accent: 0 0 15px rgba(176, 203, 230, 0.4);
+  --glass-panel-bg: rgba(107, 125, 44, 0.55);
+  --glass-panel-border: rgba(220, 166, 104, 0.25);
+  --glass-panel-shadow: 0 8px 32px 0 rgba(84, 68, 27, 0.3);
+  --glass-dark-bg: rgba(84, 68, 27, 0.72);
+  --glass-dark-border: rgba(220, 166, 104, 0.18);
+  --glow-blush: 0 0 20px rgba(220, 166, 104, 0.4);
+  --glow-frost: 0 0 15px rgba(232, 201, 154, 0.35);
 
   /* Card Rarity Colors */
-  --rarity-common: #8a9ba8;
-  --rarity-rare: #b0cbe6;
-  --rarity-epic: #a4b5d1;
-  --rarity-legendary: #fed6ce;
+  --rarity-common: #dca668;
+  --rarity-rare: #a87d4d;
+  --rarity-epic: #c99255;
+  --rarity-legendary: #dca668;
+
+  /* Status Colors */
+  --color-success: #8fae6e;
+  --color-warning: #e8c98f;
+  --color-danger: #e8a6a6;
 
   /* Typography */
   --font-family-base: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;

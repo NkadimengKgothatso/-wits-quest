@@ -101,14 +101,14 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(ellipse at 40% 50%, #1a2e4a 0%, #111e36 60%, #0a1525 100%)',
+          background: 'radial-gradient(ellipse at 40% 50%, #54441b 0%, #3d2f12 60%, #3d2f12 100%)',
         }}
       >
         {/* Grid lines simulating map tiles */}
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.06 }}>
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#a4b5d1" strokeWidth="0.5" />
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#dca668" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -117,12 +117,12 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
         {/* Campus road network SVG */}
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.15 }}>
           {/* Main roads */}
-          <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="#b0cbe6" strokeWidth="8" strokeLinecap="round" />
-          <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="#b0cbe6" strokeWidth="8" strokeLinecap="round" />
-          <line x1="25%" y1="30%" x2="75%" y2="70%" stroke="#b0cbe6" strokeWidth="4" strokeLinecap="round" />
-          <line x1="75%" y1="30%" x2="25%" y2="70%" stroke="#b0cbe6" strokeWidth="4" strokeLinecap="round" />
+          <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="#e8c99a" strokeWidth="8" strokeLinecap="round" />
+          <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="#e8c99a" strokeWidth="8" strokeLinecap="round" />
+          <line x1="25%" y1="30%" x2="75%" y2="70%" stroke="#e8c99a" strokeWidth="4" strokeLinecap="round" />
+          <line x1="75%" y1="30%" x2="25%" y2="70%" stroke="#e8c99a" strokeWidth="4" strokeLinecap="round" />
           {/* Campus ring road */}
-          <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="#b0cbe6" strokeWidth="3" />
+          <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="#e8c99a" strokeWidth="3" />
           {/* Building footprints */}
           {[
             { x: '44%', y: '37%', w: 60, h: 45 },
@@ -131,14 +131,14 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
             { x: '64%', y: '29%', w: 65, h: 42 },
             { x: '22%', y: '42%', w: 45, h: 35 },
           ].map((b, i) => (
-            <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill="rgba(176, 203, 230, 0.2)" rx="4" />
+            <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill="rgba(232, 201, 154, 0.2)" rx="4" />
           ))}
         </svg>
 
         {/* Campus label */}
         <div style={{
           position: 'absolute', top: '14%', left: '50%', transform: 'translateX(-50%)',
-          color: 'rgba(164, 181, 209, 0.5)', fontSize: 11, fontWeight: 700,
+          color: 'rgba(220, 166, 104, 0.5)', fontSize: 11, fontWeight: 700,
           letterSpacing: '0.18em', textTransform: 'uppercase',
         }}>
           University of the Witwatersrand
@@ -156,8 +156,8 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
               width: Math.min(simDistance * 3, 180),
               height: Math.min(simDistance * 3, 180),
               borderRadius: '50%',
-              border: '1.5px solid rgba(176, 203, 230, 0.5)',
-              background: 'rgba(176, 203, 230, 0.06)',
+              border: '1.5px solid rgba(232, 201, 154, 0.5)',
+              background: 'rgba(232, 201, 154, 0.06)',
               transition: 'all 0.4s ease',
             }}
           />
@@ -167,7 +167,7 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
               position: 'absolute', top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
               width: 20, height: 20, borderRadius: '50%',
-              background: 'rgba(176, 203, 230, 0.3)',
+              background: 'rgba(232, 201, 154, 0.3)',
               animation: 'pulse-ring 2s ease-out infinite',
             }}
           />
@@ -176,9 +176,9 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
             className="pulse-dot"
             style={{
               width: 14, height: 14, borderRadius: '50%',
-              background: '#b0cbe6',
+              background: '#e8c99a',
               border: '2px solid white',
-              boxShadow: '0 0 12px rgba(176, 203, 230, 0.8)',
+              boxShadow: '0 0 12px rgba(232, 201, 154, 0.8)',
               position: 'relative',
             }}
           />
@@ -210,17 +210,17 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
                 height: 28,
                 borderRadius: '50%',
                 background: lm.status === 'in-reach'
-                  ? 'linear-gradient(135deg, #fed6ce, #f5b8ac)'
-                  : 'rgba(73, 104, 148, 0.7)',
-                border: `2px solid ${lm.status === 'in-reach' ? '#fed6ce' : 'rgba(164, 181, 209, 0.4)'}`,
+                  ? 'linear-gradient(135deg, #dca668, #e8c99a)'
+                  : 'rgba(107, 125, 44, 0.7)',
+                border: `2px solid ${lm.status === 'in-reach' ? '#dca668' : 'rgba(220, 166, 104, 0.4)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 transition: 'all 0.3s',
-                boxShadow: lm.status === 'in-reach' ? '0 0 16px rgba(254, 214, 206, 0.6)' : 'none'
+                boxShadow: lm.status === 'in-reach' ? '0 0 16px rgba(220, 166, 104, 0.6)' : 'none'
               }}
             >
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: lm.status === 'in-reach' ? '#1d3156' : '#a4b5d1' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: lm.status === 'in-reach' ? '#54441b' : '#dca668' }} />
             </div>
             {/* Label */}
             <div style={{
@@ -231,12 +231,12 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
               whiteSpace: 'nowrap',
               fontSize: 10,
               fontWeight: 700,
-              color: lm.status === 'in-reach' ? '#fed6ce' : '#a4b5d1',
+              color: lm.status === 'in-reach' ? '#dca668' : '#dca668',
               textShadow: '0 1px 4px rgba(0,0,0,0.8)',
-              background: 'rgba(17, 30, 54, 0.85)',
+              background: 'rgba(63, 47, 18, 0.85)',
               padding: '2px 8px',
               borderRadius: 6,
-              border: '1px solid rgba(164, 181, 209, 0.2)'
+              border: '1px solid rgba(220, 166, 104, 0.2)'
             }}>
               {lm.name}
             </div>
@@ -263,14 +263,14 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
               width: 30,
               height: 30,
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #496894, #1d3156)',
-              border: '2px solid #fed6ce',
-              boxShadow: '0 0 12px rgba(254, 214, 206, 0.5)',
+              background: 'linear-gradient(135deg, #6b7d2c, #54441b)',
+              border: '2px solid #dca668',
+              boxShadow: '0 0 12px rgba(220, 166, 104, 0.5)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 800,
-              color: '#fed6ce',
+              color: '#dca668',
               fontSize: 10,
             }}>
               {p.initials}
@@ -283,11 +283,11 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
               whiteSpace: 'nowrap',
               fontSize: 9,
               fontWeight: 700,
-              color: '#white',
-              background: 'rgba(29, 49, 86, 0.9)',
+              color: '#f8f2e8',
+              background: 'rgba(84, 68, 27, 0.9)',
               padding: '1px 6px',
               borderRadius: 4,
-              border: '1px solid rgba(254, 214, 206, 0.4)'
+              border: '1px solid rgba(220, 166, 104, 0.4)'
             }}>
               {p.name}
             </div>
@@ -309,16 +309,16 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
             zIndex: 30,
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 800, color: '#b0cbe6', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 800, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             GPS Location Simulator
           </div>
 
-          <div style={{ fontSize: 11, color: '#fed6ce', marginBottom: 4, fontWeight: 600 }}>
+          <div style={{ fontSize: 11, color: '#dca668', marginBottom: 4, fontWeight: 600 }}>
             {simDistance}m from Great Hall
           </div>
           <div style={{
             fontSize: 10,
-            color: simDistance <= 25 ? '#fed6ce' : '#a4b5d1',
+            color: simDistance <= 25 ? '#dca668' : '#dca668',
             marginBottom: 10,
             fontWeight: 700,
             letterSpacing: '0.05em'
@@ -332,23 +332,23 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
             max={300}
             value={simDistance}
             onChange={(e) => setSimDistance(Number(e.target.value))}
-            style={{ width: '100%', marginBottom: 14, accentColor: '#fed6ce' }}
+            style={{ width: '100%', marginBottom: 14, accentColor: '#dca668' }}
           />
 
           <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 10, color: '#a4b5d1', marginBottom: 6, fontWeight: 600 }}>In Range Landmarks</div>
+            <div style={{ fontSize: 10, color: '#dca668', marginBottom: 6, fontWeight: 600 }}>In Range Landmarks</div>
             {activeLandmarks.filter((l) => l.status === 'in-reach').map((l) => (
               <div key={l.id} style={{
-                fontSize: 11, color: '#fed6ce', fontWeight: 600,
-                padding: '4px 0', borderBottom: '1px solid rgba(164,181,209,0.1)',
+                fontSize: 11, color: '#dca668', fontWeight: 600,
+                padding: '4px 0', borderBottom: '1px solid rgba(220, 166, 104, 0.1)',
                 display: 'flex', alignItems: 'center', gap: 6
               }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fed6ce' }} />
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#dca668' }} />
                 {l.name}
               </div>
             ))}
             {activeLandmarks.filter((l) => l.status === 'in-reach').length === 0 && (
-              <div style={{ fontSize: 10, color: '#a4b5d1', opacity: 0.6 }}>None in range</div>
+              <div style={{ fontSize: 10, color: '#dca668', opacity: 0.6 }}>None in range</div>
             )}
           </div>
 
@@ -382,11 +382,11 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 31,
-          background: 'rgba(29, 49, 86, 0.9)',
+          background: 'rgba(84, 68, 27, 0.9)',
           backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(164, 181, 209, 0.3)',
+          border: '1px solid rgba(220, 166, 104, 0.3)',
           borderRadius: 8,
-          color: '#a4b5d1',
+          color: '#dca668',
           fontSize: 14,
           width: 28,
           height: 48,
@@ -412,11 +412,11 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           zIndex: 20,
         }}
       >
-        <div style={{ fontSize: 10, color: '#b0cbe6', fontWeight: 700, marginBottom: 4, letterSpacing: '0.05em' }}>
+        <div style={{ fontSize: 10, color: '#e8c99a', fontWeight: 700, marginBottom: 4, letterSpacing: '0.05em' }}>
           ACTIVE LANDMARK
         </div>
         <div style={{ fontSize: 13, color: 'white', fontWeight: 700 }}>Great Hall</div>
-        <div style={{ fontSize: 10, color: '#a4b5d1' }}>Wits History · 12m · Legendary</div>
+        <div style={{ fontSize: 10, color: '#dca668' }}>Wits History · 12m · Legendary</div>
       </div>
 
       {/* Map legend */}
@@ -430,17 +430,17 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           zIndex: 20,
         }}
       >
-        <div style={{ fontSize: 9, color: '#a4b5d1', fontWeight: 700, marginBottom: 6, letterSpacing: '0.1em' }}>
+        <div style={{ fontSize: 9, color: '#dca668', fontWeight: 700, marginBottom: 6, letterSpacing: '0.1em' }}>
           LEGEND
         </div>
         {[
-          { color: '#fed6ce', label: 'Landmark In Reach' },
-          { color: '#a4b5d1', label: 'Too Far' },
-          { color: '#b0cbe6', label: 'Your GPS Fix' },
+          { color: '#dca668', label: 'Landmark In Reach' },
+          { color: '#dca668', label: 'Too Far' },
+          { color: '#e8c99a', label: 'Your GPS Fix' },
         ].map((item) => (
           <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: item.color }} />
-            <span style={{ fontSize: 9, color: '#a4b5d1' }}>{item.label}</span>
+            <span style={{ fontSize: 9, color: '#dca668' }}>{item.label}</span>
           </div>
         ))}
       </div>
@@ -449,18 +449,18 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
       {activePlayerModal && (
         <div
           style={{
-            position: 'fixed', inset: 0, background: 'rgba(13, 22, 45, 0.8)',
+            position: 'fixed', inset: 0, background: 'rgba(63, 47, 18, 0.88)',
             backdropFilter: 'blur(12px)', zIndex: 100,
             display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16
           }}
           onClick={(e) => e.target === e.currentTarget && setActivePlayerModal(null)}
         >
           <div className="glass-modal slide-up" style={{ width: '100%', maxWidth: 360, padding: 24, textAlign: 'center' }}>
-            <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#496894', border: '2px solid #fed6ce', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fed6ce', fontWeight: 900, fontSize: 18, margin: '0 auto 10px' }}>
+            <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#6b7d2c', border: '2px solid #dca668', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#dca668', fontWeight: 900, fontSize: 18, margin: '0 auto 10px' }}>
               {activePlayerModal.initials}
             </div>
             <div style={{ fontSize: 16, fontWeight: 900, color: 'white' }}>{activePlayerModal.name}</div>
-            <div style={{ fontSize: 11, color: '#fed6ce', fontWeight: 700, marginBottom: 16 }}>
+            <div style={{ fontSize: 11, color: '#dca668', fontWeight: 700, marginBottom: 16 }}>
               Level {activePlayerModal.level} Explorer · {activePlayerModal.rank}
             </div>
 

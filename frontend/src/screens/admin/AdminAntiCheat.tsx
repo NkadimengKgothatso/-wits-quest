@@ -44,15 +44,15 @@ export default function AdminAntiCheat() {
     setTimeout(() => setActionDone(false), 2000);
   }
 
-  const trustColor = selected.trustScore < 30 ? '#fed6ce' : selected.trustScore < 60 ? '#b0cbe6' : '#a4b5d1';
+  const trustColor = selected.trustScore < 30 ? '#dca668' : selected.trustScore < 60 ? '#e8c99a' : '#dca668';
 
   return (
     <div style={{ display: 'flex', height: '100%', gap: 0, minHeight: 'calc(100vh - 120px)' }}>
       {/* Left: Flagged list */}
       <div style={{
         width: 260,
-        background: 'rgba(17,30,54,0.95)',
-        borderRight: '1px solid rgba(164,181,209,0.15)',
+        background: 'rgba(63, 47, 18, 0.95)',
+        borderRight: '1px solid rgba(220, 166, 104, 0.15)',
         padding: 14,
         overflowY: 'auto',
       }}>
@@ -61,7 +61,7 @@ export default function AdminAntiCheat() {
         </div>
 
         {FLAGGED_PLAYERS.map((p) => {
-          const tc = p.trustScore < 30 ? '#fed6ce' : p.trustScore < 60 ? '#b0cbe6' : '#a4b5d1';
+          const tc = p.trustScore < 30 ? '#dca668' : p.trustScore < 60 ? '#e8c99a' : '#dca668';
           return (
             <button
               key={p.id}
@@ -72,8 +72,8 @@ export default function AdminAntiCheat() {
               }}
             >
               <div style={{
-                background: selected.id === p.id ? 'rgba(73,104,148,0.5)' : 'rgba(73,104,148,0.25)',
-                border: `1px solid ${selected.id === p.id ? '#fed6ce' : 'rgba(164,181,209,0.15)'}`,
+                background: selected.id === p.id ? 'rgba(107, 125, 44, 0.5)' : 'rgba(107, 125, 44, 0.25)',
+                border: `1px solid ${selected.id === p.id ? '#dca668' : 'rgba(220, 166, 104, 0.15)'}`,
                 borderRadius: 10, padding: 10, transition: 'all 0.2s',
               }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'white', marginBottom: 6, wordBreak: 'break-all' }}>
@@ -89,9 +89,9 @@ export default function AdminAntiCheat() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                   {p.violations.map((v) => (
                     <span key={v} style={{
-                      fontSize: 8, fontWeight: 700, color: '#fed6ce',
-                      background: 'rgba(254, 214, 206, 0.15)', borderRadius: 4, padding: '2px 5px',
-                      border: '1px solid rgba(254, 214, 206, 0.3)'
+                      fontSize: 8, fontWeight: 700, color: '#dca668',
+                      background: 'rgba(220, 166, 104, 0.15)', borderRadius: 4, padding: '2px 5px',
+                      border: '1px solid rgba(220, 166, 104, 0.3)'
                     }}>
                       {v}
                     </span>
@@ -108,20 +108,20 @@ export default function AdminAntiCheat() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
           <div>
             <h3 style={{ fontSize: 16, fontWeight: 800, color: 'white', margin: '0 0 4px' }}>{selected.email}</h3>
-            <div style={{ fontSize: 11, color: '#a4b5d1' }}>Audit Evidence & Velocity Logs</div>
+            <div style={{ fontSize: 11, color: '#dca668' }}>Audit Evidence & Velocity Logs</div>
           </div>
           <div style={{
-            background: 'rgba(29, 49, 86, 0.8)', border: `1.5px solid ${trustColor}`,
+            background: 'rgba(84, 68, 27, 0.8)', border: `1.5px solid ${trustColor}`,
             borderRadius: 12, padding: '6px 14px', textAlign: 'center'
           }}>
-            <div style={{ fontSize: 9, color: '#a4b5d1', fontWeight: 700, letterSpacing: '0.05em' }}>TRUST SCORE</div>
+            <div style={{ fontSize: 9, color: '#dca668', fontWeight: 700, letterSpacing: '0.05em' }}>TRUST SCORE</div>
             <div style={{ fontSize: 18, fontWeight: 900, color: trustColor }}>{selected.trustScore} / 100</div>
           </div>
         </div>
 
         {/* Trajectory logs */}
         <div className="glass-dark" style={{ borderRadius: 12, padding: 12, marginBottom: 16 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#b0cbe6', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             GPS Movement Trajectory Log
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -129,12 +129,12 @@ export default function AdminAntiCheat() {
               <div key={idx} style={{
                 display: 'flex', justifyContent: 'space-between', fontSize: 11,
                 padding: '6px 10px', borderRadius: 6,
-                background: t.vel > 5 ? 'rgba(254, 214, 206, 0.15)' : 'rgba(73,104,148,0.2)',
-                border: `1px solid ${t.vel > 5 ? 'rgba(254, 214, 206, 0.3)' : 'rgba(164,181,209,0.1)'}`,
+                background: t.vel > 5 ? 'rgba(220, 166, 104, 0.15)' : 'rgba(107, 125, 44, 0.2)',
+                border: `1px solid ${t.vel > 5 ? 'rgba(220, 166, 104, 0.3)' : 'rgba(220, 166, 104, 0.1)'}`,
               }}>
-                <span style={{ color: '#a4b5d1' }}>{t.time}</span>
+                <span style={{ color: '#dca668' }}>{t.time}</span>
                 <span style={{ color: 'white' }}>{t.lat}, {t.lng}</span>
-                <span style={{ fontWeight: 700, color: t.vel > 5 ? '#fed6ce' : '#b0cbe6' }}>
+                <span style={{ fontWeight: 700, color: t.vel > 5 ? '#dca668' : '#e8c99a' }}>
                   {t.vel} m/s {t.vel > 5 && '(SPOOF DETECTED)'}
                 </span>
               </div>
@@ -144,11 +144,11 @@ export default function AdminAntiCheat() {
 
         {/* Moderation Action Bar */}
         <div className="glass-dark" style={{ borderRadius: 12, padding: 14 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#fed6ce', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#dca668', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Lecturer Moderation Actions
           </div>
           {actionDone && (
-            <div style={{ fontSize: 11, color: '#fed6ce', marginBottom: 10, fontWeight: 700 }}>
+            <div style={{ fontSize: 11, color: '#dca668', marginBottom: 10, fontWeight: 700 }}>
               Action Applied Successfully!
             </div>
           )}
