@@ -113,12 +113,12 @@ Students acquire collectible cards through four distinct gameplay paths:
 
 | Team Member | Domain Responsibility | Key Screens & Modules |
 | :--- | :--- | :--- |
-| **Member 1** | Geolocation, GIS & Spatial Engine Lead | `MapExplorer.tsx`, GPS Verification API |
-| **Member 2** | Battle Engine, AI & Real-Time Multiplayer Lead | `BattleArena.tsx`, `LivePvPArena.tsx`, `AsyncPvP.tsx` |
-| **Member 3** | Database Architecture, Offline Sync & Auth Lead | `Login.tsx`, ServiceWorker, IndexedDB, Custom JWT Auth |
-| **Member 4** | Admin Console, Curation & Telemetry Lead | `AdminEvents.tsx`, `AdminContent.tsx`, `AdminCuration.tsx`, `AdminAntiCheat.tsx`, `AdminAnalytics.tsx` |
-| **Member 5** | Progression Engine, Economy Systems & Trails Lead | `CardCollection.tsx`, `DeckBuilder.tsx`, `Leaderboard.tsx`, `QuestTrails.tsx`, `Trades.tsx`, `CardForge.tsx` |
-| **Member 6** | Advanced Anti-Cheat, Matchmaking & Territory Lead | `TerritoryMap.tsx`, `RankedMatchmaking.tsx`, Velocity Trajectory Engine |
+| **Junior** (Member 1) | Geolocation, GIS & Spatial Engine Lead | `MapExplorer.tsx`, GPS Verification API |
+| **Mahlatse** (Member 2) | Battle Engine, AI & Real-Time Multiplayer Lead | `BattleArena.tsx`, `LivePvPArena.tsx`, `AsyncPvP.tsx` |
+| **Kgothatso** (Member 3) | Database Architecture, Offline Sync & Auth Lead | `Login.tsx`, ServiceWorker, IndexedDB, Custom JWT Auth |
+| **Rea** (Member 4) | Admin Console, Curation & Telemetry Lead | `AdminEvents.tsx`, `AdminContent.tsx`, `AdminCuration.tsx`, `AdminAntiCheat.tsx`, `AdminAnalytics.tsx` |
+| **Nontobeko** (Member 5) | Progression Engine, Economy Systems & Trails Lead | `CardCollection.tsx`, `DeckBuilder.tsx`, `Leaderboard.tsx`, `QuestTrails.tsx`, `Trades.tsx`, `CardForge.tsx` |
+| **Keoratile** (Member 6) | Advanced Anti-Cheat, Matchmaking & Territory Lead | `TerritoryMap.tsx`, `RankedMatchmaking.tsx`, Velocity Trajectory Engine |
 
 ---
 

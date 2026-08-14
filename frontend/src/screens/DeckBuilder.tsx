@@ -100,7 +100,7 @@ export default function DeckBuilder() {
                   }}
                   onClick={() => removeCard(i)}
                 >
-                  <div style={{ fontSize: 24 }}>{card.emoji}</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: 'white' }}>{card.name.substring(0, 2).toUpperCase()}</div>
                   <div style={{ fontSize: 8, fontWeight: 700, color: 'white', textAlign: 'center', padding: '0 4px', lineHeight: 1.2 }}>
                     {card.name}
                   </div>
@@ -199,7 +199,7 @@ export default function DeckBuilder() {
       {/* Bottom half — Collection drawer */}
       <div style={{ padding: '12px 16px 0' }}>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#a4b5d1', marginBottom: 10 }}>
-          📦 Your Collection — tap to add
+          Your Collection — tap to add
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {ALL_CARDS.map((card) => {
