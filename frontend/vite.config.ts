@@ -16,8 +16,7 @@ export default defineConfig({
 
   server: {
     port: 5173,
-<<<<<<< HEAD
-    host: true
+    host: true,
   },
   test: {
     environment: 'jsdom',
@@ -35,8 +34,3 @@ export default defineConfig({
     }
   }
 });
-=======
-    host: true,
-  },
-});
->>>>>>> refs/remotes/origin/main
