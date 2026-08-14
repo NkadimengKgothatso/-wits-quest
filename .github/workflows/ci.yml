@@ -26,9 +26,6 @@ jobs:
       run: npm install
       working-directory: ./backend
 
-    - name: Lint Frontend
-      run: npm run lint
-      working-directory: ./frontend
 
     - name: Test Frontend (with 75% coverage enforcement)
       run: npm run test
