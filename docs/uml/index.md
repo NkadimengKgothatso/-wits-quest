@@ -11,28 +11,12 @@ This section holds the system's UML documentation. None of these have been autho
 
 ## How to add a diagram
 
-The site now uses `mkdocs-material` with Mermaid support enabled (`pymdownx.superfences`), so diagrams can be written directly as text and rendered live — no image export needed. Just fence a diagram as ` ```mermaid `:
+MkDocs (with the default `mkdocs` theme) doesn't render Mermaid out of the box. Two options:
 
-````markdown
-```mermaid
-graph TD
-    A[Player] --> B[Check location]
-    B --> C{In radius?}
-    C -->|Yes| D[Unlock trivia]
-    C -->|No| E[Show locked state]
-```
-````
+1. **Export as an image** (recommended for this theme) — draw the diagram in draw.io / Lucidchart / PlantUML, export as PNG/SVG, and drop it in `uml/images/`, then embed it:
+   ```markdown
+   ![Use case diagram](images/use-case-diagram.png)
+   ```
+2. **Switch to Mermaid rendering** — if you'd rather keep diagrams as editable text, swap the theme to `mkdocs-material` and enable the `pymdownx.superfences` Mermaid extension, or add the `mkdocs-mermaid2-plugin`. This is a bigger change to `mkdocs.yml` and affects the whole site's look, so worth deciding deliberately rather than per-page.
 
-Install the extra dependency once:
-
-```bash
-pip install mkdocs-material
-```
-
-If you'd still rather draw a diagram visually (draw.io, Lucidchart, etc.) and embed an image instead of writing Mermaid, that still works — export as PNG/SVG into `uml/images/` and embed with:
-
-```markdown
-![Use case diagram](images/use-case-diagram.png)
-```
-
-The database ERD in [Database Plan](../database/database-plan.md) and the [System Architecture Diagram](../development/architecture.md#system-architecture-diagram) are both already written in Mermaid and will render live now.
+The database ERD in [Database Plan](../database/database-plan.md) is already written in Mermaid syntax as a placeholder for this — it will render as a fenced code block until one of the two options above is applied.

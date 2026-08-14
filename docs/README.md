@@ -1,9 +1,26 @@
-# Wits Quest Architecture & UML Documentation
+# Wits Quest Documentation
 
-This directory contains technical documentation and rendered UML diagrams for **Wits Quest**.
+This directory contains all technical and project documentation for **Wits Quest**, designed to be deployed as a static site using MkDocs.
 
-## UML Diagrams
-- [01 System Architecture](file:///c:/Users/mahla/critical_projects/wits_quest/docs/uml/01_system_architecture.md)
-- [02 Battle State Machine](file:///c:/Users/mahla/critical_projects/wits_quest/docs/uml/02_battle_state_machine.md)
-- [03 Use Case Diagram](file:///c:/Users/mahla/critical_projects/wits_quest/docs/uml/03_use_case_diagram.md)
-- [04 ERD Database Schema](file:///c:/Users/mahla/critical_projects/wits_quest/docs/uml/04_erd_database_schema.md)
+## Directory Structure
+- **`project/`**: Game concept, functional requirements, and project scope.
+- **`uml/`**: Use case, class, sequence, and activity diagrams detailing the system design.
+- **`database/`**: Entity-relationship design and full table schema for Wits Quest.
+- **`meetings/`**: Team meeting records and decisions log.
+- **`development/`**: System architecture, Git workflows, and technical decisions.
+
+## Deploying Documentation
+This folder is configured for MkDocs (see `mkdocs.yml` in the root). To build or serve the documentation locally:
+
+```bash
+# Install MkDocs with the Material theme (if not already installed)
+pip install mkdocs-material
+
+# Run a local live-reloading server
+mkdocs serve
+
+# Build static files for deployment
+mkdocs build
+```
+
+For the full documentation homepage used by MkDocs, please refer to [index.md](index.md).
