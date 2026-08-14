@@ -267,4 +267,41 @@ router.post('/battle/result', (req: Request, res: Response) => {
   }
 });
 
+// ─── TRIVIA CHECK-IN (from offline queue sync) ─────────────
+router.post('/trivia/checkin', (req: Request, res: Response) => {
+  try {
+    const { userId, landmarkId, cardId, answer, timestamp } = req.body;
+
+    if (!userId || !cardId) {
+      res.status(400).json({ error: 'userId and cardId are required' });
+      return;
+    }
+
+    // Check if user already owns this card
+    const existing = queryOne('SELECT id FROM user_cards WHERE userId = ? AND cardId = ?', [userId, cardId]);
+    if (!existing) {
+      // Award the card to the user
+      const invId = `inv_${userId}_${cardId}_${Date.now()}`;
+      const now = timestamp || new Date().toISOString();
+      runAndPersist(
+        `INSERT INTO user_cards (id, userId, cardId, level, attackBonus, defenseBonus, speedBonus, brainsBonus, quantity, acquiredAt)
+         VALUES (?, ?, ?, 1, 0, 0, 0, 0, 1, ?)`,
+        [invId, userId, cardId, now]
+      );
+    }
+
+    // Update lastCheckInDate
+    runAndPersist(
+      `UPDATE users SET lastCheckInDate = ?, updatedAt = datetime('now') WHERE id = ?`,
+      [timestamp || new Date().toISOString(), userId]
+    );
+
+    console.log(`[Trivia] Check-in synced: user=${userId} card=${cardId} landmark=${landmarkId}`);
+    res.json({ status: 'ok', cardId, userId });
+  } catch (err: any) {
+    console.error('[Trivia] Check-in error:', err);
+    res.status(500).json({ error: 'Failed to process trivia check-in' });
+  }
+});
+
 export default router;
