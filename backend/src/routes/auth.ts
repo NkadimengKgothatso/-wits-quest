@@ -21,18 +21,22 @@ import { queryAll, queryOne, runAndPersist, getDB, persist } from '../db/connect
 
 const router = Router();
 
+// Student email must be exactly 7 digits followed by @students.wits.ac.za
+// e.g. 2345671@students.wits.ac.za
+const STUDENT_EMAIL_REGEX = /^\d{7}@students\.wits\.ac\.za$/;
+
 // ─── REGISTER ──────────────────────────────────────────────────────
 router.post('/auth/register', async (req: Request, res: Response) => {
   try {
-    const { email, password, name, studentNumber } = req.body;
+    const { email, password, name } = req.body;
 
     // Validation
     if (!email || !password) {
       res.status(400).json({ error: 'Email and password are required' });
       return;
     }
-    if (!email.endsWith('@students.wits.ac.za') && !email.endsWith('@wits.ac.za')) {
-      res.status(400).json({ error: 'Email must be a valid @students.wits.ac.za address' });
+    if (!STUDENT_EMAIL_REGEX.test(email)) {
+      res.status(400).json({ error: 'Email must be a valid student number, e.g. 2345671@students.wits.ac.za' });
       return;
     }
     if (password.length < 6) {
@@ -52,7 +56,9 @@ router.post('/auth/register', async (req: Request, res: Response) => {
     const username = name ? name.replace(/\s+/g, '_') : email.split('@')[0];
     const passwordHash = await bcrypt.hash(password, 10);
     const now = new Date().toISOString();
-    const stuNum = studentNumber || `S${Date.now()}`;
+    // Email is already validated as 7 digits @students.wits.ac.za, so derive
+    // the student number straight from it (ignore any conflicting body field).
+    const stuNum = email.split('@')[0];
 
     const db = getDB();
     db.run(
