@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -52,8 +52,6 @@ interface Landmark {
   position: [number, number];
 }
 
-// Coordinates collected by clicking each building directly on the map
-// (see ClickLogger technique). Names as clicked/typed at the time.
 const LANDMARKS: Landmark[] = [
   { name: "Great Hall", position: [-26.192177415373987, 28.030361941387124] },
   { name: "Humphrey Raikes", position: [-26.192095332747023, 28.03127963680826] },
@@ -71,14 +69,41 @@ const LANDMARKS: Landmark[] = [
   { name: "Flower Hall", position: [-26.191733973644435, 28.02620961472413] },
   { name: "Wits Sturrock Park", position: [-26.19319213569335, 28.021073663028996] },
   { name: "Origins Centre", position: [-26.192977185786265, 28.028291004158817] },
-  // { name: "Oppenheimer Life Sciences Building", position: [-26.191630778158714, 28.031986513751875] },
   { name: "Old Mutual Sport Hall", position: [-26.189627614752393, 28.029321916975654] },
-  // { name: "Wits Art Museum", position: [-26.193025213603814, 28.032799551979217] },
   { name: "John Moffat", position: [-26.190151568368808, 28.029334082969147] },
 ];
 
 export interface MapExplorerProps {
   onOpenTrivia?: (landmark: any) => void;
+}
+
+// Leaflet doesn't watch its container for resizes on its own.
+// This forces a recalculation on mount, orientation change, and
+// visualViewport resize (mobile browser chrome collapsing/expanding).
+function MapResizeHandler() {
+  const map = useMap();
+
+  useEffect(() => {
+    const invalidate = () => map.invalidateSize();
+
+    // Fire once shortly after mount, after layout has settled
+    const t1 = setTimeout(invalidate, 100);
+    const t2 = setTimeout(invalidate, 500);
+
+    window.addEventListener('resize', invalidate);
+    window.addEventListener('orientationchange', invalidate);
+    window.visualViewport?.addEventListener('resize', invalidate);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener('resize', invalidate);
+      window.removeEventListener('orientationchange', invalidate);
+      window.visualViewport?.removeEventListener('resize', invalidate);
+    };
+  }, [map]);
+
+  return null;
 }
 
 export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
@@ -114,23 +139,28 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
       }
     );
 
-    // Stop watching when the component unmounts, so we don't leak
-    // an active GPS watch after the user navigates away from this screen.
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
   return (
     <div
       style={{
+        // dvh accounts for mobile browser chrome; vh is the fallback
+        // for older browsers that don't support dvh.
         height: '100vh',
+        minHeight: '100dvh',
         width: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         background: '#0a1128',
+        overscrollBehavior: 'none',
       }}
     >
       <style>{`
+        html, body {
+          overscroll-behavior: none;
+        }
         .adventure-tiles {
           filter: sepia(0.4) saturate(1.3) hue-rotate(-10deg) contrast(1.05);
         }
@@ -202,17 +232,21 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           text-align: center;
           box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
+        /* Leaflet's own pane needs explicit touch-action so
+           iOS doesn't treat drags as page scroll/rubber-banding */
+        .leaflet-container {
+          touch-action: pan-x pan-y;
+        }
       `}</style>
 
       {locationError && (
         <div className="location-error-banner">{locationError}</div>
       )}
 
-      {/* Rounded-rectangle clipped map window - no border, no glow */}
       <div
         style={{
           width: 'min(92vw, 1100px)',
-          height: 'min(85vh, 800px)',
+          height: 'min(85dvh, 800px)',
           borderRadius: 32,
           overflow: 'hidden',
         }}
@@ -222,7 +256,10 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           zoom={DEFAULT_ZOOM}
           maxZoom={19}
           style={{ height: '100%', width: '100%' }}
+          tap={true}
+          zoomControl={true}
         >
+          <MapResizeHandler />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
