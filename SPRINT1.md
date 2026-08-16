@@ -91,7 +91,7 @@
   - [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx)
   - [Leaderboard.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/Leaderboard.tsx)
 * **UI and UX Ownership**:
-  - **100% Owned by Nontokozo**. Nontobeko is fully responsible for designing the user interface and user experience of the student profile, collection gallery, deck builder, and leaderboard.
+  - **100% Owned by Nontokozo**. Nontokozo is fully responsible for designing the user interface and user experience of the student profile, collection gallery, deck builder, and leaderboard.
   - Must design the student profile dashboard (level, XP progress bar, Essence currency meter), unlocked card gallery grid, dimmed locked card overlays with unlock requirement banners, collection completion progress bar, 5-card deck builder slots, budget counter meter, and leaderboard rankings table with division badges.
 * **Functional Logic & Integration**:
   - Render unlocked versus locked landmark cards with unlock location instructions.
@@ -131,9 +131,9 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 4. **Trivia and Card Unlock Step**:
    Student opens [TriviaModal.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/TriviaModal.tsx) and selects answer. Correct answer adds landmark card to `user_cards` table and triggers celebration toast.
 5. **Profile and Card Collection View**:
-   Student opens [CardCollection.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/CardCollection.tsx). Nontobeko's collection view shows unlocked cards alongside locked landmark cards with unlock location instructions.
+   Student opens [CardCollection.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/CardCollection.tsx). Nontokozo's collection view shows unlocked cards alongside locked landmark cards with unlock location instructions.
 6. **Deck Construction Step**:
-   Student opens [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx) and selects 5 cards. Nontobeko's validation logic verifies total stat cost is 300 points or less and contains maximum 1 Legendary card. Valid deck is saved to backend `user_decks`.
+   Student opens [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx) and selects 5 cards. Nontokozo's validation logic verifies total stat cost is 300 points or less and contains maximum 1 Legendary card. Valid deck is saved to backend `user_decks`.
 7. **Battle Execution Step**:
    Student enters [BattleArena.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/BattleArena.tsx). Mahlatse's battle engine loads configured 5-card deck. Player plays 5 rounds of attribute selection against AI.
 8. **Score Update and Persistence Step**:
@@ -147,9 +147,9 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 - [x] Login and registration API functional with student email checks (Kgothatso - [Login.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/Login.tsx)).
 - [x] Leaflet map displaying Wits campus with 25-meter GPS radius verification (Junior - [MapExplorer.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/MapExplorer.tsx)).
 - [x] Location-gated trivia modal awarding collectible landmark cards ([TriviaModal.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/TriviaModal.tsx)).
-- [x] Card collection view with locked card indicators and progress bar (Nontobeko - [CardCollection.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/CardCollection.tsx)).
-- [x] Deck builder enforcing 5-card size, 300 stat cap, and 1 Legendary card limit (Nontobeko - [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx)).
+- [x] Card collection view with locked card indicators and progress bar (Nontokozo - [CardCollection.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/CardCollection.tsx)).
+- [x] Deck builder enforcing 5-card size, 300 stat cap, and 1 Legendary card limit (Nontokozo - [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx)).
 - [x] 5-round card attribute battle arena against AI opponent (Mahlatse - [BattleArena.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/BattleArena.tsx)).
 - [x] Admin console forms for landmark placement and card creation (Rea - [AdminEvents.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminEvents.tsx), [AdminContent.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminContent.tsx)).
 - [x] Anti-cheat speed verification and Admin telemetry management (Keoratile - [AdminAntiCheat.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminAntiCheat.tsx)).
-- [x] Leaderboard rendering student rankings, total XP, and Elo division tiers (Nontobeko - [Leaderboard.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/Leaderboard.tsx)).
+- [x] Leaderboard rendering student rankings, total XP, and Elo division tiers (Nontokozo - [Leaderboard.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/Leaderboard.tsx)).

@@ -17,20 +17,20 @@ const BACKEND_URL = 'http://localhost:3000';
 // ---- Local fallback seed (used only if the backend is unreachable) ----
 // Mirrors the master `cards` catalog. Quantity 0 = not yet unlocked.
 const FALLBACK_CATALOG: (Card & { quantity: number; level: number })[] = [
-  { id: 'card-101', name: 'Great Hall Pillars', category: 'Landmarks', rarity: 'Legendary', stats: { attack: 85, defense: 95, speed: 40, brains: 90 }, image: '/cards/great-hall-pillars.webp', quantity: 1, level: 1 },
-  { id: 'card-102', name: "Solomon's Torch", category: 'History', rarity: 'Epic', stats: { attack: 90, defense: 70, speed: 85, brains: 88 }, image: '/cards/solomons-torch.webp', quantity: 2, level: 1 },
-  { id: 'card-103', name: 'Quantum Reactor', category: 'Science', rarity: 'Rare', stats: { attack: 75, defense: 60, speed: 70, brains: 95 }, image: '/cards/quantum-reactor.webp', quantity: 3, level: 1 },
-  { id: 'card-104', name: 'Senate Seal', category: 'Landmarks', rarity: 'Rare', stats: { attack: 60, defense: 88, speed: 45, brains: 92 }, image: '/cards/senate-seal.webp', quantity: 1, level: 1 },
-  { id: 'card-105', name: 'Cave Painting', category: 'History', rarity: 'Common', stats: { attack: 40, defense: 50, speed: 35, brains: 78 }, image: '/cards/cave-painting.webp', quantity: 4, level: 1 },
-  { id: 'card-106', name: 'Ancient Tome', category: 'History', rarity: 'Epic', stats: { attack: 55, defense: 72, speed: 30, brains: 99 }, image: '/cards/ancient-tome.webp', quantity: 1, level: 1 },
-  { id: 'card-107', name: 'The Rock Drill', category: 'Landmarks', rarity: 'Legendary', stats: { attack: 98, defense: 80, speed: 65, brains: 75 }, image: '/cards/the-rock-drill.webp', quantity: 1, level: 1 },
-  { id: 'card-108', name: 'Wits Springbok', category: 'Sports', rarity: 'Common', stats: { attack: 72, defense: 55, speed: 92, brains: 60 }, image: '/cards/wits-springbok.webp', quantity: 5, level: 1 },
-  { id: 'card-109', name: 'Wits Medical', category: 'Science', rarity: 'Rare', stats: { attack: 50, defense: 85, speed: 55, brains: 96 }, image: '/cards/wits-medical.webp', quantity: 2, level: 1 },
-  { id: 'card-110', name: 'Star Trails', category: 'Science', rarity: 'Epic', stats: { attack: 65, defense: 65, speed: 78, brains: 88 }, image: '/cards/star-trails.webp', quantity: 1, level: 1 },
-  { id: 'card-111', name: 'High Voltage Coil', category: 'Science', rarity: 'Legendary', stats: { attack: 92, defense: 68, speed: 84, brains: 91 }, image: '/cards/high-voltage-coil.webp', quantity: 0, level: 1 },
-  { id: 'card-112', name: 'Biomedical Genome', category: 'Science', rarity: 'Epic', stats: { attack: 62, defense: 78, speed: 60, brains: 97 }, image: '/cards/biomedical-genome.webp', quantity: 0, level: 1 },
-  { id: 'card-113', name: 'Mandelstam Theorem', category: 'Science', rarity: 'Epic', stats: { attack: 70, defense: 65, speed: 50, brains: 98 }, image: '/cards/mandelstam-theorem.webp', quantity: 0, level: 1 },
-  { id: 'card-114', name: 'Law Moot Shield', category: 'Landmarks', rarity: 'Rare', stats: { attack: 68, defense: 92, speed: 42, brains: 89 }, image: '/cards/law-moot-shield.webp', quantity: 0, level: 1 },
+  { id: 'card-101', name: 'The Great Hall', category: 'Landmarks', rarity: 'Legendary', stats: { attack: 24, defense: 27, speed: 11, brains: 26 }, image: '/cards/great-hall.webp', quantity: 1, level: 1 },
+  { id: 'card-102', name: "Jan Smuts House", category: 'History', rarity: 'Epic', stats: { attack: 22, defense: 17, speed: 20, brains: 21 }, image: '/cards/jan-smuts-house.webp', quantity: 2, level: 1 },
+  { id: 'card-103', name: 'Origins Centre', category: 'Science', rarity: 'Rare', stats: { attack: 16, defense: 12, speed: 14, brains: 20 }, image: '/cards/origins-centre.webp', quantity: 3, level: 1 },
+  { id: 'card-104', name: 'Wartenweiler Library', category: 'Landmarks', rarity: 'Rare', stats: { attack: 13, defense: 19, speed: 10, brains: 20 }, image: '/cards/wartenweiler-library.webp', quantity: 1, level: 1 },
+  { id: 'card-105', name: 'The Matrix', category: 'Lifestyle', rarity: 'Common', stats: { attack: 9, defense: 11, speed: 8, brains: 17 }, image: '/cards/the-matrix.webp', quantity: 4, level: 1 },
+  { id: 'card-106', name: 'William Cullen Library', category: 'History', rarity: 'Epic', stats: { attack: 17, defense: 23, speed: 9, brains: 31 }, image: '/cards/cullen-library.webp', quantity: 1, level: 1 },
+  { id: 'card-107', name: 'Solomon Mahlangu House', category: 'Landmarks', rarity: 'Legendary', stats: { attack: 29, defense: 24, speed: 19, brains: 23 }, image: '/cards/solomon-mahlangu-house.webp', quantity: 1, level: 1 },
+  { id: 'card-108', name: 'Bidvest Stadium', category: 'Sports', rarity: 'Common', stats: { attack: 12, defense: 9, speed: 15, brains: 10 }, image: '/cards/bidvest-stadium.webp', quantity: 5, level: 1 },
+  { id: 'card-109', name: 'Wits Medical School', category: 'Science', rarity: 'Rare', stats: { attack: 11, defense: 18, speed: 12, brains: 21 }, image: '/cards/wits-medical-school.webp', quantity: 2, level: 1 },
+  { id: 'card-110', name: 'Bernard Price Institute', category: 'Science', rarity: 'Epic', stats: { attack: 18, defense: 18, speed: 21, brains: 24 }, image: '/cards/bernard-price-institute.webp', quantity: 1, level: 1 },
+  { id: 'card-111', name: 'Science Stadium', category: 'Science', rarity: 'Legendary', stats: { attack: 26, defense: 19, speed: 24, brains: 26 }, image: '/cards/science-stadium.webp', quantity: 0, level: 1 },
+  { id: 'card-112', name: 'Wits Business School', category: 'Lifestyle', rarity: 'Epic', stats: { attack: 17, defense: 21, speed: 16, brains: 26 }, image: '/cards/wits-business-school.webp', quantity: 0, level: 1 },
+  { id: 'card-113', name: 'John Moffat Building', category: 'Landmarks', rarity: 'Epic', stats: { attack: 20, defense: 18, speed: 14, brains: 28 }, image: '/cards/john-moffat-building.webp', quantity: 0, level: 1 },
+  { id: 'card-114', name: 'Library Lawns', category: 'Landmarks', rarity: 'Rare', stats: { attack: 14, defense: 20, speed: 9, brains: 19 }, image: '/cards/library-lawns.webp', quantity: 0, level: 1 },
 ];
 
 const NO_BONUS: CardStats = { attack: 0, defense: 0, speed: 0, brains: 0 };

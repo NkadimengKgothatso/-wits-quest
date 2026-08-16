@@ -104,8 +104,8 @@
 
 ---
 
-### Task Allocation 5: Nontobeko (Progression, Deck Builder and Leaderboard Lead)
-* **Assigned Student**: Nontobeko (Member 5)
+### Task Allocation 5: Nontokozo (Progression, Deck Builder and Leaderboard Lead)
+* **Assigned Student**: Nontokozo (Member 5)
 * **Target Files**: [CardCollection.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/CardCollection.tsx), [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx), and [Leaderboard.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/Leaderboard.tsx)
 * **Goal**: Allow students to view their profile and unlocked cards, enforce strict 5-card deck building validation rules, and render campus rankings.
 
@@ -158,7 +158,7 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 4. **Trivia and Card Unlock Step**:
    Student opens [TriviaModal.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/TriviaModal.tsx) and selects answer. Correct answer adds landmark card to `user_cards` table and triggers celebration toast.
 5. **Deck Construction Step**:
-   Student opens [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx) and selects 5 cards. Nontobeko's validation logic verifies total stat cost is 300 points or less and contains maximum 1 Legendary card. Valid deck is saved to backend `user_decks`.
+   Student opens [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx) and selects 5 cards. Nontokozo's validation logic verifies total stat cost is 300 points or less and contains maximum 1 Legendary card. Valid deck is saved to backend `user_decks`.
 6. **Battle Execution Step**:
    Student enters [BattleArena.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/BattleArena.tsx). Mahlatse's battle engine loads configured 5-card deck. Player plays 5 rounds of attribute selection against AI.
 7. **Score Update and Persistence Step**:
@@ -172,8 +172,8 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 - [x] Login and registration API functional with student email checks (Kgothatso).
 - [x] Leaflet map displaying Wits campus with 25-meter GPS radius verification (Junior).
 - [x] Location-gated trivia modal awarding collectible landmark cards.
-- [x] Deck builder enforcing 5-card size, 300 stat cap, and 1 Legendary card limit (Nontobeko).
+- [x] Deck builder enforcing 5-card size, 300 stat cap, and 1 Legendary card limit (Nontokozo).
 - [x] 5-round card attribute battle arena against AI opponent (Mahlatse).
 - [x] Admin console forms for landmark and card creation (Rea).
 - [x] Anti-cheat speed verification and Elo calculations (Keoratile).
-- [x] Leaderboard rendering student rankings, total XP, and Elo division tiers (Nontobeko).
+- [x] Leaderboard rendering student rankings, total XP, and Elo division tiers (Nontokozo).
