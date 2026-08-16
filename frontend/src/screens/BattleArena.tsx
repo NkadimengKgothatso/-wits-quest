@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Swords, Shield, Zap, Brain, Trophy, Bot, User, RefreshCw, Cpu, Check, X, Minus } from 'lucide-react';
+import { Swords, Shield, Zap, Brain, Trophy, Bot, RefreshCw, Cpu, Check, X, Minus, MapPin, Search, Users, Sparkles, ChevronLeft } from 'lucide-react';
 import {
-  BattleCard,
   StatAttribute,
   AIDifficulty,
   createBattleState,
@@ -34,22 +33,22 @@ const ATTR_KEYS: StatAttribute[] = ['attack', 'defense', 'speed', 'brains'];
 type AttrKey = StatAttribute;
 
 const ATTR_META: Record<AttrKey, { icon: any; label: string; color: string }> = {
-  attack: { icon: Swords, label: 'Attack', color: '#f87171' },
-  defense: { icon: Shield, label: 'Defense', color: '#dca668' },
-  speed: { icon: Zap, label: 'Speed', color: '#facc15' },
-  brains: { icon: Brain, label: 'Brains', color: '#e8c99a' },
+  attack: { icon: Swords, label: 'Attack', color: '#EF4444' }, // Red
+  defense: { icon: Shield, label: 'Defense', color: '#D37A32' }, // Orange/Rust
+  speed: { icon: Zap, label: 'Speed', color: '#EAB308' }, // Yellow
+  brains: { icon: Brain, label: 'Brains', color: '#4A7C59' }, // Green
 }
 
 const RARITY_BORDER: Record<string, string> = {
-  Legendary: '#dca668', Epic: '#c99255', Rare: '#a87d4d', Common: 'rgba(220, 166, 104, 0.5)'
+  Legendary: '#D37A32', Epic: '#8B5CF6', Rare: '#3B82F6', Common: '#8A7B72'
 }
 
-type RoundResult = 'win' | 'lose' | 'tie' | null
-
-interface RoundRecord { playerCard: typeof PLAYER_CARDS[0]; cpuCard: typeof CPU_CARDS[0]; attr: AttrKey; result: RoundResult }
+type Mode = 'hub' | 'ai' | 'multiplayer';
 
 export default function BattleArena() {
   const { currentUser, updateUserLocally } = useAuth();
+  const [mode, setMode] = useState<Mode>('hub');
+  
   const [difficulty, setDifficulty] = useState<AIDifficulty>('medium');
   const [battleState, setBattleState] = useState<BattleState>(() =>
     createBattleState(PLAYER_CARDS, CPU_CARDS, 'medium')
@@ -58,7 +57,6 @@ export default function BattleArena() {
   const [cpuCardIdx, setCpuCardIdx] = useState(0);
   const [selectedAttr, setSelectedAttr] = useState<StatAttribute | null>(null);
   const [lastOutcome, setLastOutcome] = useState<RoundOutcome | null>(null);
-  const [aiReasoning, setAiReasoning] = useState<string>('');
   const [timeLeft, setTimeLeft] = useState(30);
   const [animating, setAnimating] = useState(false);
 
@@ -67,7 +65,7 @@ export default function BattleArena() {
 
   // Timer effect
   useEffect(() => {
-    if (lastOutcome !== null || battleState.isGameOver) return;
+    if (mode !== 'ai' || lastOutcome !== null || battleState.isGameOver) return;
     const t = setInterval(() => {
       setTimeLeft((v) => {
         if (v <= 1) {
@@ -79,11 +77,11 @@ export default function BattleArena() {
       });
     }, 1000);
     return () => clearInterval(t);
-  }, [lastOutcome, battleState.isGameOver, playerCardIdx]);
+  }, [mode, lastOutcome, battleState.isGameOver, playerCardIdx]);
 
-  // Persist battle results to Mock DB on Game Over
+  // Persist battle results
   useEffect(() => {
-    if (battleState.isGameOver && battleState.winner && currentUser) {
+    if (battleState.isGameOver && battleState.winner && currentUser && mode === 'ai') {
       const rewards = calculateRewards(battleState);
       saveMockBattleResult({
         userId: currentUser.id,
@@ -106,18 +104,7 @@ export default function BattleArena() {
         if (updatedUser) updateUserLocally(updatedUser);
       });
     }
-  }, [battleState.isGameOver]);
-
-  function handleDifficultyChange(newDiff: AIDifficulty) {
-    setDifficulty(newDiff);
-    setBattleState(createBattleState(PLAYER_CARDS, CPU_CARDS, newDiff));
-    setPlayerCardIdx(0);
-    setCpuCardIdx(0);
-    setSelectedAttr(null);
-    setLastOutcome(null);
-    setAiReasoning('');
-    setTimeLeft(30);
-  }
+  }, [battleState.isGameOver, mode]);
 
   function handleAutoPlay() {
     const randomAttr = ATTR_KEYS[Math.floor(Math.random() * ATTR_KEYS.length)];
@@ -130,7 +117,6 @@ export default function BattleArena() {
     setSelectedAttr(attr);
     setAnimating(true);
 
-    // AI chooses counter card based on difficulty level
     const aiChoice = selectAICounterCard(
       battleState.cpuHand,
       playerCard,
@@ -141,7 +127,6 @@ export default function BattleArena() {
 
     const activeCpuCard = aiChoice.card;
     setCpuCardIdx(CPU_CARDS.findIndex((c) => c.id === activeCpuCard.id));
-    setAiReasoning(aiChoice.reasoning || '');
 
     setTimeout(() => {
       const nextState = resolveRound(battleState, playerCard, activeCpuCard, attr);
@@ -163,17 +148,87 @@ export default function BattleArena() {
     }, 600);
   }
 
-  function resetGame() {
-    setBattleState(createBattleState(PLAYER_CARDS, CPU_CARDS, difficulty));
+  function startBattle(diff: AIDifficulty) {
+    setDifficulty(diff);
+    setBattleState(createBattleState(PLAYER_CARDS, CPU_CARDS, diff));
     setPlayerCardIdx(0);
     setCpuCardIdx(0);
     setSelectedAttr(null);
     setLastOutcome(null);
-    setAiReasoning('');
     setTimeLeft(30);
+    setMode('ai');
   }
 
-  const radius = 28;
+  if (mode === 'hub') {
+    return (
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg)', padding: '24px 16px', overflowY: 'auto', paddingBottom: 80 }}>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '28px', fontWeight: 700, color: 'var(--color-text)', marginBottom: '32px', textAlign: 'center' }}>
+          Battle Arena
+        </h1>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* AI Mode Selection */}
+          <div 
+            onClick={() => startBattle('medium')}
+            style={{
+              background: 'var(--color-card-bg)',
+              borderRadius: '24px',
+              padding: '24px',
+              boxShadow: '0 8px 24px rgba(44, 34, 30, 0.05)',
+              border: '2px solid var(--color-border)',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}
+          >
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(211, 122, 50, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <Bot size={32} color="var(--color-accent)" />
+            </div>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--color-text)', marginBottom: 8 }}>Campaign AI</h2>
+            <p style={{ fontSize: '14px', color: 'var(--color-muted)', marginBottom: 16 }}>Practice against AI opponents of varying difficulty to test your deck.</p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {['Easy', 'Med', 'Hard'].map(d => (
+                <span key={d} style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', padding: '4px 10px', borderRadius: 12, fontSize: 11, fontWeight: 700, color: 'var(--color-muted)' }}>
+                  {d}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Multiplayer Mode Selection */}
+          <div 
+            onClick={() => alert("Multiplayer is coming soon!")}
+            style={{
+              background: 'var(--color-card-bg)',
+              borderRadius: '24px',
+              padding: '24px',
+              boxShadow: '0 8px 24px rgba(44, 34, 30, 0.05)',
+              border: '2px solid var(--color-border)',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}
+          >
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(74, 124, 89, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <Users size={32} color="var(--color-success)" />
+            </div>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--color-text)', marginBottom: 8 }}>Async Multiplayer</h2>
+            <p style={{ fontSize: '14px', color: 'var(--color-muted)', marginBottom: 16 }}>Challenge other players' defense decks asynchronously.</p>
+            <span style={{ background: 'var(--color-success)', color: 'white', padding: '4px 12px', borderRadius: 12, fontSize: 11, fontWeight: 800 }}>
+              RANKED
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- MATCH UI ---
+  const radius = 24;
   const circumference = 2 * Math.PI * radius;
   const dashOffset = circumference * (1 - timeLeft / 30);
   const rewards = calculateRewards(battleState);
@@ -181,256 +236,139 @@ export default function BattleArena() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 50% 20%, #1e3a5f 0%, #54441b 50%, #3d2f12 100%)',
-      paddingTop: 70,
+      background: 'var(--color-bg)',
+      paddingTop: 16,
       paddingBottom: 80,
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* AI Difficulty Selector Bar */}
-      <div style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#a4b5d1', display: 'flex', alignItems: 'center', gap: 4 }}>
-          <Cpu size={14} color="#60a5fa" /> AI LEVEL:
-        </div>
-        {(['easy', 'medium', 'hard'] as AIDifficulty[]).map((level) => {
-          const isSelected = difficulty === level;
-          const label = level === 'easy' ? 'Level 1 (Easy)' : level === 'medium' ? 'Level 2 (Medium)' : 'Level 3 (Hard)';
-          return (
-            <button
-              key={level}
-              onClick={() => handleDifficultyChange(level)}
-              style={{
-                background: isSelected ? 'rgba(96, 165, 250, 0.25)' : 'rgba(29, 49, 86, 0.6)',
-                border: `1px solid ${isSelected ? '#60a5fa' : 'rgba(164,181,209,0.3)'}`,
-                color: isSelected ? '#60a5fa' : '#a4b5d1',
-                borderRadius: 8,
-                padding: '4px 10px',
-                fontSize: 11,
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-              }}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
-
       {/* Top Header */}
-      <div style={{ padding: '4px 16px 12px' }}>
-        <div className="glass" style={{ padding: '12px 16px', borderRadius: 14 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {/* Player */}
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{
-                width: 38, height: 38, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #e8c99a, #6b7d2c)',
-                border: '2px solid rgba(232, 201, 154, 0.7)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
-              }}>🧙</div>
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>Player</div>
-                <div style={{ fontSize: 11, color: '#4ade80', fontWeight: 700 }}>{battleState.playerWins} wins</div>
-              </div>
-            </div>
+      <div style={{ padding: '0 16px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <button onClick={() => setMode('hub')} style={{ background: 'var(--color-card-bg)', border: '1px solid var(--color-border)', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <ChevronLeft size={20} color="var(--color-text)" />
+        </button>
+        <div style={{ textAlign: 'center' }}>
+          <h2 style={{ fontSize: 16, fontWeight: 800, color: 'var(--color-text)' }}>AI Match - {difficulty.toUpperCase()}</h2>
+          <span style={{ fontSize: 12, color: 'var(--color-muted)', fontWeight: 600 }}>1430 ELO</span>
+        </div>
+        <div style={{ width: 40 }} />
+      </div>
 
-            {/* Round info + clock */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#dca668', fontWeight: 700, letterSpacing: '0.1em' }}>
-                BEST OF 5 · ROUND {battleState.currentRound}
-              </div>
-              {/* Circular countdown */}
-              <div style={{ position: 'relative', width: 64, height: 64 }}>
-                <svg width="64" height="64" style={{ transform: 'rotate(-90deg)' }}>
-                  <circle cx="32" cy="32" r={radius} fill="none" stroke="rgba(220, 166, 104, 0.2)" strokeWidth="4" />
-                  <circle
-                    cx="28" cy="28" r={radius}
-                    fill="none"
-                    stroke={timeLeft <= 10 ? '#f87171' : '#dca668'}
-                    strokeWidth="4"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={dashOffset}
-                    strokeLinecap="round"
-                    style={{ transition: 'stroke-dashoffset 1s linear', filter: `drop-shadow(0 0 4px ${timeLeft <= 10 ? '#f87171' : '#dca668'})` }}
-                  />
-                </svg>
-                <div style={{
-                  position: 'absolute', inset: 0,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 15, fontWeight: 900,
-                  color: timeLeft <= 10 ? '#f87171' : 'white',
-                }}>
-                  {timeLeft}
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: 3 }}>
-                {[0, 1, 2, 3, 4].map((i) => {
-                  const r = battleState.rounds[i];
-                  return (
-                    <div key={i} style={{
-                      width: 10, height: 10, borderRadius: '50%',
-                      background: !r ? 'rgba(220, 166, 104, 0.2)' : r.outcome === 'win' ? '#4ade80' : r.outcome === 'lose' ? '#f87171' : '#facc15',
-                      border: '1px solid rgba(220, 166, 104, 0.3)',
-                    }} />
-                  );
-                })}
+      {/* Scoreboard */}
+      <div style={{ padding: '0 16px 24px' }}>
+        <div style={{ background: 'var(--color-card-bg)', padding: '16px', borderRadius: 24, boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 700, marginBottom: 4 }}>YOU</span>
+            <span style={{ fontSize: 24, fontWeight: 800, color: 'var(--color-success)' }}>{battleState.playerWins}</span>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ position: 'relative', width: 48, height: 48, marginBottom: 8 }}>
+              <svg width="48" height="48" style={{ transform: 'rotate(-90deg)' }}>
+                <circle cx="24" cy="24" r={radius} fill="none" stroke="var(--color-border)" strokeWidth="4" />
+                <circle
+                  cx="24" cy="24" r={radius}
+                  fill="none"
+                  stroke={timeLeft <= 10 ? 'var(--color-accent)' : 'var(--color-success)'}
+                  strokeWidth="4"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={dashOffset}
+                  strokeLinecap="round"
+                  style={{ transition: 'stroke-dashoffset 1s linear' }}
+                />
+              </svg>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, color: timeLeft <= 10 ? 'var(--color-accent)' : 'var(--color-text)' }}>
+                {timeLeft}
               </div>
             </div>
+            <div style={{ display: 'flex', gap: 4 }}>
+              {[0, 1, 2, 3, 4].map((i) => {
+                const r = battleState.rounds[i];
+                return (
+                  <div key={i} style={{
+                    width: 8, height: 8, borderRadius: '50%',
+                    background: !r ? 'var(--color-border)' : r.outcome === 'win' ? 'var(--color-success)' : r.outcome === 'lose' ? 'var(--color-accent)' : '#EAB308',
+                  }} />
+                );
+              })}
+            </div>
+          </div>
 
-            {/* CPU */}
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>
-                  CPU Bot ({difficulty.toUpperCase()})
-                </div>
-                <div style={{ fontSize: 11, color: '#f87171', fontWeight: 700 }}>{battleState.cpuWins} wins</div>
-              </div>
-              <div style={{
-                width: 36, height: 36, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #f87171, #991b1b)',
-                border: '2px solid rgba(248, 113, 113, 0.7)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <Bot size={18} color="#ffffff" />
-              </div>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 700, marginBottom: 4 }}>CPU</span>
+            <span style={{ fontSize: 24, fontWeight: 800, color: 'var(--color-accent)' }}>{battleState.cpuWins}</span>
           </div>
         </div>
       </div>
-
-      {/* AI Telemetry / Reasoning Bar */}
-      {aiReasoning && (
-        <div style={{ padding: '0 16px 8px' }}>
-          <div style={{
-            background: 'rgba(15, 26, 46, 0.7)',
-            border: '1px solid rgba(96, 165, 250, 0.3)',
-            borderRadius: 8,
-            padding: '6px 12px',
-            fontSize: 10,
-            color: '#93c5fd',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-          }}>
-            <Cpu size={12} color="#60a5fa" />
-            <span>AI Reasoning: {aiReasoning}</span>
-          </div>
-        </div>
-      )}
 
       {/* Center Stage */}
-      <div style={{ flex: 1, padding: '8px 16px', position: 'relative' }}>
+      <div style={{ flex: 1, padding: '0 16px 24px', position: 'relative' }}>
         {battleState.isGameOver ? (
-          <div className="glass slide-up" style={{
-            borderRadius: 20, padding: 32, textAlign: 'center',
-            border: `2px solid ${battleState.winner === 'player' ? '#4ade80' : battleState.winner === 'cpu' ? '#f87171' : '#facc15'}`,
+          <div className="slide-up" style={{
+            background: 'var(--color-card-bg)', borderRadius: 24, padding: 32, textAlign: 'center',
+            border: `2px solid ${battleState.winner === 'player' ? 'var(--color-success)' : battleState.winner === 'cpu' ? 'var(--color-accent)' : '#EAB308'}`,
+            boxShadow: '0 8px 24px rgba(44, 34, 30, 0.05)'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
               {battleState.winner === 'player' ? (
-                <Trophy size={48} color="#4ade80" />
+                <Trophy size={48} color="var(--color-success)" />
               ) : battleState.winner === 'cpu' ? (
-                <Bot size={48} color="#f87171" />
+                <Bot size={48} color="var(--color-accent)" />
               ) : (
-                <Minus size={48} color="#facc15" />
+                <Minus size={48} color="#EAB308" />
               )}
             </div>
-            <div style={{ fontSize: 24, fontWeight: 900, color: battleState.winner === 'player' ? '#4ade80' : battleState.winner === 'cpu' ? '#f87171' : '#facc15' }}>
+            <div style={{ fontSize: 24, fontWeight: 900, color: battleState.winner === 'player' ? 'var(--color-success)' : battleState.winner === 'cpu' ? 'var(--color-accent)' : '#EAB308' }}>
               {battleState.winner === 'player' ? 'VICTORY' : battleState.winner === 'cpu' ? 'DEFEATED' : 'DRAW'}
             </div>
-            <div style={{ fontSize: 14, color: '#dca668', margin: '8px 0 16px' }}>
+            <div style={{ fontSize: 14, color: 'var(--color-muted)', margin: '8px 0 16px' }}>
               {battleState.playerWins} — {battleState.cpuWins} · Best of 5
             </div>
-            <div style={{ fontSize: 12, color: '#facc15', marginBottom: 20, fontWeight: 700 }}>
+            <div style={{ fontSize: 14, color: 'var(--color-accent)', marginBottom: 24, fontWeight: 700 }}>
               {rewards.message}
             </div>
             <button
               style={{
-                background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 12,
-                fontSize: 14,
-                fontWeight: 800,
-                padding: '12px 32px',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
+                background: 'var(--color-accent)', color: 'white', border: 'none', borderRadius: 16, fontSize: 16, fontWeight: 800, padding: '16px 32px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, width: '100%', justifyContent: 'center'
               }}
-              onClick={resetGame}
+              onClick={() => startBattle(difficulty)}
             >
-              <RefreshCw size={16} /> PLAY AGAIN
+              <RefreshCw size={18} /> PLAY AGAIN
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: 12, height: 260 }}>
+          <div style={{ display: 'flex', gap: 16, height: 260 }}>
             {/* Player card */}
             <div
               className={animating ? 'clash-left' : ''}
               style={{
-                flex: 1,
-                borderRadius: 16,
-                border: `2px solid ${RARITY_BORDER[playerCard.rarity]}`,
-                background: 'linear-gradient(160deg, #54441b 0%, #6b5630 100%)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 6,
-                position: 'relative',
-                overflow: 'hidden',
+                flex: 1, borderRadius: 20, border: `2px solid ${RARITY_BORDER[playerCard.rarity]}`, background: 'var(--color-card-bg)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, position: 'relative', overflow: 'hidden', boxShadow: '0 8px 24px rgba(44, 34, 30, 0.05)'
               }}
             >
-              <div style={{ fontSize: 9, color: '#e8c99a', fontWeight: 700, letterSpacing: '0.1em' }}>YOUR CARD</div>
-              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(84, 68, 27, 0.8)', border: `2px solid ${RARITY_BORDER[playerCard.rarity]}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: RARITY_BORDER[playerCard.rarity], fontWeight: 800, fontSize: 14 }} className="float">
+              <div style={{ fontSize: 9, color: 'var(--color-muted)', fontWeight: 800, letterSpacing: '0.1em' }}>YOUR CARD</div>
+              <div style={{ width: 56, height: 56, borderRadius: '50%', background: `${RARITY_BORDER[playerCard.rarity]}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: RARITY_BORDER[playerCard.rarity], fontWeight: 900, fontSize: 20 }}>
                 {playerCard.name.substring(0, 2).toUpperCase()}
               </div>
-              <div style={{ fontSize: 11, fontWeight: 800, color: 'white', textAlign: 'center', padding: '0 8px' }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--color-text)', textAlign: 'center', padding: '0 8px' }}>
                 {playerCard.name}
               </div>
               {selectedAttr && (
-                <div style={{
-                  background: `${ATTR_META[selectedAttr].color}20`,
-                  border: `1px solid ${ATTR_META[selectedAttr].color}60`,
-                  borderRadius: 8, padding: '4px 12px',
-                  color: ATTR_META[selectedAttr].color,
-                  fontSize: 15, fontWeight: 900,
-                }}>
+                <div style={{ background: `${ATTR_META[selectedAttr].color}15`, borderRadius: 12, padding: '6px 16px', color: ATTR_META[selectedAttr].color, fontSize: 16, fontWeight: 900 }}>
                   {ATTR_META[selectedAttr].label} {playerCard.stats[selectedAttr]}
                 </div>
               )}
               {lastOutcome && (
-                <div style={{
-                  position: 'absolute', inset: 0,
-                  background: lastOutcome === 'win' ? 'rgba(34,197,94,0.2)' : lastOutcome === 'lose' ? 'rgba(239,68,68,0.2)' : 'rgba(250,204,21,0.2)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  {lastOutcome === 'win' ? (
-                    <Check size={44} color="#4ade80" />
-                  ) : lastOutcome === 'lose' ? (
-                    <X size={44} color="#f87171" />
-                  ) : (
-                    <Minus size={44} color="#facc15" />
-                  )}
+                <div style={{ position: 'absolute', inset: 0, background: lastOutcome === 'win' ? 'rgba(74, 124, 89, 0.1)' : lastOutcome === 'lose' ? 'rgba(211, 122, 50, 0.1)' : 'rgba(234, 179, 8, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {lastOutcome === 'win' ? <Check size={48} color="var(--color-success)" /> : lastOutcome === 'lose' ? <X size={48} color="var(--color-accent)" /> : <Minus size={48} color="#EAB308" />}
                 </div>
               )}
             </div>
 
             {/* VS divider */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6, flexShrink: 0 }}>
-              <div style={{
-                fontSize: 18, fontWeight: 900, color: '#dca668',
-                textShadow: '0 0 16px rgba(220, 166, 104, 0.7)',
-              }}>VS</div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, flexShrink: 0 }}>
+              <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--color-muted)' }}>VS</div>
               {lastOutcome && (
-                <div className="slide-up" style={{
-                  background: lastOutcome === 'win' ? 'rgba(34,197,94,0.25)' : lastOutcome === 'lose' ? 'rgba(239,68,68,0.25)' : 'rgba(250,204,21,0.25)',
-                  border: `1px solid ${lastOutcome === 'win' ? '#4ade80' : lastOutcome === 'lose' ? '#f87171' : '#facc15'}`,
-                  borderRadius: 8, padding: '4px 8px',
-                  color: lastOutcome === 'win' ? '#4ade80' : lastOutcome === 'lose' ? '#f87171' : '#facc15',
-                  fontSize: 9, fontWeight: 900, textAlign: 'center',
-                }}>
+                <div className="slide-up" style={{ background: lastOutcome === 'win' ? 'var(--color-success)' : lastOutcome === 'lose' ? 'var(--color-accent)' : '#EAB308', borderRadius: 8, padding: '4px 10px', color: 'white', fontSize: 10, fontWeight: 900, textAlign: 'center' }}>
                   {lastOutcome.toUpperCase()}
                 </div>
               )}
@@ -438,39 +376,17 @@ export default function BattleArena() {
 
             {/* CPU card */}
             <div style={{
-              flex: 1,
-              borderRadius: 16,
-              border: `2px solid ${RARITY_BORDER[cpuCard.rarity]}`,
-              background: 'linear-gradient(160deg, #2d1a1a 0%, #3d1f1f 100%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
-              position: 'relative',
-              overflow: 'hidden',
+              flex: 1, borderRadius: 20, border: `2px solid ${RARITY_BORDER[cpuCard.rarity]}`, background: 'var(--color-card-bg)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, position: 'relative', overflow: 'hidden', boxShadow: '0 8px 24px rgba(44, 34, 30, 0.05)'
             }}>
-              <div style={{ fontSize: 9, color: '#f87171', fontWeight: 700, letterSpacing: '0.1em' }}>CPU CARD</div>
-              <div style={{
-                width: 40, height: 40, borderRadius: '50%',
-                background: 'rgba(45, 26, 26, 0.8)',
-                border: `2px solid ${RARITY_BORDER[cpuCard.rarity]}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: RARITY_BORDER[cpuCard.rarity], fontWeight: 800, fontSize: 13,
-              }}>
+              <div style={{ fontSize: 9, color: 'var(--color-accent)', fontWeight: 800, letterSpacing: '0.1em' }}>CPU CARD</div>
+              <div style={{ width: 56, height: 56, borderRadius: '50%', background: `${RARITY_BORDER[cpuCard.rarity]}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: RARITY_BORDER[cpuCard.rarity], fontWeight: 900, fontSize: 20 }}>
                 {cpuCard.name.substring(0, 2).toUpperCase()}
               </div>
-              <div style={{ fontSize: 11, fontWeight: 800, color: 'white', textAlign: 'center', padding: '0 8px' }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--color-text)', textAlign: 'center', padding: '0 8px' }}>
                 {cpuCard.name}
               </div>
               {selectedAttr && (
-                <div style={{
-                  background: `${ATTR_META[selectedAttr].color}20`,
-                  border: `1px solid ${ATTR_META[selectedAttr].color}60`,
-                  borderRadius: 8, padding: '4px 12px',
-                  color: ATTR_META[selectedAttr].color,
-                  fontSize: 15, fontWeight: 900,
-                }}>
+                <div style={{ background: `${ATTR_META[selectedAttr].color}15`, borderRadius: 12, padding: '6px 16px', color: ATTR_META[selectedAttr].color, fontSize: 16, fontWeight: 900 }}>
                   {ATTR_META[selectedAttr].label} {cpuCard.stats[selectedAttr]}
                 </div>
               )}
@@ -481,8 +397,8 @@ export default function BattleArena() {
 
       {/* Bottom Attribute Controls */}
       {!battleState.isGameOver && (
-        <div style={{ padding: '0 16px 16px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
+        <div style={{ padding: '0 16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 12, marginBottom: 24 }}>
             {ATTR_KEYS.map((attr) => {
               const meta = ATTR_META[attr];
               const IconComp = meta.icon;
@@ -493,53 +409,40 @@ export default function BattleArena() {
                   onClick={() => !lastOutcome && executeRound(attr)}
                   disabled={!!lastOutcome}
                   style={{
-                    background: isSelected ? `${meta.color}25` : 'rgba(107, 125, 44, 0.4)',
-                    border: `1.5px solid ${isSelected ? meta.color : 'rgba(220, 166, 104, 0.3)'}`,
-                    borderRadius: 12,
-                    padding: '10px 6px',
-                    color: isSelected ? meta.color : 'white',
-                    cursor: lastOutcome ? 'default' : 'pointer',
-                    fontWeight: 800,
-                    fontSize: 12,
-                    textAlign: 'center',
-                    boxShadow: isSelected ? `0 0 12px ${meta.color}50` : 'none',
-                    transition: 'all 0.2s',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
+                    background: isSelected ? `${meta.color}15` : 'var(--color-card-bg)',
+                    border: `1.5px solid ${isSelected ? meta.color : 'var(--color-border)'}`,
+                    borderRadius: 16, padding: '12px 8px', color: isSelected ? meta.color : 'var(--color-text)',
+                    cursor: lastOutcome ? 'default' : 'pointer', fontWeight: 800, fontSize: 13, textAlign: 'center',
+                    boxShadow: isSelected ? `0 4px 12px ${meta.color}30` : '0 2px 8px rgba(44, 34, 30, 0.05)',
+                    transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
                   }}
                 >
-                  <IconComp size={16} color={meta.color} />
-                  <span style={{ fontSize: 10 }}>{meta.label}</span>
-                  <span style={{ fontSize: 11, color: isSelected ? meta.color : '#dca668' }}>
-                    {playerCard[attr]}
-                  </span>
+                  <IconComp size={20} color={isSelected ? meta.color : 'var(--color-muted)'} />
+                  <span style={{ fontSize: 10, color: isSelected ? meta.color : 'var(--color-muted)' }}>{meta.label}</span>
+                  <span style={{ fontSize: 14, color: isSelected ? meta.color : 'var(--color-text)' }}>{playerCard[attr]}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Card Hand Selector */}
-          <div style={{ display: 'flex', gap: 8, overflowX: 'auto' }}>
+          <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8, scrollbarWidth: 'none' }}>
             {PLAYER_CARDS.map((card, i) => (
               <div
                 key={card.id}
                 onClick={() => setPlayerCardIdx(i)}
                 style={{
-                  flexShrink: 0,
-                  width: 56,
-                  borderRadius: 10,
-                  border: `1.5px solid ${i === playerCardIdx ? RARITY_BORDER[card.rarity] : 'rgba(168,187,217,0.25)'}`,
-                  background: i === playerCardIdx ? 'rgba(61,90,128,0.6)' : 'rgba(44,62,80,0.4)',
-                  padding: '6px 4px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
+                  flexShrink: 0, width: 64, borderRadius: 12,
+                  border: `2px solid ${i === playerCardIdx ? RARITY_BORDER[card.rarity] : 'var(--color-border)'}`,
+                  background: i === playerCardIdx ? `${RARITY_BORDER[card.rarity]}10` : 'var(--color-card-bg)',
+                  padding: '8px 4px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.2s',
+                  boxShadow: '0 2px 8px rgba(44, 34, 30, 0.05)'
                 }}
               >
-                <div style={{ fontSize: 22 }}>{card.emoji}</div>
-                <div style={{ fontSize: 8, color: i === playerCardIdx ? 'white' : '#dca668', fontWeight: 700, lineHeight: 1.2, marginTop: 2 }}>
+                <div style={{ fontSize: 18, fontWeight: 900, color: RARITY_BORDER[card.rarity], marginBottom: 4 }}>
+                  {card.name.substring(0, 2).toUpperCase()}
+                </div>
+                <div style={{ fontSize: 9, color: 'var(--color-text)', fontWeight: 800, lineHeight: 1.1 }}>
                   {card.name.split(' ')[0]}
                 </div>
               </div>

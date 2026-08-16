@@ -50,48 +50,48 @@ export default function AdminAntiCheat() {
     <div style={{ display: 'flex', height: '100%', gap: 0, minHeight: 'calc(100vh - 120px)' }}>
       {/* Left: Flagged list */}
       <div style={{
-        width: 260,
-        background: 'rgba(63, 47, 18, 0.95)',
-        borderRight: '1px solid rgba(220, 166, 104, 0.15)',
-        padding: 14,
+        width: 320,
+        background: 'var(--color-card-bg)',
+        borderRight: '1px solid var(--color-border)',
+        padding: 20,
         overflowY: 'auto',
       }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: 'white', marginBottom: 12, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+        <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
           Flagged Student Accounts ({FLAGGED_PLAYERS.length})
         </div>
 
         {FLAGGED_PLAYERS.map((p) => {
-          const tc = p.trustScore < 30 ? '#dca668' : p.trustScore < 60 ? '#e8c99a' : '#dca668';
+          const tc = p.trustScore < 30 ? '#EF4444' : p.trustScore < 60 ? '#F59E0B' : 'var(--color-success)';
           return (
             <button
               key={p.id}
               onClick={() => { setSelected(p); setOverrideScore(String(p.trustScore)); }}
               style={{
                 width: '100%', background: 'none', border: 'none', padding: 0,
-                cursor: 'pointer', textAlign: 'left', marginBottom: 10,
+                cursor: 'pointer', textAlign: 'left', marginBottom: 12,
               }}
             >
               <div style={{
-                background: selected.id === p.id ? 'rgba(107, 125, 44, 0.5)' : 'rgba(107, 125, 44, 0.25)',
-                border: `1px solid ${selected.id === p.id ? '#dca668' : 'rgba(220, 166, 104, 0.15)'}`,
-                borderRadius: 10, padding: 10, transition: 'all 0.2s',
+                background: selected.id === p.id ? 'var(--color-accent)' : 'var(--color-bg)',
+                border: `2px solid ${selected.id === p.id ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                borderRadius: 12, padding: 12, transition: 'all 0.2s',
               }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'white', marginBottom: 6, wordBreak: 'break-all' }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: selected.id === p.id ? 'white' : 'var(--color-text)', marginBottom: 8, wordBreak: 'break-all' }}>
                   {p.email}
                 </div>
                 {/* Trust score bar */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                  <div className="stat-bar-track" style={{ flex: 1 }}>
-                    <div className="stat-bar-fill" style={{ width: `${p.trustScore}%`, background: tc }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                  <div style={{ flex: 1, height: 6, background: selected.id === p.id ? 'rgba(255,255,255,0.3)' : 'var(--color-border)', borderRadius: 99, overflow: 'hidden' }}>
+                    <div style={{ width: `${p.trustScore}%`, height: '100%', background: selected.id === p.id ? 'white' : tc, borderRadius: 99 }} />
                   </div>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: tc }}>{p.trustScore}</span>
+                  <span style={{ fontSize: 12, fontWeight: 800, color: selected.id === p.id ? 'white' : tc }}>{p.trustScore}</span>
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {p.violations.map((v) => (
                     <span key={v} style={{
-                      fontSize: 8, fontWeight: 700, color: '#dca668',
-                      background: 'rgba(220, 166, 104, 0.15)', borderRadius: 4, padding: '2px 5px',
-                      border: '1px solid rgba(220, 166, 104, 0.3)'
+                      fontSize: 10, fontWeight: 800, color: selected.id === p.id ? 'var(--color-accent)' : 'var(--color-muted)',
+                      background: selected.id === p.id ? 'white' : 'var(--color-bg)', borderRadius: 6, padding: '4px 8px',
+                      border: `1px solid ${selected.id === p.id ? 'transparent' : 'var(--color-border)'}`
                     }}>
                       {v}
                     </span>
@@ -104,37 +104,37 @@ export default function AdminAntiCheat() {
       </div>
 
       {/* Right: Audit Evidence Detail View */}
-      <div style={{ flex: 1, padding: 16, overflowY: 'auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+      <div style={{ flex: 1, padding: 32, overflowY: 'auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
           <div>
-            <h3 style={{ fontSize: 16, fontWeight: 800, color: 'white', margin: '0 0 4px' }}>{selected.email}</h3>
-            <div style={{ fontSize: 11, color: '#dca668' }}>Audit Evidence & Velocity Logs</div>
+            <h3 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', margin: '0 0 8px' }}>{selected.email}</h3>
+            <div style={{ fontSize: 14, color: 'var(--color-muted)', fontWeight: 600 }}>Audit Evidence & Velocity Logs</div>
           </div>
           <div style={{
-            background: 'rgba(84, 68, 27, 0.8)', border: `1.5px solid ${trustColor}`,
-            borderRadius: 12, padding: '6px 14px', textAlign: 'center'
+            background: 'var(--color-card-bg)', border: `2px solid ${trustColor}`,
+            borderRadius: 16, padding: '12px 24px', textAlign: 'center', boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)'
           }}>
-            <div style={{ fontSize: 9, color: '#dca668', fontWeight: 700, letterSpacing: '0.05em' }}>TRUST SCORE</div>
-            <div style={{ fontSize: 18, fontWeight: 900, color: trustColor }}>{selected.trustScore} / 100</div>
+            <div style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 800, letterSpacing: '0.05em' }}>TRUST SCORE</div>
+            <div style={{ fontSize: 24, fontWeight: 900, color: trustColor }}>{selected.trustScore} / 100</div>
           </div>
         </div>
 
         {/* Trajectory logs */}
-        <div className="glass-dark" style={{ borderRadius: 12, padding: 12, marginBottom: 16 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+        <div style={{ background: 'var(--color-card-bg)', borderRadius: 16, padding: 24, marginBottom: 24, border: '2px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}>
+          <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             GPS Movement Trajectory Log
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {selected.trajectory.map((t, idx) => (
               <div key={idx} style={{
-                display: 'flex', justifyContent: 'space-between', fontSize: 11,
-                padding: '6px 10px', borderRadius: 6,
-                background: t.vel > 5 ? 'rgba(220, 166, 104, 0.15)' : 'rgba(107, 125, 44, 0.2)',
-                border: `1px solid ${t.vel > 5 ? 'rgba(220, 166, 104, 0.3)' : 'rgba(220, 166, 104, 0.1)'}`,
+                display: 'flex', justifyContent: 'space-between', fontSize: 13,
+                padding: '12px 16px', borderRadius: 12,
+                background: t.vel > 5 ? 'rgba(239, 68, 68, 0.1)' : 'var(--color-bg)',
+                border: `1.5px solid ${t.vel > 5 ? 'rgba(239, 68, 68, 0.3)' : 'var(--color-border)'}`,
               }}>
-                <span style={{ color: '#dca668' }}>{t.time}</span>
-                <span style={{ color: 'white' }}>{t.lat}, {t.lng}</span>
-                <span style={{ fontWeight: 700, color: t.vel > 5 ? '#dca668' : '#e8c99a' }}>
+                <span style={{ color: 'var(--color-muted)', fontWeight: 700 }}>{t.time}</span>
+                <span style={{ color: 'var(--color-text)', fontWeight: 600 }}>{t.lat}, {t.lng}</span>
+                <span style={{ fontWeight: 800, color: t.vel > 5 ? '#EF4444' : 'var(--color-text)' }}>
                   {t.vel} m/s {t.vel > 5 && '(SPOOF DETECTED)'}
                 </span>
               </div>
@@ -143,23 +143,23 @@ export default function AdminAntiCheat() {
         </div>
 
         {/* Moderation Action Bar */}
-        <div className="glass-dark" style={{ borderRadius: 12, padding: 14 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#dca668', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+        <div style={{ background: 'var(--color-card-bg)', borderRadius: 16, padding: 24, border: '2px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}>
+          <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Lecturer Moderation Actions
           </div>
           {actionDone && (
-            <div style={{ fontSize: 11, color: '#dca668', marginBottom: 10, fontWeight: 700 }}>
+            <div style={{ fontSize: 13, color: 'var(--color-success)', marginBottom: 16, fontWeight: 800 }}>
               Action Applied Successfully!
             </div>
           )}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="btn-ghost" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} onClick={() => handleAction('warn')}>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }} onClick={() => handleAction('warn')}>
               Issue Warning
             </button>
-            <button className="btn-ghost" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} onClick={() => handleAction('verify')}>
+            <button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }} onClick={() => handleAction('verify')}>
               Require Secondary GPS Fix
             </button>
-            <button className="btn-peach" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} onClick={() => handleAction('suspend')}>
+            <button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: '#EF4444', border: 'none', color: 'white', fontWeight: 800, cursor: 'pointer' }} onClick={() => handleAction('suspend')}>
               Suspend Account
             </button>
           </div>

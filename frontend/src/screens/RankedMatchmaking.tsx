@@ -60,36 +60,36 @@ export default function RankedMatchmaking() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 50% 20%, #6b5630 0%, #54441b 50%, #3d2f12 100%)',
+      background: 'radial-gradient(ellipse at 50% 20%, var(--color-bg) 0%, #E5D5C5 100%)',
       paddingTop: 16, paddingBottom: 80,
     }}>
       <div style={{ padding: '14px 16px', maxWidth: 600, margin: '0 auto' }}>
-        <h2 style={{ fontSize: 20, fontWeight: 900, color: 'white', margin: '0 0 4px' }}>Ranked Elo Seasons</h2>
-        <p style={{ fontSize: 12, color: '#dca668', margin: 0 }}>Competitive seasonal ladder & Elo rating matchmaking</p>
+        <h2 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', margin: '0 0 4px' }}>Ranked Elo Seasons</h2>
+        <p style={{ fontSize: 13, color: 'var(--color-muted)', margin: 0, fontWeight: 600 }}>Competitive seasonal ladder & Elo rating matchmaking</p>
       </div>
 
       {/* User Rank Card */}
-      <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 16 }}>
-        <div className="glass-dark" style={{ borderRadius: 16, padding: 18, border: '1.5px solid #dca668', textAlign: 'center' }}>
-          <div style={{ fontSize: 10, color: '#dca668', fontWeight: 700, letterSpacing: '0.1em' }}>YOUR CURRENT RATING</div>
-          <div style={{ fontSize: 32, fontWeight: 900, color: '#dca668', margin: '4px 0' }}>1,540 Elo</div>
-          <div style={{ fontSize: 12, fontWeight: 800, color: '#e8c99a' }}>Diamond Tier · Rank #4 Campuswide</div>
-          <div style={{ fontSize: 10, color: '#dca668', marginTop: 8 }}>Season 1 ends in 12 days</div>
+      <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 20 }}>
+        <div style={{ background: 'var(--color-card-bg)', borderRadius: 20, padding: 24, border: '2px solid var(--color-accent)', textAlign: 'center', boxShadow: '0 8px 32px rgba(211, 122, 50, 0.1)' }}>
+          <div style={{ fontSize: 11, color: 'var(--color-accent)', fontWeight: 800, letterSpacing: '0.1em' }}>YOUR CURRENT RATING</div>
+          <div style={{ fontSize: 36, fontWeight: 900, color: 'var(--color-text)', margin: '8px 0' }}>1,540 Elo</div>
+          <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--color-muted)' }}>Diamond Tier · Rank #4 Campuswide</div>
+          <div style={{ fontSize: 11, color: 'var(--color-muted)', marginTop: 12, fontWeight: 600 }}>Season 1 ends in 12 days</div>
         </div>
       </div>
 
       {/* Queue Action Button */}
-      <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 20 }}>
+      <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 24 }}>
         {inQueue ? (
-          <div className="glass-dark" style={{ borderRadius: 14, padding: 16, textAlign: 'center', border: '1px solid #e8c99a' }}>
-            <div style={{ fontSize: 13, fontWeight: 800, color: '#e8c99a', marginBottom: 6 }}>Searching for Opponent...</div>
-            <div style={{ fontSize: 11, color: '#dca668' }}>Matching within ±50 Elo range</div>
-            <button className="btn-ghost" style={{ fontSize: 11, padding: '8px 16px', borderRadius: 8, marginTop: 12 }} onClick={() => setInQueue(false)}>
+          <div style={{ background: 'var(--color-bg)', borderRadius: 16, padding: 20, textAlign: 'center', border: '2px solid var(--color-accent)', boxShadow: '0 4px 16px rgba(211, 122, 50, 0.1)' }}>
+            <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-accent)', marginBottom: 6 }}>Searching for Opponent...</div>
+            <div style={{ fontSize: 12, color: 'var(--color-muted)', fontWeight: 600 }}>Matching within ±50 Elo range</div>
+            <button style={{ background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-muted)', fontSize: 13, fontWeight: 700, padding: '10px 20px', borderRadius: 12, marginTop: 16, cursor: 'pointer' }} onClick={() => setInQueue(false)}>
               Cancel Queue
             </button>
           </div>
         ) : (
-          <button className="btn-peach" style={{ width: '100%', fontSize: 14, padding: '14px', borderRadius: 12 }} onClick={handleStartQueue}>
+          <button style={{ width: '100%', fontSize: 15, padding: '16px', background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', borderRadius: 16, cursor: 'pointer', boxShadow: '0 4px 16px rgba(211, 122, 50, 0.2)' }} onClick={handleStartQueue}>
             Find Ranked Match
           </button>
         )}
@@ -97,25 +97,25 @@ export default function RankedMatchmaking() {
 
       {/* Leaderboard preview */}
       <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto' }}>
-        <div className="glass-dark" style={{ borderRadius: 14, padding: 14 }}>
-          <div style={{ fontSize: 11, fontWeight: 800, color: '#e8c99a', marginBottom: 10, textTransform: 'uppercase' }}>
+        <div style={{ background: 'var(--color-card-bg)', borderRadius: 20, padding: 20, border: '1px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}>
+          <div style={{ fontSize: 12, fontWeight: 900, color: 'var(--color-muted)', marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Top Season 1 Ranked Competitors
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {rankedLadder.slice(0, 6).map((s) => (
               <div key={s.id || s.rank} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '8px 12px', borderRadius: 8,
-                background: s.isUser ? 'rgba(220, 166, 104, 0.15)' : 'rgba(107, 125, 44, 0.25)',
-                border: `1px solid ${s.isUser ? '#dca668' : 'rgba(220, 166, 104, 0.15)'}`,
+                padding: '12px 16px', borderRadius: 12,
+                background: s.isUser ? 'rgba(211, 122, 50, 0.08)' : 'var(--color-bg)',
+                border: `1.5px solid ${s.isUser ? 'var(--color-accent)' : 'var(--color-border)'}`,
               }}>
                 <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: s.isUser ? '#dca668' : 'white' }}>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: s.isUser ? 'var(--color-accent)' : 'var(--color-text)' }}>
                     #{s.rank} {s.name}
                   </div>
-                  <div style={{ fontSize: 10, color: '#dca668' }}>{s.tier}</div>
+                  <div style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 600 }}>{s.tier}</div>
                 </div>
-                <div style={{ fontSize: 13, fontWeight: 900, color: s.isUser ? '#dca668' : 'white' }}>
+                <div style={{ fontSize: 15, fontWeight: 900, color: s.isUser ? 'var(--color-accent)' : 'var(--color-text)' }}>
                   {s.elo} Elo
                 </div>
               </div>
