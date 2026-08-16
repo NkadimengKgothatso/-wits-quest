@@ -238,6 +238,7 @@ const INITIAL_TEST_USERS: MockUser[] = [
     pvpLosses: 38,
     pvpDraws: 2,
     maxStatBudget: 350,
+    legendaryCap: 1,
   },
   {
     id: 'usr_2821750',
