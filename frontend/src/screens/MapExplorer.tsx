@@ -106,6 +106,20 @@ function MapResizeHandler() {
   return null;
 }
 
+function UserLocationFocus({ position }: { position: [number, number] | null }) {
+  const map = useMap();
+  const [hasCentered, setHasCentered] = useState(false);
+
+  useEffect(() => {
+    if (position && !hasCentered) {
+      map.flyTo(position, 18, { animate: true, duration: 1.5 });
+      setHasCentered(true);
+    }
+  }, [position, hasCentered, map]);
+
+  return null;
+}
+
 export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
@@ -145,15 +159,11 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
   return (
     <div
       style={{
-        // dvh accounts for mobile browser chrome; vh is the fallback
-        // for older browsers that don't support dvh.
-        height: '100vh',
-        minHeight: '100dvh',
+        flex: 1,
         width: '100%',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#0a1128',
+        flexDirection: 'column',
+        background: '#FAF7F2',
         overscrollBehavior: 'none',
       }}
     >
@@ -197,7 +207,7 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: rgba(66, 133, 244, 0.25);
+          background: rgba(211, 122, 50, 0.25);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -207,7 +217,7 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           width: 14px;
           height: 14px;
           border-radius: 50%;
-          background: #4285f4;
+          background: #D37A32;
           border: 3px solid #ffffff;
           box-shadow: 0 1px 4px rgba(0,0,0,0.4);
         }
@@ -245,21 +255,20 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
 
       <div
         style={{
-          width: 'min(92vw, 1100px)',
-          height: 'min(85dvh, 800px)',
-          borderRadius: 32,
-          overflow: 'hidden',
+          width: '100%',
+          flex: 1,
+          position: 'relative',
         }}
       >
         <MapContainer
           center={WITS_CENTER}
           zoom={DEFAULT_ZOOM}
           maxZoom={19}
-          style={{ height: '100%', width: '100%' }}
-          tap={true}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
           zoomControl={true}
         >
           <MapResizeHandler />
+          <UserLocationFocus position={userPosition} />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

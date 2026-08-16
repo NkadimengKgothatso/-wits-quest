@@ -1,244 +1,375 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import { Building, BookOpen, FlaskConical, FileText, Compass, Book, Palette, Trophy, MapPin, Search, ChevronDown, Filter, Sparkles, Layers, ChevronRight } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { getMockUserCards, MockCard } from '../services/mockDbClient';
 
-export interface CollectionCard {
-  id: number
-  name: string
-  category: string
-  rarity: 'Legendary' | 'Epic' | 'Rare' | 'Common'
-  attack: number
-  defense: number
-  speed: number
-  brains: number
-  owned: number
-  landmarkLocation: string
-  unlockInstruction: string
+interface UserCardItem {
+  card: MockCard;
+  owned: number;
+  level: number;
 }
 
-const ALL_MASTER_CARDS: CollectionCard[] = [
-  { id: 1, name: 'Great Hall Pillars', category: 'Landmarks', rarity: 'Legendary', attack: 85, defense: 95, speed: 40, brains: 90, owned: 1, landmarkLocation: 'Great Hall', unlockInstruction: 'Unlocked via Great Hall GPS Trivia Challenge' },
-  { id: 2, name: "Solomon's Torch", category: 'History', rarity: 'Epic', attack: 90, defense: 70, speed: 85, brains: 88, owned: 2, landmarkLocation: 'Solomon Mahlangu House', unlockInstruction: 'Unlocked via Solomon Mahlangu House GPS Trivia' },
-  { id: 3, name: 'Quantum Reactor', category: 'Science', rarity: 'Rare', attack: 75, defense: 60, speed: 70, brains: 95, owned: 3, landmarkLocation: 'Science Stadium', unlockInstruction: 'Unlocked via Science Stadium GPS Trivia' },
-  { id: 4, name: 'Senate Seal', category: 'Administration', rarity: 'Rare', attack: 60, defense: 88, speed: 45, brains: 92, owned: 1, landmarkLocation: 'Solomon Mahlangu House', unlockInstruction: 'Unlocked via Senate House Landmark Event' },
-  { id: 5, name: 'Cave Painting', category: 'Heritage', rarity: 'Common', attack: 40, defense: 50, speed: 35, brains: 78, owned: 4, landmarkLocation: 'Origins Centre', unlockInstruction: 'Unlocked via Origins Centre Museum Trivia' },
-  { id: 6, name: 'Ancient Tome', category: 'Knowledge', rarity: 'Epic', attack: 55, defense: 72, speed: 30, brains: 99, owned: 1, landmarkLocation: 'Cullen Library', unlockInstruction: 'Unlocked via Cullen Library Rare Archives Trivia' },
-  { id: 7, name: 'The Rock Drill', category: 'Art', rarity: 'Legendary', attack: 98, defense: 80, speed: 65, brains: 75, owned: 1, landmarkLocation: 'WAM Art Museum', unlockInstruction: 'Unlocked via Wits Art Museum GPS Check-in' },
-  { id: 8, name: 'Wits Springbok', category: 'Sports', rarity: 'Common', attack: 72, defense: 55, speed: 92, brains: 60, owned: 5, landmarkLocation: 'Wits Diggers Field', unlockInstruction: 'Unlocked via Wits Sports Field Trivia' },
-  { id: 9, name: 'Wits Medical', category: 'Science', rarity: 'Rare', attack: 50, defense: 85, speed: 55, brains: 96, owned: 2, landmarkLocation: 'Medical School', unlockInstruction: 'Unlocked via Health Sciences Campus Trivia' },
-  { id: 10, name: 'Star Trails', category: 'Science', rarity: 'Epic', attack: 65, defense: 65, speed: 78, brains: 88, owned: 1, landmarkLocation: 'Planetarium', unlockInstruction: 'Unlocked via Wits Planetarium Night Event' },
-  { id: 11, name: 'Cullen Archive', category: 'Knowledge', rarity: 'Rare', attack: 45, defense: 80, speed: 40, brains: 94, owned: 3, landmarkLocation: 'Cullen Library', unlockInstruction: 'Unlocked via Cullen Library Main Desk Check-in' },
-  { id: 12, name: 'Origins Fossil', category: 'Heritage', rarity: 'Common', attack: 38, defense: 62, speed: 28, brains: 70, owned: 2, landmarkLocation: 'Origins Centre', unlockInstruction: 'Unlocked via Origins Museum Entrance Trivia' },
-  // LOCKED CARDS UNLOCKED BY MAP EXPLORATION:
-  { id: 13, name: 'High Voltage Coil', category: 'Science', rarity: 'Legendary', attack: 92, defense: 68, speed: 84, brains: 91, owned: 0, landmarkLocation: 'Chamber of Mines Engineering', unlockInstruction: 'Locked: Walk within 25m of Engineering Block & complete trivia challenge' },
-  { id: 14, name: 'Biomedical Genome', category: 'Science', rarity: 'Epic', attack: 62, defense: 78, speed: 60, brains: 97, owned: 0, landmarkLocation: 'Medical School Lab', unlockInstruction: 'Locked: Walk within 25m of Medical School & complete trivia challenge' },
-  { id: 15, name: 'Mandelstam Theorem', category: 'Knowledge', rarity: 'Epic', attack: 70, defense: 65, speed: 50, brains: 98, owned: 0, landmarkLocation: 'Mathematical Sciences Building', unlockInstruction: 'Locked: Walk within 25m of Maths Building & complete trivia challenge' },
-  { id: 16, name: 'Law Moot Shield', category: 'Administration', rarity: 'Rare', attack: 68, defense: 92, speed: 42, brains: 89, owned: 0, landmarkLocation: 'Oliver Schreiner Law Building', unlockInstruction: 'Locked: Walk within 25m of Law Building & complete trivia challenge' },
-]
+const RARITY_COLORS: Record<string, string> = {
+  Legendary: '#eab308', // gold/orange
+  Epic: '#a855f7',      // purple
+  Rare: '#3b82f6',      // blue
+  Common: '#8A7B72',    // warm grey
+};
 
-const RARITY_STYLES: Record<string, { border: string; glow: string; label: string; labelColor: string }> = {
-  Legendary: { border: '#dca668', glow: 'rgba(220, 166, 104, 0.4)', label: '✦ LEGENDARY', labelColor: '#dca668' },
-  Epic: { border: '#c99255', glow: 'rgba(201, 146, 85, 0.3)', label: '◈ EPIC', labelColor: '#c99255' },
-  Rare: { border: '#a87d4d', glow: 'rgba(168, 125, 77, 0.3)', label: '◆ RARE', labelColor: '#a87d4d' },
-  Common: { border: 'rgba(220, 166, 104, 0.5)', glow: 'transparent', label: '○ COMMON', labelColor: '#dca668' },
+const CATEGORY_ICONS: Record<string, any> = {
+  Landmarks: Building,
+  History: BookOpen,
+  Science: FlaskConical,
+  Administration: FileText,
+  Heritage: Compass,
+  Knowledge: Book,
+  Art: Palette,
+  Sports: Trophy,
+};
+
+function HolographicCard({ item, onClick }: { item: UserCardItem; onClick: () => void }) {
+  const { card, level, owned } = item;
+  const color = RARITY_COLORS[card.rarity];
+  const Icon = CATEGORY_ICONS[card.category] || MapPin;
+
+  return (
+    <div 
+      onClick={onClick}
+      style={{
+        position: 'relative',
+        borderRadius: '16px',
+        background: 'var(--color-card-bg)',
+        border: `2px solid ${color}40`,
+        boxShadow: `0 8px 24px rgba(44, 34, 30, 0.08)`,
+        overflow: 'hidden',
+        cursor: 'pointer',
+        transition: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+      className="card-hover-effect"
+    >
+      {/* Holographic overlay */}
+      {card.rarity === 'Legendary' && (
+        <div className="holo-overlay" />
+      )}
+
+      {/* Rarity & Level Badge */}
+      <div style={{ padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--color-border)', background: `${color}10` }}>
+        <span style={{ fontSize: 10, fontWeight: 800, color, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          {card.rarity}
+        </span>
+        <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--color-text)', background: 'var(--color-bg)', padding: '2px 6px', borderRadius: 8 }}>
+          Lvl {level}
+        </span>
+      </div>
+      
+      {/* Icon Area */}
+      <div style={{ height: '110px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg, var(--color-bg) 0%, var(--color-card-bg) 100%)', position: 'relative' }}>
+        <Icon size={48} color={color} strokeWidth={1.5} style={{ filter: `drop-shadow(0 4px 12px ${color}60)` }} />
+        {/* Quantity Badge */}
+        <div style={{ position: 'absolute', bottom: 8, right: 8, background: 'var(--color-accent)', color: '#fff', fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+          x{owned}
+        </div>
+      </div>
+      
+      {/* Stats Area */}
+      <div style={{ padding: '12px' }}>
+        <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--color-text)', marginBottom: 2, lineHeight: 1.1 }}>{card.name}</div>
+        <div style={{ fontSize: 11, color: 'var(--color-muted)', marginBottom: 12 }}>{card.category}</div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'var(--color-bg)', padding: '4px 6px', borderRadius: 6 }}>
+            <span style={{ fontSize: 9, color: 'var(--color-muted)', fontWeight: 700 }}>ATK</span>
+            <span style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 800 }}>{Math.floor(card.baseAttack * (1 + level * 0.1))}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'var(--color-bg)', padding: '4px 6px', borderRadius: 6 }}>
+            <span style={{ fontSize: 9, color: 'var(--color-muted)', fontWeight: 700 }}>DEF</span>
+            <span style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 800 }}>{Math.floor(card.baseDefense * (1 + level * 0.1))}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const STAT_COLORS = { attack: '#f87171', defense: '#dca668', speed: '#facc15', brains: '#e8c99a' }
-
-function CardDetail({ card, onClose }: { card: CollectionCard; onClose: () => void }) {
-  const isLocked = card.owned === 0
-  const rs = RARITY_STYLES[card.rarity]
+function CardDetailModal({ item, onClose }: { item: UserCardItem; onClose: () => void }) {
+  const { card, level, owned } = item;
+  const color = RARITY_COLORS[card.rarity];
+  const Icon = CATEGORY_ICONS[card.category] || MapPin;
 
   return (
     <div
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(63, 47, 18, 0.94)',
-        backdropFilter: 'blur(16px)',
-        zIndex: 200,
+        background: 'rgba(26, 20, 18, 0.6)',
+        backdropFilter: 'blur(8px)',
+        zIndex: 2000,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 16,
+        padding: 24,
       }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="glass-modal slide-up" style={{ width: '100%', maxWidth: 360, padding: 24 }}>
-        {/* Card display */}
-        <div style={{
-          borderRadius: 16, border: `2px solid ${rs.border}`,
-          background: 'linear-gradient(135deg, #54441b 0%, #6b5630 100%)',
-          overflow: 'hidden', marginBottom: 20,
-          boxShadow: isLocked ? 'none' : `0 0 32px ${rs.glow}`,
-          opacity: isLocked ? 0.85 : 1,
-        }}>
-          <div style={{
-            padding: '8px 14px', display: 'flex', justifyContent: 'space-between',
-            borderBottom: `1px solid ${rs.border}30`,
-          }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: rs.labelColor }}>{rs.label}</span>
-            <span style={{ fontSize: 10, color: '#dca668' }}>{card.category}</span>
+      <div className="slide-up-fast" style={{ width: '100%', maxWidth: 360, background: 'var(--color-bg)', borderRadius: 28, overflow: 'hidden', boxShadow: `0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px ${color}30` }}>
+        
+        {/* Header Graphic */}
+        <div style={{ height: 180, background: `radial-gradient(circle at top, ${color}40, var(--color-card-bg))`, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {card.rarity === 'Legendary' && <Sparkles size={100} color={color} style={{ position: 'absolute', opacity: 0.2 }} />}
+          <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--color-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 12px 32px ${color}40` }}>
+            <Icon size={56} color={color} strokeWidth={1.5} />
           </div>
+          <div style={{ position: 'absolute', top: 16, right: 16, background: 'var(--color-bg)', padding: '4px 12px', borderRadius: 16, fontSize: 12, fontWeight: 800, color }}>
+            {card.rarity.toUpperCase()}
+          </div>
+        </div>
 
-          <div style={{
-            height: 140, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-            background: isLocked ? 'rgba(15, 26, 46, 0.6)' : `radial-gradient(ellipse at center, ${rs.glow} 0%, transparent 70%)`,
-            position: 'relative',
-          }}>
-            <div className={card.rarity === 'Legendary' ? 'float' : ''} style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(84, 68, 27, 0.8)', border: `2px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 18 }}>
-              {card.name.substring(0, 2).toUpperCase()}
+        {/* Info Content */}
+        <div style={{ padding: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
+            <div>
+              <h2 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', lineHeight: 1.1, marginBottom: 4 }}>{card.name}</h2>
+              <span style={{ fontSize: 13, color: 'var(--color-muted)', fontWeight: 600 }}>{card.category} • Level {level}</span>
+            </div>
+            <div style={{ background: 'var(--color-accent)', color: '#fff', padding: '4px 10px', borderRadius: 8, fontSize: 12, fontWeight: 800 }}>
+              x{owned} Owned
             </div>
           </div>
 
-          <div style={{ padding: '10px 14px', borderTop: `1px solid ${rs.border}20` }}>
-            <div style={{ fontSize: 16, fontWeight: 800, color: isLocked ? '#a4b5d1' : 'white', marginBottom: 12 }}>
-              {card.name}
-            </div>
-
+          <h3 style={{ fontSize: 11, fontWeight: 800, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Combat Stats (Lv.{level})</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
             {[
-              { k: 'attack', label: 'ATK', v: card.attack },
-              { k: 'defense', label: 'DEF', v: card.defense },
-              { k: 'speed', label: 'SPD', v: card.speed },
-              { k: 'brains', label: 'BRN', v: card.brains },
-            ].map(({ k, label, v }) => (
-              <div key={k} style={{ marginBottom: 8 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
-                  <span style={{ fontSize: 11, color: '#dca668', fontWeight: 700 }}>{label}</span>
-                  <span style={{ fontSize: 12, fontWeight: 800, color: STAT_COLORS[k as keyof typeof STAT_COLORS] }}>{v}</span>
+              { label: 'ATTACK', v: Math.floor(card.baseAttack * (1 + level * 0.1)), base: card.baseAttack },
+              { label: 'DEFENSE', v: Math.floor(card.baseDefense * (1 + level * 0.1)), base: card.baseDefense },
+              { label: 'SPEED', v: Math.floor(card.baseSpeed * (1 + level * 0.1)), base: card.baseSpeed },
+              { label: 'BRAINS', v: Math.floor(card.baseBrains * (1 + level * 0.1)), base: card.baseBrains },
+            ].map(({ label, v, base }) => (
+              <div key={label}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <span style={{ fontSize: 11, color: 'var(--color-text)', fontWeight: 800 }}>{label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 900, color }}>{v} <span style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 600 }}>(+{v - base})</span></span>
                 </div>
-                <div className="stat-bar-track">
-                  <div className="stat-bar-fill" style={{ width: `${v}%`, background: isLocked ? '#a4b5d1' : STAT_COLORS[k as keyof typeof STAT_COLORS] }} />
+                <div style={{ height: 6, background: 'var(--color-border)', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{ width: `${Math.min(100, v)}%`, height: '100%', background: color }} />
                 </div>
               </div>
             ))}
           </div>
-        </div>
 
-        <div style={{ fontSize: 12, color: '#dca668', marginBottom: 16, textAlign: 'center' }}>
-          You own <strong style={{ color: '#dca668' }}>×{card.owned}</strong> copies
-        </div>
-
-        {!isLocked && (
-          <div style={{ display: 'flex', gap: 10 }}>
-            {card.owned > 1 && (
-              <button className="btn-ghost" style={{ flex: 1, fontSize: 12, padding: '10px' }}>
-                Scrap Duplicate (+50 Essence)
-              </button>
-            )}
-            <button className="btn-peach" style={{ flex: 1, fontSize: 12, padding: '10px' }}>
-              Forge Upgrade (+10%)
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button
+              onClick={onClose}
+              style={{ flex: 1, padding: '16px', borderRadius: 16, background: 'var(--color-border)', color: 'var(--color-text)', fontSize: 14, fontWeight: 800, border: 'none', cursor: 'pointer' }}
+            >
+              Close
+            </button>
+            <button
+              onClick={() => {
+                const addEvent = new CustomEvent('equipCard', { detail: item });
+                window.dispatchEvent(addEvent);
+              }}
+              style={{ flex: 1, padding: '16px', borderRadius: 16, background: 'var(--color-accent)', color: '#fff', fontSize: 14, fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 8px 24px rgba(211, 122, 50, 0.3)' }}
+            >
+              Equip to Deck
             </button>
           </div>
-        )}
-
-        <button
-          onClick={onClose}
-          style={{
-            width: '100%', marginTop: 10, background: 'none', border: 'none',
-            color: '#dca668', cursor: 'pointer', fontSize: 13, padding: 8,
-          }}
-        >
-          Close
-        </button>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default function CardCollection() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [catFilter, setCatFilter] = useState('All')
-  const [rarityFilter, setRarityFilter] = useState('All')
-  const [statusFilter, setStatusFilter] = useState<'All' | 'Unlocked' | 'Locked'>('All')
-  const [selectedCard, setSelectedCard] = useState<CollectionCard | null>(null)
+const DECK_STORAGE_KEY = (userId: string) => `wits_quest_deck_${userId}`;
 
-  const categories = ['All', 'Landmarks', 'History', 'Science', 'Heritage', 'Knowledge', 'Art', 'Sports', 'Administration']
-  const rarities = ['All', 'Legendary', 'Epic', 'Rare', 'Common']
+export default function CardCollection({ onNavigate }: { onNavigate?: (screen: string) => void }) {
+  const { currentUser: user } = useAuth();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [catFilter, setCatFilter] = useState('All');
+  const [inventory, setInventory] = useState<UserCardItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedCard, setSelectedCard] = useState<UserCardItem | null>(null);
+  const [deck, setDeck] = useState<(UserCardItem | null)[]>([null, null, null, null, null]);
+  const [saved, setSaved] = useState(false);
 
-  const unlockedCount = ALL_MASTER_CARDS.filter((c) => c.owned > 0).length
-  const totalMasterCount = ALL_MASTER_CARDS.length
-  const completionPercentage = Math.round((unlockedCount / totalMasterCount) * 100)
+  const deckCards = deck.filter(Boolean) as UserCardItem[];
+  const totalCost = deckCards.reduce((s, c) => s + c.card.totalStats, 0);
+  const legendaryCount = deckCards.filter((c) => c.card.rarity === 'Legendary').length;
+  const filled = deckCards.length;
+  const maxBudget = user?.maxStatBudget && user.maxStatBudget > 1000 ? user.maxStatBudget : 1500;
+  const costOverLimit = totalCost > maxBudget;
+  const legendaryOverLimit = legendaryCount > (user?.legendaryCap || 1);
+  const canSave = filled === 5 && !costOverLimit && !legendaryOverLimit;
 
-  const filtered = ALL_MASTER_CARDS.filter((c) => {
-    if (statusFilter === 'Unlocked' && c.owned === 0) return false
-    if (statusFilter === 'Locked' && c.owned > 0) return false
-    if (catFilter !== 'All' && c.category !== catFilter) return false
-    if (rarityFilter !== 'All' && c.rarity !== rarityFilter) return false
-    if (searchTerm && !c.name.toLowerCase().includes(searchTerm.toLowerCase())) return false
-    return true
-  })
+  // Load persisted deck from localStorage once inventory is loaded
+  useEffect(() => {
+    if (!user?.id || inventory.length === 0) return;
+    try {
+      const raw = localStorage.getItem(DECK_STORAGE_KEY(user.id));
+      if (raw) {
+        const savedIds: (string | null)[] = JSON.parse(raw);
+        const restored = savedIds.map((id) =>
+          id ? inventory.find((item) => item.card.id === id) ?? null : null
+        );
+        setDeck(restored);
+        setSaved(true);
+      }
+    } catch {
+      // ignore corrupt storage
+    }
+  }, [user?.id, inventory]);
+
+  function saveDeck() {
+    if (!canSave || !user?.id) return;
+    const ids = deck.map((item) => item?.card.id ?? null);
+    localStorage.setItem(DECK_STORAGE_KEY(user.id), JSON.stringify(ids));
+    setSaved(true);
+  }
+
+  function addCard(item: UserCardItem) {
+    const emptyIdx = deck.findIndex((s) => s === null);
+    if (emptyIdx === -1) return;
+    if (deck.some((c) => c?.card.id === item.card.id)) return;
+    const newDeck = [...deck];
+    newDeck[emptyIdx] = item;
+    setDeck(newDeck);
+    setSaved(false);
+    setSelectedCard(null); // Close modal
+  }
+
+  function removeCard(idx: number) {
+    const newDeck = [...deck];
+    newDeck[idx] = null;
+    setDeck(newDeck);
+    setSaved(false);
+  }
+
+  useEffect(() => {
+    const handleEquip = (e: Event) => {
+      const customEvent = e as CustomEvent<UserCardItem>;
+      addCard(customEvent.detail);
+    };
+    window.addEventListener('equipCard', handleEquip);
+    return () => window.removeEventListener('equipCard', handleEquip);
+  }, [deck]);
+
+  useEffect(() => {
+    if (user?.id) {
+      setIsLoading(true);
+      getMockUserCards(user.id)
+        .then(cards => {
+          setInventory(cards || []);
+        })
+        .catch(() => {
+          setInventory([]);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
+  }, [user?.id]);
+
+  const categories = ['All', 'Landmarks', 'History', 'Science', 'Administration', 'Knowledge', 'Heritage', 'Sports', 'Art'];
+
+  const filtered = inventory.filter((item) => {
+    if (catFilter !== 'All' && item.card.category !== catFilter) return false;
+    if (searchTerm && !item.card.name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    return true;
+  });
 
   return (
-    <div style={{ minHeight: '100vh', background: 'radial-gradient(ellipse at 30% 10%, #6b5630 0%, #54441b 45%, #3d2f12 100%)', paddingTop: 70, paddingBottom: 80 }}>
-      {/* Top control bar */}
-      <div
-        style={{
-          padding: '12px 16px',
-          background: 'rgba(63, 47, 18, 0.8)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(220, 166, 104, 0.15)',
-          position: 'sticky', top: 56, zIndex: 20,
-        }}
-      >
-        {/* Search + Collection Progress Header */}
-        <div style={{ display: 'flex', gap: 10, marginBottom: 10, alignItems: 'center' }}>
-          <div style={{ flex: 1, position: 'relative' }}>
-            <input
-              className="input-glass"
-              placeholder="Search card name..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ paddingLeft: 14 }}
-            />
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', paddingTop: 60, paddingBottom: 100 }}>
+      {/* Premium Header */}
+      <div style={{ background: 'var(--color-card-bg)', padding: '32px 16px 24px', borderBottom: '1px solid var(--color-border)', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: -50, right: -50, opacity: 0.05, transform: 'rotate(15deg)' }}>
+          <Layers size={200} />
+        </div>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 32, fontWeight: 800, color: 'var(--color-text)', marginBottom: 8 }}>
+          My Collection
+        </h1>
+        <div style={{ display: 'flex', gap: 16 }}>
+          <div style={{ background: 'var(--color-bg)', padding: '6px 12px', borderRadius: 12, border: '1px solid var(--color-border)' }}>
+            <span style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 600, marginRight: 6 }}>TOTAL CARDS</span>
+            <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--color-accent)' }}>{inventory.reduce((acc, curr) => acc + curr.owned, 0)}</span>
           </div>
-          <div style={{
-            background: 'rgba(220, 166, 104, 0.15)', border: '1px solid rgba(220, 166, 104, 0.4)',
-            borderRadius: 12, padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 6,
-            color: '#dca668', fontSize: 14, fontWeight: 800, whiteSpace: 'nowrap',
-          }}>
-            450 ESSENCE
+          <div style={{ background: 'var(--color-bg)', padding: '6px 12px', borderRadius: 12, border: '1px solid var(--color-border)' }}>
+            <span style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 600, marginRight: 6 }}>UNIQUE</span>
+            <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--color-text)' }}>{inventory.length}</span>
           </div>
         </div>
 
-        {/* Lock Status Filter Pills */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
-          {(['All', 'Unlocked', 'Locked'] as const).map((st) => (
+        {/* Active Deck Section */}
+        <div style={{ marginTop: 20, background: 'rgba(0,0,0,0.1)', padding: 16, borderRadius: 16, border: '1px solid rgba(220,166,104,0.2)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <div>
+              <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--color-text)', margin: 0 }}>Active Deck</h3>
+              <p style={{ fontSize: 12, color: 'var(--color-muted)', margin: 0 }}>Select 5 cards for battle</p>
+            </div>
             <button
-              key={st}
-              onClick={() => setStatusFilter(st)}
-              style={{
-                flex: 1,
-                padding: '6px 10px',
-                borderRadius: 8,
-                border: `1px solid ${statusFilter === st ? '#fed6ce' : 'rgba(164, 181, 209, 0.2)'}`,
-                background: statusFilter === st ? 'rgba(254, 214, 206, 0.2)' : 'rgba(73, 104, 148, 0.2)',
-                color: statusFilter === st ? '#fed6ce' : '#a4b5d1',
-                fontSize: 11,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
+              style={{ fontSize: 13, padding: '8px 18px', borderRadius: 8, fontWeight: 800, border: 'none', background: saved ? 'var(--color-success, #4a7c59)' : canSave ? 'var(--color-accent)' : 'var(--color-border)', color: (canSave || saved) ? 'white' : 'var(--color-muted)', opacity: (canSave || saved) ? 1 : 0.5, cursor: canSave && !saved ? 'pointer' : 'default', transition: 'background 0.3s' }}
+              onClick={saveDeck}
+              disabled={!canSave || saved}
             >
-              {st === 'Unlocked' ? 'Unlocked Cards' : st === 'Locked' ? 'Locked Cards' : 'All Cards'}
+              {saved ? '✓ Deck Saved' : 'Save Deck'}
             </button>
-          ))}
+          </div>
+
+          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 8, scrollbarWidth: 'none' }}>
+            {deck.map((item, i) => (
+              <div key={i} style={{ flexShrink: 0, width: 80, aspectRatio: '2/3' }}>
+                {item ? (
+                  <div
+                    onClick={() => removeCard(i)}
+                    style={{
+                      width: '100%', height: '100%', borderRadius: 12, border: `2px solid ${RARITY_COLORS[item.card.rarity]}`, background: 'var(--color-card-bg)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--color-text)' }}>{item.card.name.substring(0, 2).toUpperCase()}</div>
+                    <button style={{ position: 'absolute', top: -4, right: -4, width: 20, height: 20, borderRadius: '50%', background: '#EF4444', color: 'white', border: 'none', fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>✕</button>
+                  </div>
+                ) : (
+                  <div style={{ width: '100%', height: '100%', borderRadius: 12, border: '2px dashed var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-muted)', fontSize: 24 }}>+</div>
+                )}
+              </div>
+            ))}
+          </div>
+          
+          <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, fontWeight: 700, marginBottom: 4 }}>
+                <span color="var(--color-muted)">Stat Cost</span>
+                <span color={costOverLimit ? '#EF4444' : 'var(--color-text)'}>{totalCost} / {maxBudget}</span>
+              </div>
+              <div style={{ height: 4, background: 'var(--color-border)', borderRadius: 2 }}><div style={{ height: '100%', background: costOverLimit ? '#EF4444' : 'var(--color-accent)', width: `${Math.min(100, (totalCost/maxBudget)*100)}%` }} /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Search and Filters */}
+      <div style={{ padding: '16px', position: 'sticky', top: 0, zIndex: 20, background: 'rgba(250, 247, 242, 0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--color-border)' }}>
+        <div style={{ position: 'relative', marginBottom: 16 }}>
+          <Search size={20} color="var(--color-muted)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
+          <input
+            style={{ width: '100%', padding: '14px 16px 14px 44px', background: 'var(--color-card-bg)', border: '1px solid var(--color-border)', borderRadius: 16, outline: 'none', color: 'var(--color-text)', fontSize: 15, fontWeight: 600, boxShadow: '0 2px 8px rgba(44, 34, 30, 0.03)' }}
+            placeholder="Search your collection..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
 
-        {/* Rarity & Category Filters */}
-        <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4 }}>
-          {rarities.map((r) => (
-            <button
-              key={r}
-              onClick={() => setRarityFilter(r)}
-              className={`tab-pill ${rarityFilter === r ? 'active' : ''}`}
-              style={{ flexShrink: 0 }}
-            >
-              {r}
-            </button>
-          ))}
-        </div>
-        <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 2, marginTop: 6 }}>
+        <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
           {categories.map((c) => (
             <button
               key={c}
               onClick={() => setCatFilter(c)}
-              className={`tab-pill ${catFilter === c ? 'active' : ''}`}
-              style={{ flexShrink: 0, fontSize: 11 }}
+              style={{ 
+                flexShrink: 0, padding: '8px 16px', borderRadius: 20, fontSize: 13, fontWeight: 700, border: 'none',
+                background: catFilter === c ? 'var(--color-text)' : 'var(--color-card-bg)',
+                color: catFilter === c ? 'var(--color-bg)' : 'var(--color-muted)',
+                boxShadow: catFilter === c ? '0 4px 12px rgba(44, 34, 30, 0.2)' : '0 2px 4px rgba(44, 34, 30, 0.05)',
+                transition: 'all 0.2s', cursor: 'pointer'
+              }}
             >
               {c}
             </button>
@@ -246,111 +377,55 @@ export default function CardCollection() {
         </div>
       </div>
 
-      {/* Card count */}
-      <div style={{ padding: '10px 16px 6px', fontSize: 12, color: '#dca668', fontWeight: 600 }}>
-        {filtered.length} cards · {ALL_MASTER_CARDS.reduce((s, c) => s + c.owned, 0)} total owned
+      {/* Grid */}
+      <div style={{ padding: '20px 16px' }}>
+        {isLoading ? (
+          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-muted)' }}>Loading collection...</div>
+        ) : filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '40px', background: 'var(--color-card-bg)', borderRadius: 24, border: '1px dashed var(--color-border)' }}>
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--color-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <Search size={28} color="var(--color-muted)" />
+            </div>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--color-text)', marginBottom: 8 }}>No cards found</h3>
+            <p style={{ fontSize: 13, color: 'var(--color-muted)' }}>You don't own any cards matching these filters yet. Keep exploring Wits to earn more!</p>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 16 }}>
+            {filtered.map((item) => (
+              <HolographicCard key={item.card.id} item={item} onClick={() => setSelectedCard(item)} />
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Card grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-        gap: 12,
-        padding: '12px 16px 16px',
-      }}>
-        {filtered.map((card) => {
-          const isLocked = card.owned === 0
-          const rs = RARITY_STYLES[card.rarity]
+      {selectedCard && <CardDetailModal item={selectedCard} onClose={() => setSelectedCard(null)} />}
 
-          return (
-            <button
-              key={card.id}
-              onClick={() => setSelectedCard(card)}
-              style={{
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
-                textAlign: 'left',
-              }}
-            >
-              <div
-                style={{
-                  borderRadius: 14,
-                  border: `1.5px solid ${rs.border}`,
-                  background: 'linear-gradient(160deg, #54441b 0%, #6b5630 100%)',
-                  overflow: 'hidden',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  boxShadow: !isLocked && (card.rarity === 'Legendary' || card.rarity === 'Epic') ? `0 0 12px ${rs.glow}` : 'none',
-                  opacity: isLocked ? 0.75 : 1,
-                  position: 'relative',
-                }}
-              >
-                {/* Top status bar */}
-                <div style={{
-                  padding: '6px 8px',
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  borderBottom: `1px solid ${rs.border}20`,
-                  background: isLocked ? 'rgba(239, 68, 68, 0.1)' : 'transparent',
-                }}>
-                  <span style={{ fontSize: 8, fontWeight: 700, color: isLocked ? '#f87171' : rs.labelColor, letterSpacing: '0.06em' }}>
-                    {isLocked ? 'LOCKED' : rs.label}
-                  </span>
-                  <span style={{ fontSize: 8, color: '#a4b5d1' }}>{card.category}</span>
-                </div>
-
-                {/* Artwork */}
-                <div style={{
-                  height: 80,
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  background: isLocked ? 'rgba(15, 26, 46, 0.8)' : `radial-gradient(ellipse at center, ${rs.glow} 0%, transparent 70%)`,
-                  position: 'relative',
-                }}>
-                  <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'rgba(63, 47, 18, 0.8)', border: `1.5px solid ${rs.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.labelColor, fontWeight: 800, fontSize: 13 }}>
-                    {card.name.substring(0, 2).toUpperCase()}
-                  </div>
-                  {card.owned > 1 && (
-                    <span style={{
-                      position: 'absolute', top: 4, right: 6,
-                      fontSize: 9, color: '#dca668', fontWeight: 700,
-                      background: 'rgba(220, 166, 104, 0.15)',
-                      borderRadius: 6, padding: '1px 5px',
-                    }}>
-                      x{card.owned}
-                    </span>
-                  )}
-                </div>
-
-                {/* Card name + stats */}
-                <div style={{ padding: '6px 8px 8px' }}>
-                  <div style={{ fontSize: 11, fontWeight: 800, color: isLocked ? '#a4b5d1' : 'white', marginBottom: 6, lineHeight: 1.2 }}>
-                    {card.name}
-                  </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px 8px' }}>
-                    {[
-                      { label: 'ATK', v: card.attack, c: STAT_COLORS.attack },
-                      { label: 'DEF', v: card.defense, c: STAT_COLORS.defense },
-                      { label: 'SPD', v: card.speed, c: STAT_COLORS.speed },
-                      { label: 'BRN', v: card.brains, c: STAT_COLORS.brains },
-                    ].map((s, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <span style={{ fontSize: 8, fontWeight: 700, color: isLocked ? '#a4b5d1' : s.c }}>{s.label}</span>
-                        <div className="stat-bar-track" style={{ flex: 1, height: 4 }}>
-                          <div className="stat-bar-fill" style={{ width: `${s.v}%`, background: isLocked ? '#a4b5d1' : s.c, height: 4 }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ fontSize: 9, color: '#dca668', marginTop: 5 }}>{card.category}</div>
-                </div>
-              </div>
-            </button>
-          )
-        })}
-      </div>
-
-      {selectedCard && <CardDetail card={selectedCard} onClose={() => setSelectedCard(null)} />}
+      <style>{`
+        .card-hover-effect:active {
+          transform: scale(0.96);
+        }
+        .holo-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 10;
+          background: linear-gradient(125deg, transparent 20%, rgba(255,255,255,0.4) 40%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.4) 60%, transparent 80%);
+          background-size: 200% 200%;
+          animation: holo-shine 4s infinite linear;
+          pointer-events: none;
+          mix-blend-mode: overlay;
+        }
+        @keyframes holo-shine {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+        .slide-up-fast {
+          animation: slideUpFast 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        @keyframes slideUpFast {
+          from { opacity: 0; transform: translateY(40px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
     </div>
-  )
+  );
 }
-
