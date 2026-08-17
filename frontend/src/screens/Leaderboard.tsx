@@ -15,11 +15,11 @@ const DEFAULT_PLAYERS = [
 ];
 
 const DIVISION_COLOR: Record<string, string> = {
-  Diamond: '#b0cbe6',
-  Platinum: '#a4b5d1',
-  Gold: '#fed6ce',
+  Diamond: '#e8c99a',
+  Platinum: '#dca668',
+  Gold: '#dca668',
   Silver: '#9ca3af',
-  Bronze: '#496894',
+  Bronze: '#6b7d2c',
 };
 
 export default function Leaderboard() {
@@ -73,109 +73,97 @@ export default function Leaderboard() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 50% 0%, #253d6a 0%, #1d3156 50%, #0f1a2e 100%)',
+      background: 'radial-gradient(ellipse at 50% 0%, var(--color-bg) 0%, #E5D5C5 100%)',
       paddingTop: 16,
       paddingBottom: 80,
     }}>
       {/* Title */}
       <div style={{ padding: '14px 16px 0', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 22, fontWeight: 900, color: 'white', margin: 0 }}>Campus Leaderboard</h2>
-        <p style={{ fontSize: 12, color: '#a4b5d1', margin: '4px 0 16px' }}>Wits Quest Season 1 Rankings</p>
+        <h2 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', margin: 0 }}>Campus Leaderboard</h2>
+        <p style={{ fontSize: 13, color: 'var(--color-muted)', margin: '4px 0 16px', fontWeight: 600 }}>Wits Quest Season 1 Rankings</p>
       </div>
 
       {/* Top 3 Podium */}
       <div style={{ padding: '0 16px 20px', maxWidth: 600, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 10 }}>
           {/* 2nd place */}
-          {top3[1] && (
-            <div
-              style={{ flex: 1, cursor: 'pointer' }}
-              onClick={() => setSelectedPlayer(top3[1])}
-            >
-              <div style={{ textAlign: 'center', marginBottom: 6 }}>
-                <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#496894', border: '2px solid #a4b5d1', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px', color: '#a4b5d1', fontWeight: 800, fontSize: 12 }}>
-                  {top3[1].name.substring(0, 2).toUpperCase()}
-                </div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: top3[1].isCurrentUser ? '#fed6ce' : 'white' }}>
-                  {top3[1].name} {top3[1].isCurrentUser && '(You)'}
-                </div>
-                <div style={{ fontSize: 10, color: '#a4b5d1' }}>Lv.{top3[1].level}</div>
+          <div
+            style={{ flex: 1, cursor: 'pointer' }}
+            onClick={() => setSelectedPlayer(top3[1])}
+          >
+            <div style={{ textAlign: 'center', marginBottom: 6 }}>
+              <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--color-card-bg)', border: '2px solid var(--color-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px', color: 'var(--color-muted)', fontWeight: 800, fontSize: 14 }}>
+                LD
               </div>
-              <div style={{
-                background: 'linear-gradient(180deg, rgba(164,181,209,0.3) 0%, rgba(73,104,148,0.4) 100%)',
-                border: '1px solid rgba(164,181,209,0.5)',
-                borderRadius: '10px 10px 0 0',
-                height: 80,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <span style={{ fontSize: 20, fontWeight: 900, color: '#a4b5d1' }}>2</span>
-              </div>
+              <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-text)' }}>{top3[1].name}</div>
+              <div style={{ fontSize: 11, color: 'var(--color-muted)' }}>Lv.{top3[1].level}</div>
             </div>
-          )}
+            <div style={{
+              background: 'linear-gradient(180deg, rgba(138, 123, 114, 0.1) 0%, rgba(138, 123, 114, 0.3) 100%)',
+              border: '1px solid rgba(138, 123, 114, 0.2)',
+              borderRadius: '16px 16px 0 0',
+              height: 80,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-muted)' }}>2</span>
+            </div>
+          </div>
 
           {/* 1st place */}
-          {top3[0] && (
-            <div
-              style={{ flex: 1.1, cursor: 'pointer' }}
-              onClick={() => setSelectedPlayer(top3[0])}
-            >
-              <div style={{ textAlign: 'center', marginBottom: 6 }}>
-                <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'linear-gradient(135deg, #fed6ce, #f5b8ac)', border: '2px solid #fed6ce', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px', color: '#1d3156', fontWeight: 900, fontSize: 14, boxShadow: '0 0 16px rgba(254, 214, 206, 0.5)' }}>
-                  {top3[0].name.substring(0, 2).toUpperCase()}
-                </div>
-                <div style={{ fontSize: 12, fontWeight: 800, color: '#fed6ce' }}>
-                  {top3[0].name} {top3[0].isCurrentUser && '(You)'}
-                </div>
-                <div style={{ fontSize: 10, color: '#b0cbe6' }}>Lv.{top3[0].level}</div>
+          <div
+            style={{ flex: 1.1, cursor: 'pointer' }}
+            onClick={() => setSelectedPlayer(top3[0])}
+          >
+            <div style={{ textAlign: 'center', marginBottom: 6 }}>
+              <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--color-accent)', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px', color: 'white', fontWeight: 900, fontSize: 16, boxShadow: '0 4px 16px rgba(211, 122, 50, 0.4)' }}>
+                TN
               </div>
-              <div style={{
-                background: 'linear-gradient(180deg, rgba(254,214,206,0.3) 0%, rgba(73,104,148,0.5) 100%)',
-                border: '1px solid rgba(254,214,206,0.6)',
-                borderRadius: '10px 10px 0 0',
-                height: 105,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <span style={{ fontSize: 24, fontWeight: 900, color: '#fed6ce' }}>1</span>
-              </div>
+              <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-accent)' }}>{top3[0].name}</div>
+              <div style={{ fontSize: 11, color: 'var(--color-text)', fontWeight: 600 }}>Lv.{top3[0].level}</div>
             </div>
-          )}
+            <div style={{
+              background: 'linear-gradient(180deg, rgba(211, 122, 50, 0.1) 0%, rgba(211, 122, 50, 0.25) 100%)',
+              border: '1px solid rgba(211, 122, 50, 0.3)',
+              borderRadius: '16px 16px 0 0',
+              height: 105,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: 28, fontWeight: 900, color: 'var(--color-accent)' }}>1</span>
+            </div>
+          </div>
 
           {/* 3rd place */}
-          {top3[2] && (
-            <div
-              style={{ flex: 1, cursor: 'pointer' }}
-              onClick={() => setSelectedPlayer(top3[2])}
-            >
-              <div style={{ textAlign: 'center', marginBottom: 6 }}>
-                <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#496894', border: '2px solid #b0cbe6', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px', color: '#b0cbe6', fontWeight: 800, fontSize: 12 }}>
-                  {top3[2].name.substring(0, 2).toUpperCase()}
-                </div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: top3[2].isCurrentUser ? '#fed6ce' : 'white' }}>
-                  {top3[2].name} {top3[2].isCurrentUser && '(You)'}
-                </div>
-                <div style={{ fontSize: 10, color: '#a4b5d1' }}>Lv.{top3[2].level}</div>
+          <div
+            style={{ flex: 1, cursor: 'pointer' }}
+            onClick={() => setSelectedPlayer(top3[2])}
+          >
+            <div style={{ textAlign: 'center', marginBottom: 6 }}>
+              <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--color-card-bg)', border: '2px solid #8B5CF6', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px', color: '#8B5CF6', fontWeight: 800, fontSize: 14 }}>
+                SM
               </div>
-              <div style={{
-                background: 'linear-gradient(180deg, rgba(176,203,230,0.2) 0%, rgba(73,104,148,0.4) 100%)',
-                border: '1px solid rgba(176,203,230,0.4)',
-                borderRadius: '10px 10px 0 0',
-                height: 65,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <span style={{ fontSize: 18, fontWeight: 900, color: '#b0cbe6' }}>3</span>
-              </div>
+              <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-text)' }}>{top3[2].name}</div>
+              <div style={{ fontSize: 11, color: 'var(--color-muted)' }}>Lv.{top3[2].level}</div>
             </div>
-          )}
+            <div style={{
+              background: 'linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, rgba(139, 92, 246, 0.15) 100%)',
+              border: '1px solid rgba(139, 92, 246, 0.2)',
+              borderRadius: '16px 16px 0 0',
+              height: 65,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: 24, fontWeight: 900, color: '#8B5CF6' }}>3</span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Rankings Table */}
       <div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto' }}>
-        <div className="glass-dark" style={{ borderRadius: 16, overflow: 'hidden' }}>
+        <div style={{ background: 'var(--color-card-bg)', borderRadius: 16, overflow: 'hidden', border: '1px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}>
           <div style={{
-            padding: '10px 14px', background: 'rgba(29,49,86,0.6)',
-            borderBottom: '1px solid rgba(164,181,209,0.15)',
-            display: 'flex', fontSize: 10, fontWeight: 700, color: '#a4b5d1',
+            padding: '12px 16px', background: 'var(--color-bg)',
+            borderBottom: '1px solid var(--color-border)',
+            display: 'flex', fontSize: 11, fontWeight: 800, color: 'var(--color-muted)',
             letterSpacing: '0.06em', textTransform: 'uppercase',
           }}>
             <span style={{ width: 32 }}>#</span>
@@ -186,44 +174,45 @@ export default function Leaderboard() {
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {rest.map((p) => {
-              const divColor = DIVISION_COLOR[p.division] ?? '#a4b5d1';
+              const divColor = DIVISION_COLOR[p.division] ?? 'var(--color-text)';
               return (
                 <div
                   key={p.id || p.rank}
                   onClick={() => setSelectedPlayer(p)}
                   style={{
-                    padding: '10px 14px',
+                    padding: '12px 16px',
                     display: 'flex', alignItems: 'center',
-                    borderBottom: '1px solid rgba(164,181,209,0.08)',
-                    background: p.isCurrentUser ? 'rgba(254, 214, 206, 0.15)' : 'transparent',
+                    borderBottom: '1px solid var(--color-border)',
+                    background: p.isCurrentUser ? 'rgba(211, 122, 50, 0.08)' : 'transparent',
                     cursor: 'pointer',
                     transition: 'background 0.2s',
                   }}
                 >
-                  <span style={{ width: 32, fontSize: 12, fontWeight: 800, color: p.isCurrentUser ? '#fed6ce' : '#a4b5d1' }}>
+                  <span style={{ width: 32, fontSize: 13, fontWeight: 800, color: p.isCurrentUser ? 'var(--color-accent)' : 'var(--color-muted)' }}>
                     {p.rank}
                   </span>
-                  <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{
-                      width: 26, height: 26, borderRadius: '50%', background: p.isCurrentUser ? '#fed6ce' : '#496894',
+                      width: 28, height: 28, borderRadius: '50%', background: p.isCurrentUser ? 'var(--color-accent)' : 'var(--color-bg)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 10, fontWeight: 800, color: p.isCurrentUser ? '#1d3156' : 'white', flexShrink: 0
+                      fontSize: 11, fontWeight: 800, color: p.isCurrentUser ? 'white' : 'var(--color-text)', flexShrink: 0,
+                      border: p.isCurrentUser ? 'none' : '1px solid var(--color-border)'
                     }}>
                       {p.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: p.isCurrentUser ? '#fed6ce' : 'white' }}>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: p.isCurrentUser ? 'var(--color-accent)' : 'var(--color-text)' }}>
                         {p.name} {p.isCurrentUser && '(You)'}
                       </div>
-                      <div style={{ fontSize: 10, color: '#a4b5d1' }}>Lv.{p.level} · {p.wins} Wins</div>
+                      <div style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 600 }}>Lv.{p.level} · {p.wins} Wins</div>
                     </div>
                   </div>
                   <span style={{
-                    width: 70, textAlign: 'right', fontSize: 10, fontWeight: 700, color: divColor,
+                    width: 70, textAlign: 'right', fontSize: 11, fontWeight: 800, color: divColor,
                   }}>
                     {p.division}
                   </span>
-                  <span style={{ width: 70, textAlign: 'right', fontSize: 11, fontWeight: 800, color: 'white' }}>
+                  <span style={{ width: 70, textAlign: 'right', fontSize: 12, fontWeight: 900, color: 'var(--color-text)' }}>
                     {p.xp.toLocaleString()}
                   </span>
                 </div>
@@ -237,44 +226,42 @@ export default function Leaderboard() {
       {selectedPlayer && (
         <div
           style={{
-            position: 'fixed', inset: 0, background: 'rgba(13,22,45,0.8)',
-            backdropFilter: 'blur(12px)', zIndex: 100,
+            position: 'fixed', inset: 0, background: 'rgba(44, 34, 30, 0.6)',
+            backdropFilter: 'blur(8px)', zIndex: 100,
             display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
           }}
           onClick={(e) => e.target === e.currentTarget && setSelectedPlayer(null)}
         >
-          <div className="glass-modal slide-up" style={{ width: '100%', maxWidth: 440, padding: 24, borderRadius: '20px 20px 0 0' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#496894', border: '2px solid #fed6ce', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fed6ce', fontWeight: 800, fontSize: 16 }}>
+          <div style={{ background: 'var(--color-card-bg)', width: '100%', maxWidth: 440, padding: 24, borderRadius: '24px 24px 0 0', boxShadow: '0 -8px 32px rgba(44, 34, 30, 0.1)', animation: 'slide-up 0.3s ease-out' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--color-bg)', border: '2px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text)', fontWeight: 900, fontSize: 20 }}>
                   {selectedPlayer.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 800, color: 'white' }}>
-                    {selectedPlayer.name} {selectedPlayer.isCurrentUser && '(You)'}
-                  </div>
-                  <div style={{ fontSize: 11, color: '#a4b5d1' }}>Rank #{selectedPlayer.rank} · Lv.{selectedPlayer.level}</div>
+                  <div style={{ fontSize: 18, fontWeight: 900, color: 'var(--color-text)' }}>{selectedPlayer.name}</div>
+                  <div style={{ fontSize: 13, color: 'var(--color-muted)', fontWeight: 700 }}>Rank #{selectedPlayer.rank} · Lv.{selectedPlayer.level}</div>
                 </div>
               </div>
-              <button onClick={() => setSelectedPlayer(null)} style={{ background: 'none', border: 'none', color: '#a4b5d1', fontSize: 18, cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setSelectedPlayer(null)} style={{ background: 'var(--color-bg)', border: 'none', color: 'var(--color-text)', width: 32, height: 32, borderRadius: '50%', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 16, textAlign: 'center' }}>
-              <div className="glass-dark" style={{ padding: 10, borderRadius: 10, textAlign: 'center' }}>
-                <div style={{ fontSize: 9, color: '#a4b5d1' }}>TOTAL XP</div>
-                <div style={{ fontSize: 14, fontWeight: 800, color: '#fed6ce' }}>{selectedPlayer.xp.toLocaleString()}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 20, textAlign: 'center' }}>
+              <div style={{ padding: 12, borderRadius: 12, background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 800, letterSpacing: '0.05em' }}>TOTAL XP</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: 'var(--color-text)' }}>{selectedPlayer.xp.toLocaleString()}</div>
               </div>
-              <div className="glass-dark" style={{ padding: 10, borderRadius: 10, textAlign: 'center' }}>
-                <div style={{ fontSize: 9, color: '#a4b5d1' }}>PVP WINS</div>
-                <div style={{ fontSize: 14, fontWeight: 800, color: '#b0cbe6' }}>{selectedPlayer.wins}</div>
+              <div style={{ padding: 12, borderRadius: 12, background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 800, letterSpacing: '0.05em' }}>PVP WINS</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: 'var(--color-text)' }}>{selectedPlayer.wins}</div>
               </div>
-              <div className="glass-dark" style={{ padding: 10, borderRadius: 10, textAlign: 'center' }}>
-                <div style={{ fontSize: 9, color: '#a4b5d1' }}>STREAK</div>
-                <div style={{ fontSize: 14, fontWeight: 800, color: '#fed6ce' }}>{selectedPlayer.streak} Days</div>
+              <div style={{ padding: 12, borderRadius: 12, background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+                <div style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 800, letterSpacing: '0.05em' }}>STREAK</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: 'var(--color-text)' }}>{selectedPlayer.streak} Days</div>
               </div>
             </div>
 
-            <button className="btn-peach" style={{ width: '100%', fontSize: 13, padding: '12px' }} onClick={() => setSelectedPlayer(null)}>
+            <button style={{ width: '100%', fontSize: 15, padding: '14px', background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', borderRadius: 14, cursor: 'pointer', boxShadow: '0 4px 12px rgba(211, 122, 50, 0.3)' }} onClick={() => setSelectedPlayer(null)}>
               Send Async Challenge
             </button>
           </div>

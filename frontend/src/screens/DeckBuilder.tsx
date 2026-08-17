@@ -1,55 +1,61 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { getPlayerInventory } from '../services/inventoryService'
 import { validateDeck, saveDeck } from '../services/deckService'
-import { theme, RARITY_STYLES, STAT_COLORS } from '../styles/theme'
 import type { InventoryEntry } from '../types/inventory'
 
-export default function DeckBuilder() {
-  const { currentUser } = useAuth()
-  const maxStatBudget = currentUser?.maxStatBudget ?? 300
-  const legendaryCap = currentUser?.legendaryCap ?? 1
+const RARITY_BORDER: Record<string, string> = {
+  Legendary: '#dca668',
+  Epic: '#c99255',
+  Rare: '#a87d4d',
+  Common: 'rgba(220, 166, 104, 0.5)',
+}
 
-  const [collection, setCollection] = useState<InventoryEntry[]>([])
-  const [loading, setLoading] = useState(true)
+export default function DeckBuilder() {
+  const { currentUser: user } = useAuth()
   const [deck, setDeck] = useState<(InventoryEntry | null)[]>([null, null, null, null, null])
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [saveErrors, setSaveErrors] = useState<string[]>([])
+  const [collection, setCollection] = useState<InventoryEntry[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!currentUser?.id) { setLoading(false); return }
-    let cancelled = false
-    setLoading(true)
-    getPlayerInventory(currentUser.id)
-      .then((res) => !cancelled && setCollection(res))
-      .finally(() => !cancelled && setLoading(false))
-    return () => { cancelled = true }
-  }, [currentUser?.id])
+    if (user?.id) {
+      setLoading(true)
+      getPlayerInventory(user.id)
+        .then((cards) => setCollection(cards || []))
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(false)
+    }
+  }, [user?.id])
 
+  const maxStatBudget = user?.maxStatBudget ?? 300
+  const legendaryCap = user?.legendaryCap ?? 1
   const validation = validateDeck(deck, maxStatBudget, legendaryCap)
   const filled = deck.filter(Boolean).length
-  const inDeck = new Set(deck.filter(Boolean).map((c) => c!.inventoryId))
 
   function addCard(entry: InventoryEntry) {
     const emptyIdx = deck.findIndex((s) => s === null)
-    if (emptyIdx === -1 || inDeck.has(entry.inventoryId)) return
-    const next = [...deck]
-    next[emptyIdx] = entry
-    setDeck(next)
+    if (emptyIdx === -1) return
+    if (deck.some((c) => c?.inventoryId === entry.inventoryId)) return
+    const newDeck = [...deck]
+    newDeck[emptyIdx] = entry
+    setDeck(newDeck)
     setSaveState('idle')
   }
 
   function removeCard(idx: number) {
-    const next = [...deck]
-    next[idx] = null
-    setDeck(next)
+    const newDeck = [...deck]
+    newDeck[idx] = null
+    setDeck(newDeck)
     setSaveState('idle')
   }
 
   async function handleSave() {
-    if (!validation.valid || !currentUser?.id) return
+    if (!validation.valid || !user?.id) return
     setSaveState('saving')
-    const result = await saveDeck(currentUser.id, 'My Battle Deck', deck)
+    const result = await saveDeck(user.id, 'My Battle Deck', deck)
     if (result.success) {
       setSaveState('saved')
       setSaveErrors([])
@@ -59,55 +65,89 @@ export default function DeckBuilder() {
     }
   }
 
+  const inDeck = new Set(deck.filter(Boolean).map((c) => c!.inventoryId))
+  const canSave = validation.valid
+
+  if (!user) return null
+
   return (
-    <div style={{ minHeight: '100vh', background: theme.gradients.pageAlt, paddingTop: 70, paddingBottom: 80, fontFamily: theme.fonts.body }}>
-      {/* Active deck */}
+    <div style={{
+      minHeight: '100vh',
+      background: 'radial-gradient(ellipse at 60% 0%, #6b5630 0%, #54441b 50%, #3d2f12 100%)',
+      paddingTop: 84,
+      paddingBottom: 80,
+    }}>
+      {/* Top half — Active Deck */}
       <div style={{ padding: '14px 16px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <div>
-            <h2 style={{ fontFamily: theme.fonts.display, fontSize: 19, fontWeight: 700, color: theme.colors.ink, margin: 0 }}>Active Deck</h2>
-            <p style={{ fontSize: 12, color: theme.colors.inkSoft, margin: '2px 0 0' }}>Select 5 cards for battle</p>
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: 'white', margin: 0 }}>Active Deck</h2>
+            <p style={{ fontSize: 12, color: '#dca668', margin: '2px 0 0' }}>Select 5 cards for battle</p>
           </div>
           <button
-            onClick={handleSave}
-            disabled={!validation.valid || saveState === 'saving'}
-            style={{
-              fontSize: 13, padding: '9px 18px', borderRadius: 10, border: 'none', cursor: validation.valid ? 'pointer' : 'not-allowed',
-              background: validation.valid ? theme.colors.brass : theme.colors.paperDeep,
-              color: validation.valid ? '#FFFFFF' : theme.colors.mist,
-              fontWeight: 700,
+            className={canSave ? 'btn-peach' : 'btn-ghost'}
+            style={{ 
+              fontSize: 13, 
+              padding: '8px 18px', 
+              opacity: canSave ? 1 : 0.5,
+              background: canSave ? '#dca668' : 'rgba(220, 166, 104, 0.2)',
+              border: 'none',
+              borderRadius: 8,
+              color: canSave ? '#1f1608' : '#dca668',
+              fontWeight: 800,
+              cursor: canSave ? 'pointer' : 'not-allowed',
             }}
+            onClick={handleSave}
+            disabled={!canSave || saveState === 'saving'}
           >
             {saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? '✓ Saved!' : 'Save Deck'}
           </button>
         </div>
 
-        {/* Deck slots */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+        {/* Deck slots - Updated with images */}
+        <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
           {deck.map((entry, i) => (
-            <div key={i} style={{ flex: 1, aspectRatio: '2/3', minWidth: 0 }}>
+            <div
+              key={i}
+              style={{ flex: 1, aspectRatio: '2/3', minWidth: 0 }}
+            >
               {entry ? (
                 <div
-                  onClick={() => removeCard(i)}
                   style={{
-                    width: '100%', height: '100%', borderRadius: 12, cursor: 'pointer', position: 'relative',
-                    border: `1.5px solid ${RARITY_STYLES[entry.card.rarity].color}`,
-                    background: theme.gradients.cardFrame,
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4,
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 12,
+                    border: `1.5px solid ${RARITY_BORDER[entry.card.rarity]}`,
+                    background: 'linear-gradient(160deg, #54441b 0%, #6b5630 100%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    cursor: 'pointer',
+                    overflow: 'hidden',
                   }}
+                  onClick={() => removeCard(i)}
                 >
-                  <div style={{ fontFamily: theme.fonts.display, fontSize: 13, fontWeight: 700, color: theme.colors.ink }}>
-                    {entry.card.name.substring(0, 2).toUpperCase()}
-                  </div>
-                  <div style={{ fontSize: 8, fontWeight: 700, color: theme.colors.inkSoft, textAlign: 'center', padding: '0 4px', lineHeight: 1.2 }}>
-                    {entry.card.name}
-                  </div>
+                  <img 
+                    src={entry.card.image} 
+                    alt={entry.card.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
                   <button
                     onClick={(e) => { e.stopPropagation(); removeCard(i) }}
                     style={{
-                      position: 'absolute', top: 4, right: 4, width: 16, height: 16, borderRadius: '50%',
-                      background: theme.colors.rustSoft, border: 'none', color: theme.colors.rust, fontSize: 10,
-                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      position: 'absolute', top: 4, right: 4,
+                      width: 16, height: 16, borderRadius: '50%',
+                      background: 'rgba(239, 68, 68, 0.6)',
+                      border: 'none', color: 'white', fontSize: 10,
+                      cursor: 'pointer', display: 'flex',
+                      alignItems: 'center', justifyContent: 'center',
+                      zIndex: 1,
                     }}
                   >
                     ✕
@@ -115,9 +155,17 @@ export default function DeckBuilder() {
                 </div>
               ) : (
                 <div style={{
-                  width: '100%', height: '100%', borderRadius: 12, border: `1.5px dashed ${theme.colors.cardBorder}`,
-                  background: theme.colors.paperDeep, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: theme.colors.mist, fontSize: 20,
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 12,
+                  border: '1.5px dashed rgba(220, 166, 104, 0.3)',
+                  background: 'rgba(84, 68, 27, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'rgba(220, 166, 104, 0.4)',
+                  fontSize: 20,
+                  aspectRatio: '2/3',
                 }}>
                   +
                 </div>
@@ -127,108 +175,169 @@ export default function DeckBuilder() {
         </div>
 
         {/* Constraint meters */}
-        <div style={{ padding: 14, borderRadius: 14, background: theme.colors.cardBg, border: `1px solid ${theme.colors.cardBorder}` }}>
-          <Meter label="Card Slots" value={filled} max={5} display={`${filled}/5`} ok={filled === 5} />
-          <Meter label="Deck Stat Cost" value={validation.totalStatCost} max={maxStatBudget} display={`${validation.totalStatCost} / ${maxStatBudget} Max`} ok={validation.totalStatCost <= maxStatBudget} />
-          <Meter label="Legendary Cap" value={validation.legendaryCount} max={legendaryCap} display={`${validation.legendaryCount} / ${legendaryCap} Max`} ok={validation.legendaryCount <= legendaryCap} last />
+        <div className="glass-dark" style={{ padding: 14, borderRadius: 14, background: 'rgba(84, 68, 27, 0.6)', backdropFilter: 'blur(8px)', border: '1px solid rgba(220, 166, 104, 0.15)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {/* Slot count */}
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                <span style={{ fontSize: 12, color: '#dca668', fontWeight: 600 }}>Card Slots</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: filled === 5 ? '#4ade80' : 'white' }}>
+                  {filled}/5
+                </span>
+              </div>
+              <div className="stat-bar-track" style={{ background: 'rgba(0,0,0,0.3)', height: 6, borderRadius: 3 }}>
+                <div className="stat-bar-fill" style={{
+                  width: `${(filled / 5) * 100}%`,
+                  height: '100%',
+                  background: filled === 5 ? '#4ade80' : '#dca668',
+                  borderRadius: 3,
+                }} />
+              </div>
+            </div>
+
+            {/* Total Stat Cost */}
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                <span style={{ fontSize: 12, color: '#dca668', fontWeight: 600 }}>Deck Stat Cost</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: validation.totalStatCost > maxStatBudget ? '#f87171' : '#e8c99a' }}>
+                  {validation.totalStatCost} / {maxStatBudget} Max
+                </span>
+              </div>
+              <div className="stat-bar-track" style={{ background: 'rgba(0,0,0,0.3)', height: 6, borderRadius: 3 }}>
+                <div className="stat-bar-fill" style={{
+                  width: `${Math.min(100, (validation.totalStatCost / maxStatBudget) * 100)}%`,
+                  height: '100%',
+                  background: validation.totalStatCost > maxStatBudget ? '#f87171' : 'linear-gradient(90deg, #e8c99a, #dca668)',
+                  borderRadius: 3,
+                }} />
+              </div>
+            </div>
+
+            {/* Legendary Cap */}
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                <span style={{ fontSize: 12, color: '#dca668', fontWeight: 600 }}>Legendary Cap</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: validation.legendaryCount > legendaryCap ? '#f87171' : '#dca668' }}>
+                  {validation.legendaryCount} / {legendaryCap} Max
+                </span>
+              </div>
+              <div className="stat-bar-track" style={{ background: 'rgba(0,0,0,0.3)', height: 6, borderRadius: 3 }}>
+                <div className="stat-bar-fill" style={{
+                  width: validation.legendaryCount > 0 ? '100%' : '0%',
+                  height: '100%',
+                  background: validation.legendaryCount > legendaryCap ? '#f87171' : '#dca668',
+                  borderRadius: 3,
+                }} />
+              </div>
+            </div>
+          </div>
         </div>
 
         {validation.errors.length > 0 && filled > 0 && (
-          <div style={{ marginTop: 10, padding: '10px 14px', borderRadius: 10, background: theme.colors.rustSoft, border: `1px solid ${theme.colors.rust}` }}>
+          <div style={{ marginTop: 10, padding: '10px 14px', borderRadius: 10, background: 'rgba(239, 68, 68, 0.12)', border: '1px solid #f87171' }}>
             {validation.errors.map((e, i) => (
-              <div key={i} style={{ fontSize: 11, color: theme.colors.rust, fontWeight: 600 }}>{e}</div>
+              <div key={i} style={{ fontSize: 11, color: '#f87171', fontWeight: 600 }}>{e}</div>
             ))}
           </div>
         )}
         {saveState === 'error' && saveErrors.length > 0 && (
-          <div style={{ marginTop: 10, padding: '10px 14px', borderRadius: 10, background: theme.colors.rustSoft, border: `1px solid ${theme.colors.rust}` }}>
+          <div style={{ marginTop: 10, padding: '10px 14px', borderRadius: 10, background: 'rgba(239, 68, 68, 0.12)', border: '1px solid #f87171' }}>
             {saveErrors.map((e, i) => (
-              <div key={i} style={{ fontSize: 11, color: theme.colors.rust, fontWeight: 600 }}>{e}</div>
+              <div key={i} style={{ fontSize: 11, color: '#f87171', fontWeight: 600 }}>{e}</div>
             ))}
           </div>
         )}
       </div>
 
-      <div style={{ height: 1, background: theme.colors.cardBorder, margin: '4px 0' }} />
+      {/* Divider */}
+      <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(220, 166, 104, 0.3), transparent)', margin: '16px 0' }} />
 
-      {/* Collection drawer */}
-      <div style={{ padding: '12px 16px 0' }}>
-        <div style={{ fontSize: 14, fontWeight: 700, color: theme.colors.inkSoft, marginBottom: 10 }}>
-          Your Collection — tap to add
+      {/* Bottom half — Collection drawer */}
+      <div style={{ padding: '0 16px' }}>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#dca668', marginBottom: 16 }}>
+          📦 Your Collection — tap to add
         </div>
 
-        {loading && <div style={{ fontSize: 13, color: theme.colors.inkSoft, padding: '12px 0' }}>Loading your cards…</div>}
-        {!currentUser?.id && !loading && <div style={{ fontSize: 13, color: theme.colors.inkSoft, padding: '12px 0' }}>Log in to build a deck.</div>}
+        {loading ? (
+           <div style={{ textAlign: 'center', padding: '20px', color: '#dca668' }}>Loading collection...</div>
+        ) : !user ? (
+           <div style={{ textAlign: 'center', padding: '20px', color: '#dca668' }}>Log in to build a deck.</div>
+        ) : collection.length === 0 ? (
+           <div style={{ textAlign: 'center', padding: '20px', color: '#dca668' }}>No cards available.</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {collection.map((entry) => {
+              const alreadyIn = inDeck.has(entry.inventoryId)
+              const deckFull = filled >= 5
+              const disabled = alreadyIn || (deckFull && !alreadyIn)
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {collection.map((entry) => {
-            const alreadyIn = inDeck.has(entry.inventoryId)
-            const deckFull = filled >= 5
-            const disabled = alreadyIn || (deckFull && !alreadyIn)
-            const rs = RARITY_STYLES[entry.card.rarity]
-
-            return (
-              <div
-                key={entry.inventoryId}
-                style={{
-                  background: alreadyIn ? theme.colors.paperDeep : theme.colors.cardBg,
-                  border: `1px solid ${alreadyIn ? theme.colors.cardBorder : theme.colors.cardBorder}`,
-                  borderRadius: 12, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12,
-                  opacity: disabled && !alreadyIn ? 0.5 : 1,
-                }}
-              >
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: rs.soft, border: `1px solid ${rs.color}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: rs.color, fontWeight: 700, fontSize: 10, flexShrink: 0 }}>
-                  {entry.card.name.substring(0, 2).toUpperCase()}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: theme.colors.ink }}>{entry.card.name}</span>
-                    <span style={{ fontSize: 9, fontWeight: 700, color: rs.color, background: rs.soft, borderRadius: 4, padding: '1px 5px' }}>
-                      {entry.card.rarity}
-                    </span>
+              return (
+                <div
+                  key={entry.inventoryId}
+                  style={{
+                    background: alreadyIn ? 'rgba(232, 201, 154, 0.1)' : 'rgba(107, 125, 44, 0.35)',
+                    border: `1px solid ${alreadyIn ? 'rgba(232, 201, 154, 0.5)' : 'rgba(220, 166, 104, 0.2)'}`,
+                    borderRadius: 12,
+                    padding: '10px 14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    opacity: disabled && !alreadyIn ? 0.5 : 1,
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <div style={{ 
+                    width: 28, height: 28, borderRadius: '50%', 
+                    background: 'rgba(84, 68, 27, 0.8)', 
+                    border: `1px solid ${RARITY_BORDER[entry.card.rarity]}`, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    overflow: 'hidden',
+                    flexShrink: 0,
+                  }}>
+                    <img 
+                      src={entry.card.image} 
+                      alt={entry.card.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
                   </div>
-                  <div style={{ display: 'flex', gap: 10, fontFamily: theme.fonts.mono, fontSize: 11, fontWeight: 700 }}>
-                    <span style={{ color: STAT_COLORS.attack }}>ATK {entry.effectiveStats.attack}</span>
-                    <span style={{ color: STAT_COLORS.defense }}>DEF {entry.effectiveStats.defense}</span>
-                    <span style={{ color: STAT_COLORS.speed }}>SPD {entry.effectiveStats.speed}</span>
-                    <span style={{ color: STAT_COLORS.brains }}>BRN {entry.effectiveStats.brains}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{entry.card.name}</span>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: RARITY_BORDER[entry.card.rarity], background: `${RARITY_BORDER[entry.card.rarity]}18`, borderRadius: 4, padding: '1px 5px' }}>
+                        {entry.card.rarity}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 10, fontSize: 11, fontWeight: 700 }}>
+                      <span style={{ color: '#f87171' }}>ATK {entry.effectiveStats.attack}</span>
+                      <span style={{ color: '#dca668' }}>DEF {entry.effectiveStats.defense}</span>
+                      <span style={{ color: '#facc15' }}>SPD {entry.effectiveStats.speed}</span>
+                      <span style={{ color: '#e8c99a' }}>BRN {entry.effectiveStats.brains}</span>
+                    </div>
+                    <div style={{ fontSize: 10, color: '#dca668', marginTop: 2 }}>Lv.{entry.level} · Cost: {entry.totalStatCost} pts · ×{entry.quantity} owned</div>
                   </div>
-                  <div style={{ fontSize: 10, color: theme.colors.inkSoft, marginTop: 2 }}>Cost: {entry.totalStatCost} pts · ×{entry.quantity} owned</div>
+                  {alreadyIn ? (
+                    <div style={{ fontSize: 11, color: '#e8c99a', fontWeight: 700, flexShrink: 0 }}>✓ In Deck</div>
+                  ) : (
+                    <button
+                      className="btn-peach"
+                      style={{ fontSize: 11, padding: '6px 14px', flexShrink: 0, opacity: disabled ? 0.4 : 1, border: 'none', background: '#dca668', color: '#1f1608', borderRadius: 8, fontWeight: 800, cursor: disabled ? 'not-allowed' : 'pointer' }}
+                      disabled={disabled}
+                      onClick={() => !disabled && addCard(entry)}
+                    >
+                      + Add
+                    </button>
+                  )}
                 </div>
-                {alreadyIn ? (
-                  <div style={{ fontSize: 11, color: theme.colors.moss, fontWeight: 700, flexShrink: 0 }}>✓ In Deck</div>
-                ) : (
-                  <button
-                    onClick={() => !disabled && addCard(entry)}
-                    disabled={disabled}
-                    style={{
-                      fontSize: 11, padding: '6px 14px', borderRadius: 8, flexShrink: 0,
-                      background: '#1d3156', border: `1px solid ${theme.colors.brass}`,
-                      color: theme.colors.brass, fontWeight: 700,
-                      cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.4 : 1,
-                    }}
-                  >
-                    + Add
-                  </button>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Meter({ label, value, max, display, ok, last }: { label: string; value: number; max: number; display: string; ok: boolean; last?: boolean }) {
-  return (
-    <div style={{ marginBottom: last ? 0 : 10 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-        <span style={{ fontSize: 12, color: theme.colors.inkSoft, fontWeight: 600 }}>{label}</span>
-        <span style={{ fontFamily: theme.fonts.mono, fontSize: 12, fontWeight: 700, color: ok ? theme.colors.moss : theme.colors.rust }}>{display}</span>
-      </div>
-      <div style={{ height: 6, borderRadius: 4, background: theme.colors.paperDeep, overflow: 'hidden' }}>
-        <div style={{ width: `${Math.min(100, (value / max) * 100)}%`, height: '100%', background: ok ? theme.colors.moss : theme.colors.rust }} />
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )

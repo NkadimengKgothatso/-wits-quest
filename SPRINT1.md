@@ -1,4 +1,4 @@
-# Sprint 1
+ # Sprint 1
 
 > **Document Purpose**: This guide defines the exact page allocations, functional requirements, and UI/UX responsibilities for each team member in Sprint 1. Each team member is 100% responsible for the design, styling, user interface (UI), user experience (UX), and interactive logic of their assigned pages.
 
@@ -103,7 +103,7 @@
 
 ---
 
-### Keoratile (Member 6)
+### oratile (Member 6)
 * **Assigned Pages & Modules**:
   - [AdminAntiCheat.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminAntiCheat.tsx)
   - [RankedMatchmaking.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/RankedMatchmaking.tsx)

@@ -56,7 +56,7 @@ export default function AdminEvents() {
       <div
         style={{
           flex: 1,
-          background: 'radial-gradient(ellipse at 40% 50%, #1a2e4a 0%, #111e36 100%)',
+          background: 'radial-gradient(ellipse at 40% 50%, #FAF7F2 0%, #E5D5C5 100%)',
           position: 'relative',
           cursor: 'crosshair',
           overflow: 'hidden',
@@ -64,28 +64,29 @@ export default function AdminEvents() {
         onClick={handleMapClick}
       >
         {/* Grid */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.05 }}>
+        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.15 }}>
           <defs>
             <pattern id="grid2" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#a4b5d1" strokeWidth="0.5" />
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--color-accent)" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid2)" />
         </svg>
 
         {/* Roads */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.1 }}>
-          <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="#b0cbe6" strokeWidth="8" strokeLinecap="round" />
-          <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="#b0cbe6" strokeWidth="8" strokeLinecap="round" />
-          <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="#b0cbe6" strokeWidth="3" />
+        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.2 }}>
+          <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="var(--color-accent)" strokeWidth="8" strokeLinecap="round" />
+          <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="var(--color-accent)" strokeWidth="8" strokeLinecap="round" />
+          <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="var(--color-accent)" strokeWidth="3" />
         </svg>
 
         {/* Instruction */}
         <div style={{
           position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
-          background: 'rgba(17,30,54,0.85)', backdropFilter: 'blur(8px)',
-          borderRadius: 8, padding: '6px 14px', border: '1px solid rgba(164,181,209,0.2)',
-          fontSize: 11, color: '#b0cbe6', pointerEvents: 'none', fontWeight: 600
+          background: 'var(--color-card-bg)', backdropFilter: 'blur(8px)',
+          borderRadius: 8, padding: '6px 14px', border: '1px solid var(--color-border)',
+          fontSize: 12, color: 'var(--color-text)', pointerEvents: 'none', fontWeight: 700,
+          boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)'
         }}>
           Click campus map to place target event coordinates
         </div>
@@ -103,18 +104,18 @@ export default function AdminEvents() {
           >
             <div style={{
               width: 24, height: 24, borderRadius: '50%',
-              background: ev.active ? '#fed6ce' : 'rgba(73,104,148,0.7)',
-              border: `2px solid ${ev.active ? '#fed6ce' : 'rgba(164,181,209,0.4)'}`,
+              background: ev.active ? 'var(--color-accent)' : 'var(--color-muted)',
+              border: `2px solid ${ev.active ? 'var(--color-accent)' : 'var(--color-border)'}`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: ev.active ? '0 0 12px rgba(254,214,206,0.6)' : 'none'
+              boxShadow: ev.active ? '0 0 12px rgba(211, 122, 50, 0.4)' : 'none'
             }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#1d3156' }} />
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'white' }} />
             </div>
             <div style={{
               position: 'absolute', top: 28, left: '50%', transform: 'translateX(-50%)',
-              whiteSpace: 'nowrap', fontSize: 9, fontWeight: 700, color: ev.active ? '#fed6ce' : '#a4b5d1',
-              background: 'rgba(17,30,54,0.85)', padding: '2px 6px', borderRadius: 4,
-              border: '1px solid rgba(164,181,209,0.2)'
+              whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: 'var(--color-text)',
+              background: 'var(--color-card-bg)', padding: '2px 6px', borderRadius: 4,
+              border: '1px solid var(--color-border)', boxShadow: '0 2px 8px rgba(44, 34, 30, 0.05)'
             }}>
               {ev.title}
             </div>
@@ -133,11 +134,11 @@ export default function AdminEvents() {
           >
             <div style={{
               width: 28, height: 28, borderRadius: '50%',
-              background: '#b0cbe6',
+              background: 'var(--color-accent)',
               border: '2px solid white',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 0 16px rgba(176,203,230,0.8)',
-              color: '#1d3156', fontWeight: 900, fontSize: 14
+              boxShadow: '0 0 16px rgba(211, 122, 50, 0.6)',
+              color: 'white', fontWeight: 900, fontSize: 16
             }}>
               +
             </div>
@@ -147,76 +148,73 @@ export default function AdminEvents() {
 
       {/* Authoring sidebar */}
       <div style={{
-        width: 280,
-        background: 'rgba(17, 30, 54, 0.95)',
-        backdropFilter: 'blur(16px)',
-        borderLeft: '1px solid rgba(164,181,209,0.2)',
-        padding: 16,
-        display: 'flex', flexDirection: 'column', gap: 14,
+        width: 320,
+        background: 'var(--color-card-bg)',
+        borderLeft: '1px solid var(--color-border)',
+        padding: 20,
+        display: 'flex', flexDirection: 'column', gap: 16,
         overflowY: 'auto',
       }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: 'white', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+        <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
           Spatial Event Placement
         </div>
 
         {saved && (
           <div style={{
-            background: 'rgba(254, 214, 206, 0.15)', border: '1px solid rgba(254, 214, 206, 0.3)',
-            borderRadius: 8, padding: '8px 12px', color: '#fed6ce', fontSize: 11, fontWeight: 700,
+            background: 'rgba(74, 124, 89, 0.1)', border: '1.5px solid var(--color-success)',
+            borderRadius: 12, padding: '10px 14px', color: 'var(--color-success)', fontSize: 13, fontWeight: 700,
           }}>
             Event Created & Published!
           </div>
         )}
 
         <div>
-          <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
+          <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
             Event Title
           </label>
           <input
-            className="input-glass"
+            style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 13 }}
             placeholder="e.g. Great Hall History Quiz"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
-            style={{ fontSize: 12 }}
           />
         </div>
 
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 12 }}>
           <div style={{ flex: 1 }}>
-            <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
+            <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
               Latitude
             </label>
-            <input className="input-glass" value={form.lat} readOnly style={{ fontSize: 11, color: '#fed6ce' }} />
+            <input style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 12 }} value={form.lat} readOnly />
           </div>
           <div style={{ flex: 1 }}>
-            <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
+            <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
               Longitude
             </label>
-            <input className="input-glass" value={form.lng} readOnly style={{ fontSize: 11, color: '#fed6ce' }} />
+            <input style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 12 }} value={form.lng} readOnly />
           </div>
         </div>
 
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-            <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600 }}>Activation Radius</label>
-            <span style={{ fontSize: 11, color: '#fed6ce', fontWeight: 700 }}>{form.radius}m</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+            <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700 }}>Activation Radius</label>
+            <span style={{ fontSize: 12, color: 'var(--color-accent)', fontWeight: 800 }}>{form.radius}m</span>
           </div>
           <input
             type="range" min={10} max={100} value={form.radius}
             onChange={(e) => setForm({ ...form, radius: Number(e.target.value) })}
-            style={{ width: '100%', accentColor: '#fed6ce' }}
+            style={{ width: '100%', accentColor: 'var(--color-accent)' }}
           />
         </div>
 
         <div>
-          <label style={{ fontSize: 11, color: '#a4b5d1', fontWeight: 600, display: 'block', marginBottom: 4 }}>
+          <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
             Card Reward Selection
           </label>
           <select
-            className="input-glass"
+            style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 13 }}
             value={form.card}
             onChange={(e) => setForm({ ...form, card: e.target.value })}
-            style={{ fontSize: 12, color: 'white', background: '#1d3156' }}
           >
             <option value="Great Hall Pillars">Great Hall Pillars (Legendary)</option>
             <option value="Solomon's Torch">Solomon's Torch (Epic)</option>
@@ -226,26 +224,25 @@ export default function AdminEvents() {
         </div>
 
         <button
-          className="btn-peach"
-          style={{ width: '100%', fontSize: 12, padding: '10px', marginTop: 6, borderRadius: 8 }}
+          style={{ width: '100%', fontSize: 14, padding: '12px', marginTop: 8, borderRadius: 10, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }}
           onClick={handleSave}
         >
           Save & Publish Event
         </button>
 
         {/* Existing events list */}
-        <div style={{ marginTop: 10 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#a4b5d1', marginBottom: 8, textTransform: 'uppercase' }}>
+        <div style={{ marginTop: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-muted)', marginBottom: 12, textTransform: 'uppercase' }}>
             Active Campus Events ({events.length})
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {events.map((ev) => (
               <div key={ev.id} style={{
-                background: 'rgba(73,104,148,0.25)', border: '1px solid rgba(164,181,209,0.15)',
-                borderRadius: 8, padding: '8px 10px', fontSize: 11,
+                background: 'var(--color-bg)', border: '1px solid var(--color-border)',
+                borderRadius: 10, padding: '10px 12px', fontSize: 13,
               }}>
-                <div style={{ fontWeight: 700, color: 'white' }}>{ev.title}</div>
-                <div style={{ color: '#a4b5d1', fontSize: 10, marginTop: 2 }}>
+                <div style={{ fontWeight: 800, color: 'var(--color-text)' }}>{ev.title}</div>
+                <div style={{ color: 'var(--color-muted)', fontSize: 11, marginTop: 4, fontWeight: 600 }}>
                   Radius: {ev.radius}m · Card: {ev.card}
                 </div>
               </div>

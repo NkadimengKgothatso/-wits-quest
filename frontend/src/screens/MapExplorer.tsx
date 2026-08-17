@@ -1,483 +1,303 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-// Wits campus landmarks data
-const LANDMARKS = [
-  {
-    id: 'great-hall',
-    name: 'The Great Hall',
-    category: 'Wits History',
-    x: 50,
-    y: 42,
-    distance: 12,
-    status: 'in-reach' as const,
-    rarity: 'Legendary',
-    cardName: 'Great Hall Pillars',
-  },
-  {
-    id: 'solomon',
-    name: 'Solomon Mahlangu House',
-    category: 'Campus Life',
-    x: 63,
-    y: 55,
-    distance: 18,
-    status: 'in-reach' as const,
-    rarity: 'Epic',
-    cardName: "Solomon's Torch",
-  },
-  {
-    id: 'senate-house',
-    name: 'Senate House',
-    category: 'Administration',
-    x: 38,
-    y: 60,
-    distance: 87,
-    status: 'far' as const,
-    rarity: 'Rare',
-    cardName: 'Senate Seal',
-  },
-  {
-    id: 'cullen-library',
-    name: 'Cullen Library',
-    category: 'Knowledge',
-    x: 70,
-    y: 35,
-    distance: 134,
-    status: 'far' as const,
-    rarity: 'Epic',
-    cardName: 'Ancient Tome',
-  },
-  {
-    id: 'science-stadium',
-    name: 'Science Stadium',
-    category: 'STEM',
-    x: 28,
-    y: 48,
-    distance: 210,
-    status: 'far' as const,
-    rarity: 'Rare',
-    cardName: 'Quantum Reactor',
-  },
-  {
-    id: 'origins-museum',
-    name: 'Origins Centre',
-    category: 'Heritage',
-    x: 57,
-    y: 70,
-    distance: 45,
-    status: 'far' as const,
-    rarity: 'Common',
-    cardName: 'Cave Painting',
-  },
+const WITS_CENTER: [number, number] = [-26.192885679106496, 28.030521047594373];
+const DEFAULT_ZOOM = 18;
+
+const witsLabelIcon = new L.DivIcon({
+  className: 'wits-label-marker',
+  html: `
+    <div class="wits-w-badge">
+      <span class="wits-w-letter">W</span>
+    </div>
+  `,
+  iconSize: [70, 70],
+  iconAnchor: [35, 35],
+});
+
+const userLocationIcon = new L.DivIcon({
+  className: 'user-location-marker',
+  html: `
+    <div class="user-dot-outer">
+      <div class="user-dot-inner"></div>
+    </div>
+  `,
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+});
+
+const landmarkIcon = new L.DivIcon({
+  className: 'landmark-marker',
+  html: `
+    <svg width="20" height="26" viewBox="0 0 20 26" xmlns="http://www.w3.org/2000/svg">
+      <rect
+        x="1" y="1" width="18" height="24" rx="3"
+        fill="#6a3fa0"
+        stroke="#fffefc"
+        stroke-width="1.5"
+      />
+      <rect x="4" y="4" width="12" height="18" rx="1.5" fill="#8b5fc7" opacity="0.5" />
+      <circle cx="10" cy="13" r="3.2" fill="#f5c37a" />
+    </svg>
+  `,
+  iconSize: [20, 26],
+  iconAnchor: [10, 24],
+  popupAnchor: [0, -22],
+});
+
+interface Landmark {
+  name: string;
+  position: [number, number];
+}
+
+const LANDMARKS: Landmark[] = [
+  { name: "Great Hall", position: [-26.192177415373987, 28.030361941387124] },
+  { name: "Humphrey Raikes", position: [-26.192095332747023, 28.03127963680826] },
+  { name: "Wartenweiler Library", position: [-26.191243529310864, 28.03087176603622] },
+  { name: "Wits School of the Arts", position: [-26.192037583558378, 28.032449581917486] },
+  { name: "William Cullen Library", position: [-26.190829656466303, 28.029379817685918] },
+  { name: "Amphitheatre", position: [-26.190136656782915, 28.029980890402594] },
+  { name: "John Moffat Pond", position: [-26.190189594404178, 28.02955155274785] },
+  { name: "TW Kambule Mathematical Sciences Building", position: [-26.19046871964564, 28.026841358802145] },
+  { name: "Wits Science Stadium", position: [-26.19066603191282, 28.02523134259679] },
+  { name: "Tower of Light", position: [-26.18978053034198, 28.02594511644781] },
+  { name: "The Matrix", position: [-26.189616064701625, 28.030808592703018] },
+  { name: "Chamber of Mines", position: [-26.191709498016966, 28.02699822101696] },
+  { name: "South West Engineering", position: [-26.19202018489526, 28.02935054349668] },
+  { name: "Flower Hall", position: [-26.191733973644435, 28.02620961472413] },
+  { name: "Wits Sturrock Park", position: [-26.19319213569335, 28.021073663028996] },
+  { name: "Origins Centre", position: [-26.192977185786265, 28.028291004158817] },
+  { name: "Old Mutual Sport Hall", position: [-26.189627614752393, 28.029321916975654] },
+  { name: "John Moffat", position: [-26.190151568368808, 28.029334082969147] },
 ];
 
-// Nearby active Wits student players
-const NEARBY_PLAYERS = [
-  { id: 'p1', name: 'Thabo Nkosi', initials: 'TN', level: 28, rank: '#1 Diamond', x: 62, y: 52 },
-  { id: 'p2', name: 'Lerato Dlamini', initials: 'LD', level: 25, rank: '#2 Diamond', x: 68, y: 38 },
-  { id: 'p3', name: 'Sipho Mokoena', initials: 'SM', level: 24, rank: '#3 Platinum', x: 32, y: 50 },
-];
+export interface MapExplorerProps {
+  onOpenTrivia?: (landmark: any) => void;
+}
 
-interface MapExplorerProps {
-  onOpenTrivia: (landmark: typeof LANDMARKS[0]) => void;
+// Leaflet doesn't watch its container for resizes on its own.
+// This forces a recalculation on mount, orientation change, and
+// visualViewport resize (mobile browser chrome collapsing/expanding).
+function MapResizeHandler() {
+  const map = useMap();
+
+  useEffect(() => {
+    const invalidate = () => map.invalidateSize();
+
+    // Fire once shortly after mount, after layout has settled
+    const t1 = setTimeout(invalidate, 100);
+    const t2 = setTimeout(invalidate, 500);
+
+    window.addEventListener('resize', invalidate);
+    window.addEventListener('orientationchange', invalidate);
+    window.visualViewport?.addEventListener('resize', invalidate);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener('resize', invalidate);
+      window.removeEventListener('orientationchange', invalidate);
+      window.visualViewport?.removeEventListener('resize', invalidate);
+    };
+  }, [map]);
+
+  return null;
+}
+
+function UserLocationFocus({ position }: { position: [number, number] | null }) {
+  const map = useMap();
+  const [hasCentered, setHasCentered] = useState(false);
+
+  useEffect(() => {
+    if (position && !hasCentered) {
+      map.flyTo(position, 18, { animate: true, duration: 1.5 });
+      setHasCentered(true);
+    }
+  }, [position, hasCentered, map]);
+
+  return null;
 }
 
 export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
-  const [simDistance, setSimDistance] = useState(12);
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [selectedLandmark, setSelectedLandmark] = useState(LANDMARKS[0]);
-  const [activePlayerModal, setActivePlayerModal] = useState<typeof NEARBY_PLAYERS[0] | null>(null);
+  const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
 
-  const activeLandmarks = LANDMARKS.map((l) => ({
-    ...l,
-    status: l.distance <= simDistance ? ('in-reach' as const) : ('far' as const),
-  }));
+  useEffect(() => {
+    if (!('geolocation' in navigator)) {
+      setLocationError('Geolocation is not supported by this browser.');
+      return;
+    }
 
-  const nearest = activeLandmarks.find((l) => l.status === 'in-reach') ?? activeLandmarks[0];
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        setUserPosition([position.coords.latitude, position.coords.longitude]);
+        setLocationError(null);
+      },
+      (error) => {
+        if (error.code === error.PERMISSION_DENIED) {
+          setLocationError('Location permission denied. Enable it in your browser settings to see your position on the map.');
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          setLocationError('Location unavailable right now.');
+        } else if (error.code === error.TIMEOUT) {
+          setLocationError('Location request timed out.');
+        } else {
+          setLocationError('Unable to get your location.');
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: 10000,
+      }
+    );
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - 162px)', overflow: 'hidden' }}>
-      {/* Map Canvas — simulated dark tile map */}
+    <div
+      style={{
+        flex: 1,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#FAF7F2',
+        overscrollBehavior: 'none',
+      }}
+    >
+      <style>{`
+        html, body {
+          overscroll-behavior: none;
+        }
+        .adventure-tiles {
+          filter: sepia(0.4) saturate(1.3) hue-rotate(-10deg) contrast(1.05);
+        }
+        .wits-w-badge {
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 30%, #3a5580, #1d3156);
+          border: 4px solid #fffefc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+          animation: wits-pulse 2s ease-in-out infinite;
+        }
+        .wits-w-letter {
+          font-family: Georgia, serif;
+          font-weight: 900;
+          font-size: 34px;
+          color: #f9f7f4;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+        @keyframes wits-pulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 4px 14px rgba(255, 255, 255, 0.98);
+          }
+          50% {
+            transform: scale(1.08);
+            box-shadow: 0 4px 24px rgba(250, 246, 241, 0.93);
+          }
+        }
+        .user-dot-outer {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: rgba(211, 122, 50, 0.25);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: user-dot-pulse 2s ease-in-out infinite;
+        }
+        .user-dot-inner {
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #D37A32;
+          border: 3px solid #ffffff;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        }
+        @keyframes user-dot-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.3); }
+        }
+        .location-error-banner {
+          position: absolute;
+          top: 16px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1000;
+          background: #fdecea;
+          color: #b3261e;
+          border: 1px solid #f2b8b5;
+          border-radius: 8px;
+          padding: 8px 16px;
+          font-family: system-ui, sans-serif;
+          font-size: 13px;
+          max-width: 90%;
+          text-align: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        /* Leaflet's own pane needs explicit touch-action so
+           iOS doesn't treat drags as page scroll/rubber-banding */
+        .leaflet-container {
+          touch-action: pan-x pan-y;
+        }
+      `}</style>
+
+      {locationError && (
+        <div className="location-error-banner">{locationError}</div>
+      )}
+
       <div
         style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at 40% 50%, #1a2e4a 0%, #111e36 60%, #0a1525 100%)',
+          width: '100%',
+          flex: 1,
+          position: 'relative',
         }}
       >
-        {/* Grid lines simulating map tiles */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.06 }}>
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#a4b5d1" strokeWidth="0.5" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-
-        {/* Campus road network SVG */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.15 }}>
-          {/* Main roads */}
-          <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="#b0cbe6" strokeWidth="8" strokeLinecap="round" />
-          <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="#b0cbe6" strokeWidth="8" strokeLinecap="round" />
-          <line x1="25%" y1="30%" x2="75%" y2="70%" stroke="#b0cbe6" strokeWidth="4" strokeLinecap="round" />
-          <line x1="75%" y1="30%" x2="25%" y2="70%" stroke="#b0cbe6" strokeWidth="4" strokeLinecap="round" />
-          {/* Campus ring road */}
-          <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="#b0cbe6" strokeWidth="3" />
-          {/* Building footprints */}
-          {[
-            { x: '44%', y: '37%', w: 60, h: 45 },
-            { x: '57%', y: '49%', w: 50, h: 40 },
-            { x: '32%', y: '54%', w: 55, h: 38 },
-            { x: '64%', y: '29%', w: 65, h: 42 },
-            { x: '22%', y: '42%', w: 45, h: 35 },
-          ].map((b, i) => (
-            <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill="rgba(176, 203, 230, 0.2)" rx="4" />
-          ))}
-        </svg>
-
-        {/* Campus label */}
-        <div style={{
-          position: 'absolute', top: '14%', left: '50%', transform: 'translateX(-50%)',
-          color: 'rgba(164, 181, 209, 0.5)', fontSize: 11, fontWeight: 700,
-          letterSpacing: '0.18em', textTransform: 'uppercase',
-        }}>
-          University of the Witwatersrand
-        </div>
-
-        {/* User GPS dot */}
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          {/* Activation radius ring */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: Math.min(simDistance * 3, 180),
-              height: Math.min(simDistance * 3, 180),
-              borderRadius: '50%',
-              border: '1.5px solid rgba(176, 203, 230, 0.5)',
-              background: 'rgba(176, 203, 230, 0.06)',
-              transition: 'all 0.4s ease',
-            }}
-          />
-          {/* Pulse rings */}
-          <div
-            style={{
-              position: 'absolute', top: '50%', left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 20, height: 20, borderRadius: '50%',
-              background: 'rgba(176, 203, 230, 0.3)',
-              animation: 'pulse-ring 2s ease-out infinite',
-            }}
-          />
-          {/* Center dot */}
-          <div
-            className="pulse-dot"
-            style={{
-              width: 14, height: 14, borderRadius: '50%',
-              background: '#b0cbe6',
-              border: '2px solid white',
-              boxShadow: '0 0 12px rgba(176, 203, 230, 0.8)',
-              position: 'relative',
-            }}
-          />
-        </div>
-
-        {/* Landmark pins */}
-        {activeLandmarks.map((lm) => (
-          <button
-            key={lm.id}
-            onClick={() => {
-              setSelectedLandmark(lm);
-              if (lm.status === 'in-reach') onOpenTrivia(lm);
-            }}
-            style={{
-              position: 'absolute',
-              top: `${lm.y}%`,
-              left: `${lm.x}%`,
-              transform: 'translate(-50%, -50%)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              zIndex: 10,
-            }}
-          >
-            <div
-              className={lm.status === 'in-reach' ? 'pin-active' : ''}
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: '50%',
-                background: lm.status === 'in-reach'
-                  ? 'linear-gradient(135deg, #fed6ce, #f5b8ac)'
-                  : 'rgba(73, 104, 148, 0.7)',
-                border: `2px solid ${lm.status === 'in-reach' ? '#fed6ce' : 'rgba(164, 181, 209, 0.4)'}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.3s',
-                boxShadow: lm.status === 'in-reach' ? '0 0 16px rgba(254, 214, 206, 0.6)' : 'none'
-              }}
-            >
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: lm.status === 'in-reach' ? '#1d3156' : '#a4b5d1' }} />
-            </div>
-            {/* Label */}
-            <div style={{
-              position: 'absolute',
-              top: 32,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              whiteSpace: 'nowrap',
-              fontSize: 10,
-              fontWeight: 700,
-              color: lm.status === 'in-reach' ? '#fed6ce' : '#a4b5d1',
-              textShadow: '0 1px 4px rgba(0,0,0,0.8)',
-              background: 'rgba(17, 30, 54, 0.85)',
-              padding: '2px 8px',
-              borderRadius: 6,
-              border: '1px solid rgba(164, 181, 209, 0.2)'
-            }}>
-              {lm.name}
-            </div>
-          </button>
-        ))}
-
-        {/* Nearby Active Wits Student Player Avatars */}
-        {NEARBY_PLAYERS.map((p) => (
-          <button
-            key={p.id}
-            onClick={() => setActivePlayerModal(p)}
-            style={{
-              position: 'absolute',
-              top: `${p.y}%`,
-              left: `${p.x}%`,
-              transform: 'translate(-50%, -50%)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              zIndex: 15,
-            }}
-          >
-            <div style={{
-              width: 30,
-              height: 30,
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #496894, #1d3156)',
-              border: '2px solid #fed6ce',
-              boxShadow: '0 0 12px rgba(254, 214, 206, 0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 800,
-              color: '#fed6ce',
-              fontSize: 10,
-            }}>
-              {p.initials}
-            </div>
-            <div style={{
-              position: 'absolute',
-              top: 32,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              whiteSpace: 'nowrap',
-              fontSize: 9,
-              fontWeight: 700,
-              color: '#white',
-              background: 'rgba(29, 49, 86, 0.9)',
-              padding: '1px 6px',
-              borderRadius: 4,
-              border: '1px solid rgba(254, 214, 206, 0.4)'
-            }}>
-              {p.name}
-            </div>
-          </button>
-        ))}
-      </div>
-
-      {/* Floating sidebar — GPS Simulator */}
-      {showSidebar && (
-        <div
-          className="glass slide-up"
-          style={{
-            position: 'absolute',
-            right: 12,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: 220,
-            padding: 16,
-            zIndex: 30,
-          }}
+        <MapContainer
+          center={WITS_CENTER}
+          zoom={DEFAULT_ZOOM}
+          maxZoom={19}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+          zoomControl={true}
         >
-          <div style={{ fontSize: 11, fontWeight: 800, color: '#b0cbe6', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            GPS Location Simulator
-          </div>
-
-          <div style={{ fontSize: 11, color: '#fed6ce', marginBottom: 4, fontWeight: 600 }}>
-            {simDistance}m from Great Hall
-          </div>
-          <div style={{
-            fontSize: 10,
-            color: simDistance <= 25 ? '#fed6ce' : '#a4b5d1',
-            marginBottom: 10,
-            fontWeight: 700,
-            letterSpacing: '0.05em'
-          }}>
-            {simDistance <= 25 ? 'IN RADIUS (<25m)' : 'OUT OF RANGE (>25m)'}
-          </div>
-
-          <input
-            type="range"
-            min={5}
-            max={300}
-            value={simDistance}
-            onChange={(e) => setSimDistance(Number(e.target.value))}
-            style={{ width: '100%', marginBottom: 14, accentColor: '#fed6ce' }}
+          <MapResizeHandler />
+          <UserLocationFocus position={userPosition} />
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            maxZoom={19}
+            className="adventure-tiles"
           />
-
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 10, color: '#a4b5d1', marginBottom: 6, fontWeight: 600 }}>In Range Landmarks</div>
-            {activeLandmarks.filter((l) => l.status === 'in-reach').map((l) => (
-              <div key={l.id} style={{
-                fontSize: 11, color: '#fed6ce', fontWeight: 600,
-                padding: '4px 0', borderBottom: '1px solid rgba(164,181,209,0.1)',
-                display: 'flex', alignItems: 'center', gap: 6
-              }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fed6ce' }} />
-                {l.name}
+          <Marker position={WITS_CENTER} icon={witsLabelIcon}>
+            <Popup>
+              <div style={{ textAlign: 'center', fontFamily: 'Georgia, serif' }}>
+                <strong>Wits University</strong>
+                <br />
+                <em style={{ fontSize: 13 }}>Number 1 in Africa</em>
               </div>
-            ))}
-            {activeLandmarks.filter((l) => l.status === 'in-reach').length === 0 && (
-              <div style={{ fontSize: 10, color: '#a4b5d1', opacity: 0.6 }}>None in range</div>
-            )}
-          </div>
+            </Popup>
+          </Marker>
 
-          {activeLandmarks.some((l) => l.status === 'in-reach') && (
-            <button
-              className="btn-peach"
-              style={{ width: '100%', fontSize: 12, padding: '10px 8px', borderRadius: 8 }}
-              onClick={() => onOpenTrivia(nearest)}
-            >
-              Unlock Event
-            </button>
+          {userPosition && (
+            <Marker position={userPosition} icon={userLocationIcon}>
+              <Popup>You are here</Popup>
+            </Marker>
           )}
 
-          <div style={{ marginTop: 10, display: 'flex', gap: 6 }}>
-            <button className="btn-ghost" style={{ flex: 1, fontSize: 10, padding: '6px 4px', borderRadius: 6 }}>
-              Center
-            </button>
-            <button className="btn-ghost" style={{ flex: 1, fontSize: 10, padding: '6px 4px', borderRadius: 6 }}>
-              Target Nearest
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Sidebar toggle button */}
-      <button
-        onClick={() => setShowSidebar(!showSidebar)}
-        style={{
-          position: 'absolute',
-          right: showSidebar ? 240 : 12,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 31,
-          background: 'rgba(29, 49, 86, 0.9)',
-          backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(164, 181, 209, 0.3)',
-          borderRadius: 8,
-          color: '#a4b5d1',
-          fontSize: 14,
-          width: 28,
-          height: 48,
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'right 0.3s',
-        }}
-      >
-        {showSidebar ? '›' : '‹'}
-      </button>
-
-      {/* Quick event info popup (bottom left) */}
-      <div
-        className="glass-dark"
-        style={{
-          position: 'absolute',
-          bottom: 80,
-          left: 12,
-          padding: '10px 14px',
-          maxWidth: 200,
-          zIndex: 20,
-        }}
-      >
-        <div style={{ fontSize: 10, color: '#b0cbe6', fontWeight: 700, marginBottom: 4, letterSpacing: '0.05em' }}>
-          ACTIVE LANDMARK
-        </div>
-        <div style={{ fontSize: 13, color: 'white', fontWeight: 700 }}>Great Hall</div>
-        <div style={{ fontSize: 10, color: '#a4b5d1' }}>Wits History · 12m · Legendary</div>
+          {LANDMARKS.map((landmark) => (
+            <Marker key={landmark.name} position={landmark.position} icon={landmarkIcon}>
+              <Popup>{landmark.name}</Popup>
+            </Marker>
+          ))}
+        </MapContainer>
       </div>
-
-      {/* Map legend */}
-      <div
-        className="glass-dark"
-        style={{
-          position: 'absolute',
-          bottom: 80,
-          right: 12,
-          padding: '10px 14px',
-          zIndex: 20,
-        }}
-      >
-        <div style={{ fontSize: 9, color: '#a4b5d1', fontWeight: 700, marginBottom: 6, letterSpacing: '0.1em' }}>
-          LEGEND
-        </div>
-        {[
-          { color: '#fed6ce', label: 'Landmark In Reach' },
-          { color: '#a4b5d1', label: 'Too Far' },
-          { color: '#b0cbe6', label: 'Your GPS Fix' },
-        ].map((item) => (
-          <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: item.color }} />
-            <span style={{ fontSize: 9, color: '#a4b5d1' }}>{item.label}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Nearby Player Interaction Modal */}
-      {activePlayerModal && (
-        <div
-          style={{
-            position: 'fixed', inset: 0, background: 'rgba(13, 22, 45, 0.8)',
-            backdropFilter: 'blur(12px)', zIndex: 100,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16
-          }}
-          onClick={(e) => e.target === e.currentTarget && setActivePlayerModal(null)}
-        >
-          <div className="glass-modal slide-up" style={{ width: '100%', maxWidth: 360, padding: 24, textAlign: 'center' }}>
-            <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#496894', border: '2px solid #fed6ce', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fed6ce', fontWeight: 900, fontSize: 18, margin: '0 auto 10px' }}>
-              {activePlayerModal.initials}
-            </div>
-            <div style={{ fontSize: 16, fontWeight: 900, color: 'white' }}>{activePlayerModal.name}</div>
-            <div style={{ fontSize: 11, color: '#fed6ce', fontWeight: 700, marginBottom: 16 }}>
-              Level {activePlayerModal.level} Explorer · {activePlayerModal.rank}
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <button className="btn-peach" style={{ width: '100%', fontSize: 12, padding: '10px', borderRadius: 8 }} onClick={() => setActivePlayerModal(null)}>
-                Challenge to Live PvP Battle
-              </button>
-              <button className="btn-ghost" style={{ width: '100%', fontSize: 12, padding: '10px', borderRadius: 8 }} onClick={() => setActivePlayerModal(null)}>
-                Propose Card Trade
-              </button>
-              <button className="btn-ghost" style={{ width: '100%', fontSize: 12, padding: '10px', borderRadius: 8 }} onClick={() => setActivePlayerModal(null)}>
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

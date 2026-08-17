@@ -24,4 +24,9 @@ npm-debug.log*
 .DS_Store
 .vscode/
 .idea/
+<<<<<<< HEAD
 personal/
+=======
+.vercel
+.env*
+>>>>>>> ddc5bd7a6fd99d01b774cfde440e630f63da1671

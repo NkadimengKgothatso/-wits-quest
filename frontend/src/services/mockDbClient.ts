@@ -33,7 +33,14 @@ export interface MockCard {
   baseSpeed: number;
   baseBrains: number;
   totalStats: number;
-  imageUrl: string;
+  imageUrl?: string;
+}
+
+export interface MockUserCard {
+  userId: string;
+  cardId: string;
+  ownedQuantity: number;
+  level: number;
 }
 
 export interface MockAsyncChallenge {
@@ -233,6 +240,71 @@ const INITIAL_TEST_USERS: MockUser[] = [
     maxStatBudget: 350,
     legendaryCap: 1,
   },
+  {
+    id: 'usr_2821750',
+    email: '2821750@students.wits.ac.za',
+    studentNumber: '2821750',
+    username: '2821750',
+    name: '2821750',
+    initials: '28',
+    isOnline: true,
+    role: 'STUDENT',
+    level: 1,
+    currentXP: 0,
+    totalXP: 0,
+    essenceBalance: 100,
+    dailyStreakCount: 1,
+    lastCheckInDate: new Date().toISOString(),
+    streakMultiplier: 1.0,
+    eloRating: 1000,
+    divisionTier: 'BRONZE',
+    pvpWins: 0,
+    pvpLosses: 0,
+    pvpDraws: 0,
+    maxStatBudget: 350,
+    legendaryCap: 1,
+  },
+];
+
+export const ALL_MASTER_CARDS: MockCard[] = [
+  { id: 'c1', name: 'Great Hall Pillars', category: 'Landmarks', rarity: 'Legendary', baseAttack: 85, baseDefense: 95, baseSpeed: 40, baseBrains: 90, totalStats: 310 },
+  { id: 'c2', name: "Solomon's Torch", category: 'History', rarity: 'Epic', baseAttack: 90, baseDefense: 70, baseSpeed: 85, baseBrains: 88, totalStats: 333 },
+  { id: 'c3', name: 'Quantum Reactor', category: 'Science', rarity: 'Rare', baseAttack: 75, baseDefense: 60, baseSpeed: 70, baseBrains: 95, totalStats: 300 },
+  { id: 'c4', name: 'Senate Seal', category: 'Administration', rarity: 'Rare', baseAttack: 60, baseDefense: 88, baseSpeed: 45, baseBrains: 92, totalStats: 285 },
+  { id: 'c5', name: 'Cave Painting', category: 'Heritage', rarity: 'Common', baseAttack: 40, baseDefense: 50, baseSpeed: 35, baseBrains: 78, totalStats: 203 },
+  { id: 'c6', name: 'Ancient Tome', category: 'Knowledge', rarity: 'Epic', baseAttack: 55, baseDefense: 72, baseSpeed: 30, baseBrains: 99, totalStats: 256 },
+  { id: 'c7', name: 'The Rock Drill', category: 'Art', rarity: 'Legendary', baseAttack: 98, baseDefense: 80, baseSpeed: 65, baseBrains: 75, totalStats: 318 },
+  { id: 'c8', name: 'Wits Springbok', category: 'Sports', rarity: 'Common', baseAttack: 72, baseDefense: 55, baseSpeed: 92, baseBrains: 60, totalStats: 279 },
+  { id: 'c9', name: 'Wits Medical', category: 'Science', rarity: 'Rare', baseAttack: 50, baseDefense: 85, baseSpeed: 55, baseBrains: 96, totalStats: 286 },
+  { id: 'c10', name: 'Star Trails', category: 'Science', rarity: 'Epic', baseAttack: 65, baseDefense: 65, baseSpeed: 78, baseBrains: 88, totalStats: 296 },
+  { id: 'c11', name: 'Cullen Archive', category: 'Knowledge', rarity: 'Rare', baseAttack: 45, baseDefense: 80, baseSpeed: 40, baseBrains: 94, totalStats: 259 },
+  { id: 'c12', name: 'Origins Fossil', category: 'Heritage', rarity: 'Common', baseAttack: 38, baseDefense: 62, baseSpeed: 28, baseBrains: 70, totalStats: 198 },
+  { id: 'c13', name: 'High Voltage Coil', category: 'Science', rarity: 'Legendary', baseAttack: 92, baseDefense: 68, baseSpeed: 84, baseBrains: 91, totalStats: 335 },
+  { id: 'c14', name: 'Biomedical Genome', category: 'Science', rarity: 'Epic', baseAttack: 62, baseDefense: 78, baseSpeed: 60, baseBrains: 97, totalStats: 297 },
+  { id: 'c15', name: 'Mandelstam Theorem', category: 'Knowledge', rarity: 'Epic', baseAttack: 70, baseDefense: 65, baseSpeed: 50, baseBrains: 98, totalStats: 283 },
+  { id: 'c16', name: 'Law Moot Shield', category: 'Administration', rarity: 'Rare', baseAttack: 68, baseDefense: 92, baseSpeed: 42, baseBrains: 89, totalStats: 291 },
+];
+
+let localMockUserCards: MockUserCard[] = [
+  // Thabo gets a lot of cards
+  { userId: 'usr_thabo', cardId: 'c1', ownedQuantity: 1, level: 3 },
+  { userId: 'usr_thabo', cardId: 'c2', ownedQuantity: 3, level: 4 },
+  { userId: 'usr_thabo', cardId: 'c3', ownedQuantity: 1, level: 2 },
+  { userId: 'usr_thabo', cardId: 'c6', ownedQuantity: 2, level: 1 },
+  { userId: 'usr_thabo', cardId: 'c7', ownedQuantity: 1, level: 1 },
+  { userId: 'usr_thabo', cardId: 'c8', ownedQuantity: 6, level: 5 },
+  // Kagiso gets a medium amount
+  { userId: 'usr_kagiso', cardId: 'c3', ownedQuantity: 2, level: 2 },
+  { userId: 'usr_kagiso', cardId: 'c5', ownedQuantity: 4, level: 3 },
+  { userId: 'usr_kagiso', cardId: 'c8', ownedQuantity: 1, level: 1 },
+  { userId: 'usr_kagiso', cardId: 'c11', ownedQuantity: 1, level: 1 },
+  { userId: 'usr_kagiso', cardId: 'c12', ownedQuantity: 3, level: 2 },
+  // 2821750 gets exactly the 5 starting cards hardcoded
+  { userId: 'usr_2821750', cardId: 'c3', ownedQuantity: 1, level: 1 },
+  { userId: 'usr_2821750', cardId: 'c5', ownedQuantity: 1, level: 1 },
+  { userId: 'usr_2821750', cardId: 'c8', ownedQuantity: 1, level: 1 },
+  { userId: 'usr_2821750', cardId: 'c11', ownedQuantity: 1, level: 1 },
+  { userId: 'usr_2821750', cardId: 'c12', ownedQuantity: 1, level: 1 },
 ];
 
 let localMockUsers: MockUser[] = [...INITIAL_TEST_USERS];
@@ -597,6 +669,47 @@ export async function saveMockBattleResult(data: {
     };
     localMockUsers[userIndex] = formatUserMeta(updated);
     return localMockUsers[userIndex];
+  }
+  return undefined;
+}
+
+/**
+ * Fetch a user's specific card collection from the mock DB
+ */
+export async function getMockUserCards(userId: string): Promise<{ card: MockCard; owned: number; level: number }[]> {
+  // Local fallback directly, as backend doesn't support cards yet
+  let userCards = localMockUserCards.filter(uc => uc.userId === userId);
+  
+  // Seed initial 5 cards if user has none
+  if (userCards.length === 0) {
+    const initialCards = ['c3', 'c5', 'c8', 'c11', 'c12']; // A mix of Common and Rare cards
+    userCards = initialCards.map(cardId => ({
+      userId,
+      cardId,
+      ownedQuantity: 1,
+      level: 1
+    }));
+    localMockUserCards.push(...userCards);
+  }
+
+  return userCards.map(uc => {
+    const masterCard = ALL_MASTER_CARDS.find(m => m.id === uc.cardId);
+    return {
+      card: masterCard,
+      owned: uc.ownedQuantity,
+      level: uc.level
+    };
+  }).filter(c => c.card !== undefined) as { card: MockCard; owned: number; level: number }[];
+}
+
+/**
+ * Update a mock user's profile
+ */
+export async function updateMockUser(userId: string, updates: Partial<MockUser>): Promise<MockUser | undefined> {
+  const userIndex = localMockUsers.findIndex((u) => u.id === userId);
+  if (userIndex >= 0) {
+    localMockUsers[userIndex] = { ...localMockUsers[userIndex], ...updates };
+    return formatUserMeta(localMockUsers[userIndex]);
   }
   return undefined;
 }
