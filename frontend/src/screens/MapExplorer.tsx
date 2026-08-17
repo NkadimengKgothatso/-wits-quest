@@ -350,7 +350,8 @@ export default function MapExplorer({
           flex-direction: column;
           align-items: center;
           position: relative;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: auto;
           background:
             radial-gradient(
               circle at 50% 5%,
@@ -997,7 +998,15 @@ export default function MapExplorer({
           }
 
           .map-info-bar {
-            flex-direction: column;
+            flex-direction: row;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 8px;
+          }
+          
+          .map-info-card {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
           }
 
           .map-compass {
