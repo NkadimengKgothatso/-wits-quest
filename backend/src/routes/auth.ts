@@ -22,8 +22,9 @@ import { queryAll, queryOne, runAndPersist, getDB, persist } from '../db/connect
 const router = Router();
 
 // Student email must be exactly 7 digits followed by @students.wits.ac.za
-// e.g. 2345671@students.wits.ac.za
+// Admin email must be @wits.ac.za
 const STUDENT_EMAIL_REGEX = /^\d{7}@students\.wits\.ac\.za$/;
+const ADMIN_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@wits\.ac\.za$/;
 
 // ─── REGISTER ──────────────────────────────────────────────────────
 router.post('/auth/register', async (req: Request, res: Response) => {
@@ -35,8 +36,11 @@ router.post('/auth/register', async (req: Request, res: Response) => {
       res.status(400).json({ error: 'Email and password are required' });
       return;
     }
-    if (!STUDENT_EMAIL_REGEX.test(email)) {
-      res.status(400).json({ error: 'Email must be a valid student number, e.g. 2345671@students.wits.ac.za' });
+    const isStudent = STUDENT_EMAIL_REGEX.test(email);
+    const isAdmin = ADMIN_EMAIL_REGEX.test(email);
+    
+    if (!isStudent && !isAdmin) {
+      res.status(400).json({ error: 'Email must be a valid @students.wits.ac.za or @wits.ac.za address' });
       return;
     }
     if (password.length < 6) {
@@ -56,9 +60,9 @@ router.post('/auth/register', async (req: Request, res: Response) => {
     const username = name ? name.replace(/\s+/g, '_') : email.split('@')[0];
     const passwordHash = await bcrypt.hash(password, 10);
     const now = new Date().toISOString();
-    // Email is already validated as 7 digits @students.wits.ac.za, so derive
-    // the student number straight from it (ignore any conflicting body field).
-    const stuNum = email.split('@')[0];
+    // If admin, generate a dummy student number since the DB requires it
+    const stuNum = isStudent ? email.split('@')[0] : `ADM-${Date.now().toString().slice(-6)}`;
+    const role = isAdmin ? 'ADMIN' : 'STUDENT';
 
     const db = getDB();
     db.run(
@@ -66,12 +70,12 @@ router.post('/auth/register', async (req: Request, res: Response) => {
        (id, email, studentNumber, username, passwordHash, role, level, currentXP, totalXP,
         essenceBalance, dailyStreakCount, lastCheckInDate, streakMultiplier,
         eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, 'STUDENT', 1, 0, 0, 100, 1, ?, 1.0, 1000, 'GOLD', 0, 0, 0, 300, 1, ?, ?)`,
-      [id, email, stuNum, username, passwordHash, now, now, now]
+       VALUES (?, ?, ?, ?, ?, ?, 1, 0, 0, 100, 1, ?, 1.0, 1000, 'GOLD', 0, 0, 0, 300, 1, ?, ?)`,
+      [id, email, stuNum, username, passwordHash, role, now, now, now]
     );
 
-    // Seed starter cards
-    const starterCards = ['card-001', 'card-002', 'card-003', 'card-004'];
+    // Seed starter cards (Witsie Card, Wits Number 1 in Africa, Smart Card)
+    const starterCards = ['card-005', 'card-006', 'card-007'];
     for (const cardId of starterCards) {
       const invId = `inv_${id}_${cardId}`;
       db.run(
@@ -82,7 +86,7 @@ router.post('/auth/register', async (req: Request, res: Response) => {
     }
 
     // Create default deck
-    const deckCardIds = ['card-001', 'card-002', 'card-003', 'card-004', 'card-003'];
+    const deckCardIds = ['card-005', 'card-006', 'card-007'];
     let totalCost = 0;
     for (const cid of deckCardIds) {
       const row = queryOne<{ totalStats: number }>('SELECT totalStats FROM cards WHERE id = ?', [cid]);

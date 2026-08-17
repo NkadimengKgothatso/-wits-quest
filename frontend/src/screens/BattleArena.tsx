@@ -10,7 +10,7 @@ import {
   RoundOutcome,
 } from '../utils/battleEngine';
 import { selectAIAction, selectAICounterCard } from '../utils/battleAI';
-import { saveMockBattleResult } from '../services/mockDbClient';
+import { saveMockBattleResult, getMockUserCards } from '../services/apiClient';
 import { useAuth } from '../context/AuthContext';
 
 const PLAYER_CARDS: any[] = [
@@ -49,6 +49,7 @@ export default function BattleArena() {
   const { currentUser, updateUserLocally } = useAuth();
   const [mode, setMode] = useState<Mode>('hub');
   
+  const [playerCards, setPlayerCards] = useState<any[]>(PLAYER_CARDS);
   const [difficulty, setDifficulty] = useState<AIDifficulty>('medium');
   const [battleState, setBattleState] = useState<BattleState>(() =>
     createBattleState(PLAYER_CARDS, CPU_CARDS, 'medium')
@@ -56,12 +57,41 @@ export default function BattleArena() {
   const [playerCardIdx, setPlayerCardIdx] = useState(0);
   const [cpuCardIdx, setCpuCardIdx] = useState(0);
   const [selectedAttr, setSelectedAttr] = useState<StatAttribute | null>(null);
+  
+  useEffect(() => {
+    if (currentUser?.id) {
+       getMockUserCards(currentUser.id).then(cards => {
+          if (cards && cards.length > 0) {
+             const mappedCards = cards.map(c => ({
+                id: c.card.id,
+                name: c.card.name,
+                emoji: '🎴',
+                attack: c.card.baseAttack,
+                defense: c.card.baseDefense,
+                speed: c.card.baseSpeed,
+                brains: c.card.baseBrains,
+                rarity: c.card.rarity,
+                stats: {
+                  attack: c.card.baseAttack,
+                  defense: c.card.baseDefense,
+                  speed: c.card.baseSpeed,
+                  brains: c.card.baseBrains,
+                }
+             }));
+             setPlayerCards(mappedCards);
+             if (mode === 'hub') {
+               setBattleState(createBattleState(mappedCards, CPU_CARDS, difficulty));
+             }
+          }
+       });
+    }
+  }, [currentUser]);
   const [lastOutcome, setLastOutcome] = useState<RoundOutcome | null>(null);
   const [timeLeft, setTimeLeft] = useState(30);
   const [animating, setAnimating] = useState(false);
 
-  const playerCard = PLAYER_CARDS[playerCardIdx];
-  const cpuCard = CPU_CARDS[cpuCardIdx];
+  const playerCard = playerCards[playerCardIdx] || playerCards[0];
+  const cpuCard = CPU_CARDS[cpuCardIdx] || CPU_CARDS[0];
 
   // Timer effect
   useEffect(() => {
@@ -140,7 +170,7 @@ export default function BattleArena() {
         if (!nextState.isGameOver) {
           setLastOutcome(null);
           setSelectedAttr(null);
-          setPlayerCardIdx((v) => (v + 1) % PLAYER_CARDS.length);
+          setPlayerCardIdx((v) => (v + 1) % playerCards.length);
           setCpuCardIdx((v) => (v + 1) % CPU_CARDS.length);
           setTimeLeft(30);
         }
@@ -150,7 +180,7 @@ export default function BattleArena() {
 
   function startBattle(diff: AIDifficulty) {
     setDifficulty(diff);
-    setBattleState(createBattleState(PLAYER_CARDS, CPU_CARDS, diff));
+    setBattleState(createBattleState(playerCards, CPU_CARDS, diff));
     setPlayerCardIdx(0);
     setCpuCardIdx(0);
     setSelectedAttr(null);
@@ -427,7 +457,7 @@ export default function BattleArena() {
 
           {/* Card Hand Selector */}
           <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8, scrollbarWidth: 'none' }}>
-            {PLAYER_CARDS.map((card, i) => (
+            {playerCards.map((card, i) => (
               <div
                 key={card.id}
                 onClick={() => setPlayerCardIdx(i)}

@@ -242,10 +242,9 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
                 <input style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none' }} placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div>
-<<<<<<< HEAD
-                <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>Student Number</label>
+                <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Student Number</label>
                 <input
-                  className="input-glass"
+                  style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none' }}
                   placeholder="2456789"
                   inputMode="numeric"
                   maxLength={7}
@@ -263,12 +262,8 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
                   }}
                 />
                 {studentIdError && (
-                  <div style={{ fontSize: 11, color: '#e8a6a6', marginTop: 4 }}>{studentIdError}</div>
+                  <div style={{ fontSize: 12, color: '#EF4444', marginTop: 6, fontWeight: 600 }}>{studentIdError}</div>
                 )}
-=======
-                <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Student Number</label>
-                <input style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none' }} placeholder="2456789" value={studentId} onChange={(e) => setStudentId(e.target.value)} />
->>>>>>> origin/main
               </div>
             </>
           )}
@@ -277,17 +272,12 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
             <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Wits Student Email</label>
             <div style={{ position: 'relative' }}>
               <input
-                style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', paddingRight: 40 }}
+                style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', paddingRight: 40, opacity: mode === 'register' ? 0.75 : 1, cursor: mode === 'register' ? 'not-allowed' : 'text' }}
                 type="email"
                 placeholder="studentNumber@students.wits.ac.za"
                 value={email}
-<<<<<<< HEAD
                 readOnly={mode === 'register'}
                 onChange={(e) => { if (mode !== 'register') { setEmail(e.target.value); setError(''); } }}
-                style={{ paddingRight: 40, opacity: mode === 'register' ? 0.75 : 1, cursor: mode === 'register' ? 'not-allowed' : 'text' }}
-=======
-                onChange={(e) => { setEmail(e.target.value); setError(''); }}
->>>>>>> origin/main
               />
               {email.length > 3 && (
                 <div style={{

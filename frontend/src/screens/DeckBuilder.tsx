@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { getMockUserCards, MockCard } from '../services/mockDbClient'
+import { getMockUserCards, MockCard } from '../services/apiClient'
 
 interface UserCardItem {
   card: MockCard;

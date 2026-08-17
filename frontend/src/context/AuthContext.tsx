@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { MockUser, formatUserMeta, setStudentOnlineStatus } from '../services/mockDbClient';
+import { User as MockUser, formatUserMeta, setStudentOnlineStatus } from '../services/apiClient';
 
 /**
  * AuthContext — manages authentication state for the entire app.
@@ -159,25 +159,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoggedIn(true);
       return formatted;
     } catch (err: any) {
-      // If it's a validation error from the server, throw it up
       if (err.message && !err.message.includes('fetch')) {
         throw err;
       }
-      // Network error — backend might be offline, try mock fallback
-      console.warn('[AuthContext] Backend offline, attempting mock fallback login');
-      const { getMockUsers, insertMockUser } = await import('../services/mockDbClient');
-      const users = await getMockUsers();
-      let target = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
-      if (!target) {
-        const username = email.split('@')[0] || `Student_${Date.now()}`;
-        target = await insertMockUser({ email, username, level: 1, currentXP: 0, totalXP: 0, essenceBalance: 100, dailyStreakCount: 1, eloRating: 1000, pvpWins: 0, pvpLosses: 0, pvpDraws: 0 });
-      }
-      setStudentOnlineStatus(target.id, true);
-      const formatted = formatUserMeta({ ...target, isOnline: true });
-      setCurrentUser(formatted);
-      setLoggedIn(true);
-      localStorage.setItem(STORAGE_KEY, formatted.id);
-      return formatted;
+      throw new Error('Backend offline. Please start the backend server.');
     }
   };
 
@@ -212,17 +197,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (err.message && !err.message.includes('fetch')) {
         throw err;
       }
-      // Backend offline fallback
-      console.warn('[AuthContext] Backend offline, attempting mock fallback register');
-      const { insertMockUser } = await import('../services/mockDbClient');
-      const username = name ? name.replace(/\s+/g, '_') : (email.split('@')[0] || 'New_Student');
-      const newUser = await insertMockUser({ email, name, username, studentNumber, level: 1, currentXP: 0, totalXP: 0, essenceBalance: 100, dailyStreakCount: 1, eloRating: 1000, pvpWins: 0, pvpLosses: 0, pvpDraws: 0 });
-      setStudentOnlineStatus(newUser.id, true);
-      const formatted = formatUserMeta({ ...newUser, isOnline: true });
-      setCurrentUser(formatted);
-      setLoggedIn(true);
-      localStorage.setItem(STORAGE_KEY, formatted.id);
-      return formatted;
+      throw new Error('Backend offline. Please start the backend server.');
     }
   };
 

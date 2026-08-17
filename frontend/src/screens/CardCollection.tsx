@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Building, BookOpen, FlaskConical, FileText, Compass, Book, Palette, Trophy, MapPin, Search, ChevronDown, Filter, Sparkles, Layers, ChevronRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getMockUserCards, MockCard } from '../services/mockDbClient';
+import { getMockUserCards, MockCard } from '../services/apiClient';
 
 interface UserCardItem {
   card: MockCard;

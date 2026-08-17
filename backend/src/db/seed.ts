@@ -23,8 +23,8 @@ const CARDS_PATH = resolve(__dirname, '..', '..', '..', 'data', 'mock_cards.json
 // ─── Test user definitions (matches frontend mockDbClient.ts) ────
 const SEED_USERS = [
   {
-    id: 'usr_kagiso', email: 'kagiso@students.wits.ac.za', studentNumber: '2481920',
-    username: 'Kagiso_Scholar', level: 12, currentXP: 2450, totalXP: 2450,
+    id: 'usr_kagiso', email: 'kagiso@wits.ac.za', studentNumber: 'ADM-KAGISO',
+    username: 'Admin_Kagiso', level: 12, currentXP: 2450, totalXP: 2450,
     essenceBalance: 350, dailyStreakCount: 7, streakMultiplier: 1.2,
     eloRating: 1250, divisionTier: 'GOLD', pvpWins: 34, pvpLosses: 12, pvpDraws: 2,
     maxStatBudget: 350, legendaryCap: 1,
@@ -73,8 +73,8 @@ const SEED_USERS = [
   },
 ];
 
-// The 5 starter card IDs every new user receives
-const STARTER_CARD_IDS = ['card-001', 'card-002', 'card-003', 'card-004'];
+// The 3 starter card IDs every new user receives
+const STARTER_CARD_IDS = ['card-005', 'card-006', 'card-007'];
 
 export async function seed(): Promise<void> {
   const db = getDB();
@@ -103,13 +103,14 @@ export async function seed(): Promise<void> {
   const hash = await bcrypt.hash(defaultPassword, 10);
 
   for (const u of SEED_USERS) {
+    const role = u.email.endsWith('@wits.ac.za') ? 'ADMIN' : 'STUDENT';
     db.run(
       `INSERT OR IGNORE INTO users
        (id, email, studentNumber, username, passwordHash, role, level, currentXP, totalXP,
         essenceBalance, dailyStreakCount, lastCheckInDate, streakMultiplier,
         eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, 'STUDENT', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [u.id, u.email, u.studentNumber, u.username, hash, u.level, u.currentXP, u.totalXP,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [u.id, u.email, u.studentNumber, u.username, hash, role, u.level, u.currentXP, u.totalXP,
        u.essenceBalance, u.dailyStreakCount, now, u.streakMultiplier,
        u.eloRating, u.divisionTier, u.pvpWins, u.pvpLosses, u.pvpDraws, u.maxStatBudget, u.legendaryCap, now, now]
     );
@@ -129,11 +130,8 @@ export async function seed(): Promise<void> {
   }
   console.log(`[Seed] Assigned ${STARTER_CARD_IDS.length} starter cards to each user`);
 
-  // ── Step 4: Create default deck for each user ───────────────
-  // Use first 4 cards (pad with card-001 to make 5 — or just use the 4 we have)
-  // Since we only have 4 seed cards, we'll add card-001 twice conceptually,
-  // but for a proper deck we just use the 4 unique ones + repeat card-003
-  const deckCardIds = ['card-001', 'card-002', 'card-003', 'card-004', 'card-003'];
+  // Create default deck
+  const deckCardIds = ['card-005', 'card-006', 'card-007'];
   // Compute total stat cost from the cards table
   let totalCost = 0;
   for (const cid of deckCardIds) {
