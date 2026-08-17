@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getMockUsers, type MockUser } from '../../services/mockDbClient';
+import { useAuth } from '../../context/AuthContext';
 import {
   calculateSpeed,
   haversineDistance,
@@ -39,7 +40,18 @@ interface TeleportAlert {
   seconds: number;
 }
 
-/** Fetch every stored GPS ping from the telemetry endpoint. */
+interface AuditRecord {
+  id: string;
+  userId: string;
+  incidentId?: string;
+  action: ActionTaken;
+  adminEmail: string;
+  timestamp: string;
+  student?: MockUser;
+}
+
+/* ── Data access ── */
+
 async function fetchPings(): Promise<TelemetryPing[]> {
   try {
     const res = await fetch(`${BACKEND_URL}/api/mock/telemetry/pings`);
@@ -49,6 +61,35 @@ async function fetchPings(): Promise<TelemetryPing[]> {
     return [];
   }
 }
+
+async function fetchAudit(): Promise<AuditRecord[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/mock/telemetry/audit`);
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
+async function postAudit(
+  userId: string,
+  incidentId: string,
+  action: ActionTaken,
+  adminEmail: string
+) {
+  try {
+    await fetch(`${BACKEND_URL}/api/mock/telemetry/audit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, incidentId, action, adminEmail }),
+    });
+  } catch {
+    // Audit logging must never block the UI
+  }
+}
+
+/* ── Detection ── */
 
 /** Groups pings per student, oldest first, ready for pairwise comparison. */
 function groupByUser(pings: TelemetryPing[]): Map<string, TelemetryPing[]> {
@@ -124,6 +165,8 @@ function findTeleports(pings: TelemetryPing[], users: MockUser[]): TeleportAlert
   return alerts.sort(byMostRecent);
 }
 
+/* ── Formatting ── */
+
 function formatDate(ts: string) {
   return new Date(ts).toLocaleDateString('en-ZA', {
     month: 'long', day: 'numeric', year: 'numeric',
@@ -136,13 +179,30 @@ function formatTime(ts: string) {
   });
 }
 
+function actionLabel(action: ActionTaken) {
+  return action === 'warned' ? 'Warning Issued'
+    : action === 'suspended' ? 'Account Suspended'
+    : 'Marked False Positive';
+}
+
 const HEADER_CELL: React.CSSProperties = {
   textAlign: 'left', padding: '8px 10px', fontSize: 10,
   fontWeight: 800, color: '#dca668',
   textTransform: 'uppercase', letterSpacing: '0.05em',
 };
 
-/** Student name in bold with email beneath — shared by both tables. */
+const SECTION_TITLE: React.CSSProperties = {
+  fontSize: 12, fontWeight: 800, color: '#e8c99a', marginBottom: 4,
+  letterSpacing: '0.05em', textTransform: 'uppercase',
+};
+
+const EMPTY_STATE: React.CSSProperties = {
+  fontSize: 12, color: '#dca668', padding: 20, textAlign: 'center',
+};
+
+/* ── Shared cells ── */
+
+/** Student name in bold with email beneath — shared by all tables. */
 function StudentCell({ student, fallback }: { student?: MockUser; fallback: string }) {
   return (
     <>
@@ -156,60 +216,109 @@ function StudentCell({ student, fallback }: { student?: MockUser; fallback: stri
   );
 }
 
-/** Moderation buttons, replaced by a status label once an action is taken. */
+function StatusBadge({ action }: { action: ActionTaken }) {
+  return (
+    <span style={{
+      fontSize: 10, fontWeight: 700, color: '#e8c99a',
+      background: 'rgba(220, 166, 104, 0.15)',
+      border: '1px solid rgba(220, 166, 104, 0.3)',
+      borderRadius: 6, padding: '4px 8px', whiteSpace: 'nowrap',
+    }}>
+      {actionLabel(action)}
+    </span>
+  );
+}
+
+/**
+ * Moderation buttons. Once an action is taken the status is shown instead,
+ * with a Change link so an admin can correct a mistake.
+ */
 function ActionCell({
   taken, onAction,
 }: {
   taken: ActionTaken;
   onAction: (a: ActionTaken) => void;
 }) {
-  if (taken) {
+  const [editing, setEditing] = useState(false);
+
+  function choose(action: ActionTaken) {
+    onAction(action);
+    setEditing(false);
+  }
+
+  if (taken && !editing) {
     return (
-      <span style={{
-        fontSize: 10, fontWeight: 700, color: '#e8c99a',
-        background: 'rgba(220, 166, 104, 0.15)',
-        border: '1px solid rgba(220, 166, 104, 0.3)',
-        borderRadius: 6, padding: '4px 8px', whiteSpace: 'nowrap',
-      }}>
-        {taken === 'warned' ? 'Warning Issued'
-          : taken === 'suspended' ? 'Account Suspended'
-          : 'Marked False Positive'}
-      </span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <StatusBadge action={taken} />
+        <button
+          onClick={() => setEditing(true)}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: '#e8c99a', fontSize: 10, fontWeight: 700,
+            textDecoration: 'underline', padding: 0,
+          }}>
+          Change
+        </button>
+      </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
       <button className="btn-ghost"
         style={{ fontSize: 10, padding: '5px 10px', borderRadius: 6 }}
-        onClick={() => onAction('warned')}>
+        onClick={() => choose('warned')}>
         Issue Warning
       </button>
       <button className="btn-peach"
         style={{ fontSize: 10, padding: '5px 10px', borderRadius: 6 }}
-        onClick={() => onAction('suspended')}>
+        onClick={() => choose('suspended')}>
         Suspend Account
       </button>
       <button className="btn-ghost"
         style={{ fontSize: 10, padding: '5px 10px', borderRadius: 6 }}
-        onClick={() => onAction('false_positive')}>
+        onClick={() => choose('false_positive')}>
         Mark as False Positive
       </button>
+      {editing && (
+        <button
+          onClick={() => setEditing(false)}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: '#dca668', fontSize: 10, fontWeight: 700,
+            textDecoration: 'underline', padding: 0,
+          }}>
+          Cancel
+        </button>
+      )}
     </div>
   );
 }
 
+/* ── Screen ── */
+
 export default function AdminAntiCheat() {
+  const { currentUser } = useAuth();
   const [violations, setViolations] = useState<SpeedViolation[]>([]);
   const [teleports, setTeleports] = useState<TeleportAlert[]>([]);
+  const [audit, setAudit] = useState<AuditRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [actions, setActions] = useState<Record<string, ActionTaken>>({});
+
+  const adminEmail = currentUser?.email || 'unknown@wits.ac.za';
 
   async function load() {
     setLoading(true);
-    const [pings, users] = await Promise.all([fetchPings(), getMockUsers()]);
+    const [pings, users, auditRecords] = await Promise.all([
+      fetchPings(),
+      getMockUsers(),
+      fetchAudit(),
+    ]);
+
     setViolations(findViolations(pings, users));
     setTeleports(findTeleports(pings, users));
+    setAudit(
+      auditRecords.map((r) => ({ ...r, student: users.find((u) => u.id === r.userId) }))
+    );
     setLoading(false);
   }
 
@@ -220,8 +329,33 @@ export default function AdminAntiCheat() {
     return () => clearInterval(timer);
   }, []);
 
-  function applyAction(id: string, action: ActionTaken) {
-    setActions((prev) => ({ ...prev, [id]: action }));
+  async function applyAction(userId: string, incidentId: string, action: ActionTaken) {
+    if (!action) return;
+    await postAudit(userId, incidentId, action, adminEmail);
+    await load();
+  }
+
+  // Latest action per account. A later warning or false-positive lifts a suspension,
+  // so correcting a mistake restores the student's access.
+  const latestByUser = new Map<string, ActionTaken>();
+  for (const r of audit) {
+    if (!latestByUser.has(r.userId)) latestByUser.set(r.userId, r.action);
+  }
+  const suspendedUsers = new Set(
+    [...latestByUser.entries()].filter(([, a]) => a === 'suspended').map(([id]) => id)
+  );
+
+  // Warnings and false-positive marks apply only to the incident they were taken on.
+  const actionByIncident = new Map<string, ActionTaken>();
+  for (const r of audit) {
+    if (r.action === 'suspended' || !r.incidentId) continue;
+    if (!actionByIncident.has(r.incidentId)) actionByIncident.set(r.incidentId, r.action);
+  }
+
+  /** Suspension is account-level and overrides any per-incident action. */
+  function statusFor(userId: string, incidentId: string): ActionTaken {
+    if (suspendedUsers.has(userId)) return 'suspended';
+    return actionByIncident.get(incidentId) ?? null;
   }
 
   return (
@@ -244,24 +378,17 @@ export default function AdminAntiCheat() {
 
       {/* ── Table 1: Flagged GPS Speed Violations ── */}
       <div className="glass-dark" style={{ borderRadius: 12, padding: 14 }}>
-        <div style={{
-          fontSize: 12, fontWeight: 800, color: '#e8c99a', marginBottom: 4,
-          letterSpacing: '0.05em', textTransform: 'uppercase',
-        }}>
-          Flagged GPS Speed Violations
+        <div style={SECTION_TITLE}>
+          Flagged GPS Speed Violations ({violations.length})
         </div>
         <div style={{ fontSize: 10, color: '#dca668', marginBottom: 12 }}>
           Movement exceeding {SPEED_THRESHOLD_MS} m/s — faster than humanly possible
         </div>
 
         {loading ? (
-          <div style={{ fontSize: 12, color: '#dca668', padding: 20, textAlign: 'center' }}>
-            Loading telemetry...
-          </div>
+          <div style={EMPTY_STATE}>Loading telemetry...</div>
         ) : violations.length === 0 ? (
-          <div style={{ fontSize: 12, color: '#dca668', padding: 20, textAlign: 'center' }}>
-            No speed violations detected.
-          </div>
+          <div style={EMPTY_STATE}>No speed violations detected.</div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 680 }}>
@@ -274,7 +401,7 @@ export default function AdminAntiCheat() {
               </thead>
               <tbody>
                 {violations.map((v, idx) => {
-                  const taken = actions[v.id];
+                  const taken = statusFor(v.userId, v.id);
                   return (
                     <tr key={v.id} style={{
                       borderBottom: '1px solid rgba(220, 166, 104, 0.1)',
@@ -296,7 +423,7 @@ export default function AdminAntiCheat() {
                         </span>
                       </td>
                       <td style={{ padding: '10px' }}>
-                        <ActionCell taken={taken} onAction={(a) => applyAction(v.id, a)} />
+                        <ActionCell taken={taken} onAction={(a) => applyAction(v.userId, v.id, a)} />
                       </td>
                     </tr>
                   );
@@ -309,24 +436,17 @@ export default function AdminAntiCheat() {
 
       {/* ── Table 2: Suspicious Teleport Alerts ── */}
       <div className="glass-dark" style={{ borderRadius: 12, padding: 14, marginTop: 20 }}>
-        <div style={{
-          fontSize: 12, fontWeight: 800, color: '#e8c99a', marginBottom: 4,
-          letterSpacing: '0.05em', textTransform: 'uppercase',
-        }}>
-          Suspicious Teleport Alerts
+        <div style={SECTION_TITLE}>
+          Suspicious Teleport Alerts ({teleports.length})
         </div>
         <div style={{ fontSize: 10, color: '#dca668', marginBottom: 12 }}>
           Jumps over {TELEPORT_MIN_DISTANCE_M}m in under {TELEPORT_MAX_SECONDS}s — position spoofing
         </div>
 
         {loading ? (
-          <div style={{ fontSize: 12, color: '#dca668', padding: 20, textAlign: 'center' }}>
-            Loading telemetry...
-          </div>
+          <div style={EMPTY_STATE}>Loading telemetry...</div>
         ) : teleports.length === 0 ? (
-          <div style={{ fontSize: 12, color: '#dca668', padding: 20, textAlign: 'center' }}>
-            No teleport events detected.
-          </div>
+          <div style={EMPTY_STATE}>No teleport events detected.</div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 780 }}>
@@ -339,7 +459,7 @@ export default function AdminAntiCheat() {
               </thead>
               <tbody>
                 {teleports.map((t, idx) => {
-                  const taken = actions[t.id];
+                  const taken = statusFor(t.userId, t.id);
                   return (
                     <tr key={t.id} style={{
                       borderBottom: '1px solid rgba(220, 166, 104, 0.1)',
@@ -365,11 +485,61 @@ export default function AdminAntiCheat() {
                         <div style={{ fontSize: 10, color: '#dca668' }}>{formatTime(t.to.timestamp)}</div>
                       </td>
                       <td style={{ padding: '10px' }}>
-                        <ActionCell taken={taken} onAction={(a) => applyAction(t.id, a)} />
+                        <ActionCell taken={taken} onAction={(a) => applyAction(t.userId, t.id, a)} />
                       </td>
                     </tr>
                   );
                 })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* ── Table 3: Student Audit Records ── */}
+      <div className="glass-dark" style={{ borderRadius: 12, padding: 14, marginTop: 20 }}>
+        <div style={SECTION_TITLE}>
+          Student Audit Records ({audit.length})
+        </div>
+        <div style={{ fontSize: 10, color: '#dca668', marginBottom: 12 }}>
+          Full history of moderation actions taken against student accounts
+        </div>
+
+        {loading ? (
+          <div style={EMPTY_STATE}>Loading audit records...</div>
+        ) : audit.length === 0 ? (
+          <div style={EMPTY_STATE}>No moderation actions recorded.</div>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 680 }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid rgba(220, 166, 104, 0.3)' }}>
+                  {['#', 'Student', 'Action', 'Admin', 'Time'].map((h) => (
+                    <th key={h} style={HEADER_CELL}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {audit.map((r, idx) => (
+                  <tr key={r.id} style={{ borderBottom: '1px solid rgba(220, 166, 104, 0.1)' }}>
+                    <td style={{ padding: '10px', fontSize: 12, color: '#dca668', fontWeight: 700 }}>
+                      {idx + 1}
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <StudentCell student={r.student} fallback={r.userId} />
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <StatusBadge action={r.action} />
+                    </td>
+                    <td style={{ padding: '10px', fontSize: 11, color: '#dca668' }}>
+                      {r.adminEmail}
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <div style={{ fontSize: 12, color: 'white' }}>{formatDate(r.timestamp)}</div>
+                      <div style={{ fontSize: 10, color: '#dca668' }}>{formatTime(r.timestamp)}</div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
