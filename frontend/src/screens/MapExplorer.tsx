@@ -369,7 +369,7 @@ export default function MapExplorer({
         }
 
         .map-page {
-          height: calc(100vh - 126px);
+          min-height: 100%;
           width: 100%;
           box-sizing: border-box;
           display: flex;
@@ -397,7 +397,7 @@ export default function MapExplorer({
           flex-direction: row;
           align-items: center;
           position: relative;
-          margin-top: 48px;
+          margin-top: 16px;
         }
 
         .scroll-roller {
@@ -438,6 +438,39 @@ export default function MapExplorer({
           box-shadow:
             inset 0 0 30px rgba(90, 63, 32, 0.35),
             0 0 0 1px rgba(90, 63, 32, 0.2);
+        }
+
+        .map-corner-ornament {
+          position: absolute;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background:
+            radial-gradient(
+              circle at 35% 30%,
+              #6b4a26,
+              #3a2812 75%
+            );
+          border: 3px solid #caa25c;
+          box-shadow:
+            0 4px 10px rgba(0, 0, 0, 0.5),
+            inset 0 0 8px rgba(0, 0, 0, 0.55);
+          z-index: 5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .corner-tl { top: -8px; left: 0px; }
+        .corner-tr { top: -8px; right: 0px; }
+        .corner-bl { bottom: -8px; left: 0px; }
+        .corner-br { bottom: -8px; right: 0px; }
+
+        .corner-trivia-mark {
+          font-family: Georgia, serif;
+          font-weight: 900;
+          font-size: 26px;
+          color: #f0e2c0;
         }
 
         .map-info-card {
@@ -887,6 +920,18 @@ export default function MapExplorer({
             bottom: 14px;
           }
 
+          .map-corner-ornament {
+            width: 42px;
+            height: 42px;
+          }
+
+          .corner-trivia-mark {
+            font-size: 18px;
+          }
+
+          .corner-tl, .corner-tr { top: -6px; }
+          .corner-bl, .corner-br { bottom: -6px; }
+
           .map-compass {
             top: 10px;
             right: 10px;
@@ -905,6 +950,41 @@ export default function MapExplorer({
       <div className="map-content">
 
         <div className="scroll-wrapper">
+          <div
+            className="map-corner-ornament corner-tl"
+            title="Wits Kudu"
+          >
+            <svg viewBox="0 0 100 100" width="34" height="34">
+              <path
+                d="M42 32 C34 22 38 8 28 2 C36 8 36 18 42 26"
+                stroke="#f0e2c0"
+                strokeWidth="4"
+                fill="none"
+                strokeLinecap="round"
+              />
+              <path
+                d="M58 32 C66 22 62 8 72 2 C64 8 64 18 58 26"
+                stroke="#f0e2c0"
+                strokeWidth="4"
+                fill="none"
+                strokeLinecap="round"
+              />
+              <path
+                d="M50 64 C38 64 30 55 32 44 C34 33 44 27 50 27 C56 27 66 33 68 44 C70 55 62 64 50 64 Z"
+                fill="#f0e2c0"
+              />
+              <path d="M32 44 L20 39 L28 48 Z" fill="#f0e2c0" />
+              <path d="M68 44 L80 39 L72 48 Z" fill="#f0e2c0" />
+            </svg>
+          </div>
+
+          <div
+            className="map-corner-ornament corner-tr"
+            title="Trivia Challenge"
+          >
+            <span className="corner-trivia-mark">?</span>
+          </div>
+
           <div className="scroll-roller" />
 
           <div className="map-frame">
@@ -1121,10 +1201,6 @@ export default function MapExplorer({
               <p className="map-info-label">
                 Nearby
               </p>
-            <div className="map-info-card">
-              <p className="map-info-label">
-                Nearby
-              </p>
 
               <p className="map-info-value">
                 {nearbyLandmarks} landmark
@@ -1136,6 +1212,46 @@ export default function MapExplorer({
           </div>
 
           <div className="scroll-roller" />
+
+          <div
+            className="map-corner-ornament corner-bl"
+            title="Adventure Awaits"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="none"
+              stroke="#f0e2c0"
+              strokeWidth="1.6"
+            >
+              <rect x="3" y="9" width="18" height="10" rx="1.2" />
+              <path d="M3 9c0-3.3 2.2-5.5 5.5-5.5h7C18.8 3.5 21 5.7 21 9" />
+              <path d="M3 13.2h18" />
+              <circle cx="12" cy="13.2" r="1.3" fill="#f0e2c0" stroke="none" />
+            </svg>
+          </div>
+
+          <div
+            className="map-corner-ornament corner-br"
+            title="Campus Champion"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="none"
+              stroke="#f0e2c0"
+              strokeWidth="1.6"
+            >
+              <path d="M7 3h10v3.2a5 5 0 0 1-5 5 5 5 0 0 1-5-5V3z" />
+              <path d="M7 4H4a3 3 0 0 0 3 4.6" />
+              <path d="M17 4h3a3 3 0 0 1-3 4.6" />
+              <path d="M12 11.2V15" />
+              <path d="M8.5 20h7" />
+              <path d="M10 20v-1.6a2 2 0 0 1 2-2 2 2 0 0 1 2 2V20" />
+            </svg>
+          </div>
         </div>
 
       </div>
