@@ -998,15 +998,7 @@ export default function MapExplorer({
           }
 
           .map-info-bar {
-            flex-direction: row;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            padding-bottom: 8px;
-          }
-          
-          .map-info-card {
-            flex: 0 0 85%;
-            scroll-snap-align: center;
+            flex-direction: column;
           }
 
           .map-compass {
