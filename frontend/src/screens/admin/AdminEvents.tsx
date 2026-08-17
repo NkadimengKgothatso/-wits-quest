@@ -35,8 +35,8 @@ const LANDMARKS: Landmark[] = [
 const landmarkIcon = new L.DivIcon({
   className: 'admin-landmark-marker',
   html: `<div class="admin-landmark-pin"></div>`,
-  iconSize: [16, 16],
-  iconAnchor: [8, 8],
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
 });
 
 const pendingEventIcon = new L.DivIcon({
@@ -114,13 +114,24 @@ export default function AdminEvents({ onSaveEvent }: AdminEventsProps) {
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', background: '#7a5c3e', padding: '90px 40px', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <style>{`
         .admin-landmark-pin {
-          width: 16px;
-          height: 16px;
+          width: 40px;
+          height: 40px;
           border-radius: 50%;
-          background: #6a3fa0;
-          border: 2px solid #fffefc;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+          background: #4a3620;
+          opacity: 0.24;
+          filter:
+            blur(2px)
+            drop-shadow(0 0 10px rgba(74, 54, 32, 0.55));
           cursor: pointer;
+          animation: admin-landmark-pulse 2.8s ease-in-out infinite;
+        }
+        @keyframes admin-landmark-pulse {
+          0%, 100% {
+            opacity: 0.18;
+          }
+          50% {
+            opacity: 0.32;
+          }
         }
         .admin-pending-pin {
           width: 20px;
