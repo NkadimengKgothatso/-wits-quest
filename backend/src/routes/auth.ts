@@ -257,6 +257,7 @@ router.post('/battle/result', (req: Request, res: Response) => {
     const user = queryOne<Record<string, any>>('SELECT * FROM users WHERE id = ?', [userId]);
     if (user) {
       const newTotalXP = Math.max(0, (user.totalXP as number) + xpAwarded);
+      const newCurrentXP = Math.max(0, (user.currentXP as number) + xpAwarded);
       const newElo = Math.max(0, (user.eloRating as number) + eloDelta);
       const newEssence = Math.max(0, (user.essenceBalance as number) + essenceAwarded);
       const wins = outcome === 'win' ? (user.pvpWins as number) + 1 : user.pvpWins;
@@ -264,8 +265,8 @@ router.post('/battle/result', (req: Request, res: Response) => {
       const draws = outcome === 'tie' ? (user.pvpDraws as number) + 1 : user.pvpDraws;
 
       runAndPersist(
-        `UPDATE users SET totalXP = ?, eloRating = ?, essenceBalance = ?, pvpWins = ?, pvpLosses = ?, pvpDraws = ?, updatedAt = datetime('now') WHERE id = ?`,
-        [newTotalXP, newElo, newEssence, wins, losses, draws, userId]
+        `UPDATE users SET totalXP = ?, currentXP = ?, eloRating = ?, essenceBalance = ?, pvpWins = ?, pvpLosses = ?, pvpDraws = ?, updatedAt = datetime('now') WHERE id = ?`,
+        [newTotalXP, newCurrentXP, newElo, newEssence, wins, losses, draws, userId]
       );
     }
 

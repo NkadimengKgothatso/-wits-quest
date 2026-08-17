@@ -130,5 +130,5 @@ export function createTables(): void {
     );
   `);
 
-  console.log('[Schema] All 6 tables created (IF NOT EXISTS)');
+
 }
