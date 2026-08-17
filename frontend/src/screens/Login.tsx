@@ -145,15 +145,12 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [name, setName] = useState('');
-  const [studentId, setStudentId] = useState('');
-  const [studentIdError, setStudentIdError] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const STUDENT_EMAIL_REGEX = /^\d{7}@students\.wits\.ac\.za$/;
-  const emailValid = mode === 'login'
-    ? (email.endsWith('@students.wits.ac.za') || email.endsWith('@wits.ac.za'))
-    : STUDENT_EMAIL_REGEX.test(email);
+  const ADMIN_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@wits\.ac\.za$/;
+  const emailValid = STUDENT_EMAIL_REGEX.test(email) || ADMIN_EMAIL_REGEX.test(email);
 
   async function handleQuickAccountLogin(accEmail: string) {
     setEmail(accEmail);
@@ -174,9 +171,7 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!emailValid) {
-      setError(mode === 'register'
-        ? 'Email must be a valid student number, e.g. 1234567@students.wits.ac.za'
-        : 'Email must be a valid @students.wits.ac.za address');
+      setError('Email must be a valid @students.wits.ac.za or @wits.ac.za address');
       return;
     }
     if (password.length < 6) {
@@ -192,7 +187,7 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
     setLoading(true);
     try {
       if (mode === 'register') {
-        await register(email, name, studentId || '2000000', password);
+        await register(email, name, email.split('@')[0] || '2000000', password);
       } else {
         await login(email, password);
       }
@@ -241,53 +236,18 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
                 <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Full Name</label>
                 <input style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none' }} placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
-              <div>
-<<<<<<< HEAD
-                <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>Student Number</label>
-                <input
-                  className="input-glass"
-                  placeholder="2456789"
-                  inputMode="numeric"
-                  maxLength={7}
-                  value={studentId}
-                  onChange={(e) => {
-                    const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 7);
-                    setStudentId(digitsOnly);
-                    setEmail(digitsOnly.length > 0 ? `${digitsOnly}@students.wits.ac.za` : '');
-                    setError('');
-                    setStudentIdError(
-                      digitsOnly.length > 0 && digitsOnly.length < 7
-                        ? 'Student number must be exactly 7 digits'
-                        : ''
-                    );
-                  }}
-                />
-                {studentIdError && (
-                  <div style={{ fontSize: 11, color: '#e8a6a6', marginTop: 4 }}>{studentIdError}</div>
-                )}
-=======
-                <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Student Number</label>
-                <input style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none' }} placeholder="2456789" value={studentId} onChange={(e) => setStudentId(e.target.value)} />
->>>>>>> origin/main
-              </div>
             </>
           )}
 
           <div>
-            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Wits Student Email</label>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Wits Email</label>
             <div style={{ position: 'relative' }}>
               <input
                 style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', paddingRight: 40 }}
                 type="email"
-                placeholder="studentNumber@students.wits.ac.za"
+                placeholder="email@students.wits.ac.za or @wits.ac.za"
                 value={email}
-<<<<<<< HEAD
-                readOnly={mode === 'register'}
-                onChange={(e) => { if (mode !== 'register') { setEmail(e.target.value); setError(''); } }}
-                style={{ paddingRight: 40, opacity: mode === 'register' ? 0.75 : 1, cursor: mode === 'register' ? 'not-allowed' : 'text' }}
-=======
                 onChange={(e) => { setEmail(e.target.value); setError(''); }}
->>>>>>> origin/main
               />
               {email.length > 3 && (
                 <div style={{
@@ -303,7 +263,7 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
               )}
             </div>
             {email.length > 3 && !emailValid && (
-              <p style={{ fontSize: 12, color: '#EF4444', marginTop: 6, fontWeight: 600 }}>Must be an official @students.wits.ac.za address</p>
+              <p style={{ fontSize: 12, color: '#EF4444', marginTop: 6, fontWeight: 600 }}>Must be an official @wits.ac.za or @students.wits.ac.za address</p>
             )}
           </div>
 
