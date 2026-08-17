@@ -77,6 +77,34 @@ export interface MapExplorerProps {
   onOpenTrivia?: (landmark: any) => void;
 }
 
+// Haversine formula.
+// Returns the distance between two coordinates in metres.
+function haversineDistance(
+  userPosition: [number, number],
+  landmarkPosition: [number, number]
+): number {
+  const R = 6371000;
+
+  const lat1 = (userPosition[0] * Math.PI) / 180;
+  const lat2 = (landmarkPosition[0] * Math.PI) / 180;
+
+  const deltaLat =
+    ((landmarkPosition[0] - userPosition[0]) * Math.PI) / 180;
+
+  const deltaLon =
+    ((landmarkPosition[1] - userPosition[1]) * Math.PI) / 180;
+
+  const a =
+    Math.sin(deltaLat / 2) ** 2 +
+    Math.cos(lat1) *
+      Math.cos(lat2) *
+      Math.sin(deltaLon / 2) ** 2;
+
+  const c = 2 * Math.asin(Math.sqrt(a));
+
+  return R * c;
+}
+
 // Leaflet doesn't watch its container for resizes on its own.
 // This forces a recalculation on mount, orientation change, and
 // visualViewport resize (mobile browser chrome collapsing/expanding).
@@ -137,7 +165,9 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
       },
       (error) => {
         if (error.code === error.PERMISSION_DENIED) {
-          setLocationError('Location permission denied. Enable it in your browser settings to see your position on the map.');
+          setLocationError(
+            'Location permission denied. Enable it in your browser settings to see your position on the map.'
+          );
         } else if (error.code === error.POSITION_UNAVAILABLE) {
           setLocationError('Location unavailable right now.');
         } else if (error.code === error.TIMEOUT) {
@@ -171,9 +201,11 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
         html, body {
           overscroll-behavior: none;
         }
+
         .adventure-tiles {
           filter: sepia(0.4) saturate(1.3) hue-rotate(-10deg) contrast(1.05);
         }
+
         .wits-w-badge {
           width: 70px;
           height: 70px;
@@ -186,6 +218,7 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           box-shadow: 0 4px 14px rgba(0,0,0,0.5);
           animation: wits-pulse 2s ease-in-out infinite;
         }
+
         .wits-w-letter {
           font-family: Georgia, serif;
           font-weight: 900;
@@ -193,16 +226,19 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           color: #f9f7f4;
           text-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
+
         @keyframes wits-pulse {
           0%, 100% {
             transform: scale(1);
             box-shadow: 0 4px 14px rgba(255, 255, 255, 0.98);
           }
+
           50% {
             transform: scale(1.08);
             box-shadow: 0 4px 24px rgba(250, 246, 241, 0.93);
           }
         }
+
         .user-dot-outer {
           width: 24px;
           height: 24px;
@@ -213,6 +249,7 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           justify-content: center;
           animation: user-dot-pulse 2s ease-in-out infinite;
         }
+
         .user-dot-inner {
           width: 14px;
           height: 14px;
@@ -221,10 +258,12 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           border: 3px solid #ffffff;
           box-shadow: 0 1px 4px rgba(0,0,0,0.4);
         }
+
         @keyframes user-dot-pulse {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.3); }
         }
+
         .location-error-banner {
           position: absolute;
           top: 16px;
@@ -242,6 +281,22 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           text-align: center;
           box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
+
+        .trivia-button {
+          margin-top: 10px;
+          padding: 8px 14px;
+          border: none;
+          border-radius: 6px;
+          background: #1d3156;
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .trivia-button:hover {
+          background: #3a5580;
+        }
+
         /* Leaflet's own pane needs explicit touch-action so
            iOS doesn't treat drags as page scroll/rubber-banding */
         .leaflet-container {
@@ -264,20 +319,34 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
           center={WITS_CENTER}
           zoom={DEFAULT_ZOOM}
           maxZoom={19}
-          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
           zoomControl={true}
         >
           <MapResizeHandler />
+
           <UserLocationFocus position={userPosition} />
+
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             maxZoom={19}
             className="adventure-tiles"
           />
+
           <Marker position={WITS_CENTER} icon={witsLabelIcon}>
             <Popup>
-              <div style={{ textAlign: 'center', fontFamily: 'Georgia, serif' }}>
+              <div
+                style={{
+                  textAlign: 'center',
+                  fontFamily: 'Georgia, serif',
+                }}
+              >
                 <strong>Wits University</strong>
                 <br />
                 <em style={{ fontSize: 13 }}>Number 1 in Africa</em>
@@ -291,11 +360,65 @@ export default function MapExplorer({ onOpenTrivia }: MapExplorerProps) {
             </Marker>
           )}
 
-          {LANDMARKS.map((landmark) => (
-            <Marker key={landmark.name} position={landmark.position} icon={landmarkIcon}>
-              <Popup>{landmark.name}</Popup>
-            </Marker>
-          ))}
+          {LANDMARKS.map((landmark) => {
+            const distance = userPosition
+              ? haversineDistance(userPosition, landmark.position)
+              : null;
+
+            const status =
+              distance !== null && distance <= 25
+                ? 'IN_RADIUS'
+                : 'OUT_OF_RANGE';
+
+            return (
+              <Marker
+                key={landmark.name}
+                position={landmark.position}
+                icon={landmarkIcon}
+              >
+                <Popup>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'system-ui, sans-serif',
+                    }}
+                  >
+                    <strong>{landmark.name}</strong>
+
+                    {distance === null ? (
+                      <p style={{ margin: '8px 0 0' }}>
+                        Waiting for your location...
+                      </p>
+                    ) : status === 'IN_RADIUS' ? (
+                      <>
+                        <p
+                          style={{
+                            margin: '8px 0',
+                            fontWeight: 600,
+                          }}
+                        >
+                          IN RADIUS
+                        </p>
+
+                        <button
+                          className="trivia-button"
+                          onClick={() => onOpenTrivia?.(landmark)}
+                        >
+                          Start Trivia Challenge
+                        </button>
+                      </>
+                    ) : (
+                      <p style={{ margin: '8px 0 0' }}>
+                        Distance: {Math.round(distance)} meters away.
+                        <br />
+                        Walk closer to unlock
+                      </p>
+                    )}
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
         </MapContainer>
       </div>
     </div>
