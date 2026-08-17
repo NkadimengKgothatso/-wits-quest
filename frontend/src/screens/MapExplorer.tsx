@@ -9,6 +9,7 @@ import {
 } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useAuth } from '../context/AuthContext';
 
 const WITS_CENTER: [number, number] = [
   -26.192885679106496,
@@ -238,6 +239,8 @@ function Compass() {
 export default function MapExplorer({
   onOpenTrivia,
 }: MapExplorerProps) {
+  const { currentUser } = useAuth();
+
   const [userPosition, setUserPosition] =
     useState<[number, number] | null>(null);
 
@@ -266,6 +269,29 @@ export default function MapExplorer({
 
         setUserPosition(currentPosition);
         setLocationError(null);
+        
+        // SEND GPS LOCATION TO TELEMETRY ENDPOINT
+       
+        if (currentUser?.id) {
+          fetch(
+            'http://localhost:3000/api/mock/telemetry/ping',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                userId: currentUser.id,
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                timestamp: new Date().toISOString(),
+              }),
+            }
+          ).catch(() => {
+            // Ignore telemetry failures so they do not
+            // interrupt the player's map experience.
+          });
+        }
 
         // Check whether the player has reached any landmarks.
         LANDMARKS.forEach((landmark) => {
@@ -320,7 +346,7 @@ export default function MapExplorer({
 
     return () =>
       navigator.geolocation.clearWatch(watchId);
-  }, []);
+  }, [currentUser?.id]);
 
   const nearbyLandmarks = userPosition
     ? LANDMARKS.filter((landmark) => {
@@ -366,10 +392,6 @@ export default function MapExplorer({
           padding: 8px 18px 28px;
           overscroll-behavior: none;
         }
-
-        /* =========================================
-           FLOATING ADVENTURE BACKGROUND
-           ========================================= */
 
         .adventure-background {
           position: absolute;
@@ -560,10 +582,6 @@ export default function MapExplorer({
           background: #1d3156;
         }
 
-        /* =========================================
-           CONTENT
-           ========================================= */
-
         .map-content {
           position: relative;
           z-index: 2;
@@ -680,10 +698,6 @@ export default function MapExplorer({
             contrast(1.05);
         }
 
-        /* =========================================
-           WITS MAP BADGE
-           ========================================= */
-
         .wits-w-badge {
           width: 70px;
           height: 70px;
@@ -726,10 +740,6 @@ export default function MapExplorer({
               0 4px 24px rgba(250, 246, 241, 0.93);
           }
         }
-
-        /* =========================================
-           GLOWING USER LOCATION PIN
-           ========================================= */
 
         .user-location-pin {
           position: relative;
@@ -791,10 +801,6 @@ export default function MapExplorer({
           }
         }
 
-        /* =========================================
-           LANDMARK DISCOVERY CIRCLES
-           ========================================= */
-
         .landmark-circle {
           stroke: #ffffff;
           stroke-width: 3;
@@ -847,10 +853,6 @@ export default function MapExplorer({
             transform: scale(1.25);
           }
         }
-
-        /* =========================================
-           COMPASS
-           ========================================= */
 
         .map-compass {
           position: absolute;
@@ -952,10 +954,6 @@ export default function MapExplorer({
           border: 2px solid #fffefc;
         }
 
-        /* =========================================
-           TRIVIA BUTTON
-           ========================================= */
-
         .trivia-button {
           margin-top: 10px;
           padding: 8px 14px;
@@ -1016,10 +1014,6 @@ export default function MapExplorer({
           }
         }
       `}</style>
-
-      {/* =========================================
-          FLOATING ADVENTURE BACKGROUND
-          ========================================= */}
 
       <div className="adventure-background">
 
@@ -1113,8 +1107,6 @@ export default function MapExplorer({
                 className="adventure-tiles"
               />
 
-              {/* Wits centre marker */}
-
               <Marker
                 position={WITS_CENTER}
                 icon={witsLabelIcon}
@@ -1138,8 +1130,6 @@ export default function MapExplorer({
                   </div>
                 </Popup>
               </Marker>
-
-              {/* Player location */}
 
               {userPosition && (
                 <Marker
@@ -1170,10 +1160,6 @@ export default function MapExplorer({
                   </Popup>
                 </Marker>
               )}
-
-              {/* =====================================
-                  LANDMARK DISCOVERY CIRCLES
-                  ===================================== */}
 
               {LANDMARKS.map((landmark) => {
                 const distance = userPosition
@@ -1313,8 +1299,6 @@ export default function MapExplorer({
             </MapContainer>
           </div>
         </div>
-
-        {/* Map information */}
 
         <div className="map-info-bar">
 
