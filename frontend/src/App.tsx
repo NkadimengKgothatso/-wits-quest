@@ -70,7 +70,7 @@ function AppContent() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)', position: 'relative' }}>
       {/* Top bar */}
-      <TopBar onAdminNav={() => setAdminMode(!adminMode)} />
+      <TopBar adminMode={adminMode} />
 
       {adminMode ? (
         /* Admin layout */

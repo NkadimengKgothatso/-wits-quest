@@ -370,6 +370,7 @@ export default function MapExplorer({
 
         .map-page {
           min-height: 100%;
+          min-height: 100%;
           width: 100%;
           box-sizing: border-box;
           display: flex;
@@ -1197,10 +1198,10 @@ export default function MapExplorer({
 
             </MapContainer>
 
-            <div className="map-info-card">
-              <p className="map-info-label">
-                Nearby
-              </p>
+          <div className="map-info-card">
+            <p className="map-info-label">
+              Nearby
+            </p>
 
               <p className="map-info-value">
                 {nearbyLandmarks} landmark

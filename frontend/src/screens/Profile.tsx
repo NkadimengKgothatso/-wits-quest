@@ -8,7 +8,7 @@ interface ProfileProps {
 }
 
 export default function Profile({ onNavigate }: ProfileProps) {
-  const { currentUser: user, updateUserLocally } = useAuth();
+  const { currentUser: user, updateUserLocally, logout } = useAuth();
   const [cardCount, setCardCount] = useState<number>(0);
   const [isEditingName, setIsEditingName] = useState(false);
   const [editNameValue, setEditNameValue] = useState('');
@@ -145,6 +145,25 @@ export default function Profile({ onNavigate }: ProfileProps) {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Logout Button */}
+      <div className="flex justify-center mt-12 mb-4">
+        <button
+          onClick={logout}
+          style={{
+            background: 'rgba(239, 68, 68, 0.1)',
+            border: '1.5px solid rgba(239, 68, 68, 0.3)',
+            borderRadius: 8,
+            color: '#EF4444',
+            fontSize: 14,
+            fontWeight: 700,
+            padding: '10px 24px',
+            cursor: 'pointer',
+          }}
+        >
+          Logout
+        </button>
       </div>
 
     </div>

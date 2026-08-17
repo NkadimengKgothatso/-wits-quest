@@ -96,7 +96,7 @@ export async function seed(): Promise<void> {
       [c.id, c.name, c.category, c.rarity, c.stats.attack, c.stats.defense, c.stats.speed, c.stats.brains, totalStats, c.image]
     );
   }
-  console.log(`[Seed] Inserted ${cards.length} cards`);
+
 
   // ── Step 2: Seed users (all with password "password123") ────
   const defaultPassword = 'password123';
@@ -115,7 +115,7 @@ export async function seed(): Promise<void> {
        u.eloRating, u.divisionTier, u.pvpWins, u.pvpLosses, u.pvpDraws, u.maxStatBudget, u.legendaryCap, now, now]
     );
   }
-  console.log(`[Seed] Inserted ${SEED_USERS.length} test users (password: ${defaultPassword})`);
+
 
   // ── Step 3: Give each user starter cards ────────────────────
   for (const u of SEED_USERS) {
@@ -128,7 +128,7 @@ export async function seed(): Promise<void> {
       );
     }
   }
-  console.log(`[Seed] Assigned ${STARTER_CARD_IDS.length} starter cards to each user`);
+
 
   // Create default deck
   const deckCardIds = ['card-005', 'card-006', 'card-007'];
@@ -147,9 +147,9 @@ export async function seed(): Promise<void> {
       [deckId, u.id, JSON.stringify(deckCardIds), totalCost, now, now]
     );
   }
-  console.log(`[Seed] Created default decks for ${SEED_USERS.length} users (totalStatCost: ${totalCost})`);
+
 
   // Save everything to disk
   persist();
-  console.log('[Seed] Database seeded and persisted to disk');
+
 }
