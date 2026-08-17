@@ -69,8 +69,8 @@ router.post('/auth/register', async (req: Request, res: Response) => {
       `INSERT INTO users
        (id, email, studentNumber, username, passwordHash, role, level, currentXP, totalXP,
         essenceBalance, dailyStreakCount, lastCheckInDate, streakMultiplier,
-        eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, ?, 1, 0, 0, 100, 1, ?, 1.0, 1000, 'GOLD', 0, 0, 0, 300, 1, ?, ?)`,
+        eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, avatar, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, ?, ?, 1, 0, 0, 100, 1, ?, 1.0, 1000, 'GOLD', 0, 0, 0, 300, 1, 'owl', ?, ?)`,
       [id, email, stuNum, username, passwordHash, role, now, now, now]
     );
 
@@ -214,7 +214,7 @@ router.put('/users/:id', (req: Request, res: Response) => {
   const allowedFields = [
     'level', 'currentXP', 'totalXP', 'essenceBalance', 'dailyStreakCount',
     'lastCheckInDate', 'streakMultiplier', 'eloRating', 'divisionTier',
-    'pvpWins', 'pvpLosses', 'pvpDraws', 'maxStatBudget', 'legendaryCap', 'username',
+    'pvpWins', 'pvpLosses', 'pvpDraws', 'maxStatBudget', 'legendaryCap', 'username', 'avatar',
   ];
   const sets: string[] = [];
   const vals: unknown[] = [];

@@ -36,6 +36,7 @@ export function createTables(): void {
       pvpDraws         INTEGER NOT NULL DEFAULT 0,
       maxStatBudget    INTEGER NOT NULL DEFAULT 300,
       legendaryCap     INTEGER NOT NULL DEFAULT 1,
+      avatar           TEXT NOT NULL DEFAULT 'owl',
       createdAt        TEXT NOT NULL DEFAULT (datetime('now')),
       updatedAt        TEXT NOT NULL DEFAULT (datetime('now'))
     );

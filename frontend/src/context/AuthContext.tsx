@@ -64,6 +64,7 @@ function backendUserToMockUser(u: Record<string, any>): MockUser {
     pvpDraws: u.pvpDraws ?? 0,
     maxStatBudget: u.maxStatBudget ?? 300,
     legendaryCap: u.legendaryCap ?? 1,
+    avatar: u.avatar || 'owl',
   };
 }
 

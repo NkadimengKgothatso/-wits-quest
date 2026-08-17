@@ -3,6 +3,13 @@ import { User, Medal, Flame, Award, ChevronRight, Layers } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getMockUserCards } from '../services/apiClient';
 
+export const AVATAR_MAP: Record<string, { emoji: string; label: string; class: string; description: string }> = {
+  owl: { emoji: '🦉', label: 'Academic Owl', class: 'avatar-owl', description: 'Wise and floating' },
+  springbok: { emoji: '🦌', label: 'Swift Springbok', class: 'avatar-springbok', description: 'Bouncy explorer' },
+  lion: { emoji: '🦁', label: 'Noble Lion', class: 'avatar-lion', description: 'Pulsing strength' },
+  falcon: { emoji: '🦅', label: 'Clever Falcon', class: 'avatar-falcon', description: 'Tilting intelligence' },
+};
+
 interface ProfileProps {
   onNavigate: (screen: string) => void;
 }
@@ -54,21 +61,22 @@ export default function Profile({ onNavigate }: ProfileProps) {
       {/* User Info Header */}
       <div className="flex flex-col items-center mb-8">
         <div style={{
-          width: '80px',
-          height: '80px',
+          width: '96px',
+          height: '96px',
           borderRadius: '50%',
-          background: 'var(--color-border)',
+          background: 'var(--color-card-bg)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: '16px',
-          border: '3px solid var(--color-accent)'
+          border: '3px solid var(--color-accent)',
+          boxShadow: '0 8px 24px rgba(211, 122, 50, 0.12)',
+          fontSize: '48px',
+          overflow: 'hidden'
         }}>
-          {user.initials ? (
-            <span style={{ fontSize: 32, fontWeight: 800, color: 'var(--color-text)' }}>{user.initials}</span>
-          ) : (
-            <User size={40} color="var(--color-text)" />
-          )}
+          <span className={AVATAR_MAP[user.avatar || 'owl']?.class || 'avatar-owl'}>
+            {AVATAR_MAP[user.avatar || 'owl']?.emoji || '🦉'}
+          </span>
         </div>
         
         {isEditingName ? (
@@ -144,6 +152,51 @@ export default function Profile({ onNavigate }: ProfileProps) {
               </span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Choose Avatar Selector */}
+      <div style={{ marginTop: '28px' }}>
+        <h3 style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+          Choose Animated Avatar
+        </h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '12px' }}>
+          {Object.entries(AVATAR_MAP).map(([key, item]) => {
+            const isSelected = (user.avatar || 'owl') === key;
+            return (
+              <div
+                key={key}
+                onClick={async () => {
+                  const { updateMockUser } = await import('../services/apiClient');
+                  const updatedUser = await updateMockUser(user.id, { avatar: key });
+                  if (updatedUser) {
+                    updateUserLocally(updatedUser);
+                  }
+                }}
+                style={{
+                  background: isSelected ? 'rgba(211, 122, 50, 0.12)' : 'var(--color-card-bg)',
+                  border: isSelected ? '2px solid var(--color-accent)' : '1.5px solid var(--color-border)',
+                  borderRadius: '16px',
+                  padding: '12px 6px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 4px 12px rgba(44, 34, 30, 0.03)',
+                  transition: 'all 0.2s',
+                  transform: isSelected ? 'scale(1.03)' : 'scale(1)'
+                }}
+              >
+                <span className={item.class} style={{ fontSize: '32px' }}>
+                  {item.emoji}
+                </span>
+                <span style={{ fontSize: '10px', fontWeight: 700, color: isSelected ? 'var(--color-accent)' : 'var(--color-muted)', textAlign: 'center', lineHeight: 1.1 }}>
+                  {item.label.split(' ')[1]}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
 

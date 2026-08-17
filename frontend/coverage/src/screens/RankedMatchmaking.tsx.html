@@ -381,36 +381,36 @@ export default function <span class="fstat-no" title="function not covered" >Ran
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 50% 20%, #6b5630 0%, #54441b 50%, #3d2f12 100%)',
+      background: 'radial-gradient(ellipse at 50% 20%, var(--color-bg) 0%, #E5D5C5 100%)',
       paddingTop: 16, paddingBottom: 80,
     }}&gt;
       &lt;div style={{ padding: '14px 16px', maxWidth: 600, margin: '0 auto' }}&gt;
-        &lt;h2 style={{ fontSize: 20, fontWeight: 900, color: 'white', margin: '0 0 4px' }}&gt;Ranked Elo Seasons&lt;/h2&gt;
-        &lt;p style={{ fontSize: 12, color: '#dca668', margin: 0 }}&gt;Competitive seasonal ladder &amp; Elo rating matchmaking&lt;/p&gt;
+        &lt;h2 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', margin: '0 0 4px' }}&gt;Ranked Elo Seasons&lt;/h2&gt;
+        &lt;p style={{ fontSize: 13, color: 'var(--color-muted)', margin: 0, fontWeight: 600 }}&gt;Competitive seasonal ladder &amp; Elo rating matchmaking&lt;/p&gt;
       &lt;/div&gt;
 &nbsp;
       {/* User Rank Card */}
-      &lt;div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 16 }}&gt;
-        &lt;div className="glass-dark" style={{ borderRadius: 16, padding: 18, border: '1.5px solid #dca668', textAlign: 'center' }}&gt;
-          &lt;div style={{ fontSize: 10, color: '#dca668', fontWeight: 700, letterSpacing: '0.1em' }}&gt;YOUR CURRENT RATING&lt;/div&gt;
-          &lt;div style={{ fontSize: 32, fontWeight: 900, color: '#dca668', margin: '4px 0' }}&gt;1,540 Elo&lt;/div&gt;
-          &lt;div style={{ fontSize: 12, fontWeight: 800, color: '#e8c99a' }}&gt;Diamond Tier · Rank #4 Campuswide&lt;/div&gt;
-          &lt;div style={{ fontSize: 10, color: '#dca668', marginTop: 8 }}&gt;Season 1 ends in 12 days&lt;/div&gt;
+      &lt;div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 20 }}&gt;
+        &lt;div style={{ background: 'var(--color-card-bg)', borderRadius: 20, padding: 24, border: '2px solid var(--color-accent)', textAlign: 'center', boxShadow: '0 8px 32px rgba(211, 122, 50, 0.1)' }}&gt;
+          &lt;div style={{ fontSize: 11, color: 'var(--color-accent)', fontWeight: 800, letterSpacing: '0.1em' }}&gt;YOUR CURRENT RATING&lt;/div&gt;
+          &lt;div style={{ fontSize: 36, fontWeight: 900, color: 'var(--color-text)', margin: '8px 0' }}&gt;1,540 Elo&lt;/div&gt;
+          &lt;div style={{ fontSize: 13, fontWeight: 800, color: 'var(--color-muted)' }}&gt;Diamond Tier · Rank #4 Campuswide&lt;/div&gt;
+          &lt;div style={{ fontSize: 11, color: 'var(--color-muted)', marginTop: 12, fontWeight: 600 }}&gt;Season 1 ends in 12 days&lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
 &nbsp;
       {/* Queue Action Button */}
-      &lt;div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 20 }}&gt;
+      &lt;div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto', marginBottom: 24 }}&gt;
         {inQueue ? (
-          &lt;div className="glass-dark" style={{ borderRadius: 14, padding: 16, textAlign: 'center', border: '1px solid #e8c99a' }}&gt;
-            &lt;div style={{ fontSize: 13, fontWeight: 800, color: '#e8c99a', marginBottom: 6 }}&gt;Searching for Opponent...&lt;/div&gt;
-            &lt;div style={{ fontSize: 11, color: '#dca668' }}&gt;Matching within ±50 Elo range&lt;/div&gt;
-            &lt;button className="btn-ghost" style={{ fontSize: 11, padding: '8px 16px', borderRadius: 8, marginTop: 12 }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etInQueue(false)}&gt;</span>
+          &lt;div style={{ background: 'var(--color-bg)', borderRadius: 16, padding: 20, textAlign: 'center', border: '2px solid var(--color-accent)', boxShadow: '0 4px 16px rgba(211, 122, 50, 0.1)' }}&gt;
+            &lt;div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-accent)', marginBottom: 6 }}&gt;Searching for Opponent...&lt;/div&gt;
+            &lt;div style={{ fontSize: 12, color: 'var(--color-muted)', fontWeight: 600 }}&gt;Matching within ±50 Elo range&lt;/div&gt;
+            &lt;button style={{ background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-muted)', fontSize: 13, fontWeight: 700, padding: '10px 20px', borderRadius: 12, marginTop: 16, cursor: 'pointer' }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etInQueue(false)}&gt;</span>
               Cancel Queue
             &lt;/button&gt;
           &lt;/div&gt;
         ) : (
-          &lt;button className="btn-peach" style={{ width: '100%', fontSize: 14, padding: '14px', borderRadius: 12 }} onClick={handleStartQueue}&gt;
+          &lt;button style={{ width: '100%', fontSize: 15, padding: '16px', background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', borderRadius: 16, cursor: 'pointer', boxShadow: '0 4px 16px rgba(211, 122, 50, 0.2)' }} onClick={handleStartQueue}&gt;
             Find Ranked Match
           &lt;/button&gt;
         )}
@@ -418,25 +418,25 @@ export default function <span class="fstat-no" title="function not covered" >Ran
 &nbsp;
       {/* Leaderboard preview */}
       &lt;div style={{ padding: '0 16px', maxWidth: 600, margin: '0 auto' }}&gt;
-        &lt;div className="glass-dark" style={{ borderRadius: 14, padding: 14 }}&gt;
-          &lt;div style={{ fontSize: 11, fontWeight: 800, color: '#e8c99a', marginBottom: 10, textTransform: 'uppercase' }}&gt;
+        &lt;div style={{ background: 'var(--color-card-bg)', borderRadius: 20, padding: 20, border: '1px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}&gt;
+          &lt;div style={{ fontSize: 12, fontWeight: 900, color: 'var(--color-muted)', marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em' }}&gt;
             Top Season 1 Ranked Competitors
           &lt;/div&gt;
-          &lt;div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}&gt;
+          &lt;div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}&gt;
             {rankedLadder.slice(0, 6).<span class="fstat-no" title="function not covered" >map((s</span>) =&gt; (
 <span class="cstat-no" title="statement not covered" >              &lt;div key={s.id || s.rank} style={{</span>
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '8px 12px', borderRadius: 8,
-                background: s.isUser ? 'rgba(220, 166, 104, 0.15)' : 'rgba(107, 125, 44, 0.25)',
-                border: `1px solid ${s.isUser ? '#dca668' : 'rgba(220, 166, 104, 0.15)'}`,
+                padding: '12px 16px', borderRadius: 12,
+                background: s.isUser ? 'rgba(211, 122, 50, 0.08)' : 'var(--color-bg)',
+                border: `1.5px solid ${s.isUser ? 'var(--color-accent)' : 'var(--color-border)'}`,
               }}&gt;
                 &lt;div&gt;
-                  &lt;div style={{ fontSize: 12, fontWeight: 700, color: s.isUser ? '#dca668' : 'white' }}&gt;
+                  &lt;div style={{ fontSize: 13, fontWeight: 800, color: s.isUser ? 'var(--color-accent)' : 'var(--color-text)' }}&gt;
                     #{s.rank} {s.name}
                   &lt;/div&gt;
-                  &lt;div style={{ fontSize: 10, color: '#dca668' }}&gt;{s.tier}&lt;/div&gt;
+                  &lt;div style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 600 }}&gt;{s.tier}&lt;/div&gt;
                 &lt;/div&gt;
-                &lt;div style={{ fontSize: 13, fontWeight: 900, color: s.isUser ? '#dca668' : 'white' }}&gt;
+                &lt;div style={{ fontSize: 15, fontWeight: 900, color: s.isUser ? 'var(--color-accent)' : 'var(--color-text)' }}&gt;
                   {s.elo} Elo
                 &lt;/div&gt;
               &lt;/div&gt;
@@ -454,7 +454,7 @@ export default function <span class="fstat-no" title="function not covered" >Ran
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-14T21:47:47.131Z
+                at 2026-08-17T23:24:07.081Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

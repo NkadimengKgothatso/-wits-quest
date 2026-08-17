@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider, useAuth } from './AuthContext';
 
 // Simple component to consume AuthContext for testing
@@ -24,6 +24,75 @@ const TestComponent = () => {
 };
 
 describe('AuthContext', () => {
+  beforeEach(() => {
+    vi.stubGlobal('fetch', vi.fn((url: string) => {
+      if (url.endsWith('/api/auth/me')) {
+        return Promise.resolve({
+          ok: false,
+          status: 401,
+          json: () => Promise.resolve({ error: 'Unauthorized' })
+        });
+      }
+      if (url.endsWith('/api/auth/login')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({
+            token: 'mock-jwt-token',
+            user: {
+              id: 'usr_kagiso',
+              email: 'kagiso@wits.ac.za',
+              username: 'Admin_Kagiso',
+              role: 'ADMIN',
+              level: 12,
+              currentXP: 2450,
+              totalXP: 2450,
+              essenceBalance: 350,
+              dailyStreakCount: 7,
+              streakMultiplier: 1.2,
+              eloRating: 1250,
+              divisionTier: 'GOLD',
+              pvpWins: 34,
+              pvpLosses: 12,
+              pvpDraws: 2,
+              maxStatBudget: 350,
+              legendaryCap: 1,
+              avatar: 'owl'
+            }
+          })
+        });
+      }
+      if (url.endsWith('/api/auth/register')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({
+            token: 'mock-jwt-token',
+            user: {
+              id: 'usr_new',
+              email: 'new@students.wits.ac.za',
+              username: 'New',
+              role: 'STUDENT',
+              level: 1,
+              currentXP: 0,
+              totalXP: 0,
+              essenceBalance: 100,
+              dailyStreakCount: 1,
+              streakMultiplier: 1.0,
+              eloRating: 1000,
+              divisionTier: 'GOLD',
+              pvpWins: 0,
+              pvpLosses: 0,
+              pvpDraws: 0,
+              maxStatBudget: 300,
+              legendaryCap: 1,
+              avatar: 'owl'
+            }
+          })
+        });
+      }
+      return Promise.reject(new Error(`Unhandled mock fetch: ${url}`));
+    }));
+  });
+
   it('throws error if useAuth is used outside provider', () => {
     // Suppress console.error for this specific test since React throws when an error boundary is hit
     const originalError = console.error;

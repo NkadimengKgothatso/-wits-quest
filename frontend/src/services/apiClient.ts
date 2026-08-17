@@ -21,6 +21,7 @@ export interface User {
   pvpDraws: number;
   maxStatBudget: number;
   legendaryCap: number;
+  avatar?: string;
 }
 export type MockUser = User; // Compatibility alias
 

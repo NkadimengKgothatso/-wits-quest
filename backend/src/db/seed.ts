@@ -104,15 +104,16 @@ export async function seed(): Promise<void> {
 
   for (const u of SEED_USERS) {
     const role = u.email.endsWith('@wits.ac.za') ? 'ADMIN' : 'STUDENT';
+    const avatar = u.id === 'usr_sipho' ? 'springbok' : u.id === 'usr_lerato' ? 'lion' : u.id === 'usr_amahle' ? 'falcon' : 'owl';
     db.run(
       `INSERT OR IGNORE INTO users
        (id, email, studentNumber, username, passwordHash, role, level, currentXP, totalXP,
         essenceBalance, dailyStreakCount, lastCheckInDate, streakMultiplier,
-        eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, avatar, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [u.id, u.email, u.studentNumber, u.username, hash, role, u.level, u.currentXP, u.totalXP,
        u.essenceBalance, u.dailyStreakCount, now, u.streakMultiplier,
-       u.eloRating, u.divisionTier, u.pvpWins, u.pvpLosses, u.pvpDraws, u.maxStatBudget, u.legendaryCap, now, now]
+       u.eloRating, u.divisionTier, u.pvpWins, u.pvpLosses, u.pvpDraws, u.maxStatBudget, u.legendaryCap, avatar, now, now]
     );
   }
 
