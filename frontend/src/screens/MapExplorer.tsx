@@ -4,6 +4,7 @@ import {
   TileLayer,
   Marker,
   Popup,
+  Circle,
   useMap,
 } from 'react-leaflet';
 import L from 'leaflet';
@@ -41,49 +42,6 @@ const userLocationIcon = new L.DivIcon({
   iconSize: [42, 50],
   iconAnchor: [21, 47],
   popupAnchor: [0, -42],
-});
-
-const landmarkIcon = new L.DivIcon({
-  className: 'landmark-marker',
-  html: `
-    <svg
-      width="20"
-      height="26"
-      viewBox="0 0 20 26"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect
-        x="1"
-        y="1"
-        width="18"
-        height="24"
-        rx="3"
-        fill="#6a3fa0"
-        stroke="#fffefc"
-        stroke-width="1.5"
-      />
-
-      <rect
-        x="4"
-        y="4"
-        width="12"
-        height="18"
-        rx="1.5"
-        fill="#8b5fc7"
-        opacity="0.5"
-      />
-
-      <circle
-        cx="10"
-        cy="13"
-        r="3.2"
-        fill="#f5c37a"
-      />
-    </svg>
-  `,
-  iconSize: [20, 26],
-  iconAnchor: [10, 24],
-  popupAnchor: [0, -22],
 });
 
 interface Landmark {
@@ -476,16 +434,14 @@ export default function MapExplorer({
           0%, 100% {
             transform:
               translateY(0)
-              rotate(0deg)
-            ;
+              rotate(0deg);
             opacity: 0.25;
           }
 
           50% {
             transform:
               translateY(-14px)
-              rotate(12deg)
-            ;
+              rotate(12deg);
             opacity: 0.65;
           }
         }
@@ -555,7 +511,8 @@ export default function MapExplorer({
           text-transform: uppercase;
           box-shadow:
             0 4px 14px rgba(29, 49, 86, 0.06);
-          animation: badge-float 7s ease-in-out infinite;
+          animation:
+            badge-float 7s ease-in-out infinite;
         }
 
         .adventure-badge::before {
@@ -831,6 +788,63 @@ export default function MapExplorer({
           50% {
             transform: scale(1.25);
             opacity: 0.9;
+          }
+        }
+
+        /* =========================================
+           LANDMARK DISCOVERY CIRCLES
+           ========================================= */
+
+        .landmark-circle {
+          stroke: #ffffff;
+          stroke-width: 3;
+          fill: #6a3fa0;
+          fill-opacity: 0.85;
+          filter:
+            drop-shadow(0 0 4px rgba(106, 63, 160, 0.7));
+          animation:
+            landmark-pulse 2.4s ease-in-out infinite;
+        }
+
+        .landmark-circle-nearby {
+          stroke: #D37A32;
+          stroke-width: 4;
+          fill: #D37A32;
+          fill-opacity: 0.9;
+          filter:
+            drop-shadow(0 0 7px rgba(211, 122, 50, 0.9));
+          animation:
+            landmark-nearby-pulse 1.2s ease-in-out infinite;
+        }
+
+        .landmark-circle-discovered {
+          stroke: #ffffff;
+          stroke-width: 3;
+          fill: #496894;
+          fill-opacity: 0.9;
+          filter:
+            drop-shadow(0 0 5px rgba(73, 104, 148, 0.8));
+        }
+
+        @keyframes landmark-pulse {
+          0%, 100% {
+            stroke-width: 3;
+            fill-opacity: 0.78;
+          }
+
+          50% {
+            stroke-width: 4;
+            fill-opacity: 1;
+          }
+        }
+
+        @keyframes landmark-nearby-pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+
+          50% {
+            transform: scale(1.25);
           }
         }
 
@@ -1157,7 +1171,9 @@ export default function MapExplorer({
                 </Marker>
               )}
 
-              {/* Landmarks */}
+              {/* =====================================
+                  LANDMARK DISCOVERY CIRCLES
+                  ===================================== */}
 
               {LANDMARKS.map((landmark) => {
                 const distance = userPosition
@@ -1167,17 +1183,53 @@ export default function MapExplorer({
                     )
                   : null;
 
-                const status =
+                const isNearby =
                   distance !== null &&
-                  distance <= 25
+                  distance <= 25;
+
+                const isDiscovered =
+                  discoveredLandmarks.includes(
+                    landmark.name
+                  );
+
+                const status =
+                  isNearby
                     ? 'IN_RADIUS'
                     : 'OUT_OF_RANGE';
 
                 return (
-                  <Marker
+                  <Circle
                     key={landmark.name}
-                    position={landmark.position}
-                    icon={landmarkIcon}
+                    center={landmark.position}
+                    radius={isNearby ? 9 : 7}
+                    className={
+                      isDiscovered
+                        ? 'landmark-circle-discovered'
+                        : isNearby
+                        ? 'landmark-circle-nearby'
+                        : 'landmark-circle'
+                    }
+                    pathOptions={{
+                      color: isDiscovered
+                        ? '#ffffff'
+                        : isNearby
+                        ? '#D37A32'
+                        : '#ffffff',
+
+                      fillColor: isDiscovered
+                        ? '#496894'
+                        : isNearby
+                        ? '#D37A32'
+                        : '#6a3fa0',
+
+                      fillOpacity: isDiscovered
+                        ? 0.9
+                        : isNearby
+                        ? 0.9
+                        : 0.85,
+
+                      weight: isNearby ? 4 : 3,
+                    }}
                   >
                     <Popup>
                       <div
@@ -1208,9 +1260,20 @@ export default function MapExplorer({
                                 margin:
                                   '8px 0',
                                 fontWeight: 600,
+                                color: '#D37A32',
                               }}
                             >
-                              IN RADIUS
+                              ✦ DISCOVERY ZONE ✦
+                            </p>
+
+                            <p
+                              style={{
+                                margin:
+                                  '4px 0',
+                                fontSize: 12,
+                              }}
+                            >
+                              You found a landmark!
                             </p>
 
                             <button
@@ -1243,9 +1306,10 @@ export default function MapExplorer({
                         )}
                       </div>
                     </Popup>
-                  </Marker>
+                  </Circle>
                 );
               })}
+
             </MapContainer>
           </div>
         </div>
