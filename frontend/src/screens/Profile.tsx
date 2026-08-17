@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { User, Medal, Flame, Award, ChevronRight, Layers } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getMockUserCards } from '../services/mockDbClient';
+import { getMockUserCards } from '../services/apiClient';
 
 interface ProfileProps {
   onNavigate: (screen: string) => void;
@@ -29,7 +29,7 @@ export default function Profile({ onNavigate }: ProfileProps) {
 
   const handleSaveName = async () => {
     if (editNameValue.trim()) {
-      const { updateMockUser } = await import('../services/mockDbClient');
+      const { updateMockUser } = await import('../services/apiClient');
       const updatedUser = await updateMockUser(user.id, { name: editNameValue.trim(), username: editNameValue.trim().replace(/\s+/g, '_') });
       if (updatedUser) {
         updateUserLocally(updatedUser);

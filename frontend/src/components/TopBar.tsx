@@ -86,7 +86,7 @@ export default function TopBar({ onAdminNav }: TopBarProps) {
 
       {/* Admin Console & Logout Controls */}
       <div className="flex items-center gap-2" style={{ marginLeft: 'auto' }}>
-        {onAdminNav && (
+        {onAdminNav && user.role === 'ADMIN' && (
           <button
             onClick={onAdminNav}
             className="flex items-center gap-1"

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './screens/Login';
 import MapExplorer from './screens/MapExplorer';
@@ -28,12 +28,22 @@ const ADMIN_NAV: { id: AdminScreen; label: string }[] = [
 
 
 function AppContent() {
-  const { loggedIn, loading } = useAuth();
+  const { loggedIn, loading, currentUser } = useAuth();
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
   const [adminScreen, setAdminScreen] = useState<AdminScreen>('events');
   const [triviaLandmark, setTriviaLandmark] = useState<any>(null);
   const [cardsEarned, setCardsEarned] = useState(0);
+
+  useEffect(() => {
+    if (loggedIn && currentUser?.role === 'ADMIN') {
+      setAdminMode(true);
+    }
+  }, [loggedIn, currentUser?.role]);
+
+  if (adminMode && currentUser?.role !== 'ADMIN') {
+    setAdminMode(false);
+  }
 
   if (loading) {
     return (

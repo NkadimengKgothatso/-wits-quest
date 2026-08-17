@@ -30,5 +30,29 @@
     "rarity": "Rare",
     "stats": { "attack": 65, "defense": 85, "speed": 50, "brains": 92 },
     "image": "/assets/cards/law_library.webp"
+  },
+  {
+    "id": "card-005",
+    "name": "Witsie Card",
+    "category": "Lifestyle",
+    "rarity": "Common",
+    "stats": { "attack": 60, "defense": 60, "speed": 60, "brains": 60 },
+    "image": "/assets/cards/witsie_card.webp"
+  },
+  {
+    "id": "card-006",
+    "name": "Wits Number 1 in Africa",
+    "category": "Landmarks",
+    "rarity": "Legendary",
+    "stats": { "attack": 99, "defense": 99, "speed": 85, "brains": 99 },
+    "image": "/assets/cards/wits_num1.webp"
+  },
+  {
+    "id": "card-007",
+    "name": "Smart Card",
+    "category": "Science",
+    "rarity": "Rare",
+    "stats": { "attack": 40, "defense": 40, "speed": 80, "brains": 95 },
+    "image": "/assets/cards/smart_card.webp"
   }
 ]

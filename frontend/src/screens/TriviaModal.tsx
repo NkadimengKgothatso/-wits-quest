@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { saveMockBattleResult } from '../services/mockDbClient';
+import { saveMockBattleResult } from '../services/apiClient';
 import { CheckCircle2, X } from 'lucide-react';
 
 interface Landmark {
