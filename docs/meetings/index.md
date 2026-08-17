@@ -1,13 +1,10 @@
 # Meeting Records
 
-No meetings have been logged yet. Add one entry per meeting below (or split into one file per meeting and link them here, if the log gets long).
+## 2026-08-06 — Team Meeting
 
-## Template
+![Meeting on 2026-08-06](images/2026-08-06-meeting.jpeg)
 
-```markdown
-## YYYY-MM-DD — Meeting Title
-
-**Attendees**: 
+**Attendees**:
 
 **Agenda**:
 - 
@@ -17,8 +14,19 @@ No meetings have been logged yet. Add one entry per meeting below (or split into
 
 **Action items**:
 - [ ] Owner — task — due date
-```
 
----
 
-<!-- Copy the template above for each new meeting, most recent first. -->
+## 2026-08-13 — Team Meeting
+
+![Meeting on 2026-08-13](images/2026-08-13-meeting.jpeg)
+
+**Attendees**:
+
+**Agenda**:
+- 
+
+**Decisions**:
+- 
+
+**Action items**:
+- [ ] Owner — task — due date

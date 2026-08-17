@@ -3,6 +3,10 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { initDB } from './db/connection.js';
+import { createTables } from './db/schema.js';
+import { seed } from './db/seed.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -29,6 +33,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Auth + User + Card API Routes
+app.use('/api', authRoutes);
+
 // Real-Time WebSocket Battle Events
 io.on('connection', (socket) => {
   console.log(`[Socket.io] Player connected: ${socket.id}`);
@@ -43,6 +50,20 @@ io.on('connection', (socket) => {
   });
 });
 
-httpServer.listen(PORT, () => {
-  console.log(`Wits Quest Backend API running on http://localhost:${PORT}`);
-});
+// Bootstrap: init DB → create tables → seed → start server
+async function startServer() {
+  try {
+    await initDB();
+    createTables();
+    await seed();
+
+    httpServer.listen(PORT, () => {
+      console.log(`Wits Quest Backend API running on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error('[Server] Failed to start:', err);
+    process.exit(1);
+  }
+}
+
+startServer();
