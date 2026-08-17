@@ -369,14 +369,15 @@ export default function MapExplorer({
         }
 
         .map-page {
-          height: calc(100vh - 126px);
+          min-height: 100%;
           width: 100%;
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
           align-items: center;
           position: relative;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: auto;
           background:
             radial-gradient(
               circle at 50% 5%,
@@ -389,7 +390,7 @@ export default function MapExplorer({
               transparent 30%
             ),
             #FAF7F2;
-          padding: 8px 18px 12px;
+          padding: 8px 18px 28px;
           overscroll-behavior: none;
         }
 
@@ -614,14 +615,10 @@ export default function MapExplorer({
 
         .map-card {
           width: min(100%, 900px);
-          flex: 1;
-          min-height: 200px;
           background: #fffefc;
           border-radius: 22px;
           padding: 10px;
           box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
           box-shadow:
             0 12px 30px rgba(29, 49, 86, 0.16),
             0 2px 8px rgba(29, 49, 86, 0.08);
@@ -630,7 +627,7 @@ export default function MapExplorer({
 
         .map-frame {
           width: 100%;
-          flex: 1;
+          height: clamp(380px, 58vh, 620px);
           position: relative;
           overflow: hidden;
           border-radius: 16px;
@@ -639,21 +636,12 @@ export default function MapExplorer({
             inset 0 0 0 1px rgba(255,255,255,0.4);
         }
 
-        .map-info-scroll {
-          width: min(100%, 900px);
-          overflow-y: auto;
-          flex-shrink: 0;
-          max-height: 22vh;
-          margin-top: 12px;
-          padding-right: 4px;
-        }
-
         .map-info-bar {
-          width: 100%;
+          width: min(100%, 900px);
           box-sizing: border-box;
           display: flex;
-          flex-direction: row;
           gap: 12px;
+          margin-top: 14px;
         }
 
         .map-info-card {
@@ -990,7 +978,12 @@ export default function MapExplorer({
 
         @media (max-width: 600px) {
           .map-page {
-            padding: 6px 12px 8px;
+            padding: 6px 12px 22px;
+          }
+
+          .map-frame {
+            height: 52vh;
+            min-height: 330px;
           }
 
           .map-card {
@@ -1308,36 +1301,36 @@ export default function MapExplorer({
           </div>
         </div>
 
-        <div className="map-info-scroll">
-          <div className="map-info-bar">
+        {/* Map information */}
 
-            <div className="map-info-card">
-              <p className="map-info-label">
-                Nearby
-              </p>
+        <div className="map-info-bar">
 
-              <p className="map-info-value">
-                {nearbyLandmarks} landmark
-                {nearbyLandmarks === 1
-                  ? ''
-                  : 's'}
-              </p>
-            </div>
+          <div className="map-info-card">
+            <p className="map-info-label">
+              Nearby
+            </p>
 
-            <div className="map-info-card">
-              <p className="map-info-label">
-                Campus Progress
-              </p>
-
-              <p className="map-info-value">
-                {discoveredLandmarks.length}
-                {' / '}
-                {LANDMARKS.length}
-                {' '}landmarks discovered
-              </p>
-            </div>
-
+            <p className="map-info-value">
+              {nearbyLandmarks} landmark
+              {nearbyLandmarks === 1
+                ? ''
+                : 's'}
+            </p>
           </div>
+
+          <div className="map-info-card">
+            <p className="map-info-label">
+              Campus Progress
+            </p>
+
+            <p className="map-info-value">
+              {discoveredLandmarks.length}
+              {' / '}
+              {LANDMARKS.length}
+              {' '}landmarks discovered
+            </p>
+          </div>
+
         </div>
 
       </div>
