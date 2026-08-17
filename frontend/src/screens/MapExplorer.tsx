@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+} from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const WITS_CENTER: [number, number] = [-26.192885679106496, 28.030521047594373];
+const WITS_CENTER: [number, number] = [
+  -26.192885679106496,
+  28.030521047594373,
+];
+
 const DEFAULT_ZOOM = 18;
 
 const witsLabelIcon = new L.DivIcon({
@@ -20,31 +30,49 @@ const witsLabelIcon = new L.DivIcon({
 const userLocationIcon = new L.DivIcon({
   className: 'user-location-marker',
   html: `
-    <div class="gps-pin">
-      <div class="gps-pin-glow"></div>
-      <div class="gps-pin-head"></div>
+    <div class="user-location-pin">
+      <div class="user-location-glow"></div>
+      <div class="user-location-head">
+        <div class="user-location-dot"></div>
+      </div>
+      <div class="user-location-point"></div>
     </div>
   `,
-  iconSize: [34, 44],
-  iconAnchor: [17, 42],
+  iconSize: [42, 50],
+  iconAnchor: [21, 47],
+  popupAnchor: [0, -42],
 });
 
 const landmarkIcon = new L.DivIcon({
   className: 'landmark-marker',
   html: `
-    <svg width="20" height="26" viewBox="0 0 20 26" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="20"
+      height="26"
+      viewBox="0 0 20 26"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <rect
-        x="1" y="1" width="18" height="24" rx="3"
+        x="1"
+        y="1"
+        width="18"
+        height="24"
+        rx="3"
         fill="#6a3fa0"
         stroke="#fffefc"
         stroke-width="1.5"
       />
+
       <rect
-        x="4" y="4" width="12" height="18"
+        x="4"
+        y="4"
+        width="12"
+        height="18"
         rx="1.5"
         fill="#8b5fc7"
         opacity="0.5"
       />
+
       <circle
         cx="10"
         cy="13"
@@ -182,14 +210,21 @@ function MapResizeHandler() {
 
     window.addEventListener('resize', invalidate);
     window.addEventListener('orientationchange', invalidate);
-    window.visualViewport?.addEventListener('resize', invalidate);
+
+    window.visualViewport?.addEventListener(
+      'resize',
+      invalidate
+    );
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
 
       window.removeEventListener('resize', invalidate);
-      window.removeEventListener('orientationchange', invalidate);
+      window.removeEventListener(
+        'orientationchange',
+        invalidate
+      );
 
       window.visualViewport?.removeEventListener(
         'resize',
@@ -221,6 +256,25 @@ function UserLocationFocus({
   }, [position, hasCentered, map]);
 
   return null;
+}
+
+// Compass displayed in the top-right corner of the map.
+function Compass() {
+  return (
+    <div className="map-compass">
+      <div className="compass-north">N</div>
+      <div className="compass-east">E</div>
+      <div className="compass-south">S</div>
+      <div className="compass-west">W</div>
+
+      <div className="compass-needle">
+        <div className="compass-red"></div>
+        <div className="compass-blue"></div>
+      </div>
+
+      <div className="compass-center"></div>
+    </div>
+  );
 }
 
 export default function MapExplorer({
@@ -268,7 +322,10 @@ export default function MapExplorer({
                 return previous;
               }
 
-              return [...previous, landmark.name];
+              return [
+                ...previous,
+                landmark.name,
+              ];
             });
           }
         });
@@ -279,7 +336,9 @@ export default function MapExplorer({
           setLocationError(
             'Location permission denied. Enable it in your browser settings to see your position on the map.'
           );
-        } else if (error.code === error.POSITION_UNAVAILABLE) {
+        } else if (
+          error.code === error.POSITION_UNAVAILABLE
+        ) {
           setLocationError(
             'Location unavailable right now.'
           );
@@ -318,6 +377,7 @@ export default function MapExplorer({
 
   return (
     <div className="map-page">
+
       <style>{`
         html,
         body {
@@ -331,16 +391,229 @@ export default function MapExplorer({
           display: flex;
           flex-direction: column;
           align-items: center;
+          position: relative;
+          overflow: hidden;
           background:
             radial-gradient(
-              circle at top,
-              rgba(73, 104, 148, 0.18),
-              transparent 45%
+              circle at 50% 5%,
+              rgba(73, 104, 148, 0.22),
+              transparent 38%
+            ),
+            radial-gradient(
+              circle at 10% 70%,
+              rgba(106, 63, 160, 0.08),
+              transparent 30%
             ),
             #FAF7F2;
           padding: 8px 18px 28px;
-          overflow-y: auto;
           overscroll-behavior: none;
+        }
+
+        /* =========================================
+           FLOATING ADVENTURE BACKGROUND
+           ========================================= */
+
+        .adventure-background {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          overflow: hidden;
+          z-index: 0;
+        }
+
+        .floating-sparkle {
+          position: absolute;
+          font-family: Georgia, serif;
+          color: #496894;
+          opacity: 0.35;
+          animation:
+            sparkle-float 6s ease-in-out infinite;
+        }
+
+        .sparkle-1 {
+          top: 13%;
+          left: 8%;
+          font-size: 20px;
+          animation-delay: 0s;
+        }
+
+        .sparkle-2 {
+          top: 29%;
+          right: 7%;
+          font-size: 15px;
+          animation-delay: 1.5s;
+        }
+
+        .sparkle-3 {
+          top: 61%;
+          left: 5%;
+          font-size: 13px;
+          animation-delay: 3s;
+        }
+
+        .sparkle-4 {
+          bottom: 18%;
+          right: 9%;
+          font-size: 22px;
+          animation-delay: 4s;
+        }
+
+        .sparkle-5 {
+          bottom: 7%;
+          left: 18%;
+          font-size: 12px;
+          animation-delay: 2s;
+        }
+
+        .sparkle-6 {
+          top: 43%;
+          right: 17%;
+          font-size: 11px;
+          animation-delay: 4.5s;
+        }
+
+        @keyframes sparkle-float {
+          0%, 100% {
+            transform:
+              translateY(0)
+              rotate(0deg)
+            ;
+            opacity: 0.25;
+          }
+
+          50% {
+            transform:
+              translateY(-14px)
+              rotate(12deg)
+            ;
+            opacity: 0.65;
+          }
+        }
+
+        .discovery-orb {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #D37A32;
+          box-shadow:
+            0 0 8px rgba(211, 122, 50, 0.5);
+          animation:
+            orb-float 5s ease-in-out infinite;
+        }
+
+        .orb-1 {
+          top: 23%;
+          left: 15%;
+          animation-delay: 0s;
+        }
+
+        .orb-2 {
+          top: 52%;
+          right: 12%;
+          animation-delay: 2s;
+        }
+
+        .orb-3 {
+          bottom: 15%;
+          left: 10%;
+          animation-delay: 3.5s;
+        }
+
+        .orb-4 {
+          top: 74%;
+          right: 20%;
+          animation-delay: 1s;
+        }
+
+        @keyframes orb-float {
+          0%, 100% {
+            transform: translateY(0) scale(1);
+            opacity: 0.25;
+          }
+
+          50% {
+            transform: translateY(-18px) scale(1.35);
+            opacity: 0.7;
+          }
+        }
+
+        .adventure-badge {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(255, 254, 252, 0.7);
+          border: 1px solid rgba(73, 104, 148, 0.16);
+          color: #496894;
+          font-family: system-ui, sans-serif;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.7px;
+          text-transform: uppercase;
+          box-shadow:
+            0 4px 14px rgba(29, 49, 86, 0.06);
+          animation: badge-float 7s ease-in-out infinite;
+        }
+
+        .adventure-badge::before {
+          content: "✦";
+          color: #D37A32;
+          font-size: 12px;
+        }
+
+        .badge-1 {
+          top: 18%;
+          right: 4%;
+          animation-delay: 1s;
+        }
+
+        .badge-2 {
+          bottom: 12%;
+          right: 5%;
+          animation-delay: 3.5s;
+        }
+
+        @keyframes badge-float {
+          0%, 100% {
+            transform: translateY(0);
+          }
+
+          50% {
+            transform: translateY(-9px);
+          }
+        }
+
+        .route-dots {
+          position: absolute;
+          left: 3%;
+          top: 35%;
+          display: flex;
+          flex-direction: column;
+          gap: 9px;
+          opacity: 0.3;
+        }
+
+        .route-dots span {
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: #1d3156;
+        }
+
+        /* =========================================
+           CONTENT
+           ========================================= */
+
+        .map-content {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .map-header {
@@ -450,6 +723,10 @@ export default function MapExplorer({
             contrast(1.05);
         }
 
+        /* =========================================
+           WITS MAP BADGE
+           ========================================= */
+
         .wits-w-badge {
           width: 70px;
           height: 70px;
@@ -493,68 +770,177 @@ export default function MapExplorer({
           }
         }
 
-        /* Glowing GPS location pin */
-        .gps-pin {
-          width: 34px;
-          height: 44px;
+        /* =========================================
+           GLOWING USER LOCATION PIN
+           ========================================= */
+
+        .user-location-pin {
           position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
+          width: 42px;
+          height: 50px;
         }
 
-        .gps-pin-glow {
+        .user-location-glow {
           position: absolute;
+          width: 34px;
+          height: 34px;
           top: 1px;
-          width: 28px;
-          height: 28px;
-          border-radius: 50% 50% 50% 0;
+          left: 4px;
+          border-radius: 50%;
           background: rgba(211, 122, 50, 0.35);
-          transform: rotate(-45deg);
-          animation: gps-glow 2s ease-out infinite;
+          filter: blur(7px);
+          animation: location-glow 2s ease-in-out infinite;
         }
 
-        .gps-pin-head {
+        .user-location-head {
           position: absolute;
           top: 2px;
-          width: 25px;
-          height: 25px;
+          left: 8px;
+          width: 26px;
+          height: 26px;
           border-radius: 50% 50% 50% 0;
           background: #D37A32;
           border: 3px solid #ffffff;
           box-shadow:
-            0 2px 8px rgba(0, 0, 0, 0.4),
-            0 0 12px rgba(211, 122, 50, 0.8);
+            0 2px 8px rgba(0,0,0,0.35);
           transform: rotate(-45deg);
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
-        .gps-pin-head::after {
-          content: '';
-          position: absolute;
-          width: 7px;
-          height: 7px;
-          background: #ffffff;
+        .user-location-dot {
+          width: 9px;
+          height: 9px;
           border-radius: 50%;
-          top: 6px;
-          left: 6px;
+          background: #fffefc;
+          transform: rotate(45deg);
         }
 
-        @keyframes gps-glow {
-          0% {
-            transform: rotate(-45deg) scale(0.8);
-            opacity: 0.8;
+        .user-location-point {
+          position: absolute;
+          display: none;
+        }
+
+        @keyframes location-glow {
+          0%, 100% {
+            transform: scale(0.9);
+            opacity: 0.55;
           }
 
-          70% {
-            transform: rotate(-45deg) scale(1.5);
-            opacity: 0;
-          }
-
-          100% {
-            transform: rotate(-45deg) scale(1.5);
-            opacity: 0;
+          50% {
+            transform: scale(1.25);
+            opacity: 0.9;
           }
         }
+
+        /* =========================================
+           COMPASS
+           ========================================= */
+
+        .map-compass {
+          position: absolute;
+          top: 14px;
+          right: 14px;
+          width: 58px;
+          height: 58px;
+          z-index: 1000;
+          border-radius: 50%;
+          background: rgba(255, 254, 252, 0.94);
+          border: 2px solid #1d3156;
+          box-shadow:
+            0 3px 12px rgba(29, 49, 86, 0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: system-ui, sans-serif;
+          font-weight: 800;
+          font-size: 10px;
+        }
+
+        .compass-north,
+        .compass-east,
+        .compass-south,
+        .compass-west {
+          position: absolute;
+          color: #1d3156;
+        }
+
+        .compass-north {
+          top: 3px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: #c94b4b;
+        }
+
+        .compass-east {
+          right: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .compass-south {
+          bottom: 3px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .compass-west {
+          left: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .compass-needle {
+          width: 24px;
+          height: 24px;
+          position: relative;
+          transform: rotate(45deg);
+        }
+
+        .compass-red,
+        .compass-blue {
+          position: absolute;
+          left: 50%;
+          width: 4px;
+          height: 12px;
+          transform: translateX(-50%);
+        }
+
+        .compass-red {
+          top: 0;
+          background: #c94b4b;
+          clip-path: polygon(
+            50% 0,
+            100% 100%,
+            50% 75%,
+            0 100%
+          );
+        }
+
+        .compass-blue {
+          bottom: 0;
+          background: #496894;
+          clip-path: polygon(
+            50% 100%,
+            100% 0,
+            50% 25%,
+            0 0
+          );
+        }
+
+        .compass-center {
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #1d3156;
+          border: 2px solid #fffefc;
+        }
+
+        /* =========================================
+           TRIVIA BUTTON
+           ========================================= */
 
         .trivia-button {
           margin-top: 10px;
@@ -599,8 +985,76 @@ export default function MapExplorer({
           .map-info-bar {
             flex-direction: column;
           }
+
+          .map-compass {
+            top: 10px;
+            right: 10px;
+            width: 52px;
+            height: 52px;
+          }
+
+          .adventure-badge {
+            display: none;
+          }
+
+          .floating-sparkle {
+            opacity: 0.2;
+          }
         }
       `}</style>
+
+      {/* =========================================
+          FLOATING ADVENTURE BACKGROUND
+          ========================================= */}
+
+      <div className="adventure-background">
+
+        <div className="floating-sparkle sparkle-1">
+          ✦
+        </div>
+
+        <div className="floating-sparkle sparkle-2">
+          ✧
+        </div>
+
+        <div className="floating-sparkle sparkle-3">
+          ✦
+        </div>
+
+        <div className="floating-sparkle sparkle-4">
+          ✧
+        </div>
+
+        <div className="floating-sparkle sparkle-5">
+          ✦
+        </div>
+
+        <div className="floating-sparkle sparkle-6">
+          ✧
+        </div>
+
+        <div className="discovery-orb orb-1"></div>
+        <div className="discovery-orb orb-2"></div>
+        <div className="discovery-orb orb-3"></div>
+        <div className="discovery-orb orb-4"></div>
+
+        <div className="adventure-badge badge-1">
+          Explore Wits
+        </div>
+
+        <div className="adventure-badge badge-2">
+          Discover. Learn. Play.
+        </div>
+
+        <div className="route-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+      </div>
 
       {locationError && (
         <div className="location-error-banner">
@@ -608,91 +1062,75 @@ export default function MapExplorer({
         </div>
       )}
 
-      <header className="map-header">
-        <h1 className="map-title">
-          Explore Campus
-        </h1>
+      <div className="map-content">
 
-        <p className="map-subtitle">
-          Discover landmarks and unlock trivia as you explore Wits.
-        </p>
-      </header>
+        <header className="map-header">
+          <h1 className="map-title">
+            Explore Campus
+          </h1>
 
-      <div className="map-card">
-        <div className="map-frame">
-          <MapContainer
-            center={WITS_CENTER}
-            zoom={DEFAULT_ZOOM}
-            maxZoom={19}
-            zoomControl={true}
-          >
-            <MapResizeHandler />
+          <p className="map-subtitle">
+            Discover landmarks and unlock trivia as you
+            explore Wits.
+          </p>
+        </header>
 
-            <UserLocationFocus
-              position={userPosition}
-            />
+        <div className="map-card">
+          <div className="map-frame">
 
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            <Compass />
+
+            <MapContainer
+              center={WITS_CENTER}
+              zoom={DEFAULT_ZOOM}
               maxZoom={19}
-              className="adventure-tiles"
-            />
-
-            <Marker
-              position={WITS_CENTER}
-              icon={witsLabelIcon}
+              zoomControl={true}
             >
-              <Popup>
-                <div
-                  style={{
-                    textAlign: 'center',
-                    fontFamily: 'Georgia, serif',
-                  }}
-                >
-                  <strong>
-                    Wits University
-                  </strong>
+              <MapResizeHandler />
 
-                  <br />
-
-                  <em style={{ fontSize: 13 }}>
-                    Number 1 in Africa
-                  </em>
-                </div>
-              </Popup>
-            </Marker>
-
-            {userPosition && (
-              <Marker
+              <UserLocationFocus
                 position={userPosition}
-                icon={userLocationIcon}
+              />
+
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                maxZoom={19}
+                className="adventure-tiles"
+              />
+
+              {/* Wits centre marker */}
+
+              <Marker
+                position={WITS_CENTER}
+                icon={witsLabelIcon}
               >
                 <Popup>
-                  You are here
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      fontFamily: 'Georgia, serif',
+                    }}
+                  >
+                    <strong>
+                      Wits University
+                    </strong>
+
+                    <br />
+
+                    <em style={{ fontSize: 13 }}>
+                      Number 1 in Africa
+                    </em>
+                  </div>
                 </Popup>
               </Marker>
-            )}
 
-            {LANDMARKS.map((landmark) => {
-              const distance = userPosition
-                ? haversineDistance(
-                    userPosition,
-                    landmark.position
-                  )
-                : null;
+              {/* Player location */}
 
-              const status =
-                distance !== null &&
-                distance <= 25
-                  ? 'IN_RADIUS'
-                  : 'OUT_OF_RANGE';
-
-              return (
+              {userPosition && (
                 <Marker
-                  key={landmark.name}
-                  position={landmark.position}
-                  icon={landmarkIcon}
+                  position={userPosition}
+                  icon={userLocationIcon}
                 >
                   <Popup>
                     <div
@@ -703,83 +1141,147 @@ export default function MapExplorer({
                       }}
                     >
                       <strong>
-                        {landmark.name}
+                        You are here
                       </strong>
 
-                      {distance === null ? (
-                        <p
-                          style={{
-                            margin: '8px 0 0',
-                          }}
-                        >
-                          Waiting for your location...
-                        </p>
-                      ) : status === 'IN_RADIUS' ? (
-                        <>
-                          <p
-                            style={{
-                              margin: '8px 0',
-                              fontWeight: 600,
-                            }}
-                          >
-                            IN RADIUS
-                          </p>
-
-                          <button
-                            className="trivia-button"
-                            onClick={() =>
-                              onOpenTrivia?.(landmark)
-                            }
-                          >
-                            Start Trivia Challenge
-                          </button>
-                        </>
-                      ) : (
-                        <p
-                          style={{
-                            margin: '8px 0 0',
-                          }}
-                        >
-                          Distance:{' '}
-                          {Math.round(distance)}
-                          {' '}meters away.
-                          <br />
-                          Walk closer to unlock
-                        </p>
-                      )}
+                      <p
+                        style={{
+                          margin: '5px 0 0',
+                          fontSize: 12,
+                        }}
+                      >
+                        Your current GPS position
+                      </p>
                     </div>
                   </Popup>
                 </Marker>
-              );
-            })}
-          </MapContainer>
+              )}
+
+              {/* Landmarks */}
+
+              {LANDMARKS.map((landmark) => {
+                const distance = userPosition
+                  ? haversineDistance(
+                      userPosition,
+                      landmark.position
+                    )
+                  : null;
+
+                const status =
+                  distance !== null &&
+                  distance <= 25
+                    ? 'IN_RADIUS'
+                    : 'OUT_OF_RANGE';
+
+                return (
+                  <Marker
+                    key={landmark.name}
+                    position={landmark.position}
+                    icon={landmarkIcon}
+                  >
+                    <Popup>
+                      <div
+                        style={{
+                          textAlign: 'center',
+                          fontFamily:
+                            'system-ui, sans-serif',
+                        }}
+                      >
+                        <strong>
+                          {landmark.name}
+                        </strong>
+
+                        {distance === null ? (
+                          <p
+                            style={{
+                              margin:
+                                '8px 0 0',
+                            }}
+                          >
+                            Waiting for your
+                            location...
+                          </p>
+                        ) : status === 'IN_RADIUS' ? (
+                          <>
+                            <p
+                              style={{
+                                margin:
+                                  '8px 0',
+                                fontWeight: 600,
+                              }}
+                            >
+                              IN RADIUS
+                            </p>
+
+                            <button
+                              className="trivia-button"
+                              onClick={() =>
+                                onOpenTrivia?.(
+                                  landmark
+                                )
+                              }
+                            >
+                              Start Trivia Challenge
+                            </button>
+                          </>
+                        ) : (
+                          <p
+                            style={{
+                              margin:
+                                '8px 0 0',
+                            }}
+                          >
+                            Distance:{' '}
+                            {Math.round(
+                              distance
+                            )}{' '}
+                            meters away.
+                            <br />
+                            Walk closer to
+                            unlock
+                          </p>
+                        )}
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              })}
+            </MapContainer>
+          </div>
         </div>
-      </div>
 
-      <div className="map-info-bar">
-        <div className="map-info-card">
-          <p className="map-info-label">
-            Nearby
-          </p>
+        {/* Map information */}
 
-          <p className="map-info-value">
-            {nearbyLandmarks} landmark
-            {nearbyLandmarks === 1
-              ? ''
-              : 's'}
-          </p>
+        <div className="map-info-bar">
+
+          <div className="map-info-card">
+            <p className="map-info-label">
+              Nearby
+            </p>
+
+            <p className="map-info-value">
+              {nearbyLandmarks} landmark
+              {nearbyLandmarks === 1
+                ? ''
+                : 's'}
+            </p>
+          </div>
+
+          <div className="map-info-card">
+            <p className="map-info-label">
+              Campus Progress
+            </p>
+
+            <p className="map-info-value">
+              {discoveredLandmarks.length}
+              {' / '}
+              {LANDMARKS.length}
+              {' '}landmarks discovered
+            </p>
+          </div>
+
         </div>
 
-        <div className="map-info-card">
-          <p className="map-info-label">
-            Campus Progress
-          </p>
-
-          <p className="map-info-value">
-            {discoveredLandmarks.length} / {LANDMARKS.length}
-            {' '}landmarks discovered
-          </p>
-        </div>
       </div>
     </div>
   );
