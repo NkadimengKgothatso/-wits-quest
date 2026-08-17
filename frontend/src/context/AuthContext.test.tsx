@@ -10,13 +10,13 @@ const TestComponent = () => {
   return (
     <div>
       <div data-testid="status">{loading ? 'Loading' : loggedIn ? 'Logged In' : 'Logged Out'}</div>
-      <button onClick={() => login('kagiso@students.wits.ac.za')} data-testid="login-btn">
+      <button onClick={() => login('kagiso@wits.ac.za', 'password123')} data-testid="login-btn">
         Login
       </button>
       <button onClick={() => logout()} data-testid="logout-btn">
         Logout
       </button>
-      <button onClick={() => register('new@students.wits.ac.za', 'New', '12345')} data-testid="register-btn">
+      <button onClick={() => register('new@students.wits.ac.za', 'New', '1234567', 'password123')} data-testid="register-btn">
         Register
       </button>
     </div>

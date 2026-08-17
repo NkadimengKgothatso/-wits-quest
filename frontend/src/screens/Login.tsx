@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import WitsLogo from '../components/WitsLogo';
 import KuduMascot from '../components/KuduMascot';
 import { useAuth } from '../context/AuthContext';
@@ -103,7 +104,6 @@ class AudioEngine {
 
   scrollCreak() {
     const now = this.now();
-    // Wooden creak sweep
     this.osc('sawtooth', 180, 1.6, 0.04, now, 0.3);
     this.osc('triangle', 220, 1.4, 0.05, now + 0.2, 0.3);
   }
@@ -145,11 +145,12 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [name, setName] = useState('');
-  const [studentId, setStudentId] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const emailValid = email.endsWith('@students.wits.ac.za') || email.endsWith('@wits.ac.za');
+  const STUDENT_EMAIL_REGEX = /^\d{7}@students\.wits\.ac\.za$/;
+  const ADMIN_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@wits\.ac\.za$/;
+  const emailValid = STUDENT_EMAIL_REGEX.test(email) || ADMIN_EMAIL_REGEX.test(email);
 
   async function handleQuickAccountLogin(accEmail: string) {
     setEmail(accEmail);
@@ -157,7 +158,7 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
     setError('');
     setLoading(true);
     try {
-      await login(accEmail);
+      await login(accEmail, 'password123');
       if (onLogin) onLogin();
     } catch (err: any) {
       setError(err.message || 'Failed to authenticate user');
@@ -166,10 +167,11 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
     }
   }
 
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!emailValid) {
-      setError('Email must be a valid @students.wits.ac.za address');
+      setError('Email must be a valid @students.wits.ac.za or @wits.ac.za address');
       return;
     }
     if (password.length < 6) {
@@ -185,9 +187,9 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
     setLoading(true);
     try {
       if (mode === 'register') {
-        await register(email, name, studentId || '2000000');
+        await register(email, name, email.split('@')[0] || '2000000', password);
       } else {
-        await login(email);
+        await login(email, password);
       }
       if (onLogin) onLogin();
     } catch (err: any) {
@@ -199,18 +201,23 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
 
   return (
     <div className="fade-in-up" style={{ width: '100%', maxWidth: 420, position: 'relative', zIndex: 20 }}>
-      <div className="glass" style={{ padding: 28, borderRadius: 20, backdropFilter: 'blur(16px)' }}>
-        <div style={{ display: 'flex', gap: 8, marginBottom: 18 }}>
+      <div style={{ padding: '32px 28px', borderRadius: 24, background: 'var(--color-card-bg)', border: '2px solid var(--color-border)', boxShadow: '0 8px 32px rgba(44, 34, 30, 0.05)' }}>
+        
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
+          <WitsLogo width={48} height={48} showText={false} />
+        </div>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
           {(['login', 'register'] as const).map((m) => (
             <button
               key={m}
               onClick={() => { onSwitch(m); setError(''); }}
-              className="btn-peach"
               style={{
-                flex: 1, padding: '12px 16px', fontSize: 14, borderRadius: 12,
-                background: mode === m ? 'linear-gradient(135deg, #dca668 0%, #c99255 100%)' : 'rgba(107, 125, 44, 0.45)',
-                color: mode === m ? '#3d2f12' : '#f8f2e8',
-                boxShadow: mode === m ? '0 0 24px rgba(220, 166, 104, 0.45)' : 'none',
+                flex: 1, padding: '12px 16px', fontSize: 14, borderRadius: 12, fontWeight: 700,
+                background: mode === m ? 'var(--color-accent)' : 'transparent',
+                color: mode === m ? 'white' : 'var(--color-muted)',
+                border: mode === m ? '2px solid var(--color-accent)' : '2px solid var(--color-border)',
+                transition: 'all 0.2s',
               }}
             >
               {m === 'login' ? 'Log In' : 'Sign Up'}
@@ -218,72 +225,66 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
           ))}
         </div>
 
-        <div style={{ fontSize: 16, fontWeight: 700, color: '#f8f2e8', marginBottom: 18, textAlign: 'center' }}>
-          {mode === 'login' ? 'Sign in to your account' : 'Create your student account'}
+        <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--color-text)', marginBottom: 24, textAlign: 'center' }}>
+          {mode === 'login' ? 'Welcome Back, Explorer' : 'Begin Your Quest'}
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {mode === 'register' && (
             <>
               <div>
-                <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>Full Name</label>
-                <input className="input-glass" placeholder="Kagiso Mthembu" value={name} onChange={(e) => setName(e.target.value)} />
-              </div>
-              <div>
-                <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>Student Number</label>
-                <input className="input-glass" placeholder="2456789" value={studentId} onChange={(e) => setStudentId(e.target.value)} />
+                <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Full Name</label>
+                <input style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none' }} placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
             </>
           )}
 
           <div>
-            <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>Wits Student Email</label>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Wits Email</label>
             <div style={{ position: 'relative' }}>
               <input
-                className="input-glass"
+                style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', paddingRight: 40 }}
                 type="email"
-                placeholder="studentNumber@students.wits.ac.za"
+                placeholder="email@students.wits.ac.za or @wits.ac.za"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                style={{ paddingRight: 40 }}
               />
               {email.length > 3 && (
                 <div style={{
                   position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  width: 20, height: 20, borderRadius: '50%',
-                  background: emailValid ? 'rgba(143, 174, 110, 0.25)' : 'rgba(232, 166, 166, 0.25)',
-                  border: `1.5px solid ${emailValid ? '#8fae6e' : '#e8a6a6'}`,
+                  width: 24, height: 24, borderRadius: '50%',
+                  background: emailValid ? 'rgba(74, 124, 89, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                  border: `1.5px solid ${emailValid ? 'var(--color-success)' : '#EF4444'}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 11, color: emailValid ? '#8fae6e' : '#e8a6a6', fontWeight: 700
+                  fontSize: 12, color: emailValid ? 'var(--color-success)' : '#EF4444', fontWeight: 800
                 }}>
                   {emailValid ? '✓' : '✕'}
                 </div>
               )}
             </div>
             {email.length > 3 && !emailValid && (
-              <p style={{ fontSize: 11, color: '#e8a6a6', marginTop: 4 }}>Must be an official @students.wits.ac.za address</p>
+              <p style={{ fontSize: 12, color: '#EF4444', marginTop: 6, fontWeight: 600 }}>Must be an official @wits.ac.za or @students.wits.ac.za address</p>
             )}
           </div>
 
           <div>
-            <label style={{ fontSize: 12, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 6 }}>Password</label>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Password</label>
             <div style={{ position: 'relative' }}>
               <input
-                className="input-glass"
+                style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', paddingRight: 60 }}
                 type={showPw ? 'text' : 'password'}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ paddingRight: 60 }}
               />
               <button
                 type="button"
                 onClick={() => setShowPw(!showPw)}
                 style={{
-                  position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
+                  position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
                   background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#e8c99a', fontSize: 11, fontWeight: 700,
-                  textTransform: 'uppercase', letterSpacing: '0.05em'
+                  color: 'var(--color-muted)', fontSize: 12, fontWeight: 800,
+                  textTransform: 'uppercase'
                 }}
               >
                 {showPw ? 'Hide' : 'Show'}
@@ -293,32 +294,32 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
 
           {error && (
             <div style={{
-              background: 'rgba(232, 166, 166, 0.15)', border: '1px solid rgba(232, 166, 166, 0.4)',
-              borderRadius: 10, padding: '10px 14px', color: '#e8a6a6', fontSize: 12, fontWeight: 600,
+              background: 'rgba(239, 68, 68, 0.1)', border: '1.5px solid rgba(239, 68, 68, 0.3)',
+              borderRadius: 12, padding: '12px 16px', color: '#EF4444', fontSize: 13, fontWeight: 700,
             }}>
               {error}
             </div>
           )}
 
-          <button type="submit" className="btn-peach mt-2" style={{ width: '100%', fontSize: 15, padding: '14px', borderRadius: 10 }} disabled={loading}>
+          <button type="submit" style={{ width: '100%', fontSize: 16, padding: '16px', borderRadius: 12, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', marginTop: 12, cursor: 'pointer' }} disabled={loading}>
             {loading ? (
               <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                 <span style={{
-                  width: 16, height: 16, border: '2px solid rgba(84, 68, 27, 0.4)',
-                  borderTopColor: '#dca668', borderRadius: '50%',
+                  width: 18, height: 18, border: '3px solid rgba(255, 255, 255, 0.3)',
+                  borderTopColor: 'white', borderRadius: '50%',
                   animation: 'spin 0.7s linear infinite', display: 'inline-block',
                 }} />
-                Authenticating Access...
+                Authenticating...
               </span>
-            ) : mode === 'login' ? 'Enter Campus Quest →' : 'Create Wits Student Account →'}
+            ) : mode === 'login' ? 'Enter Campus Quest →' : 'Create Student Account →'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 18, fontSize: 13, color: '#dca668' }}>
+        <p style={{ textAlign: 'center', marginTop: 24, fontSize: 14, color: 'var(--color-muted)', fontWeight: 600 }}>
           {mode === 'login' ? "New to Wits Quest? " : "Already adventuring? "}
           <button
             onClick={() => { onSwitch(mode === 'login' ? 'register' : 'login'); setError(''); }}
-            style={{ background: 'none', border: 'none', color: '#e8c99a', fontWeight: 700, cursor: 'pointer' }}
+            style={{ background: 'none', border: 'none', color: 'var(--color-accent)', fontWeight: 800, cursor: 'pointer' }}
           >
             {mode === 'login' ? 'Register here' : 'Sign in'}
           </button>
@@ -329,18 +330,16 @@ function AuthForm({ mode, onSwitch, onLogin }: { mode: 'login' | 'register'; onS
 }
 
 export default function Login({ onLogin }: LoginProps) {
-  const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [seqStarted, setSeqStarted] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const audio = useRef(new AudioEngine());
   const pathDrawRef = useRef<SVGPathElement | null>(null);
-  const [pathProgress, setPathProgress] = useState(0);
+  const [view, setView] = useState<'welcome' | 'form'>('welcome');
 
-  // Start animation after a short pause
+  // Start animation immediately
   useEffect(() => {
-    const t = setTimeout(() => setSeqStarted(true), 400);
-    return () => clearTimeout(t);
+    setSeqStarted(true);
   }, []);
 
   const toggleSound = async () => {
@@ -351,111 +350,72 @@ export default function Login({ onLogin }: LoginProps) {
     if (next) audio.current.ambient();
   };
 
-  // Sequenced sound cues tied to animation timings
-  useEffect(() => {
-    if (!seqStarted) return;
-    const cues: { at: number; fn: () => void }[] = [
-      { at: 900, fn: () => audio.current.scrollCreak() },
-      { at: 3600, fn: () => audio.current.mapReveal() },
-      { at: 4900, fn: () => { for (let i = 0; i < LANDMARKS.length; i++) setTimeout(() => audio.current.landmark(), i * 550); } },
-      { at: 5000, fn: () => startPathSound() },
-      { at: 10500, fn: () => audio.current.kuduPop() },
-      { at: 11700, fn: () => audio.current.textReveal() },
-    ];
-    const ids = cues.map((c) => setTimeout(c.fn, c.at));
-    return () => ids.forEach(clearTimeout);
-  }, [seqStarted]);
-
-  function startPathSound() {
-    const path = pathDrawRef.current;
-    if (!path) return;
-    const len = path.getTotalLength();
-    const duration = 4200;
-    const start = performance.now();
-    function tick(now: number) {
-      const p = Math.min((now - start) / duration, 1);
-      setPathProgress(p * len);
-      if (p < 1) {
-        if (Math.random() > 0.75) audio.current.pathStep();
-        requestAnimationFrame(tick);
-      }
-    }
-    requestAnimationFrame(tick);
+  if (view === 'form') {
+    return (
+      <div className="min-h-screen w-full flex flex-col items-center justify-center p-8 bg-[var(--color-bg)] relative">
+        <button
+          onClick={() => setView('welcome')}
+          style={{ position: 'absolute', top: 24, left: 24, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text)', fontWeight: 800, fontSize: 16 }}
+        >
+          ← Back to Welcome
+        </button>
+        <AuthForm mode={authMode} onSwitch={setAuthMode} onLogin={() => onLogin?.()} />
+      </div>
+    );
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-4 py-8"
-      style={{ background: 'radial-gradient(ellipse at 50% 0%, #4a3a18 0%, #322612 40%, #1f1608 100%)' }}
-    >
-      {/* Floating golden dust */}
-      {DUST.map((d) => (
-        <div
-          key={d.id}
-          className="dust-particle"
-          style={{
-            top: `${d.top}%`, left: `${d.left}%`,
-            width: d.size, height: d.size,
-            opacity: d.opacity,
-            '--duration': `${d.duration}s`, '--delay': `${d.delay}s`,
-          } as React.CSSProperties}
-        />
-      ))}
-
-      {/* Ambient glows */}
-      <div style={{
-        position: 'absolute', top: '2%', left: '10%', width: 420, height: 420,
-        background: 'radial-gradient(circle, rgba(220, 166, 104, 0.1) 0%, transparent 70%)',
-        borderRadius: '50%', pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '5%', right: '5%', width: 380, height: 380,
-        background: 'radial-gradient(circle, rgba(232, 201, 154, 0.08) 0%, transparent 70%)',
-        borderRadius: '50%', pointerEvents: 'none',
-      }} />
-
-      {/* Logo top-left */}
-      <div className="fade-in" style={{ position: 'fixed', top: 14, left: 16, zIndex: 50, opacity: 0.9 }}>
-        <WitsLogo width={44} height={44} showText={false} />
-      </div>
-
-      {/* Top-right controls */}
-      <div
-        className="fade-in"
-        style={{ position: 'fixed', top: 16, right: 16, zIndex: 50, display: 'flex', gap: 10, alignItems: 'center' }}
+    <div className="min-h-screen flex flex-col w-full">
+      {/* Full Screen: Welcome / Cinematic */}
+      <div 
+        className="flex-1 relative flex flex-col items-center justify-center p-8 overflow-hidden min-h-screen"
+        style={{ background: 'radial-gradient(ellipse at 50% 0%, #4a3a18 0%, #322612 40%, #1f1608 100%)' }}
       >
-        <button
-          onClick={toggleSound}
-          aria-label={soundOn ? 'Mute sound' : 'Enable sound'}
-          title={soundOn ? 'Sound on' : 'Sound muted'}
-          style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: 'rgba(107, 125, 44, 0.45)',
-            border: '1px solid rgba(220, 166, 104, 0.3)',
-            color: '#f8f2e8', cursor: 'pointer', fontSize: 16,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          {soundOn ? '🔊' : '🔇'}
-        </button>
-        <button
-          onClick={() => { setAuthMode('login'); setShowAuth(true); }}
-          className="btn-ghost"
-          style={{ fontSize: 13, padding: '8px 16px', borderRadius: 10, fontWeight: 700 }}
-        >
-          LOG IN
-        </button>
-        <button
-          onClick={() => { setAuthMode('register'); setShowAuth(true); }}
-          className="btn-peach"
-          style={{ fontSize: 13, padding: '8px 16px', borderRadius: 10 }}
-        >
-          SIGN UP
-        </button>
-      </div>
+        {/* Floating golden dust */}
+        {DUST.map((d) => (
+          <div
+            key={d.id}
+            className="dust-particle"
+            style={{
+              top: `${d.top}%`, left: `${d.left}%`,
+              width: d.size, height: d.size,
+              opacity: d.opacity,
+              '--duration': `${d.duration}s`, '--delay': `${d.delay}s`,
+            } as React.CSSProperties}
+          />
+        ))}
 
-      {!showAuth ? (
-        <div className="cinematic-stage" style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: 760, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* Ambient glows */}
+        <div style={{
+          position: 'absolute', top: '2%', left: '10%', width: 420, height: 420,
+          background: 'radial-gradient(circle, rgba(220, 166, 104, 0.1) 0%, transparent 70%)',
+          borderRadius: '50%', pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '5%', right: '5%', width: 380, height: 380,
+          background: 'radial-gradient(circle, rgba(232, 201, 154, 0.08) 0%, transparent 70%)',
+          borderRadius: '50%', pointerEvents: 'none',
+        }} />
+
+        {/* Top-right controls (Audio) */}
+        <div className="fade-in" style={{ position: 'absolute', top: 16, right: 16, zIndex: 50 }}>
+          <button
+            onClick={toggleSound}
+            aria-label={soundOn ? 'Mute sound' : 'Enable sound'}
+            title={soundOn ? 'Sound on' : 'Sound muted'}
+            style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: 'rgba(107, 125, 44, 0.45)',
+              border: '1px solid rgba(220, 166, 104, 0.3)',
+              color: '#f8f2e8', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            {soundOn ? <Volume2 size={18} /> : <VolumeX size={18} />}
+          </button>
+        </div>
+
+        <div className="cinematic-stage" style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: 720, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {/* WitsQuest header */}
           <div
             className={seqStarted ? 'text-reveal-early' : 'text-hidden'}
@@ -477,11 +437,11 @@ export default function Login({ onLogin }: LoginProps) {
             </div>
           </div>
 
-          {/* Parchment scroll */}
+          {/* Parchment scroll (fast reveal) */}
           <div
             className={seqStarted ? 'scroll-unroll' : 'scroll-hidden'}
             style={{
-              width: '100%', aspectRatio: '4 / 3.2', maxHeight: '58vh',
+              width: '100%', aspectRatio: '16 / 9', maxHeight: '40vh',
               background: 'linear-gradient(135deg, #f5e6cc 0%, #e6d2ac 50%, #dcc095 100%)',
               borderRadius: '18px',
               boxShadow: '0 20px 60px rgba(0,0,0,0.5), inset 0 0 80px rgba(139, 105, 58, 0.25)',
@@ -497,11 +457,10 @@ export default function Login({ onLogin }: LoginProps) {
             <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 14, background: 'linear-gradient(90deg, #b08d55, #e6d2ac)', borderRadius: '12px 0 0 12px' }} />
             <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 14, background: 'linear-gradient(270deg, #b08d55, #e6d2ac)', borderRadius: '0 12px 12px 0' }} />
 
-            {/* Map container */}
+            {/* Map container (fast reveal) */}
             <div className={seqStarted ? 'map-reveal' : 'map-hidden'} style={{ position: 'absolute', inset: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg viewBox="0 0 100 90" style={{ width: '100%', height: '100%' }}>
                 <defs>
-                  {/* Custom landmark icons in savanna palette */}
                   <symbol id="icon-store" viewBox="0 0 24 24">
                     <rect x="3" y="10" width="18" height="10" rx="1" fill="#a87d4d" />
                     <path d="M2 10 L5 4 L19 4 L22 10 Z" fill="#dca668" />
@@ -567,7 +526,6 @@ export default function Login({ onLogin }: LoginProps) {
 
                 {/* Jan Smuts Avenue boundary */}
                 <line x1="4" y1="8" x2="4" y2="82" stroke="rgba(107, 86, 48, 0.25)" strokeWidth="1.5" />
-                <text x="3" y="46" textAnchor="end" fontSize="3" fill="#a87d4d" transform="rotate(-90 3 46)">Jan Smuts Ave</text>
 
                 {/* Zone blocks approximating campus buildings */}
                 <rect x="26" y="16" width="16" height="10" rx="1.5" fill="rgba(168, 125, 77, 0.22)" />
@@ -582,42 +540,25 @@ export default function Login({ onLogin }: LoginProps) {
                 {/* Central plaza / great lawn */}
                 <ellipse cx="50" cy="46" rx="8" ry="6" fill="rgba(107, 125, 44, 0.16)" />
 
-                {/* Animated quest path */}
-                <path
-                  ref={pathDrawRef}
-                  d={PATH_D}
-                  fill="none"
-                  stroke="#dca668"
-                  strokeWidth="1.2"
-                  strokeDasharray="2.5 2"
-                  strokeLinecap="round"
-                  style={{ filter: 'drop-shadow(0 0 2px rgba(220,166,104,0.6))' }}
-                />
+                {/* Quest path */}
                 <path
                   d={PATH_D}
                   fill="none"
                   stroke="#f8f2e8"
                   strokeWidth="1.5"
-                  strokeDasharray={`${pathProgress} 10000`}
+                  strokeDasharray="4 2"
                   strokeLinecap="round"
                   style={{ filter: 'drop-shadow(0 0 2px rgba(248,242,232,0.4))' }}
                 />
 
                 {/* Landmarks */}
                 {LANDMARKS.map((lm) => (
-                  <g key={lm.id} className={seqStarted ? 'landmark-pop' : 'landmark-hidden'} style={{ animationDelay: `${4.8 + lm.delay}s` }}>
+                  <g key={lm.id} className={seqStarted ? 'landmark-pop' : 'landmark-hidden'} style={{ animationDelay: `${0.4 + lm.delay * 0.15}s` }}>
                     <circle cx={lm.x} cy={lm.y} r="6" fill="#f5e6cc" stroke="#dca668" strokeWidth="0.8" />
                     <use href={`#icon-${lm.icon}`} x={lm.x - 4} y={lm.y - 4} width="8" height="8" />
                     <text x={lm.x} y={lm.y + 11} textAnchor="middle" fontSize="3" fill="#6b5630" fontWeight="700">{lm.label}</text>
                   </g>
                 ))}
-
-                {/* Compass rose */}
-                <g transform="translate(88, 74)">
-                  <circle r="5" fill="#f5e6cc" stroke="#dca668" strokeWidth="0.6" />
-                  <path d="M 0 -3.5 L 1 0 L 0 3.5 L -1 0 Z" fill="#c99255" />
-                  <text x="0" y="-6.5" textAnchor="middle" fontSize="2.8" fill="#6b5630" fontWeight="700">N</text>
-                </g>
               </svg>
             </div>
 
@@ -630,46 +571,53 @@ export default function Login({ onLogin }: LoginProps) {
             </div>
           </div>
 
-          {/* Tagline */}
-          <div style={{ textAlign: 'center', marginTop: 24, maxWidth: 620 }}>
+          {/* Animated Tagline */}
+          <div style={{ textAlign: 'center', marginTop: 32, maxWidth: 620, display: 'flex', flexDirection: 'column', gap: 12 }}>
             <h1
-              className={seqStarted ? 'text-reveal' : 'text-hidden'}
+              className={seqStarted ? 'tagline-animate' : 'text-hidden'}
               style={{
-                fontSize: 'clamp(22px, 5.5vw, 38px)', fontWeight: 900, color: '#f8f2e8',
-                letterSpacing: '0.04em', textShadow: '0 2px 16px rgba(0,0,0,0.4)',
-                margin: '0 0 10px', lineHeight: 1.2,
+                fontSize: 'clamp(28px, 6.5vw, 44px)', 
+                fontWeight: 900,
+                margin: 0,
+                lineHeight: 1.15,
+                letterSpacing: '0.02em',
               }}
             >
-              YOUR CAMPUS. YOUR QUEST. YOUR LEGEND.
+              <span className="gradient-text">Your Campus.</span>{' '}
+              <span className="gradient-text">Your Quest.</span>{' '}
+              <span className="gradient-text">Your Legend.</span>
             </h1>
             <p
-              className={seqStarted ? 'text-reveal-delay' : 'text-hidden'}
+              className={seqStarted ? 'tagline-sub-animate' : 'text-hidden'}
               style={{
-                fontSize: 'clamp(13px, 2.8vw, 17px)', color: '#dca668', margin: 0,
-                lineHeight: 1.5, textShadow: '0 1px 8px rgba(0,0,0,0.35)',
+                fontSize: 'clamp(14px, 3vw, 16px)', 
+                color: '#e6d2ac',
+                margin: 0,
+                lineHeight: 1.6,
+                fontWeight: 500,
               }}
             >
-              Explore Wits. Discover hidden stories. Complete quests. Become a campus legend.
+              Step into the shoes of a Witsie. Discover hidden lore, conquer challenges, and write your name in the halls of history.
             </p>
           </div>
 
-          <div className={seqStarted ? 'text-reveal-delay-2' : 'text-hidden'} style={{ display: 'flex', gap: 12, marginTop: 22 }}>
+          {/* Sign Up & Sign In Buttons */}
+          <div className={seqStarted ? 'text-reveal-delay-2' : 'text-hidden'} style={{ marginTop: 32, width: '100%', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}>
             <button
-              onClick={() => { setAuthMode('login'); setShowAuth(true); }}
-              className="btn-peach"
-              style={{ fontSize: 15, padding: '14px 28px', borderRadius: 12 }}
+              onClick={() => { setAuthMode('register'); setView('form'); }}
+              style={{ width: '100%', fontSize: 16, padding: '16px', borderRadius: 16, background: '#dca668', color: '#1f1608', fontWeight: 900, border: 'none', cursor: 'pointer', boxShadow: '0 0 32px rgba(220,166,104,0.4)', transition: 'all 0.2s' }}
             >
-              Begin Your Quest
+              Create Student Account →
+            </button>
+            <button
+              onClick={() => { setAuthMode('login'); setView('form'); }}
+              style={{ background: 'none', border: 'none', color: '#f8f2e8', fontWeight: 700, fontSize: 14, cursor: 'pointer', opacity: 0.9 }}
+            >
+              Already adventuring? <span style={{ color: '#dca668', textDecoration: 'underline' }}>Sign in here</span>
             </button>
           </div>
         </div>
-      ) : (
-        <AuthForm mode={authMode} onSwitch={setAuthMode} onLogin={() => onLogin?.()} />
-      )}
-
-      <p className="fade-in" style={{ position: 'fixed', bottom: 12, left: 0, right: 0, textAlign: 'center', fontSize: 11, color: 'rgba(220, 166, 104, 0.45)', zIndex: 10 }}>
-        Wits Quest v1.0 · Scientia et Labore · University of the Witwatersrand · 2026
-      </p>
+      </div>
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -692,8 +640,8 @@ export default function Login({ onLogin }: LoginProps) {
 
         .scroll-hidden { transform: scaleX(0) scaleY(0.92); opacity: 0; }
         .scroll-unroll {
-          animation: scrollUnroll 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          animation-delay: 1s;
+          animation: scrollUnroll 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          animation-delay: 0.2s;
         }
         @keyframes scrollUnroll {
           0% { transform: scaleX(0) scaleY(0.88); opacity: 0; }
@@ -704,8 +652,8 @@ export default function Login({ onLogin }: LoginProps) {
 
         .map-hidden { opacity: 0; }
         .map-reveal {
-          animation: mapReveal 1.2s ease forwards;
-          animation-delay: 3.8s;
+          animation: mapReveal 1s ease forwards;
+          animation-delay: 1.2s;
         }
         @keyframes mapReveal {
           from { opacity: 0; transform: scale(0.94); filter: blur(4px); }
@@ -715,7 +663,7 @@ export default function Login({ onLogin }: LoginProps) {
         .landmark-hidden { opacity: 0; transform: scale(0); }
         .landmark-pop {
           transform-origin: center;
-          animation: landmarkPop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation: landmarkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
         @keyframes landmarkPop {
           0% { opacity: 0; transform: scale(0); }
@@ -725,8 +673,8 @@ export default function Login({ onLogin }: LoginProps) {
 
         .kudu-hidden { opacity: 0; transform: translate(-50%, -50%) scale(0); }
         .kudu-pop {
-          animation: kuduPop 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-          animation-delay: 10.2s;
+          animation: kuduPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation-delay: 2.2s;
         }
         @keyframes kuduPop {
           0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
@@ -734,26 +682,54 @@ export default function Login({ onLogin }: LoginProps) {
           100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
-        .text-hidden { opacity: 0; transform: translateY(16px); }
+        .text-hidden { opacity: 0; transform: translateY(16px); pointer-events: none; }
         .text-reveal-early {
-          animation: textReveal 1s ease forwards;
+          animation: textReveal 0.8s ease forwards;
           animation-delay: 0.4s;
         }
         .text-reveal {
-          animation: textReveal 1.1s ease forwards;
-          animation-delay: 11.6s;
+          animation: textReveal 0.8s ease forwards;
+          animation-delay: 2.4s;
         }
         .text-reveal-delay {
-          animation: textReveal 1.1s ease forwards;
-          animation-delay: 13s;
+          animation: textReveal 0.8s ease forwards;
+          animation-delay: 2.8s;
         }
         .text-reveal-delay-2 {
-          animation: textReveal 1.1s ease forwards;
-          animation-delay: 14.4s;
+          animation: textReveal 0.8s ease forwards;
+          animation-delay: 3.4s;
+          pointer-events: auto;
         }
         @keyframes textReveal {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gradient-text {
+          background: linear-gradient(to right, #f8f2e8 0%, #dca668 50%, #f8f2e8 100%);
+          background-size: 200% auto;
+          color: transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+          animation: shine 4s linear infinite;
+        }
+        @keyframes shine {
+          to {
+            background-position: 200% center;
+          }
+        }
+        
+        .tagline-animate {
+          animation: slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          animation-delay: 2.6s;
+        }
+        .tagline-sub-animate {
+          animation: slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          animation-delay: 3s;
+        }
+        @keyframes slideUpFade {
+          from { opacity: 0; transform: translateY(20px) scale(0.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
       `}</style>
     </div>

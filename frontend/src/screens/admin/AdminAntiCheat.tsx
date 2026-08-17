@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getMockUsers, type MockUser } from '../../services/mockDbClient';
+import { getMockUsers, type MockUser } from '../../services/apiClient';
 import { useAuth } from '../../context/AuthContext';
 import {
   calculateSpeed,

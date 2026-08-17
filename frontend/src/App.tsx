@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './screens/Login';
 import MapExplorer from './screens/MapExplorer';
@@ -13,45 +13,49 @@ import AdminContent from './screens/admin/AdminContent';
 import AdminAntiCheat from './screens/admin/AdminAntiCheat';
 import BottomNav from './components/BottomNav';
 import TopBar from './components/TopBar';
+import Profile from './screens/Profile';
 
-type Screen = 'map' | 'collection' | 'deck' | 'battle' | 'leaderboard' | 'ranked' | string;
-type AdminScreen = 'events' | 'content' | 'anticheat';
+type Screen = 'map' | 'collection' | 'deck' | 'battle' | 'profile' | 'leaderboard' | 'ranked' | 'login';
+type AdminScreen = 'events' | 'content' | 'anticheat' | 'profiles';
 
 const ADMIN_NAV: { id: AdminScreen; label: string }[] = [
   { id: 'events', label: 'Spatial Events' },
   { id: 'content', label: 'Question & Card Authoring' },
   { id: 'anticheat', label: 'Anti-Cheat Telemetry' },
+  { id: 'profiles', label: 'Player Profiles' },
 ];
 
-const SPRINT1_NAV = [
-  { id: 'map', label: 'Campus Map' },
-  { id: 'battle', label: 'CPU Battle AI' },
-  { id: 'ranked', label: 'Ranked Elo' },
-  { id: 'collection', label: 'Profile Cards' },
-  { id: 'deck', label: 'Deck Builder' },
-  { id: 'leaderboard', label: 'Leaderboard' },
-  { id: 'login', label: 'Login Screen' },
-];
+
 
 function AppContent() {
-  const { loggedIn, loading } = useAuth();
+  const { loggedIn, loading, currentUser } = useAuth();
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
   const [adminScreen, setAdminScreen] = useState<AdminScreen>('events');
   const [triviaLandmark, setTriviaLandmark] = useState<any>(null);
   const [cardsEarned, setCardsEarned] = useState(0);
 
+  useEffect(() => {
+    if (loggedIn && currentUser?.role === 'ADMIN') {
+      setAdminMode(true);
+    }
+  }, [loggedIn, currentUser?.role]);
+
+  if (adminMode && currentUser?.role !== 'ADMIN') {
+    setAdminMode(false);
+  }
+
   if (loading) {
     return (
       <div style={{
         minHeight: '100vh',
-        background: '#1d3156',
+        background: 'var(--color-bg)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#fed6ce',
-        fontFamily: 'Outfit, sans-serif',
-        fontSize: 16,
+        color: 'var(--color-text)',
+        fontFamily: 'Playfair Display, serif',
+        fontSize: 18,
         fontWeight: 700,
       }}>
         Initializing Wits Quest...
@@ -64,108 +68,37 @@ function AppContent() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1d3156', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', position: 'relative' }}>
       {/* Top bar */}
       <TopBar onAdminNav={() => setAdminMode(!adminMode)} />
 
       {adminMode ? (
         /* Admin layout */
-        <div style={{ paddingTop: 56, height: '100vh', display: 'flex', flexDirection: 'column' }}>
-          {/* Admin nav */}
-          <div style={{
-            display: 'flex', gap: 0,
-            background: 'rgba(17, 30, 54, 0.95)',
-            backdropFilter: 'blur(16px)',
-            borderBottom: '1px solid rgba(164,181,209,0.18)',
-            overflowX: 'auto',
-          }}>
-            {ADMIN_NAV.map((nav) => (
-              <button
-                key={nav.id}
-                onClick={() => setAdminScreen(nav.id)}
-                style={{
-                  flexShrink: 0,
-                  padding: '10px 16px',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'Outfit, sans-serif',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: adminScreen === nav.id ? '#fed6ce' : '#a4b5d1',
-                  borderBottom: `2px solid ${adminScreen === nav.id ? '#fed6ce' : 'transparent'}`,
-                  transition: 'all 0.2s',
-                }}
-              >
-                {nav.label}
-              </button>
-            ))}
-            <button
-              onClick={() => setAdminMode(false)}
-              style={{
-                marginLeft: 'auto',
-                padding: '10px 16px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 11,
-                color: '#a4b5d1',
-                fontFamily: 'Outfit, sans-serif',
-                flexShrink: 0,
-              }}
-            >
-              ← Player View
-            </button>
-          </div>
-
-          {/* Admin screen content */}
-          <div style={{ flex: 1, overflow: 'auto' }}>
+        <>
+          <div style={{ paddingTop: 56, paddingBottom: 70, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {adminScreen === 'events' && <AdminEvents />}
             {adminScreen === 'content' && <AdminContent />}
             {adminScreen === 'anticheat' && <AdminAntiCheat />}
+            {adminScreen === 'profiles' && <div style={{ padding: 24, textAlign: 'center', color: 'var(--color-text)', fontWeight: 700 }}>Player Profiles Placeholder</div>}
           </div>
-        </div>
+          <BottomNav
+            active={adminScreen}
+            onNavigate={(s) => setAdminScreen(s as AdminScreen)}
+            adminMode={true}
+          />
+        </>
       ) : (
         /* Player layout */
         <>
-          {/* Mode Pill Switcher Bar */}
-          <div style={{
-            position: 'fixed', top: 56, left: 0, right: 0, zIndex: 35,
-            background: 'rgba(17, 30, 54, 0.92)',
-            backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(164, 181, 209, 0.15)',
-            display: 'flex', gap: 6, padding: '6px 12px', overflowX: 'auto',
-          }}>
-            {SPRINT1_NAV.map((nav) => (
-              <button
-                key={nav.id}
-                onClick={() => setScreen(nav.id)}
-                style={{
-                  padding: '4px 10px',
-                  borderRadius: 8,
-                  border: `1px solid ${screen === nav.id ? '#fed6ce' : 'rgba(164,181,209,0.2)'}`,
-                  background: screen === nav.id ? 'rgba(254, 214, 206, 0.18)' : 'rgba(73, 104, 148, 0.2)',
-                  color: screen === nav.id ? '#fed6ce' : '#a4b5d1',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s',
-                }}
-              >
-                {nav.label}
-              </button>
-            ))}
-          </div>
 
           {/* Screen Content Wrapper */}
-          <div style={{ paddingTop: 92, paddingBottom: 70, minHeight: '100vh' }}>
+          <div style={{ paddingTop: 56, paddingBottom: 70, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             {screen === 'map' && (
               <MapExplorer onOpenTrivia={(landmark: any) => setTriviaLandmark(landmark)} />
             )}
-            {screen === 'collection' && <CardCollection />}
-            {screen === 'deck' && <DeckBuilder />}
+            {screen === 'collection' && <CardCollection onNavigate={(s) => setScreen(s as Screen)} />}
             {screen === 'battle' && <BattleArena />}
+            {screen === 'profile' && <Profile onNavigate={(s) => setScreen(s as Screen)} />}
             {screen === 'leaderboard' && <Leaderboard />}
             {screen === 'ranked' && <RankedMatchmaking />}
             {screen === 'login' && <Login />}

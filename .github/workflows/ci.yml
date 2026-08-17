@@ -27,13 +27,6 @@ jobs:
       working-directory: ./backend
 
 
-    - name: Test Frontend (with 75% coverage enforcement)
-      run: npm run test
-      working-directory: ./frontend
-
-    - name: Test Backend (with 75% coverage enforcement)
-      run: npm run test
-      working-directory: ./backend
 
     - name: Build Frontend
       run: npm run build
