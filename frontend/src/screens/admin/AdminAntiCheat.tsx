@@ -1,169 +1,240 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getMockUsers, type MockUser } from '../../services/mockDbClient';
+import { calculateSpeed, SPEED_THRESHOLD_MS, type GpsPing } from '../../utils/antiCheat';
 
-const FLAGGED_PLAYERS = [
-  {
-    id: 1, email: 'student_xk9@students.wits.ac.za',
-    trustScore: 18, violations: ['Speed Spoofing', 'Rapid Burst Submissions'],
-    trajectory: [
-      { time: '08:14:22', lat: '-26.1918', lng: '28.0302', vel: 0.4 },
-      { time: '08:14:23', lat: '-26.1890', lng: '28.0400', vel: 31.2 },
-      { time: '08:14:24', lat: '-26.1955', lng: '28.0215', vel: 45.8 },
-      { time: '08:14:25', lat: '-26.1918', lng: '28.0302', vel: 38.1 },
-    ],
-    matchHistory: [
-      { match: 'vs CPU', result: 'Win', date: 'Today 08:14', suspicious: true },
-      { match: 'vs Sipho', result: 'Win', date: 'Today 08:10', suspicious: true },
-      { match: 'vs Lerato', result: 'Win', date: 'Yesterday', suspicious: false },
-    ],
-  },
-  {
-    id: 2, email: 'student_bq2@students.wits.ac.za',
-    trustScore: 42, violations: ['Win-Trading'],
-    trajectory: [
-      { time: '10:02:11', lat: '-26.1925', lng: '28.0310', vel: 0.2 },
-      { time: '10:02:45', lat: '-26.1925', lng: '28.0310', vel: 0.1 },
-    ],
-    matchHistory: [
-      { match: 'vs student_xk9', result: 'Loss', date: 'Today 10:02', suspicious: true },
-      { match: 'vs student_xk9', result: 'Loss', date: 'Yesterday', suspicious: true },
-    ],
-  },
-];
+const BACKEND_URL = 'http://localhost:3000';
 
-type Action = '' | 'warn' | 'verify' | 'suspend' | 'override';
+type ActionTaken = 'warned' | 'suspended' | 'false_positive' | null;
 
-export default function AdminAntiCheat() {
-  const [selected, setSelected] = useState(FLAGGED_PLAYERS[0]);
-  const [overrideScore, setOverrideScore] = useState(String(selected.trustScore));
-  const [action, setAction] = useState<Action>('');
-  const [actionDone, setActionDone] = useState(false);
+interface TelemetryPing extends GpsPing {
+  userId: string;
+}
 
-  function handleAction(a: Action) {
-    setAction(a);
-    setActionDone(true);
-    setTimeout(() => setActionDone(false), 2000);
+interface SpeedViolation {
+  id: string;
+  student: MockUser | undefined;
+  userId: string;
+  from: GpsPing;
+  to: GpsPing;
+  speed: number;
+}
+
+/** Fetch every stored GPS ping from the telemetry endpoint. */
+async function fetchPings(): Promise<TelemetryPing[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/mock/telemetry/pings`);
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Walks each student's pings in time order, measures the speed between
+ * consecutive readings, and returns any that exceed the threshold.
+ */
+function findViolations(pings: TelemetryPing[], users: MockUser[]): SpeedViolation[] {
+  // Group pings by student
+  const byUser = new Map<string, TelemetryPing[]>();
+  for (const p of pings) {
+    const list = byUser.get(p.userId) ?? [];
+    list.push(p);
+    byUser.set(p.userId, list);
   }
 
-  const trustColor = selected.trustScore < 30 ? '#dca668' : selected.trustScore < 60 ? '#e8c99a' : '#dca668';
+  const violations: SpeedViolation[] = [];
+
+  for (const [userId, userPings] of byUser) {
+    // Oldest first, so consecutive pairs make sense
+    userPings.sort(
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+
+    for (let i = 1; i < userPings.length; i++) {
+      const from = userPings[i - 1];
+      const to = userPings[i];
+      const speed = calculateSpeed(from, to);
+
+      if (speed > SPEED_THRESHOLD_MS) {
+        violations.push({
+          id: `${userId}_${to.timestamp}`,
+          userId,
+          student: users.find((u) => u.id === userId),
+          from,
+          to,
+          speed,
+        });
+      }
+    }
+  }
+
+  // Most recent violations first
+  return violations.sort(
+    (a, b) => new Date(b.to.timestamp).getTime() - new Date(a.to.timestamp).getTime()
+  );
+}
+
+function formatDate(ts: string) {
+  return new Date(ts).toLocaleDateString('en-ZA', {
+    month: 'long', day: 'numeric', year: 'numeric',
+  });
+}
+
+function formatTime(ts: string) {
+  return new Date(ts).toLocaleTimeString('en-ZA', {
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+  });
+}
+
+export default function AdminAntiCheat() {
+  const [violations, setViolations] = useState<SpeedViolation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actions, setActions] = useState<Record<string, ActionTaken>>({});
+
+  async function load() {
+    setLoading(true);
+    const [pings, users] = await Promise.all([fetchPings(), getMockUsers()]);
+    setViolations(findViolations(pings, users));
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+    // Refresh every 15s so new violations appear without a page reload
+    const timer = setInterval(load, 15000);
+    return () => clearInterval(timer);
+  }, []);
+
+  function applyAction(id: string, action: ActionTaken) {
+    setActions((prev) => ({ ...prev, [id]: action }));
+  }
 
   return (
-    <div style={{ display: 'flex', height: '100%', gap: 0, minHeight: 'calc(100vh - 120px)' }}>
-      {/* Left: Flagged list */}
-      <div style={{
-        width: 260,
-        background: 'rgba(63, 47, 18, 0.95)',
-        borderRight: '1px solid rgba(220, 166, 104, 0.15)',
-        padding: 14,
-        overflowY: 'auto',
-      }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: 'white', marginBottom: 12, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-          Flagged Student Accounts ({FLAGGED_PLAYERS.length})
-        </div>
+    <div style={{ padding: 16, minHeight: 'calc(100vh - 120px)' }}>
+      <h2 style={{ fontSize: 20, fontWeight: 900, color: 'white', margin: '0 0 4px' }}>
+        Anti-Cheat Telemetry Console
+      </h2>
+      <p style={{ fontSize: 12, color: '#dca668', margin: '0 0 20px' }}>
+        Movement verification and student audit records
+      </p>
 
-        {FLAGGED_PLAYERS.map((p) => {
-          const tc = p.trustScore < 30 ? '#dca668' : p.trustScore < 60 ? '#e8c99a' : '#dca668';
-          return (
-            <button
-              key={p.id}
-              onClick={() => { setSelected(p); setOverrideScore(String(p.trustScore)); }}
-              style={{
-                width: '100%', background: 'none', border: 'none', padding: 0,
-                cursor: 'pointer', textAlign: 'left', marginBottom: 10,
-              }}
-            >
-              <div style={{
-                background: selected.id === p.id ? 'rgba(107, 125, 44, 0.5)' : 'rgba(107, 125, 44, 0.25)',
-                border: `1px solid ${selected.id === p.id ? '#dca668' : 'rgba(220, 166, 104, 0.15)'}`,
-                borderRadius: 10, padding: 10, transition: 'all 0.2s',
-              }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'white', marginBottom: 6, wordBreak: 'break-all' }}>
-                  {p.email}
-                </div>
-                {/* Trust score bar */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                  <div className="stat-bar-track" style={{ flex: 1 }}>
-                    <div className="stat-bar-fill" style={{ width: `${p.trustScore}%`, background: tc }} />
-                  </div>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: tc }}>{p.trustScore}</span>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                  {p.violations.map((v) => (
-                    <span key={v} style={{
-                      fontSize: 8, fontWeight: 700, color: '#dca668',
-                      background: 'rgba(220, 166, 104, 0.15)', borderRadius: 4, padding: '2px 5px',
-                      border: '1px solid rgba(220, 166, 104, 0.3)'
-                    }}>
-                      {v}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Right: Audit Evidence Detail View */}
-      <div style={{ flex: 1, padding: 16, overflowY: 'auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+      <div className="glass-dark" style={{ borderRadius: 12, padding: 14 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <h3 style={{ fontSize: 16, fontWeight: 800, color: 'white', margin: '0 0 4px' }}>{selected.email}</h3>
-            <div style={{ fontSize: 11, color: '#dca668' }}>Audit Evidence & Velocity Logs</div>
-          </div>
-          <div style={{
-            background: 'rgba(84, 68, 27, 0.8)', border: `1.5px solid ${trustColor}`,
-            borderRadius: 12, padding: '6px 14px', textAlign: 'center'
-          }}>
-            <div style={{ fontSize: 9, color: '#dca668', fontWeight: 700, letterSpacing: '0.05em' }}>TRUST SCORE</div>
-            <div style={{ fontSize: 18, fontWeight: 900, color: trustColor }}>{selected.trustScore} / 100</div>
-          </div>
-        </div>
-
-        {/* Trajectory logs */}
-        <div className="glass-dark" style={{ borderRadius: 12, padding: 12, marginBottom: 16 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            GPS Movement Trajectory Log
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {selected.trajectory.map((t, idx) => (
-              <div key={idx} style={{
-                display: 'flex', justifyContent: 'space-between', fontSize: 11,
-                padding: '6px 10px', borderRadius: 6,
-                background: t.vel > 5 ? 'rgba(220, 166, 104, 0.15)' : 'rgba(107, 125, 44, 0.2)',
-                border: `1px solid ${t.vel > 5 ? 'rgba(220, 166, 104, 0.3)' : 'rgba(220, 166, 104, 0.1)'}`,
-              }}>
-                <span style={{ color: '#dca668' }}>{t.time}</span>
-                <span style={{ color: 'white' }}>{t.lat}, {t.lng}</span>
-                <span style={{ fontWeight: 700, color: t.vel > 5 ? '#dca668' : '#e8c99a' }}>
-                  {t.vel} m/s {t.vel > 5 && '(SPOOF DETECTED)'}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Moderation Action Bar */}
-        <div className="glass-dark" style={{ borderRadius: 12, padding: 14 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#dca668', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            Lecturer Moderation Actions
-          </div>
-          {actionDone && (
-            <div style={{ fontSize: 11, color: '#dca668', marginBottom: 10, fontWeight: 700 }}>
-              Action Applied Successfully!
+            <div style={{
+              fontSize: 12, fontWeight: 800, color: '#e8c99a', marginBottom: 4,
+              letterSpacing: '0.05em', textTransform: 'uppercase',
+            }}>
+              Flagged GPS Speed Violations
             </div>
-          )}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="btn-ghost" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} onClick={() => handleAction('warn')}>
-              Issue Warning
-            </button>
-            <button className="btn-ghost" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} onClick={() => handleAction('verify')}>
-              Require Secondary GPS Fix
-            </button>
-            <button className="btn-peach" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} onClick={() => handleAction('suspend')}>
-              Suspend Account
-            </button>
+            <div style={{ fontSize: 10, color: '#dca668', marginBottom: 12 }}>
+              Movement exceeding {SPEED_THRESHOLD_MS} m/s — faster than humanly possible
+            </div>
           </div>
+          <button className="btn-ghost"
+            style={{ fontSize: 10, padding: '6px 12px', borderRadius: 6 }}
+            onClick={load}>
+            Refresh
+          </button>
         </div>
+
+        {loading ? (
+          <div style={{ fontSize: 12, color: '#dca668', padding: 20, textAlign: 'center' }}>
+            Loading telemetry...
+          </div>
+        ) : violations.length === 0 ? (
+          <div style={{ fontSize: 12, color: '#dca668', padding: 20, textAlign: 'center' }}>
+            No speed violations detected.
+          </div>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 680 }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid rgba(220, 166, 104, 0.3)' }}>
+                  {['#', 'Student', 'Time', 'Speed (m/s)', 'Actions'].map((h) => (
+                    <th key={h} style={{
+                      textAlign: 'left', padding: '8px 10px', fontSize: 10,
+                      fontWeight: 800, color: '#dca668',
+                      textTransform: 'uppercase', letterSpacing: '0.05em',
+                    }}>
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {violations.map((v, idx) => {
+                  const taken = actions[v.id];
+
+                  return (
+                    <tr key={v.id} style={{
+                      borderBottom: '1px solid rgba(220, 166, 104, 0.1)',
+                      opacity: taken === 'false_positive' ? 0.45 : 1,
+                    }}>
+                      <td style={{ padding: '10px', fontSize: 12, color: '#dca668', fontWeight: 700 }}>
+                        {idx + 1}
+                      </td>
+
+                      <td style={{ padding: '10px' }}>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: 'white' }}>
+                          {v.student?.name || v.student?.username || 'Unknown Student'}
+                        </div>
+                        <div style={{ fontSize: 10, color: '#dca668' }}>
+                          {v.student?.email || v.userId}
+                        </div>
+                      </td>
+
+                      <td style={{ padding: '10px' }}>
+                        <div style={{ fontSize: 12, color: 'white' }}>{formatDate(v.to.timestamp)}</div>
+                        <div style={{ fontSize: 10, color: '#dca668' }}>{formatTime(v.to.timestamp)}</div>
+                      </td>
+
+                      <td style={{ padding: '10px' }}>
+                        <span style={{ fontSize: 13, fontWeight: 900, color: '#dca668' }}>
+                          {v.speed.toFixed(1)}
+                        </span>
+                      </td>
+
+                      <td style={{ padding: '10px' }}>
+                        {taken ? (
+                          <span style={{
+                            fontSize: 10, fontWeight: 700, color: '#e8c99a',
+                            background: 'rgba(220, 166, 104, 0.15)',
+                            border: '1px solid rgba(220, 166, 104, 0.3)',
+                            borderRadius: 6, padding: '4px 8px',
+                          }}>
+                            {taken === 'warned' ? 'Warning Issued'
+                              : taken === 'suspended' ? 'Account Suspended'
+                              : 'Marked False Positive'}
+                          </span>
+                        ) : (
+                          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                            <button className="btn-ghost"
+                              style={{ fontSize: 10, padding: '5px 10px', borderRadius: 6 }}
+                              onClick={() => applyAction(v.id, 'warned')}>
+                              Issue Warning
+                            </button>
+                            <button className="btn-peach"
+                              style={{ fontSize: 10, padding: '5px 10px', borderRadius: 6 }}
+                              onClick={() => applyAction(v.id, 'suspended')}>
+                              Suspend Account
+                            </button>
+                            <button className="btn-ghost"
+                              style={{ fontSize: 10, padding: '5px 10px', borderRadius: 6 }}
+                              onClick={() => applyAction(v.id, 'false_positive')}>
+                              Mark as False Positive
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

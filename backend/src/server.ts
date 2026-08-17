@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import telemetryRoutes from './routes/telemetry.js';
 
 dotenv.config();
 
@@ -19,6 +20,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/mock/telemetry', telemetryRoutes);
 
 // Health Check API Endpoint
 app.get('/api/health', (req, res) => {
