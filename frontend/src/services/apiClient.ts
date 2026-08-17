@@ -38,7 +38,7 @@ export interface Card {
 }
 export type MockCard = Card;
 
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function getAuthHeaders(): Record<string, string> {
   const token = localStorage.getItem('wits_quest_jwt_token');

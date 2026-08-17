@@ -125,7 +125,8 @@ export async function processQueue(authToken: string | null): Promise<number> {
         headers['Authorization'] = `Bearer ${authToken}`;
       }
 
-      const res = await fetch('http://localhost:3000/api/trivia/checkin', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const res = await fetch(`${API_URL}/api/trivia/checkin`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

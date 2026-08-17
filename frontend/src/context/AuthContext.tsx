@@ -24,7 +24,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const STORAGE_KEY = 'wits_quest_active_user_id';
 const TOKEN_KEY = 'wits_quest_jwt_token';
 
