@@ -36,11 +36,11 @@ export default function TopBar({ adminMode }: TopBarProps) {
       <div
         className="fixed top-0 left-0 right-0 z-40 flex items-center gap-3 px-4 py-2"
         style={{
-          background: 'rgba(255, 255, 255, 0.85)',
+          background: 'rgba(31, 22, 8, 0.75)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           borderBottom: '1px solid var(--color-border)',
-          boxShadow: '0 2px 12px rgba(44, 34, 30, 0.05)',
+          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.25)',
         }}
       >
         {/* Mascot / Logo */}

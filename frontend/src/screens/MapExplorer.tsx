@@ -377,7 +377,7 @@ export default function MapExplorer({
           align-items: center;
           position: relative;
           overflow: hidden;
-          background: #7a5c3e;
+          background: transparent;
           padding: 8px 18px 28px;
           overscroll-behavior: none;
         }

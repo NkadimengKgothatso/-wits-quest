@@ -49,7 +49,7 @@ function AppContent() {
     return (
       <div style={{
         minHeight: '100vh',
-        background: 'var(--color-bg)',
+        background: 'transparent',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -68,7 +68,7 @@ function AppContent() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: 'transparent', position: 'relative' }}>
       {/* Top bar */}
       <TopBar adminMode={adminMode} />
 

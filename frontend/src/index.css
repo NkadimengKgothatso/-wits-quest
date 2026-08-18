@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --color-bg: #FAF7F2;
-  --color-text: #2C221E;
-  --color-accent: #D37A32;
+  --color-bg: #1f1608;
+  --color-text: #fcfaf6;
+  --color-accent: #dca668;
   --color-success: #4A7C59;
-  --color-card-bg: #FFFFFF;
-  --color-border: #E5D5C5;
-  --color-muted: #8A7B72;
+  --color-card-bg: rgba(74, 58, 24, 0.4);
+  --color-border: rgba(220, 166, 104, 0.25);
+  --color-muted: rgba(248, 242, 232, 0.6);
   --font-family-base: 'Outfit', sans-serif;
 }
 
@@ -52,9 +52,11 @@
 }
 
 body {
-  background: var(--color-bg);
+  background: radial-gradient(ellipse at 50% 0%, #4a3a18 0%, #322612 40%, #1f1608 100%);
+  background-attachment: fixed;
   color: var(--color-text);
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 /* Scrollbar styling */
