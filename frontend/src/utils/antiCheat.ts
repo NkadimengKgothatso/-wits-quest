@@ -51,11 +51,6 @@ export function calculateSpeed(from: GpsPing, to: GpsPing): number {
   return haversineDistance(from, to) / seconds;
 }
 
-/** True if the movement was too fast to be a real person walking or running. */
-export function isSpeedViolation(from: GpsPing, to: GpsPing): boolean {
-  return calculateSpeed(from, to) > SPEED_THRESHOLD_MS;
-}
-
 /** True if the student appeared to jump instantly across a large distance. */
 export function isTeleport(from: GpsPing, to: GpsPing): boolean {
   const seconds = secondsBetween(from, to);
@@ -66,6 +61,14 @@ export function isTeleport(from: GpsPing, to: GpsPing): boolean {
     seconds <= TELEPORT_MAX_SECONDS
   );
 }
+
+
+/** True if the movement was too fast to be a real person walking or running. */
+export function isSpeedViolation(from: GpsPing, to: GpsPing): boolean {
+  if (isTeleport(from, to)) return false;
+  return calculateSpeed(from, to) > SPEED_THRESHOLD_MS;
+}
+
 
 /**
  * Campus landmarks, mirrored from MapExplorer.tsx.

@@ -10,6 +10,7 @@ import {
   SPEED_THRESHOLD_MS,
   TELEPORT_MIN_DISTANCE_M,
   TELEPORT_MAX_SECONDS,
+  isSpeedViolation,
   type GpsPing,
 } from '../../utils/antiCheat';
 
@@ -123,7 +124,7 @@ function findViolations(pings: TelemetryPing[], users: MockUser[]): SpeedViolati
       const to = userPings[i];
       const speed = calculateSpeed(from, to);
 
-      if (speed > SPEED_THRESHOLD_MS) {
+      if (isSpeedViolation(from, to)) {
         violations.push({
           id: `spd_${userId}_${to.timestamp}`,
           userId,
