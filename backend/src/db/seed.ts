@@ -80,6 +80,21 @@ export async function seed(): Promise<void> {
   const db = getDB();
   const now = new Date().toISOString();
 
+  // ── Step 0: Seed avatars ────────────────────────────────────
+  const defaultAvatars = [
+    { id: 'owl', emoji: '🦉', label: 'Academic Owl', cssClass: 'avatar-owl', description: 'Wise and floating' },
+    { id: 'springbok', emoji: '🦌', label: 'Swift Springbok', cssClass: 'avatar-springbok', description: 'Bouncy explorer' },
+    { id: 'lion', emoji: '🦁', label: 'Noble Lion', cssClass: 'avatar-lion', description: 'Pulsing strength' },
+    { id: 'falcon', emoji: '🦅', label: 'Clever Falcon', cssClass: 'avatar-falcon', description: 'Tilting intelligence' }
+  ];
+
+  for (const a of defaultAvatars) {
+    db.run(
+      `INSERT OR IGNORE INTO avatars (id, emoji, label, cssClass, description) VALUES (?, ?, ?, ?, ?)`,
+      [a.id, a.emoji, a.label, a.cssClass, a.description]
+    );
+  }
+
   // ── Step 1: Seed cards ──────────────────────────────────────
   const cardsRaw = readFileSync(CARDS_PATH, 'utf-8');
   const cards: Array<{

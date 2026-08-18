@@ -257,16 +257,31 @@ router.post('/battle/result', (req: Request, res: Response) => {
     const user = queryOne<Record<string, any>>('SELECT * FROM users WHERE id = ?', [userId]);
     if (user) {
       const newTotalXP = Math.max(0, (user.totalXP as number) + xpAwarded);
-      const newCurrentXP = Math.max(0, (user.currentXP as number) + xpAwarded);
+      let newCurrentXP = Math.max(0, (user.currentXP as number) + xpAwarded);
+      let newLevel = user.level as number;
+
+      let target = newLevel * 200;
+      while (newCurrentXP >= target) {
+        newCurrentXP -= target;
+        newLevel += 1;
+        target = newLevel * 200;
+      }
+
       const newElo = Math.max(0, (user.eloRating as number) + eloDelta);
+      let newDivisionTier = 'BRONZE';
+      if (newElo >= 2000) newDivisionTier = 'DIAMOND';
+      else if (newElo >= 1500) newDivisionTier = 'PLATINUM';
+      else if (newElo >= 1000) newDivisionTier = 'GOLD';
+      else if (newElo >= 500) newDivisionTier = 'SILVER';
+
       const newEssence = Math.max(0, (user.essenceBalance as number) + essenceAwarded);
       const wins = outcome === 'win' ? (user.pvpWins as number) + 1 : user.pvpWins;
       const losses = outcome === 'lose' ? (user.pvpLosses as number) + 1 : user.pvpLosses;
       const draws = outcome === 'tie' ? (user.pvpDraws as number) + 1 : user.pvpDraws;
 
       runAndPersist(
-        `UPDATE users SET totalXP = ?, currentXP = ?, eloRating = ?, essenceBalance = ?, pvpWins = ?, pvpLosses = ?, pvpDraws = ?, updatedAt = datetime('now') WHERE id = ?`,
-        [newTotalXP, newCurrentXP, newElo, newEssence, wins, losses, draws, userId]
+        `UPDATE users SET level = ?, totalXP = ?, currentXP = ?, eloRating = ?, divisionTier = ?, essenceBalance = ?, pvpWins = ?, pvpLosses = ?, pvpDraws = ?, updatedAt = datetime('now') WHERE id = ?`,
+        [newLevel, newTotalXP, newCurrentXP, newElo, newDivisionTier, newEssence, wins, losses, draws, userId]
       );
     }
 
@@ -312,6 +327,37 @@ router.post('/trivia/checkin', (req: Request, res: Response) => {
   } catch (err: any) {
     console.error('[Trivia] Check-in error:', err);
     res.status(500).json({ error: 'Failed to process trivia check-in' });
+  }
+});
+
+// ─── GET ALL AVATARS ───────────────────────────────────────────────
+router.get('/avatars', (_req: Request, res: Response) => {
+  try {
+    const avatars = queryAll('SELECT * FROM avatars');
+    res.json(avatars);
+  } catch (err) {
+    console.error('[Avatars] GET error:', err);
+    res.status(500).json({ error: 'Failed to retrieve avatars' });
+  }
+});
+
+// ─── ADD NEW AVATAR (Admin) ────────────────────────────────────────
+router.post('/avatars', (req: Request, res: Response) => {
+  try {
+    const { id, emoji, label, cssClass, description } = req.body;
+    if (!id || !emoji || !label || !cssClass || !description) {
+      res.status(400).json({ error: 'All fields (id, emoji, label, cssClass, description) are required' });
+      return;
+    }
+    runAndPersist(
+      `INSERT INTO avatars (id, emoji, label, cssClass, description) VALUES (?, ?, ?, ?, ?)`,
+      [id, emoji, label, cssClass, description]
+    );
+    const newAvatar = queryOne('SELECT * FROM avatars WHERE id = ?', [id]);
+    res.status(201).json(newAvatar);
+  } catch (err: any) {
+    console.error('[Avatars] POST error:', err);
+    res.status(500).json({ error: 'Failed to create avatar', detail: err.message });
   }
 });
 

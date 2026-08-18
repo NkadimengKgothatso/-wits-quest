@@ -13,7 +13,6 @@ import { selectAIAction, selectAICounterCard } from '../utils/battleAI';
 import { saveMockBattleResult, getMockUserCards } from '../services/apiClient';
 import { useAuth } from '../context/AuthContext';
 import KuduMascot from '../components/KuduMascot';
-import { AVATAR_MAP } from './Profile';
 
 const PLAYER_CARDS: any[] = [
   { id: 1, name: 'Great Hall Pillars', emoji: '🏛️', attack: 85, defense: 95, speed: 40, brains: 90, rarity: 'Legendary', stats: { attack: 85, defense: 95, speed: 40, brains: 90 } },
@@ -48,7 +47,7 @@ const RARITY_BORDER: Record<string, string> = {
 type Mode = 'hub' | 'ai' | 'multiplayer';
 
 export default function BattleArena() {
-  const { currentUser, updateUserLocally } = useAuth();
+  const { currentUser, updateUserLocally, avatars } = useAuth();
   const [mode, setMode] = useState<Mode>('hub');
   
   const [playerCards, setPlayerCards] = useState<any[]>(PLAYER_CARDS);
@@ -434,8 +433,8 @@ export default function BattleArena() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 24
           }}>
-            <span className={AVATAR_MAP[currentUser?.avatar || 'owl']?.class || 'avatar-owl'}>
-              {AVATAR_MAP[currentUser?.avatar || 'owl']?.emoji || '🦉'}
+            <span className={avatars.find(a => a.id === (currentUser?.avatar || 'owl'))?.cssClass || 'avatar-owl'}>
+              {avatars.find(a => a.id === (currentUser?.avatar || 'owl'))?.emoji || '🦉'}
             </span>
           </div>
           <div>

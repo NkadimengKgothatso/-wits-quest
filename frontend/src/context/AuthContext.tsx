@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User as MockUser, formatUserMeta, setStudentOnlineStatus } from '../services/apiClient';
+import { User as MockUser, formatUserMeta, setStudentOnlineStatus, Avatar } from '../services/apiClient';
 
 /**
  * AuthContext — manages authentication state for the entire app.
@@ -13,6 +13,7 @@ import { User as MockUser, formatUserMeta, setStudentOnlineStatus } from '../ser
 
 interface AuthContextType {
   currentUser: MockUser | null;
+  avatars: Avatar[];
   loggedIn: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<MockUser>;
@@ -70,6 +71,7 @@ function backendUserToMockUser(u: Record<string, any>): MockUser {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<MockUser | null>(null);
+  const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -103,6 +105,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
     initAuth();
+
+    // Fetch avatars
+    import('../services/apiClient').then(({ getAvatars }) => {
+      getAvatars().then(setAvatars).catch(console.error);
+    });
   }, []);
 
   const refreshUser = async () => {
@@ -216,6 +223,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <AuthContext.Provider
       value={{
         currentUser,
+        avatars,
         loggedIn,
         loading,
         login,

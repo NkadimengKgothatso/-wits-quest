@@ -131,5 +131,16 @@ export function createTables(): void {
     );
   `);
 
+  // ─── Table 7: avatars ────────────────────────────────────────
+  db.run(`
+    CREATE TABLE IF NOT EXISTS avatars (
+      id           TEXT PRIMARY KEY,
+      emoji        TEXT NOT NULL,
+      label        TEXT NOT NULL,
+      cssClass     TEXT NOT NULL,
+      description  TEXT NOT NULL
+    );
+  `);
+
 
 }
