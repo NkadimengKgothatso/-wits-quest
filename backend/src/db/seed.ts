@@ -1,5 +1,5 @@
 /**
- * Seed Script — populates the database with initial data.
+ * Seed Script — populates the database with initial data using Supabase.
  * 
  * What it does:
  *   1. Inserts the 4 landmark cards from mock_cards.json into `cards`.
@@ -7,15 +7,14 @@
  *   3. Gives each test user 5 starter cards in `user_cards`.
  *   4. Creates a default 5-card deck in `user_decks` for each user.
  * 
- * Safe to run multiple times — uses INSERT OR IGNORE to skip duplicates.
+ * Safe to run multiple times — uses upsert to skip duplicates.
  */
 
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { randomUUID } from 'node:crypto';
 import bcrypt from 'bcrypt';
-import { getDB, persist, queryAll } from './connection.js';
+import { supabase } from './supabaseClient.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CARDS_PATH = resolve(__dirname, '..', '..', '..', 'data', 'mock_cards.json');
@@ -77,7 +76,6 @@ const SEED_USERS = [
 const STARTER_CARD_IDS = ['card-005', 'card-006', 'card-007'];
 
 export async function seed(): Promise<void> {
-  const db = getDB();
   const now = new Date().toISOString();
 
   // ── Step 0: Seed avatars ────────────────────────────────────
@@ -88,14 +86,11 @@ export async function seed(): Promise<void> {
     { id: 'falcon', emoji: '🦅', label: 'Clever Falcon', cssClass: 'avatar-falcon', description: 'Tilting intelligence' }
   ];
 
-  for (const a of defaultAvatars) {
-    db.run(
-      `INSERT OR IGNORE INTO avatars (id, emoji, label, cssClass, description) VALUES (?, ?, ?, ?, ?)`,
-      [a.id, a.emoji, a.label, a.cssClass, a.description]
-    );
-  }
+  console.log('[Seed] Inserting avatars...');
+  await supabase.from('avatars').upsert(defaultAvatars);
 
   // ── Step 1: Seed cards ──────────────────────────────────────
+  console.log('[Seed] Inserting cards...');
   const cardsRaw = readFileSync(CARDS_PATH, 'utf-8');
   const cards: Array<{
     id: string; name: string; category: string; rarity: string;
@@ -103,69 +98,83 @@ export async function seed(): Promise<void> {
     image: string;
   }> = JSON.parse(cardsRaw);
 
-  for (const c of cards) {
-    const totalStats = c.stats.attack + c.stats.defense + c.stats.speed + c.stats.brains;
-    db.run(
-      `INSERT OR IGNORE INTO cards (id, name, category, rarity, baseAttack, baseDefense, baseSpeed, baseBrains, totalStats, imageUrl)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [c.id, c.name, c.category, c.rarity, c.stats.attack, c.stats.defense, c.stats.speed, c.stats.brains, totalStats, c.image]
-    );
-  }
+  const cardsToInsert = cards.map(c => ({
+    id: c.id, name: c.name, category: c.category, rarity: c.rarity,
+    baseAttack: c.stats.attack, baseDefense: c.stats.defense,
+    baseSpeed: c.stats.speed, baseBrains: c.stats.brains,
+    totalStats: c.stats.attack + c.stats.defense + c.stats.speed + c.stats.brains,
+    imageUrl: c.image
+  }));
 
+  const { error: cardsErr } = await supabase.from('cards').upsert(cardsToInsert);
+  if (cardsErr) throw new Error("Failed to insert cards: " + JSON.stringify(cardsErr));
 
   // ── Step 2: Seed users (all with password "password123") ────
+  console.log('[Seed] Inserting users...');
   const defaultPassword = 'password123';
   const hash = await bcrypt.hash(defaultPassword, 10);
 
-  for (const u of SEED_USERS) {
+  const usersToInsert = SEED_USERS.map(u => {
     const role = u.email.endsWith('@wits.ac.za') ? 'ADMIN' : 'STUDENT';
     const avatar = u.id === 'usr_sipho' ? 'springbok' : u.id === 'usr_lerato' ? 'lion' : u.id === 'usr_amahle' ? 'falcon' : 'owl';
-    db.run(
-      `INSERT OR IGNORE INTO users
-       (id, email, studentNumber, username, passwordHash, role, level, currentXP, totalXP,
-        essenceBalance, dailyStreakCount, lastCheckInDate, streakMultiplier,
-        eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, avatar, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [u.id, u.email, u.studentNumber, u.username, hash, role, u.level, u.currentXP, u.totalXP,
-       u.essenceBalance, u.dailyStreakCount, now, u.streakMultiplier,
-       u.eloRating, u.divisionTier, u.pvpWins, u.pvpLosses, u.pvpDraws, u.maxStatBudget, u.legendaryCap, avatar, now, now]
-    );
-  }
+    
+    return {
+      id: u.id, email: u.email, studentNumber: u.studentNumber, username: u.username,
+      passwordHash: hash, role, level: u.level, currentXP: u.currentXP, totalXP: u.totalXP,
+      essenceBalance: u.essenceBalance, dailyStreakCount: u.dailyStreakCount,
+      lastCheckInDate: now, streakMultiplier: u.streakMultiplier,
+      eloRating: u.eloRating, divisionTier: u.divisionTier,
+      pvpWins: u.pvpWins, pvpLosses: u.pvpLosses, pvpDraws: u.pvpDraws,
+      maxStatBudget: u.maxStatBudget, legendaryCap: u.legendaryCap, avatar,
+      createdAt: now, updatedAt: now
+    };
+  });
 
+  await supabase.from('users').upsert(usersToInsert);
 
   // ── Step 3: Give each user starter cards ────────────────────
+  console.log('[Seed] Giving starter cards...');
+  const userCardsToInsert = [];
   for (const u of SEED_USERS) {
     for (const cardId of STARTER_CARD_IDS) {
-      const invId = `inv_${u.id}_${cardId}`;
-      db.run(
-        `INSERT OR IGNORE INTO user_cards (id, userId, cardId, level, attackBonus, defenseBonus, speedBonus, brainsBonus, quantity, acquiredAt)
-         VALUES (?, ?, ?, 1, 0, 0, 0, 0, 1, ?)`,
-        [invId, u.id, cardId, now]
-      );
+      userCardsToInsert.push({
+        id: `inv_${u.id}_${cardId}`,
+        userId: u.id, cardId, level: 1, attackBonus: 0, defenseBonus: 0,
+        speedBonus: 0, brainsBonus: 0, quantity: 1, acquiredAt: now
+      });
+    }
+  }
+  await supabase.from('user_cards').upsert(userCardsToInsert);
+
+  // ── Step 4: Create default deck ─────────────────────────────
+  console.log('[Seed] Creating default decks...');
+  const deckCardIds = ['card-005', 'card-006', 'card-007'];
+  let totalCost = 0;
+  
+  const { data: cardsInfo } = await supabase.from('cards').select('id, totalStats').in('id', deckCardIds);
+  if (cardsInfo) {
+    for (const c of cardsInfo) {
+      totalCost += c.totalStats;
     }
   }
 
+  const decksToInsert = SEED_USERS.map(u => ({
+    id: `deck_default_${u.id}`,
+    userId: u.id, deckName: 'Starter Deck', cardIds: deckCardIds,
+    totalStatCost: totalCost, isDefault: true, createdAt: now, updatedAt: now
+  }));
 
-  // Create default deck
-  const deckCardIds = ['card-005', 'card-006', 'card-007'];
-  // Compute total stat cost from the cards table
-  let totalCost = 0;
-  for (const cid of deckCardIds) {
-    const row = queryAll<{ totalStats: number }>(`SELECT totalStats FROM cards WHERE id = ?`, [cid]);
-    if (row[0]) totalCost += row[0].totalStats;
-  }
+  await supabase.from('user_decks').upsert(decksToInsert);
 
-  for (const u of SEED_USERS) {
-    const deckId = `deck_default_${u.id}`;
-    db.run(
-      `INSERT OR IGNORE INTO user_decks (id, userId, deckName, cardIds, totalStatCost, isDefault, createdAt, updatedAt)
-       VALUES (?, ?, 'Starter Deck', ?, ?, 1, ?, ?)`,
-      [deckId, u.id, JSON.stringify(deckCardIds), totalCost, now, now]
-    );
-  }
+  console.log('[Seed] Seeding complete!');
+}
 
-
-  // Save everything to disk
-  persist();
-
+// Execute if run directly
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  seed()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error('[Seed] Error:', err);
+      process.exit(1);
+    });
 }

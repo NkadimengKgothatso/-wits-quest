@@ -3,9 +3,6 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { initDB } from './db/connection.js';
-import { createTables } from './db/schema.js';
-import { seed } from './db/seed.js';
 import authRoutes from './routes/auth.js';
 
 dotenv.config();
@@ -50,13 +47,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// Bootstrap: init DB → create tables → seed → start server
-async function startServer() {
+// Bootstrap: start server
+function startServer() {
   try {
-    await initDB();
-    createTables();
-    await seed();
-
     httpServer.listen(PORT, () => {
       console.log(`Wits Quest Backend API running on http://localhost:${PORT}`);
     });
