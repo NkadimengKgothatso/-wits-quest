@@ -1,6 +1,12 @@
+//AdminContent.tsx
 import { useState } from 'react'
+import { addCard, RARITY_TARGET_RANGE } from '../../services/cardCatalogService'
+import type { Card } from '../../types/card'
 
 type ContentTab = 'trivia' | 'card'
+
+const CATEGORIES: Card['category'][] = ['Landmarks', 'Science', 'History', 'Lifestyle', 'Sports']
+const RARITIES: Card['rarity'][] = ['Common', 'Rare', 'Epic', 'Legendary']
 
 export default function AdminContent() {
   const [tab, setTab] = useState<ContentTab>('trivia')
@@ -8,19 +14,49 @@ export default function AdminContent() {
   const [correct, setCorrect] = useState(0)
   const [savedMsg, setSavedMsg] = useState('')
 
-  const [cardForm, setCardForm] = useState({
+  const [cardForm, setCardForm] = useState<{
+    title: string
+    category: Card['category']
+    rarity: Card['rarity']
+    attack: number
+    defense: number
+    speed: number
+    brains: number
+  }>({
     title: '',
     category: 'Landmarks',
     rarity: 'Common',
-    attack: 50,
-    defense: 50,
-    speed: 50,
-    brains: 50,
+    attack: 10,
+    defense: 10,
+    speed: 10,
+    brains: 10,
   })
+
+  const cardTotalCost = cardForm.attack + cardForm.defense + cardForm.speed + cardForm.brains
+  const [targetMin, targetMax] = RARITY_TARGET_RANGE[cardForm.rarity]
+  const costInRange = cardTotalCost >= targetMin && cardTotalCost <= targetMax
 
   function handleSave() {
     setSavedMsg('Saved successfully!')
     setTimeout(() => setSavedMsg(''), 2000)
+  }
+
+  function handlePublishCard() {
+    if (!cardForm.title.trim()) return
+    addCard({
+      name: cardForm.title.trim(),
+      category: cardForm.category,
+      rarity: cardForm.rarity,
+      stats: {
+        attack: cardForm.attack,
+        defense: cardForm.defense,
+        speed: cardForm.speed,
+        brains: cardForm.brains,
+      },
+    })
+    setSavedMsg(`"${cardForm.title.trim()}" published — it will now appear (locked) on student dashboards.`)
+    setTimeout(() => setSavedMsg(''), 3000)
+    setCardForm({ title: '', category: 'Landmarks', rarity: 'Common', attack: 10, defense: 10, speed: 10, brains: 10 })
   }
 
   return (
@@ -60,9 +96,9 @@ export default function AdminContent() {
           <div>
             <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Linked Event Location</label>
             <select style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}>
-              <option>Great Hall History Challenge</option>
+              <option>The Great Hall History Challenge</option>
               <option>Science Stadium STEM Quiz</option>
-              <option>Origins Heritage Trail</option>
+              <option>Origins Centre Heritage Trail</option>
             </select>
           </div>
 
@@ -131,7 +167,7 @@ export default function AdminContent() {
             </div>
           )}
 
-          {savedMsg && (
+          {savedMsg && tab === 'trivia' && (
             <div style={{ color: 'var(--color-success)', fontSize: 14, fontWeight: 800 }}>✓ {savedMsg}</div>
           )}
 
@@ -152,7 +188,7 @@ export default function AdminContent() {
               <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Card Title</label>
               <input
                 style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
-                placeholder="Great Hall Pillars"
+                placeholder="e.g. Wartenweiler Library"
                 value={cardForm.title}
                 onChange={(e) => setCardForm((f) => ({ ...f, title: e.target.value }))}
               />
@@ -162,9 +198,9 @@ export default function AdminContent() {
               <select
                 style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
                 value={cardForm.category}
-                onChange={(e) => setCardForm((f) => ({ ...f, category: e.target.value }))}
+                onChange={(e) => setCardForm((f) => ({ ...f, category: e.target.value as Card['category'] }))}
               >
-                {['Landmarks', 'Science', 'History', 'Heritage', 'Knowledge', 'Sports', 'Art'].map((c) => (
+                {CATEGORIES.map((c) => (
                   <option key={c}>{c}</option>
                 ))}
               </select>
@@ -174,7 +210,7 @@ export default function AdminContent() {
           <div>
             <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Rarity</label>
             <div style={{ display: 'flex', gap: 12 }}>
-              {(['Common', 'Rare', 'Epic', 'Legendary'] as const).map((r) => {
+              {RARITIES.map((r) => {
                 const isSelected = cardForm.rarity === r;
                 return (
                   <button
@@ -193,6 +229,9 @@ export default function AdminContent() {
                 )
               })}
             </div>
+            <p style={{ fontSize: 11, color: 'var(--color-muted)', margin: '8px 0 0', fontWeight: 600 }}>
+              Recommended total stat cost for {cardForm.rarity}: {targetMin}–{targetMax} pts, so decks stay balanced against the rest of the catalog.
+            </p>
           </div>
 
           {/* Image uploader */}
@@ -211,7 +250,12 @@ export default function AdminContent() {
 
           {/* Stat sliders */}
           <div>
-            <label style={{ fontSize: 14, color: 'var(--color-text)', fontWeight: 800, display: 'block', marginBottom: 16 }}>Card Stats</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <label style={{ fontSize: 14, color: 'var(--color-text)', fontWeight: 800 }}>Card Stats</label>
+              <span style={{ fontSize: 13, fontWeight: 900, color: costInRange ? 'var(--color-success)' : '#EF4444' }}>
+                Total: {cardTotalCost} pts {costInRange ? '✓ balanced' : `(target ${targetMin}–${targetMax})`}
+              </span>
+            </div>
             {[
               { key: 'attack', label: 'Attack', icon: '⚔', color: '#EF4444' },
               { key: 'defense', label: 'Defense', icon: '🛡', color: '#3B82F6' },
@@ -224,7 +268,7 @@ export default function AdminContent() {
                   <span style={{ fontSize: 15, fontWeight: 900, color }}>{cardForm[key as keyof typeof cardForm]}</span>
                 </div>
                 <input
-                  type="range" min={0} max={100}
+                  type="range" min={0} max={35}
                   value={cardForm[key as keyof typeof cardForm] as number}
                   onChange={(e) => setCardForm((f) => ({ ...f, [key]: Number(e.target.value) }))}
                   style={{ width: '100%', accentColor: color }}
@@ -233,11 +277,17 @@ export default function AdminContent() {
             ))}
           </div>
 
-          {savedMsg && <div style={{ color: 'var(--color-success)', fontSize: 14, fontWeight: 800 }}>✓ {savedMsg}</div>}
+          {savedMsg && tab === 'card' && (
+            <div style={{ color: 'var(--color-success)', fontSize: 14, fontWeight: 800 }}>✓ {savedMsg}</div>
+          )}
 
           <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
             <button style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'transparent', color: 'var(--color-muted)', fontWeight: 800, border: '2px solid var(--color-border)', cursor: 'pointer' }}>Save Draft</button>
-            <button style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }} onClick={handleSave}>
+            <button
+              style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: cardForm.title.trim() ? 'pointer' : 'not-allowed', opacity: cardForm.title.trim() ? 1 : 0.5 }}
+              onClick={handlePublishCard}
+              disabled={!cardForm.title.trim()}
+            >
               Publish Card
             </button>
           </div>

@@ -1,12 +1,16 @@
+//AdminEvents.tsx
 import { useState } from 'react';
+import { getCatalog } from '../../services/cardCatalogService';
 
 const EVENTS = [
-  { id: 1, title: 'Great Hall History Challenge', lat: '-26.19185', lng: '28.03023', radius: 25, card: 'Great Hall Pillars', start: '2026-08-01', end: '2026-08-31', active: true },
-  { id: 2, title: 'Science Stadium STEM Quiz', lat: '-26.19320', lng: '28.02880', radius: 50, card: 'Quantum Reactor', start: '2026-08-05', end: '2026-08-20', active: true },
-  { id: 3, title: 'Origins Heritage Trail', lat: '-26.19500', lng: '28.03150', radius: 30, card: 'Cave Painting', start: '2026-07-20', end: '2026-07-31', active: false },
+  { id: 1, title: 'The Great Hall History Challenge', lat: '-26.19185', lng: '28.03023', radius: 25, card: 'The Great Hall', start: '2026-08-01', end: '2026-08-31', active: true },
+  { id: 2, title: 'Science Stadium STEM Quiz', lat: '-26.19320', lng: '28.02880', radius: 50, card: 'Science Stadium', start: '2026-08-05', end: '2026-08-20', active: true },
+  { id: 3, title: 'Origins Centre Heritage Trail', lat: '-26.19500', lng: '28.03150', radius: 30, card: 'Origins Centre', start: '2026-07-20', end: '2026-07-31', active: false },
 ];
 
 export default function AdminEvents() {
+  const catalog = getCatalog();
+
   const [form, setForm] = useState({
     lat: '-26.19185',
     lng: '28.03023',
@@ -14,7 +18,7 @@ export default function AdminEvents() {
     radius: 25,
     start: '',
     end: '',
-    card: 'Great Hall Pillars',
+    card: catalog[0]?.name ?? '',
   });
   const [selectedPin, setSelectedPin] = useState<{ x: number; y: number } | null>(null);
   const [events, setEvents] = useState(EVENTS);
@@ -216,10 +220,9 @@ export default function AdminEvents() {
             value={form.card}
             onChange={(e) => setForm({ ...form, card: e.target.value })}
           >
-            <option value="Great Hall Pillars">Great Hall Pillars (Legendary)</option>
-            <option value="Solomon's Torch">Solomon's Torch (Epic)</option>
-            <option value="Quantum Reactor">Quantum Reactor (Rare)</option>
-            <option value="Cave Painting">Cave Painting (Common)</option>
+            {catalog.map((c) => (
+              <option key={c.id} value={c.name}>{c.name} ({c.rarity})</option>
+            ))}
           </select>
         </div>
 

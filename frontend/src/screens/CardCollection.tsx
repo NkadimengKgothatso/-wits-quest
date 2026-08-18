@@ -3,6 +3,7 @@ import { Building, BookOpen, FlaskConical, Palette, Trophy, MapPin, Search, Spar
 import { useAuth } from '../context/AuthContext';
 import { getFullCollection, getPlayerInventory } from '../services/inventoryService';
 import { validateDeck, saveDeck as saveDeckRequest } from '../services/deckService';
+import { CATALOG_UPDATED_EVENT } from '../services/cardCatalogService';
 import type { Card } from '../types/card';
 import type { CollectionEntry, InventoryEntry } from '../types/inventory';
 
@@ -21,11 +22,16 @@ const CATEGORY_ICONS: Record<Card['category'], any> = {
   Lifestyle: Palette,
 };
 
+function totalStats(s: { attack: number; defense: number; speed: number; brains: number }) {
+  return s.attack + s.defense + s.speed + s.brains;
+}
+
 function HolographicCard({ entry, onClick }: { entry: CollectionEntry; onClick: () => void }) {
   const { card, unlocked } = entry;
   const color = unlocked ? RARITY_COLORS[card.rarity] : 'var(--color-muted)';
   const Icon = CATEGORY_ICONS[card.category] || MapPin;
   const stats = unlocked ? entry.effectiveStats : card.stats;
+  const cost = unlocked ? entry.totalStatCost : totalStats(card.stats);
 
   return (
     <div
@@ -63,55 +69,37 @@ function HolographicCard({ entry, onClick }: { entry: CollectionEntry; onClick: 
       </div>
 
       {/* Image Area */}
-      <div style={{ 
-        height: '110px', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        background: 'linear-gradient(180deg, var(--color-bg) 0%, var(--color-card-bg) 100%)', 
+      <div style={{
+        height: '110px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(180deg, var(--color-bg) 0%, var(--color-card-bg) 100%)',
         position: 'relative',
         overflow: 'hidden'
       }}>
         {unlocked ? (
-          <>
-            <img 
-              src={card.image} 
-              alt={card.name}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-              onError={(e) => {
-                // Fallback to icon if image fails to load
-                e.currentTarget.style.display = 'none';
-                const parent = e.currentTarget.parentElement;
-                if (parent) {
-                  const icon = document.createElement('div');
-                  icon.style.display = 'flex';
-                  icon.style.alignItems = 'center';
-                  icon.style.justifyContent = 'center';
-                  icon.style.width = '100%';
-                  icon.style.height = '100%';
-                  // We'll re-render with icon fallback
-                }
-              }}
-            />
-            {/* Fallback icon overlay (hidden by default, shows if image fails) */}
-            <div style={{
-              position: 'absolute',
-              display: 'none', // Will be shown if image fails
-              width: '100%',
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'linear-gradient(180deg, var(--color-bg) 0%, var(--color-card-bg) 100%)',
-            }} className="image-fallback">
-              <Icon size={48} color={color} strokeWidth={1.5} style={{ filter: `drop-shadow(0 4px 12px ${color}60)` }} />
-            </div>
-          </>
+          <img
+            src={card.image}
+            alt={card.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              const sibling = e.currentTarget.nextElementSibling as HTMLElement | null;
+              if (sibling) sibling.style.display = 'flex';
+            }}
+          />
         ) : (
           <Icon size={48} color={color} strokeWidth={1.5} style={{ opacity: 0.4 }} />
+        )}
+        {unlocked && (
+          <div style={{
+            position: 'absolute', display: 'none', width: '100%', height: '100%',
+            alignItems: 'center', justifyContent: 'center',
+            background: 'linear-gradient(180deg, var(--color-bg) 0%, var(--color-card-bg) 100%)',
+          }} className="image-fallback">
+            <Icon size={48} color={color} strokeWidth={1.5} style={{ filter: `drop-shadow(0 4px 12px ${color}60)` }} />
+          </div>
         )}
         {/* Quantity Badge */}
         {unlocked && (
@@ -124,19 +112,22 @@ function HolographicCard({ entry, onClick }: { entry: CollectionEntry; onClick: 
       {/* Stats Area */}
       <div style={{ padding: '12px' }}>
         <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--color-text)', marginBottom: 2, lineHeight: 1.1 }}>{card.name}</div>
-        <div style={{ fontSize: 11, color: 'var(--color-muted)', marginBottom: 12 }}>{card.category}</div>
+        <div style={{ fontSize: 11, color: 'var(--color-muted)', marginBottom: 8 }}>{card.category}</div>
 
         {unlocked ? (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'var(--color-bg)', padding: '4px 6px', borderRadius: 6 }}>
-              <span style={{ fontSize: 9, color: 'var(--color-muted)', fontWeight: 700 }}>ATK</span>
-              <span style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 800 }}>{stats.attack}</span>
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'var(--color-bg)', padding: '4px 6px', borderRadius: 6 }}>
+                <span style={{ fontSize: 9, color: 'var(--color-muted)', fontWeight: 700 }}>ATK</span>
+                <span style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 800 }}>{stats.attack}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'var(--color-bg)', padding: '4px 6px', borderRadius: 6 }}>
+                <span style={{ fontSize: 9, color: 'var(--color-muted)', fontWeight: 700 }}>DEF</span>
+                <span style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 800 }}>{stats.defense}</span>
+              </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'var(--color-bg)', padding: '4px 6px', borderRadius: 6 }}>
-              <span style={{ fontSize: 9, color: 'var(--color-muted)', fontWeight: 700 }}>DEF</span>
-              <span style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 800 }}>{stats.defense}</span>
-            </div>
-          </div>
+            <div style={{ fontSize: 10, color: 'var(--color-accent)', fontWeight: 800 }}>Cost: {cost} pts</div>
+          </>
         ) : (
           <div style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 600 }}>Tap to see how to unlock</div>
         )}
@@ -150,6 +141,7 @@ function CardDetailModal({ entry, onClose }: { entry: CollectionEntry; onClose: 
   const color = unlocked ? RARITY_COLORS[card.rarity] : 'var(--color-muted)';
   const Icon = CATEGORY_ICONS[card.category] || MapPin;
   const stats = unlocked ? entry.effectiveStats : card.stats;
+  const cost = unlocked ? entry.totalStatCost : totalStats(card.stats);
 
   return (
     <div
@@ -166,40 +158,28 @@ function CardDetailModal({ entry, onClose }: { entry: CollectionEntry; onClose: 
       <div className="slide-up-fast" style={{ width: '100%', maxWidth: 360, background: 'var(--color-bg)', borderRadius: 28, overflow: 'hidden', boxShadow: `0 24px 64px rgba(0,0,0,0.4), 0 0 0 1px ${color}30` }}>
 
         {/* Header Graphic with Image */}
-        <div style={{ 
-          height: 180, 
-          background: `radial-gradient(circle at top, ${color}40, var(--color-card-bg))`, 
-          position: 'relative', 
-          display: 'flex', 
-          alignItems: 'center', 
+        <div style={{
+          height: 180,
+          background: `radial-gradient(circle at top, ${color}40, var(--color-card-bg))`,
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden'
         }}>
           {unlocked && card.rarity === 'Legendary' && <Sparkles size={100} color={color} style={{ position: 'absolute', opacity: 0.2 }} />}
-          
+
           {unlocked ? (
             <>
-              <img 
-                src={card.image} 
-                alt={card.name}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 100%)',
-              }} />
+              <img src={card.image} alt={card.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 100%)' }} />
             </>
           ) : (
             <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--color-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 12px 32px ${color}40` }}>
               <Icon size={56} color={color} strokeWidth={1.5} />
             </div>
           )}
-          
+
           <div style={{ position: 'absolute', top: 16, right: 16, background: 'var(--color-bg)', padding: '4px 12px', borderRadius: 16, fontSize: 12, fontWeight: 800, color, zIndex: 1 }}>
             {unlocked ? card.rarity.toUpperCase() : 'LOCKED'}
           </div>
@@ -221,7 +201,10 @@ function CardDetailModal({ entry, onClose }: { entry: CollectionEntry; onClose: 
 
           {unlocked ? (
             <>
-              <h3 style={{ fontSize: 11, fontWeight: 800, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>Combat Stats (Lv.{entry.level})</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <h3 style={{ fontSize: 11, fontWeight: 800, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Combat Stats (Lv.{entry.level})</h3>
+                <span style={{ fontSize: 12, fontWeight: 900, color: 'var(--color-accent)' }}>Total Cost: {cost} pts</span>
+              </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
                 {[
                   { label: 'ATTACK', v: stats.attack },
@@ -350,7 +333,7 @@ export default function CardCollection() {
     return () => window.removeEventListener('equipCard', handleEquip);
   }, [deck]);
 
-  useEffect(() => {
+  function loadCollection() {
     if (!user?.id) {
       setIsLoading(false);
       return;
@@ -374,6 +357,17 @@ export default function CardCollection() {
       .finally(() => {
         setIsLoading(false);
       });
+  }
+
+  useEffect(() => {
+    loadCollection();
+  }, [user?.id, catFilter, searchTerm]);
+
+  // Refresh when Admin publishes a new card, so it shows up (locked) immediately
+  useEffect(() => {
+    const handler = () => loadCollection();
+    window.addEventListener(CATALOG_UPDATED_EVENT, handler);
+    return () => window.removeEventListener(CATALOG_UPDATED_EVENT, handler);
   }, [user?.id, catFilter, searchTerm]);
 
   const categories: (Card['category'] | 'All')[] = ['All', 'Landmarks', 'History', 'Science', 'Lifestyle', 'Sports'];
@@ -424,37 +418,40 @@ export default function CardCollection() {
                   <div
                     onClick={() => removeCard(i)}
                     style={{
-                      width: '100%', height: '100%', borderRadius: 12, 
-                      border: `2px solid ${RARITY_COLORS[entry.card.rarity]}`, 
-                      background: 'var(--color-card-bg)', 
-                      display: 'flex', 
-                      flexDirection: 'column', 
-                      alignItems: 'center', 
-                      justifyContent: 'center', 
-                      position: 'relative', 
-                      cursor: 'pointer', 
+                      width: '100%', height: '100%', borderRadius: 12,
+                      border: `2px solid ${RARITY_COLORS[entry.card.rarity]}`,
+                      background: 'var(--color-card-bg)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      position: 'relative',
+                      cursor: 'pointer',
                       boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                       overflow: 'hidden',
                     }}
                   >
-                    <img 
-                      src={entry.card.image} 
+                    <img
+                      src={entry.card.image}
                       alt={entry.card.name}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
-                    <button style={{ 
-                      position: 'absolute', top: -4, right: -4, width: 20, height: 20, 
-                      borderRadius: '50%', background: '#EF4444', color: 'white', 
-                      border: 'none', fontSize: 10, fontWeight: 800, 
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                      cursor: 'pointer', zIndex: 1 
+                    <button style={{
+                      position: 'absolute', top: -4, right: -4, width: 20, height: 20,
+                      borderRadius: '50%', background: '#EF4444', color: 'white',
+                      border: 'none', fontSize: 10, fontWeight: 800,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', zIndex: 1
                     }}>
                       ✕
                     </button>
+                    <div style={{
+                      position: 'absolute', bottom: 0, left: 0, right: 0,
+                      background: 'rgba(0,0,0,0.55)', color: 'white',
+                      fontSize: 9, fontWeight: 800, textAlign: 'center', padding: '2px 0',
+                    }}>
+                      {entry.totalStatCost} pts
+                    </div>
                   </div>
                 ) : (
                   <div style={{ width: '100%', height: '100%', borderRadius: 12, border: '2px dashed var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-muted)', fontSize: 24 }}>+</div>
@@ -470,6 +467,13 @@ export default function CardCollection() {
                 <span style={{ color: validation.totalStatCost > maxStatBudget ? '#EF4444' : 'var(--color-text)' }}>{validation.totalStatCost} / {maxStatBudget}</span>
               </div>
               <div style={{ height: 4, background: 'var(--color-border)', borderRadius: 2 }}><div style={{ height: '100%', background: validation.totalStatCost > maxStatBudget ? '#EF4444' : 'var(--color-accent)', width: `${Math.min(100, (validation.totalStatCost / maxStatBudget) * 100)}%` }} /></div>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, fontWeight: 700, marginBottom: 4 }}>
+                <span style={{ color: 'var(--color-muted)' }}>Legendary Cap</span>
+                <span style={{ color: validation.legendaryCount > legendaryCap ? '#EF4444' : 'var(--color-text)' }}>{validation.legendaryCount} / {legendaryCap}</span>
+              </div>
+              <div style={{ height: 4, background: 'var(--color-border)', borderRadius: 2 }}><div style={{ height: '100%', background: validation.legendaryCount > legendaryCap ? '#EF4444' : 'var(--color-accent)', width: validation.legendaryCount > 0 ? '100%' : '0%' }} /></div>
             </div>
           </div>
 

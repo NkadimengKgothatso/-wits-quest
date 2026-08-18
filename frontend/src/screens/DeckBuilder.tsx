@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { getPlayerInventory } from '../services/inventoryService'
 import { validateDeck, saveDeck } from '../services/deckService'
+import { CATALOG_UPDATED_EVENT } from '../services/cardCatalogService'
 import type { InventoryEntry } from '../types/inventory'
 
 const RARITY_BORDER: Record<string, string> = {
@@ -19,15 +20,23 @@ export default function DeckBuilder() {
   const [collection, setCollection] = useState<InventoryEntry[]>([])
   const [loading, setLoading] = useState(true)
 
+  function loadCollection() {
+    if (!user?.id) { setLoading(false); return }
+    setLoading(true)
+    getPlayerInventory(user.id)
+      .then((cards) => setCollection(cards || []))
+      .finally(() => setLoading(false))
+  }
+
   useEffect(() => {
-    if (user?.id) {
-      setLoading(true)
-      getPlayerInventory(user.id)
-        .then((cards) => setCollection(cards || []))
-        .finally(() => setLoading(false))
-    } else {
-      setLoading(false)
-    }
+    loadCollection()
+  }, [user?.id])
+
+  // Refresh when Admin publishes a new card so it can show up here once unlocked
+  useEffect(() => {
+    const handler = () => loadCollection()
+    window.addEventListener(CATALOG_UPDATED_EVENT, handler)
+    return () => window.removeEventListener(CATALOG_UPDATED_EVENT, handler)
   }, [user?.id])
 
   const maxStatBudget = user?.maxStatBudget ?? 300
@@ -86,9 +95,9 @@ export default function DeckBuilder() {
           </div>
           <button
             className={canSave ? 'btn-peach' : 'btn-ghost'}
-            style={{ 
-              fontSize: 13, 
-              padding: '8px 18px', 
+            style={{
+              fontSize: 13,
+              padding: '8px 18px',
               opacity: canSave ? 1 : 0.5,
               background: canSave ? '#dca668' : 'rgba(220, 166, 104, 0.2)',
               border: 'none',
@@ -104,7 +113,7 @@ export default function DeckBuilder() {
           </button>
         </div>
 
-        {/* Deck slots - Updated with images */}
+        {/* Deck slots - with images */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
           {deck.map((entry, i) => (
             <div
@@ -129,8 +138,8 @@ export default function DeckBuilder() {
                   }}
                   onClick={() => removeCard(i)}
                 >
-                  <img 
-                    src={entry.card.image} 
+                  <img
+                    src={entry.card.image}
                     alt={entry.card.name}
                     style={{
                       width: '100%',
@@ -286,18 +295,18 @@ export default function DeckBuilder() {
                     transition: 'all 0.2s',
                   }}
                 >
-                  <div style={{ 
-                    width: 28, height: 28, borderRadius: '50%', 
-                    background: 'rgba(84, 68, 27, 0.8)', 
-                    border: `1px solid ${RARITY_BORDER[entry.card.rarity]}`, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
+                  <div style={{
+                    width: 28, height: 28, borderRadius: '50%',
+                    background: 'rgba(84, 68, 27, 0.8)',
+                    border: `1px solid ${RARITY_BORDER[entry.card.rarity]}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     overflow: 'hidden',
                     flexShrink: 0,
                   }}>
-                    <img 
-                      src={entry.card.image} 
+                    <img
+                      src={entry.card.image}
                       alt={entry.card.name}
                       style={{
                         width: '100%',
