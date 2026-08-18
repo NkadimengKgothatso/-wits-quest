@@ -5,6 +5,7 @@ interface KuduMascotProps {
   pulse?: boolean;
   onClick?: () => void;
   compact?: boolean;
+  mood?: 'neutral' | 'happy' | 'sad' | 'excited';
 }
 
 const DEFAULT_TIPS = [
@@ -15,7 +16,7 @@ const DEFAULT_TIPS = [
   'Check the leaderboard to see top explorers.',
 ];
 
-export default function KuduMascot({ message, pulse = false, onClick, compact = false }: KuduMascotProps) {
+export default function KuduMascot({ message, pulse = false, onClick, compact = false, mood = 'neutral' }: KuduMascotProps) {
   const [tipIndex, setTipIndex] = useState(0);
   const [bubbleOpen, setBubbleOpen] = useState(true);
 
@@ -162,8 +163,22 @@ export default function KuduMascot({ message, pulse = false, onClick, compact = 
         <circle cx="60" cy="49" r="1.2" fill="#f8f2e8" />
 
         {/* Eyelids / expression */}
-        <path d="M37 46c2-1 6-1 8 0" stroke="#a88b6f" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M55 46c2-1 6-1 8 0" stroke="#a88b6f" strokeWidth="1.5" strokeLinecap="round" />
+        {mood === 'happy' || mood === 'excited' ? (
+          <>
+            <path d="M37 51c1.5 2 4.5 2 6 0" stroke="#3d322a" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+            <path d="M55 51c1.5 2 4.5 2 6 0" stroke="#3d322a" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          </>
+        ) : mood === 'sad' ? (
+          <>
+            <path d="M37 46c1.5 1.5 4.5 0.5 6 -0.5" stroke="#a88b6f" strokeWidth="2" strokeLinecap="round" />
+            <path d="M55 45.5c1.5 -0.5 4.5 0.5 6 1.5" stroke="#a88b6f" strokeWidth="2" strokeLinecap="round" />
+          </>
+        ) : (
+          <>
+            <path d="M37 46c2-1 6-1 8 0" stroke="#a88b6f" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M55 46c2-1 6-1 8 0" stroke="#a88b6f" strokeWidth="1.5" strokeLinecap="round" />
+          </>
+        )}
 
         {/* Neck / shoulders */}
         <path d="M34 72c-4 8-6 18-6 28h44c0-10-2-20-6-28" fill="#b89a7a" />

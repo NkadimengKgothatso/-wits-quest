@@ -1,258 +1,748 @@
 //AdminEvents.tsx
-import { useState } from 'react';
-import { getCatalog } from '../../services/cardCatalogService';
+import { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Circle, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import {
+  createEvent,
+  getEvents,
+  updateEvent,
+  deleteEvent,
+  getCards,
+  type CampusEvent,
+  type Card,
+} from '../../services/apiClient';
 
-const EVENTS = [
-  { id: 1, title: 'The Great Hall History Challenge', lat: '-26.19185', lng: '28.03023', radius: 25, card: 'The Great Hall', start: '2026-08-01', end: '2026-08-31', active: true },
-  { id: 2, title: 'Science Stadium STEM Quiz', lat: '-26.19320', lng: '28.02880', radius: 50, card: 'Science Stadium', start: '2026-08-05', end: '2026-08-20', active: true },
-  { id: 3, title: 'Origins Centre Heritage Trail', lat: '-26.19500', lng: '28.03150', radius: 30, card: 'Origins Centre', start: '2026-07-20', end: '2026-07-31', active: false },
+const WITS_CENTER: [number, number] = [-26.192885679106496, 28.030521047594373];
+const DEFAULT_ZOOM = 18;
+
+interface Landmark {
+  name: string;
+  position: [number, number];
+}
+
+const LANDMARKS: Landmark[] = [
+  { name: 'Great Hall', position: [-26.192177415373987, 28.030361941387124] },
+  { name: 'Humphrey Raikes', position: [-26.192095332747023, 28.03127963680826] },
+  { name: 'Wartenweiler Library', position: [-26.191243529310864, 28.03087176603622] },
+  { name: 'Wits School of the Arts', position: [-26.192037583558378, 28.032449581917486] },
+  { name: 'William Cullen Library', position: [-26.190829656466303, 28.029379817685918] },
+  { name: 'Amphitheatre', position: [-26.190136656782915, 28.029980890402594] },
+  { name: 'John Moffat Pond', position: [-26.190189594404178, 28.02955155274785] },
+  { name: 'TW Kambule Mathematical Sciences Building', position: [-26.19046871964564, 28.026841358802145] },
+  { name: 'Wits Science Stadium', position: [-26.19066603191282, 28.02523134259679] },
+  { name: 'Tower of Light', position: [-26.18978053034198, 28.02594511644781] },
+  { name: 'The Matrix', position: [-26.189616064701625, 28.030808592703018] },
+  { name: 'Chamber of Mines', position: [-26.191709498016966, 28.02699822101696] },
+  { name: 'South West Engineering', position: [-26.19202018489526, 28.02935054349668] },
+  { name: 'Flower Hall', position: [-26.191733973644435, 28.02620961472413] },
+  { name: 'Wits Sturrock Park', position: [-26.19319213569335, 28.021073663028996] },
+  { name: 'Origins Centre', position: [-26.192977185786265, 28.028291004158817] },
+  { name: 'Old Mutual Sport Hall', position: [-26.189627614752393, 28.029321916975654] },
+  { name: 'John Moffat', position: [-26.190151568368808, 28.029334082969147] },
 ];
 
-export default function AdminEvents() {
-  const catalog = getCatalog();
+const landmarkIcon = new L.DivIcon({
+  className: 'admin-landmark-marker',
+  html: `<div class="admin-landmark-pin"></div>`,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
+});
 
-  const [form, setForm] = useState({
-    lat: '-26.19185',
-    lng: '28.03023',
-    title: '',
-    radius: 25,
-    start: '',
-    end: '',
-    card: catalog[0]?.name ?? '',
+const selectedIcon = new L.DivIcon({
+  className: 'admin-selected-marker',
+  html: `<div class="admin-selected-pin"></div>`,
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+});
+
+function getEventHeatIcon(inRange: boolean) {
+  return new L.DivIcon({
+    className: 'event-heat-marker',
+    html: `
+      <div class="event-heat-pin ${inRange ? 'in-range' : 'out-of-range'}">
+        <span class="event-icon">${inRange ? '🔓' : '🔒'}</span>
+      </div>
+    `,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -18],
   });
-  const [selectedPin, setSelectedPin] = useState<{ x: number; y: number } | null>(null);
-  const [events, setEvents] = useState(EVENTS);
-  const [saved, setSaved] = useState(false);
+}
 
-  function handleMapClick(e: React.MouseEvent<HTMLDivElement>) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setSelectedPin({ x, y });
-    setForm((f) => ({ ...f, lat: (-26.19 - y * 0.001).toFixed(5), lng: (28.03 + x * 0.001).toFixed(5) }));
+function haversineDistance(
+  pos1: [number, number],
+  pos2: [number, number]
+): number {
+  const R = 6371000;
+  const lat1 = (pos1[0] * Math.PI) / 180;
+  const lat2 = (pos2[0] * Math.PI) / 180;
+  const deltaLat = ((pos2[0] - pos1[0]) * Math.PI) / 180;
+  const deltaLon = ((pos2[1] - pos1[1]) * Math.PI) / 180;
+  const a = Math.sin(deltaLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLon / 2) ** 2;
+  return R * (2 * Math.asin(Math.sqrt(a)));
+}
+
+const userLocationIcon = new L.DivIcon({
+  className: 'user-location-marker',
+  html: `
+    <div class="user-location-pin">
+      <div class="user-location-glow"></div>
+      <div class="user-location-head">
+        <div class="user-location-dot"></div>
+      </div>
+      <div class="user-location-point"></div>
+    </div>
+  `,
+  iconSize: [42, 50],
+  iconAnchor: [21, 47],
+  popupAnchor: [0, -42],
+});
+
+function MapResizeHandler() {
+  const map = useMap();
+  useState(() => {
+    setTimeout(() => map.invalidateSize(), 100);
+  });
+  return null;
+}
+
+function MapCenter({ center }: { center: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(center, DEFAULT_ZOOM, { animate: true, duration: 1 });
+  }, [center, map]);
+  return null;
+}
+
+function EventPlacementHandler({
+  onPick,
+}: {
+  onPick: (position: [number, number]) => void;
+}) {
+  useMap().on('click', (e) => {
+    onPick([e.latlng.lat, e.latlng.lng]);
+  });
+  return null;
+}
+
+function todayInputValue(): string {
+  const d = new Date();
+  return d.toISOString().split('T')[0];
+}
+
+function formatDateInput(date: string | Date | undefined): string {
+  if (!date) return '';
+  const d = typeof date === 'string' ? new Date(date) : date;
+  return d.toISOString().split('T')[0];
+}
+
+const THEME = {
+  bg: '#7a5c3e',
+  card: '#f5ecd7',
+  cardDark: '#e8d9b8',
+  text: '#4a3620',
+  muted: '#7a6644',
+  accent: '#D37A32',
+  border: '#4a3620',
+  danger: '#b3261e',
+  success: '#2e7d32',
+};
+
+export default function AdminEvents() {
+  const [events, setEvents] = useState<CampusEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [eventName, setEventName] = useState('');
+  const [position, setPosition] = useState<[number, number] | null>(null);
+  const [radius, setRadius] = useState(25);
+  const [startDate, setStartDate] = useState(todayInputValue());
+  const [endDate, setEndDate] = useState(todayInputValue());
+  const [cardReward, setCardReward] = useState('');
+  const [xpAward, setXpAward] = useState(100);
+  const [essenceAward, setEssenceAward] = useState(50);
+  const [active, setActive] = useState(true);
+  const [savedMsg, setSavedMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
+  const [availableCards, setAvailableCards] = useState<Card[]>([]);
+  const [userLoc, setUserLoc] = useState<[number, number] | null>(null);
+
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => setUserLoc([pos.coords.latitude, pos.coords.longitude]),
+        (err) => console.warn('Geolocation error:', err),
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+  }, []);
+
+  async function loadData() {
+    setLoading(true);
+    try {
+      const [data, cardsData] = await Promise.all([getEvents(), getCards()]);
+      setEvents(data);
+      setAvailableCards(cardsData);
+    } catch {
+      setEvents([]);
+      setAvailableCards([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleSave() {
-    if (!form.title) return;
-    setEvents((evs) => [
-      ...evs,
-      {
-        id: evs.length + 1,
-        title: form.title,
-        lat: form.lat,
-        lng: form.lng,
-        radius: form.radius,
-        card: form.card,
-        start: form.start,
-        end: form.end,
-        active: true,
-      },
-    ]);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-    setForm((f) => ({ ...f, title: '', start: '', end: '' }));
-    setSelectedPin(null);
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  function resetForm() {
+    setEditingId(null);
+    setEventName('');
+    setPosition(null);
+    setRadius(25);
+    setStartDate(todayInputValue());
+    setEndDate(todayInputValue());
+    setCardReward('');
+    setXpAward(100);
+    setEssenceAward(50);
+    setActive(true);
+    setSavedMsg('');
+    setErrorMsg('');
+    setFormOpen(false);
   }
+
+  function openNewForm() {
+    setEditingId(null);
+    setEventName('');
+    setPosition(null);
+    setRadius(25);
+    setStartDate(todayInputValue());
+    setEndDate(todayInputValue());
+    setCardReward('');
+    setXpAward(100);
+    setEssenceAward(50);
+    setActive(true);
+    setSavedMsg('');
+    setErrorMsg('');
+    setFormOpen(true);
+  }
+
+  function populateForEdit(evt: CampusEvent) {
+    setEditingId(evt.id);
+    setEventName(evt.name);
+    setPosition([evt.lat, evt.lng]);
+    setRadius(evt.radius);
+    setStartDate(formatDateInput(evt.startDate));
+    setEndDate(formatDateInput(evt.endDate));
+    setCardReward(evt.cardReward || '');
+    setXpAward(evt.xpAward || 100);
+    setEssenceAward(evt.essenceAward || 50);
+    setActive(evt.active === 1);
+    setSavedMsg('');
+    setErrorMsg('');
+    setFormOpen(true);
+  }
+
+  function handleMapClick(pos: [number, number]) {
+    if (!formOpen) {
+      openNewForm();
+    }
+    setPosition(pos);
+    setSavedMsg('');
+    setErrorMsg('');
+  }
+
+  function handleLandmarkClick(landmark: Landmark) {
+    if (!formOpen) {
+      openNewForm();
+    }
+    setPosition(landmark.position);
+    setEventName((prev) => prev || `${landmark.name} Challenge`);
+  }
+
+  async function handleSave() {
+    if (!position) {
+      setErrorMsg('Please select a location on the map');
+      return;
+    }
+    if (!eventName.trim()) {
+      setErrorMsg('Event name is required');
+      return;
+    }
+
+    setIsSaving(true);
+    setSavedMsg('');
+    setErrorMsg('');
+
+    const data = {
+      name: eventName.trim(),
+      lat: position[0],
+      lng: position[1],
+      radius,
+      startDate,
+      endDate,
+      active,
+      cardReward: cardReward.trim() || undefined,
+      xpAward,
+      essenceAward,
+    };
+
+    try {
+      if (editingId) {
+        await updateEvent(editingId, data);
+        setSavedMsg('Event updated successfully!');
+      } else {
+        await createEvent(data);
+        setSavedMsg('Event created successfully!');
+      }
+      resetForm();
+      loadData();
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to save event');
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm('Are you sure you want to delete this event?')) return;
+    try {
+      await deleteEvent(id);
+      if (editingId === id) resetForm();
+      loadData();
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to delete event');
+    }
+  }
+
+  const mapCenter = position ?? userLoc ?? WITS_CENTER;
 
   return (
-    <div style={{ display: 'flex', height: '100%', gap: 0, minHeight: 'calc(100vh - 120px)' }}>
-      {/* Map canvas */}
-      <div
-        style={{
-          flex: 1,
-          background: 'radial-gradient(ellipse at 40% 50%, #FAF7F2 0%, #E5D5C5 100%)',
-          position: 'relative',
-          cursor: 'crosshair',
-          overflow: 'hidden',
-        }}
-        onClick={handleMapClick}
-      >
-        {/* Grid */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.15 }}>
-          <defs>
-            <pattern id="grid2" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--color-accent)" strokeWidth="0.5" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid2)" />
-        </svg>
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: THEME.bg,
+        padding: '90px 24px 24px',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 12,
+        fontFamily: 'Georgia, serif',
+        color: THEME.text,
+      }}
+    >
+      <style>{`
+        .admin-landmark-pin {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #4a3620;
+          opacity: 0.24;
+          filter: blur(2px) drop-shadow(0 0 10px rgba(74, 54, 32, 0.55));
+          cursor: pointer;
+          animation: admin-landmark-pulse 2.8s ease-in-out infinite;
+        }
+        @keyframes admin-landmark-pulse {
+          0%, 100% { opacity: 0.18; }
+          50% { opacity: 0.32; }
+        }
+        .admin-selected-pin {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: #D37A32;
+          border: 3px solid #fffefc;
+          box-shadow: 0 0 0 4px rgba(211, 122, 50, 0.25), 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .adventure-tiles {
+          filter: sepia(0.4) saturate(1.3) hue-rotate(-10deg) contrast(1.05);
+        }
 
-        {/* Roads */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.2 }}>
-          <line x1="20%" y1="50%" x2="80%" y2="50%" stroke="var(--color-accent)" strokeWidth="8" strokeLinecap="round" />
-          <line x1="50%" y1="20%" x2="50%" y2="80%" stroke="var(--color-accent)" strokeWidth="8" strokeLinecap="round" />
-          <ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="var(--color-accent)" strokeWidth="3" />
-        </svg>
+        .user-location-pin {
+          position: relative;
+          width: 42px;
+          height: 50px;
+        }
 
-        {/* Instruction */}
-        <div style={{
-          position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
-          background: 'var(--color-card-bg)', backdropFilter: 'blur(8px)',
-          borderRadius: 8, padding: '6px 14px', border: '1px solid var(--color-border)',
-          fontSize: 12, color: 'var(--color-text)', pointerEvents: 'none', fontWeight: 700,
-          boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)'
-        }}>
-          Click campus map to place target event coordinates
-        </div>
+        .user-location-glow {
+          position: absolute;
+          width: 34px;
+          height: 34px;
+          top: 1px;
+          left: 4px;
+          border-radius: 50%;
+          background: rgba(211, 122, 50, 0.35);
+          filter: blur(7px);
+          animation: admin-location-glow 2s ease-in-out infinite;
+        }
 
-        {/* Existing event pins */}
-        {events.map((ev, i) => (
-          <div
-            key={ev.id}
-            style={{
-              position: 'absolute',
-              top: `${30 + i * 18}%`,
-              left: `${35 + i * 15}%`,
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <div style={{
-              width: 24, height: 24, borderRadius: '50%',
-              background: ev.active ? 'var(--color-accent)' : 'var(--color-muted)',
-              border: `2px solid ${ev.active ? 'var(--color-accent)' : 'var(--color-border)'}`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: ev.active ? '0 0 12px rgba(211, 122, 50, 0.4)' : 'none'
-            }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'white' }} />
-            </div>
-            <div style={{
-              position: 'absolute', top: 28, left: '50%', transform: 'translateX(-50%)',
-              whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: 'var(--color-text)',
-              background: 'var(--color-card-bg)', padding: '2px 6px', borderRadius: 4,
-              border: '1px solid var(--color-border)', boxShadow: '0 2px 8px rgba(44, 34, 30, 0.05)'
-            }}>
-              {ev.title}
-            </div>
-          </div>
-        ))}
+        .user-location-head {
+          position: absolute;
+          top: 2px;
+          left: 8px;
+          width: 26px;
+          height: 26px;
+          border-radius: 50% 50% 50% 0;
+          background: #D37A32;
+          border: 3px solid #ffffff;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+          transform: rotate(-45deg);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
 
-        {/* New pin placement */}
-        {selectedPin && (
-          <div
-            style={{
-              position: 'absolute',
-              top: `${selectedPin.y}%`,
-              left: `${selectedPin.x}%`,
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <div style={{
-              width: 28, height: 28, borderRadius: '50%',
-              background: 'var(--color-accent)',
-              border: '2px solid white',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 0 16px rgba(211, 122, 50, 0.6)',
-              color: 'white', fontWeight: 900, fontSize: 16
-            }}>
-              +
-            </div>
-          </div>
-        )}
+        .user-location-dot {
+          width: 9px;
+          height: 9px;
+          border-radius: 50%;
+          background: #fffefc;
+          transform: rotate(45deg);
+        }
+
+        .user-location-point {
+          position: absolute;
+          display: none;
+        }
+
+        @keyframes admin-location-glow {
+          0%, 100% {
+            transform: scale(0.9);
+            opacity: 0.55;
+          }
+          50% {
+            transform: scale(1.25);
+            opacity: 0.9;
+          }
+        }
+
+        .event-heat-pin {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          border: 3px solid #fffefc;
+          transition: all 0.3s ease;
+        }
+
+        .event-heat-pin.in-range {
+          background: #2e7d32;
+          box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.4), 0 2px 8px rgba(0,0,0,0.4);
+          animation: event-heat-pulse-in 1.5s infinite;
+        }
+
+        .event-heat-pin.out-of-range {
+          background: #b3261e;
+          box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.4), 0 2px 8px rgba(0,0,0,0.4);
+          animation: event-heat-pulse-out 2s infinite;
+        }
+
+        @keyframes event-heat-pulse-in {
+          0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.6); }
+          70% { box-shadow: 0 0 0 15px rgba(46, 125, 50, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        @keyframes event-heat-pulse-out {
+          0% { box-shadow: 0 0 0 0 rgba(179, 38, 30, 0.6); }
+          70% { box-shadow: 0 0 0 10px rgba(179, 38, 30, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(179, 38, 30, 0); }
+        }
+      `}</style>
+
+      <div>
+        <h2 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: '#fffefc' }}>
+          Campus Event Management
+        </h2>
+        <p style={{ margin: '4px 0 0', color: '#e8d9b8', fontSize: 13 }}>
+          Create, edit, and delete location-gated events across Wits.
+        </p>
       </div>
 
-      {/* Authoring sidebar */}
-      <div style={{
-        width: 320,
-        background: 'var(--color-card-bg)',
-        borderLeft: '1px solid var(--color-border)',
-        padding: 20,
-        display: 'flex', flexDirection: 'column', gap: 16,
-        overflowY: 'auto',
-      }}>
-        <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-          Spatial Event Placement
-        </div>
-
-        {saved && (
-          <div style={{
-            background: 'rgba(74, 124, 89, 0.1)', border: '1.5px solid var(--color-success)',
-            borderRadius: 12, padding: '10px 14px', color: 'var(--color-success)', fontSize: 13, fontWeight: 700,
-          }}>
-            Event Created & Published!
-          </div>
-        )}
-
-        <div>
-          <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
-            Event Title
-          </label>
-          <input
-            style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 13 }}
-            placeholder="e.g. Great Hall History Quiz"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-          />
-        </div>
-
-        <div style={{ display: 'flex', gap: 12 }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
-              Latitude
-            </label>
-            <input style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 12 }} value={form.lat} readOnly />
-          </div>
-          <div style={{ flex: 1 }}>
-            <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
-              Longitude
-            </label>
-            <input style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 12 }} value={form.lng} readOnly />
-          </div>
-        </div>
-
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-            <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700 }}>Activation Radius</label>
-            <span style={{ fontSize: 12, color: 'var(--color-accent)', fontWeight: 800 }}>{form.radius}m</span>
-          </div>
-          <input
-            type="range" min={10} max={100} value={form.radius}
-            onChange={(e) => setForm({ ...form, radius: Number(e.target.value) })}
-            style={{ width: '100%', accentColor: 'var(--color-accent)' }}
-          />
-        </div>
-
-        <div>
-          <label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}>
-            Card Reward Selection
-          </label>
-          <select
-            style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 13 }}
-            value={form.card}
-            onChange={(e) => setForm({ ...form, card: e.target.value })}
-          >
-            {catalog.map((c) => (
-              <option key={c.id} value={c.name}>{c.name} ({c.rarity})</option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          style={{ width: '100%', fontSize: 14, padding: '12px', marginTop: 8, borderRadius: 10, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }}
-          onClick={handleSave}
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          flex: 1,
+          minHeight: 0,
+          overflow: 'hidden',
+        }}
+      >
+        {/* Full-height Map with floating form */}
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            position: 'relative',
+            border: `2px solid ${THEME.border}`,
+            borderRadius: 16,
+            overflow: 'hidden',
+            background: '#f0e2c0',
+          }}
         >
-          Save & Publish Event
-        </button>
+          <MapContainer
+            center={WITS_CENTER}
+            zoom={DEFAULT_ZOOM}
+            maxZoom={19}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <MapCenter center={mapCenter} />
+            <MapResizeHandler />
+            <EventPlacementHandler onPick={handleMapClick} />
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom={19}
+              className="adventure-tiles"
+            />
+            {LANDMARKS.map((landmark) => (
+              <Marker
+                key={landmark.name}
+                position={landmark.position}
+                icon={landmarkIcon}
+                eventHandlers={{
+                  click: (e) => {
+                    L.DomEvent.stopPropagation(e);
+                    handleLandmarkClick(landmark);
+                  },
+                }}
+              />
+            ))}
+            {userLoc && (
+              <Marker
+                position={userLoc}
+                icon={userLocationIcon}
+              />
+            )}
+            {events.map((evt) => {
+              const distance = userLoc ? haversineDistance(userLoc, [evt.lat, evt.lng]) : null;
+              const inRange = distance !== null && distance <= evt.radius;
+              return (
+                <Marker
+                  key={`${evt.id}-marker`}
+                  position={[evt.lat, evt.lng]}
+                  icon={getEventHeatIcon(inRange)}
+                  eventHandlers={{
+                    click: (e) => {
+                      L.DomEvent.stopPropagation(e);
+                      populateForEdit(evt);
+                    },
+                  }}
+                />
+              );
+            })}
+            {position && (
+              <Marker position={position} icon={getEventHeatIcon(false)} />
+            )}
+          </MapContainer>
 
-        {/* Existing events list */}
-        <div style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-muted)', marginBottom: 12, textTransform: 'uppercase' }}>
-            Active Campus Events ({events.length})
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {events.map((ev) => (
-              <div key={ev.id} style={{
-                background: 'var(--color-bg)', border: '1px solid var(--color-border)',
-                borderRadius: 10, padding: '10px 12px', fontSize: 13,
-              }}>
-                <div style={{ fontWeight: 800, color: 'var(--color-text)' }}>{ev.title}</div>
-                <div style={{ color: 'var(--color-muted)', fontSize: 11, marginTop: 4, fontWeight: 600 }}>
-                  Radius: {ev.radius}m · Card: {ev.card}
+          {/* Floating form panel */}
+          {formOpen && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                bottom: 16,
+                width: 340,
+                background: THEME.card,
+                border: `2px solid ${THEME.border}`,
+                borderRadius: 16,
+                padding: 16,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                overflowY: 'auto',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+                zIndex: 1000,
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>
+                  {editingId ? 'Edit Event' : 'Create New Event'}
+                </h3>
+                <button
+                  onClick={resetForm}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: THEME.muted,
+                    cursor: 'pointer',
+                    fontSize: 16,
+                    fontWeight: 700,
+                    lineHeight: 1,
+                  }}
+                  title="Close"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {position && (
+                <p style={{ margin: 0, fontSize: 12, color: THEME.muted }}>
+                  Selected: {position[0].toFixed(6)}, {position[1].toFixed(6)}
+                </p>
+              )}
+
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 700 }}>Event Name</label>
+                <input
+                  style={inputStyle}
+                  value={eventName}
+                  onChange={(e) => setEventName(e.target.value)}
+                  placeholder="e.g. Great Hall History Challenge"
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 700 }}>Card Reward</label>
+                <select
+                  style={inputStyle}
+                  value={cardReward}
+                  onChange={(e) => setCardReward(e.target.value)}
+                >
+                  <option value="">-- No Card Reward --</option>
+                  {availableCards.map(c => (
+                    <option key={c.id} value={c.id}>{c.name} ({c.rarity})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 700 }}>XP Award</label>
+                  <input
+                    style={inputStyle}
+                    type="number"
+                    min={0}
+                    value={xpAward}
+                    onChange={(e) => setXpAward(Number(e.target.value))}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 700 }}>Essence Award</label>
+                  <input
+                    style={inputStyle}
+                    type="number"
+                    min={0}
+                    value={essenceAward}
+                    onChange={(e) => setEssenceAward(Number(e.target.value))}
+                  />
                 </div>
               </div>
-            ))}
-          </div>
+
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 700 }}>Radius (m)</label>
+                <input
+                  style={inputStyle}
+                  type="number"
+                  min={5}
+                  max={500}
+                  value={radius}
+                  onChange={(e) => setRadius(Number(e.target.value))}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 700 }}>Start</label>
+                  <input
+                    style={inputStyle}
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 700 }}>End</label>
+                  <input
+                    style={inputStyle}
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <input
+                  id="active-event"
+                  type="checkbox"
+                  checked={active}
+                  onChange={(e) => setActive(e.target.checked)}
+                />
+                <label htmlFor="active-event" style={{ fontSize: 13, fontWeight: 700 }}>
+                  Active
+                </label>
+              </div>
+
+              {savedMsg && (
+                <div style={{ color: THEME.success, fontWeight: 700, fontSize: 13 }}>✓ {savedMsg}</div>
+              )}
+              {errorMsg && (
+                <div style={{ color: THEME.danger, fontWeight: 700, fontSize: 13 }}>✕ {errorMsg}</div>
+              )}
+
+              <div style={{ display: 'flex', gap: 10, marginTop: 'auto' }}>
+                <button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: 10,
+                    background: eventName.trim() ? '#4a3620' : '#a8987a',
+                    color: '#f5ecd7',
+                    fontWeight: 700,
+                    border: 'none',
+                    cursor: eventName.trim() && !isSaving ? 'pointer' : 'not-allowed',
+                    fontSize: 14,
+                  }}
+                >
+                  {isSaving ? 'Saving…' : editingId ? 'Update Event' : 'Create Event'}
+                </button>
+                {editingId && (
+                  <button
+                    onClick={() => handleDelete(editingId)}
+                    style={{
+                      padding: '12px 16px',
+                      borderRadius: 10,
+                      background: THEME.danger,
+                      color: '#fff',
+                      fontWeight: 700,
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: 14,
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '10px 12px',
+  borderRadius: 8,
+  border: '2px solid #caa25c',
+  background: '#fffefc',
+  color: '#4a3620',
+  outline: 'none',
+  fontSize: 14,
+  boxSizing: 'border-box',
+  marginTop: 4,
+  fontFamily: 'Georgia, serif',
+};

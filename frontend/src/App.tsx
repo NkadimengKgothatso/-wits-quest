@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './screens/Login';
 import MapExplorer from './screens/MapExplorer';
@@ -16,30 +16,39 @@ import TopBar from './components/TopBar';
 import Profile from './screens/Profile';
 
 type Screen = 'map' | 'collection' | 'deck' | 'battle' | 'profile' | 'leaderboard' | 'ranked' | 'login';
-type AdminScreen = 'events' | 'content' | 'anticheat' | 'profiles';
+type AdminScreen = 'events' | 'content' | 'anticheat';
 
 const ADMIN_NAV: { id: AdminScreen; label: string }[] = [
   { id: 'events', label: 'Spatial Events' },
   { id: 'content', label: 'Question & Card Authoring' },
   { id: 'anticheat', label: 'Anti-Cheat Telemetry' },
-  { id: 'profiles', label: 'Player Profiles' },
 ];
 
 
 
 function AppContent() {
-  const { loggedIn, loading } = useAuth();
+  const { loggedIn, loading, currentUser } = useAuth();
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
   const [adminScreen, setAdminScreen] = useState<AdminScreen>('events');
   const [triviaLandmark, setTriviaLandmark] = useState<any>(null);
   const [cardsEarned, setCardsEarned] = useState(0);
 
+  useEffect(() => {
+    if (loggedIn && currentUser?.role === 'ADMIN') {
+      setAdminMode(true);
+    }
+  }, [loggedIn, currentUser?.role]);
+
+  if (adminMode && currentUser?.role !== 'ADMIN') {
+    setAdminMode(false);
+  }
+
   if (loading) {
     return (
       <div style={{
         minHeight: '100vh',
-        background: 'var(--color-bg)',
+        background: 'transparent',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -58,9 +67,9 @@ function AppContent() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: 'transparent', position: 'relative' }}>
       {/* Top bar */}
-      <TopBar onAdminNav={() => setAdminMode(!adminMode)} />
+      <TopBar adminMode={adminMode} />
 
       {adminMode ? (
         /* Admin layout */
@@ -69,7 +78,6 @@ function AppContent() {
             {adminScreen === 'events' && <AdminEvents />}
             {adminScreen === 'content' && <AdminContent />}
             {adminScreen === 'anticheat' && <AdminAntiCheat />}
-            {adminScreen === 'profiles' && <div style={{ padding: 24, textAlign: 'center', color: 'var(--color-text)', fontWeight: 700 }}>Player Profiles Placeholder</div>}
           </div>
           <BottomNav
             active={adminScreen}

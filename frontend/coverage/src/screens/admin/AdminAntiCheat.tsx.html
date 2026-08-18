@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>0/36</span>
             </div>
         
             
@@ -455,48 +455,48 @@ export default function <span class="fstat-no" title="function not covered" >Adm
     &lt;div style={{ display: 'flex', height: '100%', gap: 0, minHeight: 'calc(100vh - 120px)' }}&gt;
       {/* Left: Flagged list */}
       &lt;div style={{
-        width: 260,
-        background: 'rgba(63, 47, 18, 0.95)',
-        borderRight: '1px solid rgba(220, 166, 104, 0.15)',
-        padding: 14,
+        width: 320,
+        background: 'var(--color-card-bg)',
+        borderRight: '1px solid var(--color-border)',
+        padding: 20,
         overflowY: 'auto',
       }}&gt;
-        &lt;div style={{ fontSize: 13, fontWeight: 800, color: 'white', marginBottom: 12, letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
+        &lt;div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
           Flagged Student Accounts ({FLAGGED_PLAYERS.length})
         &lt;/div&gt;
 &nbsp;
         {FLAGGED_PLAYERS.<span class="fstat-no" title="function not covered" >map((p</span>) =&gt; {
-          const tc = <span class="cstat-no" title="statement not covered" >p.trustScore &lt; 30 ? '#dca668' : p.trustScore &lt; 60 ? '#e8c99a' : '#dca668';</span>
+          const tc = <span class="cstat-no" title="statement not covered" >p.trustScore &lt; 30 ? '#EF4444' : p.trustScore &lt; 60 ? '#F59E0B' : 'var(--color-success)';</span>
 <span class="cstat-no" title="statement not covered" >          return (</span>
             &lt;button
               key={p.id}
 <span class="fstat-no" title="function not covered" >              onClick={() =&gt; {</span> <span class="cstat-no" title="statement not covered" >setSelected(p); <span class="cstat-no" title="statement not covered" >s</span>etOverrideScore(String(p.trustScore)); }</span>}
               style={{
                 width: '100%', background: 'none', border: 'none', padding: 0,
-                cursor: 'pointer', textAlign: 'left', marginBottom: 10,
+                cursor: 'pointer', textAlign: 'left', marginBottom: 12,
               }}
             &gt;
               &lt;div style={{
-                background: selected.id === p.id ? 'rgba(107, 125, 44, 0.5)' : 'rgba(107, 125, 44, 0.25)',
-                border: `1px solid ${selected.id === p.id ? '#dca668' : 'rgba(220, 166, 104, 0.15)'}`,
-                borderRadius: 10, padding: 10, transition: 'all 0.2s',
+                background: selected.id === p.id ? 'var(--color-accent)' : 'var(--color-bg)',
+                border: `2px solid ${selected.id === p.id ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                borderRadius: 12, padding: 12, transition: 'all 0.2s',
               }}&gt;
-                &lt;div style={{ fontSize: 11, fontWeight: 700, color: 'white', marginBottom: 6, wordBreak: 'break-all' }}&gt;
+                &lt;div style={{ fontSize: 13, fontWeight: 800, color: selected.id === p.id ? 'white' : 'var(--color-text)', marginBottom: 8, wordBreak: 'break-all' }}&gt;
                   {p.email}
                 &lt;/div&gt;
                 {/* Trust score bar */}
-                &lt;div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}&gt;
-                  &lt;div className="stat-bar-track" style={{ flex: 1 }}&gt;
-                    &lt;div className="stat-bar-fill" style={{ width: `${p.trustScore}%`, background: tc }} /&gt;
+                &lt;div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}&gt;
+                  &lt;div style={{ flex: 1, height: 6, background: selected.id === p.id ? 'rgba(255,255,255,0.3)' : 'var(--color-border)', borderRadius: 99, overflow: 'hidden' }}&gt;
+                    &lt;div style={{ width: `${p.trustScore}%`, height: '100%', background: selected.id === p.id ? 'white' : tc, borderRadius: 99 }} /&gt;
                   &lt;/div&gt;
-                  &lt;span style={{ fontSize: 11, fontWeight: 800, color: tc }}&gt;{p.trustScore}&lt;/span&gt;
+                  &lt;span style={{ fontSize: 12, fontWeight: 800, color: selected.id === p.id ? 'white' : tc }}&gt;{p.trustScore}&lt;/span&gt;
                 &lt;/div&gt;
-                &lt;div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}&gt;
+                &lt;div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}&gt;
                   {p.violations.<span class="fstat-no" title="function not covered" >map((v</span>) =&gt; (
 <span class="cstat-no" title="statement not covered" >                    &lt;span key={v} style={{</span>
-                      fontSize: 8, fontWeight: 700, color: '#dca668',
-                      background: 'rgba(220, 166, 104, 0.15)', borderRadius: 4, padding: '2px 5px',
-                      border: '1px solid rgba(220, 166, 104, 0.3)'
+                      fontSize: 10, fontWeight: 800, color: selected.id === p.id ? 'var(--color-accent)' : 'var(--color-muted)',
+                      background: selected.id === p.id ? 'white' : 'var(--color-bg)', borderRadius: 6, padding: '4px 8px',
+                      border: `1px solid ${selected.id === p.id ? 'transparent' : 'var(--color-border)'}`
                     }}&gt;
                       {v}
                     &lt;/span&gt;
@@ -509,37 +509,37 @@ export default function <span class="fstat-no" title="function not covered" >Adm
       &lt;/div&gt;
 &nbsp;
       {/* Right: Audit Evidence Detail View */}
-      &lt;div style={{ flex: 1, padding: 16, overflowY: 'auto' }}&gt;
-        &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}&gt;
+      &lt;div style={{ flex: 1, padding: 32, overflowY: 'auto' }}&gt;
+        &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}&gt;
           &lt;div&gt;
-            &lt;h3 style={{ fontSize: 16, fontWeight: 800, color: 'white', margin: '0 0 4px' }}&gt;{selected.email}&lt;/h3&gt;
-            &lt;div style={{ fontSize: 11, color: '#dca668' }}&gt;Audit Evidence &amp; Velocity Logs&lt;/div&gt;
+            &lt;h3 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', margin: '0 0 8px' }}&gt;{selected.email}&lt;/h3&gt;
+            &lt;div style={{ fontSize: 14, color: 'var(--color-muted)', fontWeight: 600 }}&gt;Audit Evidence &amp; Velocity Logs&lt;/div&gt;
           &lt;/div&gt;
           &lt;div style={{
-            background: 'rgba(84, 68, 27, 0.8)', border: `1.5px solid ${trustColor}`,
-            borderRadius: 12, padding: '6px 14px', textAlign: 'center'
+            background: 'var(--color-card-bg)', border: `2px solid ${trustColor}`,
+            borderRadius: 16, padding: '12px 24px', textAlign: 'center', boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)'
           }}&gt;
-            &lt;div style={{ fontSize: 9, color: '#dca668', fontWeight: 700, letterSpacing: '0.05em' }}&gt;TRUST SCORE&lt;/div&gt;
-            &lt;div style={{ fontSize: 18, fontWeight: 900, color: trustColor }}&gt;{selected.trustScore} / 100&lt;/div&gt;
+            &lt;div style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 800, letterSpacing: '0.05em' }}&gt;TRUST SCORE&lt;/div&gt;
+            &lt;div style={{ fontSize: 24, fontWeight: 900, color: trustColor }}&gt;{selected.trustScore} / 100&lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
 &nbsp;
         {/* Trajectory logs */}
-        &lt;div className="glass-dark" style={{ borderRadius: 12, padding: 12, marginBottom: 16 }}&gt;
-          &lt;div style={{ fontSize: 11, fontWeight: 700, color: '#e8c99a', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
+        &lt;div style={{ background: 'var(--color-card-bg)', borderRadius: 16, padding: 24, marginBottom: 24, border: '2px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}&gt;
+          &lt;div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
             GPS Movement Trajectory Log
           &lt;/div&gt;
-          &lt;div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}&gt;
+          &lt;div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}&gt;
             {selected.trajectory.<span class="fstat-no" title="function not covered" >map((t</span>, idx) =&gt; (
 <span class="cstat-no" title="statement not covered" >              &lt;div key={idx} style={{</span>
-                display: 'flex', justifyContent: 'space-between', fontSize: 11,
-                padding: '6px 10px', borderRadius: 6,
-                background: t.vel &gt; 5 ? 'rgba(220, 166, 104, 0.15)' : 'rgba(107, 125, 44, 0.2)',
-                border: `1px solid ${t.vel &gt; 5 ? 'rgba(220, 166, 104, 0.3)' : 'rgba(220, 166, 104, 0.1)'}`,
+                display: 'flex', justifyContent: 'space-between', fontSize: 13,
+                padding: '12px 16px', borderRadius: 12,
+                background: t.vel &gt; 5 ? 'rgba(239, 68, 68, 0.1)' : 'var(--color-bg)',
+                border: `1.5px solid ${t.vel &gt; 5 ? 'rgba(239, 68, 68, 0.3)' : 'var(--color-border)'}`,
               }}&gt;
-                &lt;span style={{ color: '#dca668' }}&gt;{t.time}&lt;/span&gt;
-                &lt;span style={{ color: 'white' }}&gt;{t.lat}, {t.lng}&lt;/span&gt;
-                &lt;span style={{ fontWeight: 700, color: t.vel &gt; 5 ? '#dca668' : '#e8c99a' }}&gt;
+                &lt;span style={{ color: 'var(--color-muted)', fontWeight: 700 }}&gt;{t.time}&lt;/span&gt;
+                &lt;span style={{ color: 'var(--color-text)', fontWeight: 600 }}&gt;{t.lat}, {t.lng}&lt;/span&gt;
+                &lt;span style={{ fontWeight: 800, color: t.vel &gt; 5 ? '#EF4444' : 'var(--color-text)' }}&gt;
                   {t.vel} m/s {t.vel &gt; 5 &amp;&amp; '(SPOOF DETECTED)'}
                 &lt;/span&gt;
               &lt;/div&gt;
@@ -548,23 +548,23 @@ export default function <span class="fstat-no" title="function not covered" >Adm
         &lt;/div&gt;
 &nbsp;
         {/* Moderation Action Bar */}
-        &lt;div className="glass-dark" style={{ borderRadius: 12, padding: 14 }}&gt;
-          &lt;div style={{ fontSize: 11, fontWeight: 700, color: '#dca668', marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
+        &lt;div style={{ background: 'var(--color-card-bg)', borderRadius: 16, padding: 24, border: '2px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}&gt;
+          &lt;div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
             Lecturer Moderation Actions
           &lt;/div&gt;
           {actionDone &amp;&amp; (
-            &lt;div style={{ fontSize: 11, color: '#dca668', marginBottom: 10, fontWeight: 700 }}&gt;
+            &lt;div style={{ fontSize: 13, color: 'var(--color-success)', marginBottom: 16, fontWeight: 800 }}&gt;
               Action Applied Successfully!
             &lt;/div&gt;
           )}
-          &lt;div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}&gt;
-            &lt;button className="btn-ghost" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction('warn')}&gt;</span>
+          &lt;div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}&gt;
+            &lt;button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction('warn')}&gt;</span>
               Issue Warning
             &lt;/button&gt;
-            &lt;button className="btn-ghost" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction('verify')}&gt;</span>
+            &lt;button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction('verify')}&gt;</span>
               Require Secondary GPS Fix
             &lt;/button&gt;
-            &lt;button className="btn-peach" style={{ fontSize: 11, padding: '8px 14px', borderRadius: 6 }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction('suspend')}&gt;</span>
+            &lt;button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: '#EF4444', border: 'none', color: 'white', fontWeight: 800, cursor: 'pointer' }} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction('suspend')}&gt;</span>
               Suspend Account
             &lt;/button&gt;
           &lt;/div&gt;
@@ -580,7 +580,7 @@ export default function <span class="fstat-no" title="function not covered" >Adm
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-14T21:47:47.131Z
+                at 2026-08-17T23:24:07.081Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -318,10 +318,7 @@
 <a name='L253'></a><a href='#L253'>253</a>
 <a name='L254'></a><a href='#L254'>254</a>
 <a name='L255'></a><a href='#L255'>255</a>
-<a name='L256'></a><a href='#L256'>256</a>
-<a name='L257'></a><a href='#L257'>257</a>
-<a name='L258'></a><a href='#L258'>258</a>
-<a name='L259'></a><a href='#L259'>259</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L256'></a><a href='#L256'>256</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -415,6 +412,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -498,9 +496,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -539,8 +535,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -637,7 +631,7 @@ export default function <span class="fstat-no" title="function not covered" >Adm
       &lt;div
         style={{
           flex: 1,
-          background: 'radial-gradient(ellipse at 40% 50%, #6b5630 0%, #3d2f12 100%)',
+          background: 'radial-gradient(ellipse at 40% 50%, #FAF7F2 0%, #E5D5C5 100%)',
           position: 'relative',
           cursor: 'crosshair',
           overflow: 'hidden',
@@ -645,28 +639,29 @@ export default function <span class="fstat-no" title="function not covered" >Adm
         onClick={handleMapClick}
       &gt;
         {/* Grid */}
-        &lt;svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.05 }}&gt;
+        &lt;svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.15 }}&gt;
           &lt;defs&gt;
             &lt;pattern id="grid2" width="40" height="40" patternUnits="userSpaceOnUse"&gt;
-              &lt;path d="M 40 0 L 0 0 0 40" fill="none" stroke="#dca668" strokeWidth="0.5" /&gt;
+              &lt;path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--color-accent)" strokeWidth="0.5" /&gt;
             &lt;/pattern&gt;
           &lt;/defs&gt;
           &lt;rect width="100%" height="100%" fill="url(#grid2)" /&gt;
         &lt;/svg&gt;
 &nbsp;
         {/* Roads */}
-        &lt;svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.1 }}&gt;
-          &lt;line x1="20%" y1="50%" x2="80%" y2="50%" stroke="#e8c99a" strokeWidth="8" strokeLinecap="round" /&gt;
-          &lt;line x1="50%" y1="20%" x2="50%" y2="80%" stroke="#e8c99a" strokeWidth="8" strokeLinecap="round" /&gt;
-          &lt;ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="#e8c99a" strokeWidth="3" /&gt;
+        &lt;svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.2 }}&gt;
+          &lt;line x1="20%" y1="50%" x2="80%" y2="50%" stroke="var(--color-accent)" strokeWidth="8" strokeLinecap="round" /&gt;
+          &lt;line x1="50%" y1="20%" x2="50%" y2="80%" stroke="var(--color-accent)" strokeWidth="8" strokeLinecap="round" /&gt;
+          &lt;ellipse cx="50%" cy="50%" rx="35%" ry="28%" fill="none" stroke="var(--color-accent)" strokeWidth="3" /&gt;
         &lt;/svg&gt;
 &nbsp;
         {/* Instruction */}
         &lt;div style={{
           position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
-          background: 'rgba(63, 47, 18, 0.85)', backdropFilter: 'blur(8px)',
-          borderRadius: 8, padding: '6px 14px', border: '1px solid rgba(220, 166, 104, 0.2)',
-          fontSize: 11, color: '#e8c99a', pointerEvents: 'none', fontWeight: 600
+          background: 'var(--color-card-bg)', backdropFilter: 'blur(8px)',
+          borderRadius: 8, padding: '6px 14px', border: '1px solid var(--color-border)',
+          fontSize: 12, color: 'var(--color-text)', pointerEvents: 'none', fontWeight: 700,
+          boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)'
         }}&gt;
           Click campus map to place target event coordinates
         &lt;/div&gt;
@@ -684,18 +679,18 @@ export default function <span class="fstat-no" title="function not covered" >Adm
           &gt;
             &lt;div style={{
               width: 24, height: 24, borderRadius: '50%',
-              background: ev.active ? '#dca668' : 'rgba(107, 125, 44, 0.7)',
-              border: `2px solid ${ev.active ? '#dca668' : 'rgba(220, 166, 104, 0.4)'}`,
+              background: ev.active ? 'var(--color-accent)' : 'var(--color-muted)',
+              border: `2px solid ${ev.active ? 'var(--color-accent)' : 'var(--color-border)'}`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: ev.active ? '0 0 12px rgba(220, 166, 104, 0.6)' : 'none'
+              boxShadow: ev.active ? '0 0 12px rgba(211, 122, 50, 0.4)' : 'none'
             }}&gt;
-              &lt;div style={{ width: 6, height: 6, borderRadius: '50%', background: '#54441b' }} /&gt;
+              &lt;div style={{ width: 6, height: 6, borderRadius: '50%', background: 'white' }} /&gt;
             &lt;/div&gt;
             &lt;div style={{
               position: 'absolute', top: 28, left: '50%', transform: 'translateX(-50%)',
-              whiteSpace: 'nowrap', fontSize: 9, fontWeight: 700, color: ev.active ? '#dca668' : '#dca668',
-              background: 'rgba(63, 47, 18, 0.85)', padding: '2px 6px', borderRadius: 4,
-              border: '1px solid rgba(220, 166, 104, 0.2)'
+              whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: 'var(--color-text)',
+              background: 'var(--color-card-bg)', padding: '2px 6px', borderRadius: 4,
+              border: '1px solid var(--color-border)', boxShadow: '0 2px 8px rgba(44, 34, 30, 0.05)'
             }}&gt;
               {ev.title}
             &lt;/div&gt;
@@ -714,11 +709,11 @@ export default function <span class="fstat-no" title="function not covered" >Adm
           &gt;
             &lt;div style={{
               width: 28, height: 28, borderRadius: '50%',
-              background: '#e8c99a',
+              background: 'var(--color-accent)',
               border: '2px solid white',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 0 16px rgba(220, 166, 104, 0.8)',
-              color: '#54441b', fontWeight: 900, fontSize: 14
+              boxShadow: '0 0 16px rgba(211, 122, 50, 0.6)',
+              color: 'white', fontWeight: 900, fontSize: 16
             }}&gt;
               +
             &lt;/div&gt;
@@ -728,76 +723,73 @@ export default function <span class="fstat-no" title="function not covered" >Adm
 &nbsp;
       {/* Authoring sidebar */}
       &lt;div style={{
-        width: 280,
-        background: 'rgba(63, 47, 18, 0.95)',
-        backdropFilter: 'blur(16px)',
-        borderLeft: '1px solid rgba(220, 166, 104, 0.2)',
-        padding: 16,
-        display: 'flex', flexDirection: 'column', gap: 14,
+        width: 320,
+        background: 'var(--color-card-bg)',
+        borderLeft: '1px solid var(--color-border)',
+        padding: 20,
+        display: 'flex', flexDirection: 'column', gap: 16,
         overflowY: 'auto',
       }}&gt;
-        &lt;div style={{ fontSize: 13, fontWeight: 800, color: 'white', letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
+        &lt;div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', letterSpacing: '0.05em', textTransform: 'uppercase' }}&gt;
           Spatial Event Placement
         &lt;/div&gt;
 &nbsp;
         {saved &amp;&amp; (
           &lt;div style={{
-            background: 'rgba(220, 166, 104, 0.15)', border: '1px solid rgba(220, 166, 104, 0.3)',
-            borderRadius: 8, padding: '8px 12px', color: '#dca668', fontSize: 11, fontWeight: 700,
+            background: 'rgba(74, 124, 89, 0.1)', border: '1.5px solid var(--color-success)',
+            borderRadius: 12, padding: '10px 14px', color: 'var(--color-success)', fontSize: 13, fontWeight: 700,
           }}&gt;
             Event Created &amp; Published!
           &lt;/div&gt;
         )}
 &nbsp;
         &lt;div&gt;
-          &lt;label style={{ fontSize: 11, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 4 }}&gt;
+          &lt;label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}&gt;
             Event Title
           &lt;/label&gt;
           &lt;input
-            className="input-glass"
+            style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 13 }}
             placeholder="e.g. Great Hall History Quiz"
             value={form.title}
 <span class="fstat-no" title="function not covered" >            onChange={(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, title: e.target.value })}</span>
-            style={{ fontSize: 12 }}
           /&gt;
         &lt;/div&gt;
 &nbsp;
-        &lt;div style={{ display: 'flex', gap: 8 }}&gt;
+        &lt;div style={{ display: 'flex', gap: 12 }}&gt;
           &lt;div style={{ flex: 1 }}&gt;
-            &lt;label style={{ fontSize: 11, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 4 }}&gt;
+            &lt;label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}&gt;
               Latitude
             &lt;/label&gt;
-            &lt;input className="input-glass" value={form.lat} readOnly style={{ fontSize: 11, color: '#dca668' }} /&gt;
+            &lt;input style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 12 }} value={form.lat} readOnly /&gt;
           &lt;/div&gt;
           &lt;div style={{ flex: 1 }}&gt;
-            &lt;label style={{ fontSize: 11, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 4 }}&gt;
+            &lt;label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}&gt;
               Longitude
             &lt;/label&gt;
-            &lt;input className="input-glass" value={form.lng} readOnly style={{ fontSize: 11, color: '#dca668' }} /&gt;
+            &lt;input style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 12 }} value={form.lng} readOnly /&gt;
           &lt;/div&gt;
         &lt;/div&gt;
 &nbsp;
         &lt;div&gt;
-          &lt;div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}&gt;
-            &lt;label style={{ fontSize: 11, color: '#dca668', fontWeight: 600 }}&gt;Activation Radius&lt;/label&gt;
-            &lt;span style={{ fontSize: 11, color: '#dca668', fontWeight: 700 }}&gt;{form.radius}m&lt;/span&gt;
+          &lt;div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}&gt;
+            &lt;label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700 }}&gt;Activation Radius&lt;/label&gt;
+            &lt;span style={{ fontSize: 12, color: 'var(--color-accent)', fontWeight: 800 }}&gt;{form.radius}m&lt;/span&gt;
           &lt;/div&gt;
           &lt;input
             type="range" min={10} max={100} value={form.radius}
 <span class="fstat-no" title="function not covered" >            onChange={(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, radius: Number(e.target.value) })}</span>
-            style={{ width: '100%', accentColor: '#dca668' }}
+            style={{ width: '100%', accentColor: 'var(--color-accent)' }}
           /&gt;
         &lt;/div&gt;
 &nbsp;
         &lt;div&gt;
-          &lt;label style={{ fontSize: 11, color: '#dca668', fontWeight: 600, display: 'block', marginBottom: 4 }}&gt;
+          &lt;label style={{ fontSize: 12, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 6 }}&gt;
             Card Reward Selection
           &lt;/label&gt;
           &lt;select
-            className="input-glass"
+            style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 13 }}
             value={form.card}
 <span class="fstat-no" title="function not covered" >            onChange={(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, card: e.target.value })}</span>
-            style={{ fontSize: 12, color: 'white', background: '#54441b' }}
           &gt;
             &lt;option value="Great Hall Pillars"&gt;Great Hall Pillars (Legendary)&lt;/option&gt;
             &lt;option value="Solomon's Torch"&gt;Solomon's Torch (Epic)&lt;/option&gt;
@@ -807,26 +799,25 @@ export default function <span class="fstat-no" title="function not covered" >Adm
         &lt;/div&gt;
 &nbsp;
         &lt;button
-          className="btn-peach"
-          style={{ width: '100%', fontSize: 12, padding: '10px', marginTop: 6, borderRadius: 8 }}
+          style={{ width: '100%', fontSize: 14, padding: '12px', marginTop: 8, borderRadius: 10, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }}
           onClick={handleSave}
         &gt;
           Save &amp; Publish Event
         &lt;/button&gt;
 &nbsp;
         {/* Existing events list */}
-        &lt;div style={{ marginTop: 10 }}&gt;
-          &lt;div style={{ fontSize: 11, fontWeight: 700, color: '#dca668', marginBottom: 8, textTransform: 'uppercase' }}&gt;
+        &lt;div style={{ marginTop: 16 }}&gt;
+          &lt;div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-muted)', marginBottom: 12, textTransform: 'uppercase' }}&gt;
             Active Campus Events ({events.length})
           &lt;/div&gt;
-          &lt;div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}&gt;
+          &lt;div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}&gt;
             {events.<span class="fstat-no" title="function not covered" >map((e</span>v) =&gt; (
 <span class="cstat-no" title="statement not covered" >              &lt;div key={ev.id} style={{</span>
-                background: 'rgba(107, 125, 44, 0.25)', border: '1px solid rgba(220, 166, 104, 0.15)',
-                borderRadius: 8, padding: '8px 10px', fontSize: 11,
+                background: 'var(--color-bg)', border: '1px solid var(--color-border)',
+                borderRadius: 10, padding: '10px 12px', fontSize: 13,
               }}&gt;
-                &lt;div style={{ fontWeight: 700, color: 'white' }}&gt;{ev.title}&lt;/div&gt;
-                &lt;div style={{ color: '#dca668', fontSize: 10, marginTop: 2 }}&gt;
+                &lt;div style={{ fontWeight: 800, color: 'var(--color-text)' }}&gt;{ev.title}&lt;/div&gt;
+                &lt;div style={{ color: 'var(--color-muted)', fontSize: 11, marginTop: 4, fontWeight: 600 }}&gt;
                   Radius: {ev.radius}m · Card: {ev.card}
                 &lt;/div&gt;
               &lt;/div&gt;
@@ -844,7 +835,7 @@ export default function <span class="fstat-no" title="function not covered" >Adm
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-14T21:47:47.131Z
+                at 2026-08-17T23:24:07.081Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

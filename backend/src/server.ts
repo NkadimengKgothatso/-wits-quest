@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { mockDb } from './services/mockDb.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -29,6 +30,9 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// --- Auth Routes ---
+app.use('/api', authRoutes);
 
 // --- MOCK DATABASE REST API ENDPOINTS ---
 
@@ -123,7 +127,22 @@ import { setupBattleSocketHandler } from './services/battleSocketHandler.js';
 // Setup Real-Time Battle Socket Handler
 setupBattleSocketHandler(io);
 
-httpServer.listen(PORT, () => {
-  console.log(`Wits Quest Backend API running on http://localhost:${PORT}`);
-  console.log(`Mock DB Endpoints available at http://localhost:${PORT}/api/mock/*`);
+// Real-Time WebSocket Battle Events
+io.on('connection', (socket) => {
+  console.log(`[Socket.io] Player connected: ${socket.id}`);
 });
+
+// Bootstrap: start server
+function startServer() {
+  try {
+    httpServer.listen(PORT, () => {
+      console.log(`Wits Quest Backend API running on http://localhost:${PORT}`);
+      console.log(`Mock DB Endpoints available at http://localhost:${PORT}/api/mock/*`);
+    });
+  } catch (err) {
+    console.error('[Server] Failed to start:', err);
+    process.exit(1);
+  }
+}
+
+startServer();
