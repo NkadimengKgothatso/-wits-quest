@@ -1,14 +1,62 @@
 /**
  * Schema Module — creates all 6 database tables.
- * 
+ *
  * Tables match the specs in WITS_QUEST_DATABASE_PLAN.md:
  *   users, cards, user_cards, user_decks, battle_matches, async_pvp_challenges
- * 
+ *
  * Called once during initDB(). Uses CREATE TABLE IF NOT EXISTS
  * so re-running is safe (idempotent).
  */
 
-import { getDB } from './connection.js';
+import type { Database } from "sql.js";
+import { getDB } from "./connection.js";
+
+export function ensureLegacyUserColumns(targetDb: Database = getDB()): void {
+  const info = targetDb.exec("PRAGMA table_info(users);");
+  const existingColumns = new Set<string>();
+
+  for (const result of info) {
+    for (const row of result.values) {
+      const columnName = String(row[1]);
+      if (columnName) existingColumns.add(columnName);
+    }
+  }
+
+  const requiredColumns = [
+    { name: "role", definition: "TEXT NOT NULL DEFAULT 'STUDENT'" },
+    { name: "level", definition: "INTEGER NOT NULL DEFAULT 1" },
+    { name: "currentXP", definition: "INTEGER NOT NULL DEFAULT 0" },
+    { name: "totalXP", definition: "INTEGER NOT NULL DEFAULT 0" },
+    { name: "essenceBalance", definition: "INTEGER NOT NULL DEFAULT 100" },
+    { name: "dailyStreakCount", definition: "INTEGER NOT NULL DEFAULT 1" },
+    { name: "lastCheckInDate", definition: "TEXT NOT NULL DEFAULT ''" },
+    { name: "streakMultiplier", definition: "REAL NOT NULL DEFAULT 1.0" },
+    { name: "eloRating", definition: "INTEGER NOT NULL DEFAULT 1000" },
+    { name: "divisionTier", definition: "TEXT NOT NULL DEFAULT 'GOLD'" },
+    { name: "pvpWins", definition: "INTEGER NOT NULL DEFAULT 0" },
+    { name: "pvpLosses", definition: "INTEGER NOT NULL DEFAULT 0" },
+    { name: "pvpDraws", definition: "INTEGER NOT NULL DEFAULT 0" },
+    { name: "maxStatBudget", definition: "INTEGER NOT NULL DEFAULT 300" },
+    { name: "legendaryCap", definition: "INTEGER NOT NULL DEFAULT 1" },
+    { name: "avatar", definition: "TEXT NOT NULL DEFAULT 'owl'" },
+    {
+      name: "createdAt",
+      definition: "TEXT NOT NULL DEFAULT (datetime('now'))",
+    },
+    {
+      name: "updatedAt",
+      definition: "TEXT NOT NULL DEFAULT (datetime('now'))",
+    },
+  ];
+
+  for (const column of requiredColumns) {
+    if (!existingColumns.has(column.name)) {
+      targetDb.run(
+        `ALTER TABLE users ADD COLUMN ${column.name} ${column.definition};`,
+      );
+    }
+  }
+}
 
 export function createTables(): void {
   const db = getDB();
@@ -142,5 +190,5 @@ export function createTables(): void {
     );
   `);
 
-
+  ensureLegacyUserColumns(db);
 }
