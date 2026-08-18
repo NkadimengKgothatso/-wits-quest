@@ -10,6 +10,7 @@ import {
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useAuth } from '../context/AuthContext';
+import { getEvents, type CampusEvent } from '../services/apiClient';
 
 const WITS_CENTER: [number, number] = [
   -26.192885679106496,
@@ -28,6 +29,20 @@ const witsLabelIcon = new L.DivIcon({
   iconSize: [70, 70],
   iconAnchor: [35, 35],
 });
+
+function getEventHeatIcon(inRange: boolean) {
+  return new L.DivIcon({
+    className: 'event-heat-marker',
+    html: `
+      <div class="event-heat-pin ${inRange ? 'in-range' : 'out-of-range'}">
+        <span class="event-icon">${inRange ? '🔓' : '🔒'}</span>
+      </div>
+    `,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -18],
+  });
+}
 
 const userLocationIcon = new L.DivIcon({
   className: 'user-location-marker',
@@ -251,6 +266,9 @@ export default function MapExplorer({
   const [discoveredLandmarks, setDiscoveredLandmarks] =
     useState<string[]>([]);
 
+  // Active campus events created by admins.
+  const [activeEvents, setActiveEvents] = useState<CampusEvent[]>([]);
+
   useEffect(() => {
     if (!('geolocation' in navigator)) {
       setLocationError(
@@ -347,6 +365,13 @@ export default function MapExplorer({
     return () =>
       navigator.geolocation.clearWatch(watchId);
   }, [currentUser?.id]);
+
+  // Fetch active campus events
+  useEffect(() => {
+    getEvents(true)
+      .then((events) => setActiveEvents(events.filter((e) => e.active === 1)))
+      .catch(() => setActiveEvents([]));
+  }, []);
 
   const nearbyLandmarks = userPosition
     ? LANDMARKS.filter((landmark) => {
@@ -602,6 +627,46 @@ export default function MapExplorer({
             transform: scale(1.25);
             opacity: 0.9;
           }
+        }
+
+        .event-area-circle {
+          animation: event-pulse 2s ease-in-out infinite;
+        }
+
+        .event-heat-pin {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          border: 3px solid #fffefc;
+          transition: all 0.3s ease;
+        }
+
+        .event-heat-pin.in-range {
+          background: #2e7d32;
+          box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.4), 0 2px 8px rgba(0,0,0,0.4);
+          animation: event-heat-pulse-in 1.5s infinite;
+        }
+
+        .event-heat-pin.out-of-range {
+          background: #b3261e;
+          box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.4), 0 2px 8px rgba(0,0,0,0.4);
+          animation: event-heat-pulse-out 2s infinite;
+        }
+
+        @keyframes event-heat-pulse-in {
+          0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.6); }
+          70% { box-shadow: 0 0 0 15px rgba(46, 125, 50, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        @keyframes event-heat-pulse-out {
+          0% { box-shadow: 0 0 0 0 rgba(179, 38, 30, 0.6); }
+          70% { box-shadow: 0 0 0 10px rgba(179, 38, 30, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(179, 38, 30, 0); }
         }
 
         .landmark-circle {
@@ -1117,7 +1182,50 @@ export default function MapExplorer({
                   </Circle>
                 );
               })}
+            
+              {activeEvents.map((evt) => {
+                const distance = userPosition
+                  ? haversineDistance(userPosition, [evt.lat, evt.lng])
+                  : null;
+                const inRange = distance !== null && distance <= evt.radius;
 
+                return (
+                  <Marker
+                    key={`${evt.id}-marker`}
+                    position={[evt.lat, evt.lng]}
+                    icon={getEventHeatIcon(inRange)}
+                  >
+                    <Popup>
+                      <div style={{ textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
+                        <strong>{evt.name}</strong>
+                        
+                        {inRange ? (
+                          <>
+                            <p style={{ margin: '8px 0', fontWeight: 600, color: '#2e7d32' }}>
+                              Event Unlocked!
+                            </p>
+                            {evt.cardReward && (
+                              <p style={{ margin: '4px 0 0', fontSize: 12, color: '#4a3620' }}>
+                                Reward: {evt.cardReward}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <p style={{ margin: '8px 0 0', fontSize: 12 }}>
+                              {distance !== null ? `Distance: ${Math.round(distance)}m` : 'Calculating...'}
+                            </p>
+                            <p style={{ margin: '4px 0 0', fontSize: 11, color: '#b3261e' }}>
+                              Walk closer to unlock
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              })}
+            
             </MapContainer>
 
             <div className="map-info-card">
@@ -1130,6 +1238,40 @@ export default function MapExplorer({
                 {nearbyLandmarks === 1
                   ? ''
                   : 's'}
+              </p>
+            </div>
+
+            <div
+              style={{
+                position: 'absolute',
+                left: 26,
+                bottom: 100,
+                zIndex: 1000,
+                background: '#f5ecd7',
+                borderRadius: 12,
+                padding: '10px 14px',
+                border: '2px solid #4a3620',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35)',
+                fontFamily: 'system-ui, sans-serif',
+                fontSize: 12,
+                color: '#4a3620',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                <div
+                  style={{
+                    width: 14,
+                    height: 14,
+                    borderRadius: '50%',
+                    background: '#D37A32',
+                    border: '2px solid #fffefc',
+                    boxShadow: '0 0 0 2px rgba(211, 122, 50, 0.4)',
+                  }}
+                />
+                <strong>Active Event</strong>
+              </div>
+              <p style={{ margin: 0, color: '#7a6644' }}>
+                {activeEvents.length} active event{activeEvents.length === 1 ? '' : 's'} on campus
               </p>
             </div>
           </div>

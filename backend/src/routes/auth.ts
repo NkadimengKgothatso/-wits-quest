@@ -383,5 +383,130 @@ router.post('/avatars', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to create avatar', detail: err.message });
   }
 });
+// ─── EVENTS ─────────────────────────────────────────────────────────
+// Create a new campus event (admin only)
+router.post('/events', async (req: Request, res: Response) => {
+  try {
+    const { name, lat, lng, radius, startDate, endDate, active, cardReward, xpAward, essenceAward } = req.body;
+
+    if (!name || typeof name !== 'string' || name.trim() === '') {
+      res.status(400).json({ error: 'Event name is required' });
+      return;
+    }
+    if (lat === undefined || lng === undefined || isNaN(Number(lat)) || isNaN(Number(lng))) {
+      res.status(400).json({ error: 'Valid lat and lng are required' });
+      return;
+    }
+
+    const id = `evt_${randomUUID().slice(0, 8)}`;
+    const now = new Date().toISOString();
+    const finalStart = startDate || now;
+    const finalEnd = endDate || now;
+    const finalRadius = radius ? Number(radius) : 25;
+    const isActive = active !== undefined ? (active ? 1 : 0) : 1;
+    const finalXp = xpAward !== undefined ? Number(xpAward) : 0;
+    const finalEssence = essenceAward !== undefined ? Number(essenceAward) : 0;
+
+    const { error } = await supabase.from('events').insert({
+      id, name: name.trim(), lat: Number(lat), lng: Number(lng), radius: finalRadius,
+      startDate: finalStart, endDate: finalEnd, active: isActive, cardReward: cardReward || null,
+      xpAward: finalXp, essenceAward: finalEssence,
+      createdAt: now
+    });
+
+    if (error) throw error;
+
+    const { data: created } = await supabase.from('events').select('*').eq('id', id).single();
+    console.log(`[Events] Created new event: ${id}`);
+    res.status(201).json(created);
+  } catch (err: any) {
+    console.error('[Events] Create error:', err);
+    res.status(500).json({ error: 'Failed to create event', detail: err.message });
+  }
+});
+
+// List all campus events (optionally filter by active status)
+router.get('/events', async (req: Request, res: Response) => {
+  try {
+    const { active } = req.query;
+    let query = supabase.from('events').select('*').order('createdAt', { ascending: false });
+    
+    if (active !== undefined) {
+      query = query.eq('active', active === 'true' || active === '1' ? 1 : 0);
+    }
+    
+    const { data: events, error } = await query;
+    if (error) throw error;
+    
+    res.json(events || []);
+  } catch (err: any) {
+    console.error('[Events] List error:', err);
+    res.status(500).json({ error: 'Failed to fetch events', detail: err.message });
+  }
+});
+
+// Update an existing event
+router.put('/events/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { data: existing } = await supabase.from('events').select('id').eq('id', id).single();
+    
+    if (!existing) {
+      res.status(404).json({ error: 'Event not found' });
+      return;
+    }
+
+    const { name, lat, lng, radius, startDate, endDate, active, cardReward, xpAward, essenceAward } = req.body;
+    const updates: Record<string, any> = {};
+
+    if (name !== undefined) updates.name = name.trim();
+    if (lat !== undefined) updates.lat = Number(lat);
+    if (lng !== undefined) updates.lng = Number(lng);
+    if (radius !== undefined) updates.radius = Number(radius);
+    if (startDate !== undefined) updates.startDate = startDate;
+    if (endDate !== undefined) updates.endDate = endDate;
+    if (active !== undefined) updates.active = active ? 1 : 0;
+    if (cardReward !== undefined) updates.cardReward = cardReward || null;
+    if (xpAward !== undefined) updates.xpAward = Number(xpAward);
+    if (essenceAward !== undefined) updates.essenceAward = Number(essenceAward);
+
+    if (Object.keys(updates).length === 0) {
+      res.status(400).json({ error: 'No fields provided to update' });
+      return;
+    }
+
+    const { error } = await supabase.from('events').update(updates).eq('id', id);
+    if (error) throw error;
+
+    const { data: updated } = await supabase.from('events').select('*').eq('id', id).single();
+    console.log(`[Events] Updated event: ${id}`);
+    res.json(updated);
+  } catch (err: any) {
+    console.error('[Events] Update error:', err);
+    res.status(500).json({ error: 'Failed to update event', detail: err.message });
+  }
+});
+
+// Delete an event
+router.delete('/events/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { data: existing } = await supabase.from('events').select('id').eq('id', id).single();
+    
+    if (!existing) {
+      res.status(404).json({ error: 'Event not found' });
+      return;
+    }
+
+    const { error } = await supabase.from('events').delete().eq('id', id);
+    if (error) throw error;
+    
+    console.log(`[Events] Deleted event: ${id}`);
+    res.json({ success: true, id });
+  } catch (err: any) {
+    console.error('[Events] Delete error:', err);
+    res.status(500).json({ error: 'Failed to delete event', detail: err.message });
+  }
+});
 
 export default router;

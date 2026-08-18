@@ -16,13 +16,12 @@ import TopBar from './components/TopBar';
 import Profile from './screens/Profile';
 
 type Screen = 'map' | 'collection' | 'deck' | 'battle' | 'profile' | 'leaderboard' | 'ranked' | 'login';
-type AdminScreen = 'events' | 'content' | 'anticheat' | 'profiles';
+type AdminScreen = 'events' | 'content' | 'anticheat';
 
 const ADMIN_NAV: { id: AdminScreen; label: string }[] = [
   { id: 'events', label: 'Spatial Events' },
   { id: 'content', label: 'Question & Card Authoring' },
   { id: 'anticheat', label: 'Anti-Cheat Telemetry' },
-  { id: 'profiles', label: 'Player Profiles' },
 ];
 
 
@@ -79,7 +78,6 @@ function AppContent() {
             {adminScreen === 'events' && <AdminEvents />}
             {adminScreen === 'content' && <AdminContent />}
             {adminScreen === 'anticheat' && <AdminAntiCheat />}
-            {adminScreen === 'profiles' && <div style={{ padding: 24, textAlign: 'center', color: 'var(--color-text)', fontWeight: 700 }}>Player Profiles Placeholder</div>}
           </div>
           <BottomNav
             active={adminScreen}

@@ -1,4 +1,4 @@
-import { MapPin, Layers, Swords, User, ShieldAlert, FileText, Activity, Users } from 'lucide-react';
+import { MapPin, Layers, Swords, User, ShieldAlert, FileText, Activity, Users, ClipboardList, BarChart3 } from 'lucide-react';
 
 interface BottomNavProps {
   active: string;
@@ -17,7 +17,6 @@ const ADMIN_NAV_ITEMS = [
   { id: 'events', label: 'EVENTS', icon: <MapPin size={20} strokeWidth={2.5} /> },
   { id: 'content', label: 'CONTENT', icon: <FileText size={20} strokeWidth={2.5} /> },
   { id: 'anticheat', label: 'ANTI-CHEAT', icon: <ShieldAlert size={20} strokeWidth={2.5} /> },
-  { id: 'profiles', label: 'PLAYERS', icon: <Users size={20} strokeWidth={2.5} /> },
 ];
 
 export default function BottomNav({ active, onNavigate, adminMode = false }: BottomNavProps) {

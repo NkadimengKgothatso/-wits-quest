@@ -166,6 +166,144 @@ export async function updateMockUser(userId: string, updates: Partial<User>): Pr
   return undefined;
 }
 
+export async function getCards(): Promise<Card[]> {
+  const res = await fetch(`${BACKEND_URL}/api/cards`, { headers: getAuthHeaders() });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export async function publishCard(data: {
+  name: string;
+  category: string;
+  rarity: string;
+  baseAttack: number;
+  baseDefense: number;
+  baseSpeed: number;
+  baseBrains: number;
+}): Promise<Card> {
+  const res = await fetch(`${BACKEND_URL}/api/mock/cards`, {
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to publish card');
+  }
+  return result;
+}
+
+export async function publishTrivia(data: {
+  question: string;
+  questionType: 'mc' | 'text';
+  correctIndex: number;
+}): Promise<any> {
+  const res = await fetch(`${BACKEND_URL}/api/mock/trivia`, {
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to submit trivia');
+  }
+  return result;
+}
+
+export async function getTriviaQuestions(status?: string): Promise<any[]> {
+  const url = status
+    ? `${BACKEND_URL}/api/mock/trivia?status=${status}`
+    : `${BACKEND_URL}/api/mock/trivia`;
+  const res = await fetch(url, { headers: getAuthHeaders() });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export interface CampusEvent {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  radius: number;
+  startDate: string;
+  endDate: string;
+  active: number;
+  cardReward?: string;
+  xpAward?: number;
+  essenceAward?: number;
+  createdAt: string;
+}
+
+export async function createEvent(data: {
+  name: string;
+  lat: number;
+  lng: number;
+  radius?: number;
+  startDate?: string;
+  endDate?: string;
+  active?: boolean;
+  cardReward?: string;
+  xpAward?: number;
+  essenceAward?: number;
+}): Promise<CampusEvent> {
+  const res = await fetch(`${BACKEND_URL}/api/events`, {
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to create event');
+  }
+  return result;
+}
+
+export async function getEvents(active?: boolean): Promise<CampusEvent[]> {
+  const url = active !== undefined ? `${BACKEND_URL}/api/events?active=${active}` : `${BACKEND_URL}/api/events`;
+  const res = await fetch(url, { headers: getAuthHeaders() });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export async function updateEvent(
+  id: string,
+  data: Partial<{
+    name: string;
+    lat: number;
+    lng: number;
+    radius?: number;
+    startDate?: string;
+    endDate?: string;
+    active?: boolean;
+    cardReward?: string;
+    xpAward?: number;
+    essenceAward?: number;
+  }>
+): Promise<CampusEvent> {
+  const res = await fetch(`${BACKEND_URL}/api/events/${id}`, {
+    method: 'PUT',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to update event');
+  }
+  return result;
+}
+
+export async function deleteEvent(id: string): Promise<{ success: boolean; id: string }> {
+  const res = await fetch(`${BACKEND_URL}/api/events/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to delete event');
+  }
+  return result;
+}
+
 export interface Avatar {
   id: string;
   emoji: string;
