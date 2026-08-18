@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">39.34% </span>
+                <span class="strong">40.98% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>48/122</span>
+                <span class='fraction'>50/122</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">46.03% </span>
+                <span class="strong">48.41% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>58/126</span>
+                <span class='fraction'>61/126</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">41.81% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>44/110</span>
+                <span class='fraction'>46/110</span>
             </div>
         
             
@@ -1017,7 +1017,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1047,7 +1047,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1092,13 +1092,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -1619,7 +1619,7 @@ export function formatUserMeta(user: MockUser): MockUser {
 export async function getMockUsers(): Promise&lt;MockUser[]&gt; {
   try {
     const res = await fetch(`${BACKEND_URL}/api/mock/users`);
-<span class="cstat-no" title="statement not covered" >    if (res.ok) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (res.ok) {
       const users: MockUser[] = <span class="cstat-no" title="statement not covered" >await res.json();</span>
 <span class="cstat-no" title="statement not covered" >      return users.map(formatUserMeta);</span>
     }
@@ -1649,7 +1649,7 @@ export async function getRegisteredStudentOpponents(currentUserId?: string): Pro
 export async function getMockUserById(id: string): Promise&lt;MockUser | undefined&gt; {
   try {
     const res = await fetch(`${BACKEND_URL}/api/mock/users/${id}`);
-<span class="cstat-no" title="statement not covered" >    if (res.ok) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (res.ok) {
       const user: MockUser = <span class="cstat-no" title="statement not covered" >await res.json();</span>
 <span class="cstat-no" title="statement not covered" >      return formatUserMeta(user);</span>
     }
@@ -1694,13 +1694,13 @@ export async function insertMockUser(user: Partial&lt;MockUser&gt; &amp; { usern
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newUserRaw),
     });
-<span class="cstat-no" title="statement not covered" >    if (res.ok) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (res.ok) {
       const inserted: MockUser = <span class="cstat-no" title="statement not covered" >await res.json();</span>
 <span class="cstat-no" title="statement not covered" >      setStudentOnlineStatus(inserted.id, true);</span>
 <span class="cstat-no" title="statement not covered" >      return formatUserMeta(inserted);</span>
     }
   } catch (err) {
-    console.warn('[MockDBClient] Backend API offline. Storing in local client fallback memory.');
+<span class="cstat-no" title="statement not covered" >    console.warn('[MockDBClient] Backend API offline. Storing in local client fallback memory.');</span>
   }
 &nbsp;
   setStudentOnlineStatus(newUserRaw.id, true);
@@ -1876,7 +1876,7 @@ export async function <span class="fstat-no" title="function not covered" >saveM
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-14T21:47:47.131Z
+                at 2026-08-17T16:35:17.145Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
