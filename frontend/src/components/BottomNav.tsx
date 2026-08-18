@@ -27,8 +27,10 @@ export default function BottomNav({ active, onNavigate, adminMode = false }: Bot
     <div
       className="fixed bottom-0 left-0 right-0 z-50 flex"
       style={{
-        background: '#FAF7F2',
-        borderTop: '1px solid #E5D5C5',
+        background: 'rgba(31, 22, 8, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderTop: '1px solid var(--color-border)',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
@@ -40,7 +42,7 @@ export default function BottomNav({ active, onNavigate, adminMode = false }: Bot
             onClick={() => onNavigate(item.id)}
             className="flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-all duration-200"
             style={{
-              color: isActive ? '#D37A32' : '#8A7B72',
+              color: isActive ? '#dca668' : 'rgba(248, 242, 232, 0.6)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -56,7 +58,7 @@ export default function BottomNav({ active, onNavigate, adminMode = false }: Bot
                   transform: 'translateX(-50%)',
                   width: 32,
                   height: 3,
-                  background: '#D37A32',
+                  background: '#dca668',
                   borderRadius: '0 0 4px 4px',
                 }}
               />

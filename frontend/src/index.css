@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --color-bg: #FAF7F2;
-  --color-text: #2C221E;
-  --color-accent: #D37A32;
+  --color-bg: #1f1608;
+  --color-text: #fcfaf6;
+  --color-accent: #dca668;
   --color-success: #4A7C59;
-  --color-card-bg: #FFFFFF;
-  --color-border: #E5D5C5;
-  --color-muted: #8A7B72;
+  --color-card-bg: rgba(74, 58, 24, 0.4);
+  --color-border: rgba(220, 166, 104, 0.25);
+  --color-muted: rgba(248, 242, 232, 0.6);
   --font-family-base: 'Outfit', sans-serif;
 }
 
@@ -52,9 +52,11 @@
 }
 
 body {
-  background: var(--color-bg);
+  background: radial-gradient(ellipse at 50% 0%, #4a3a18 0%, #322612 40%, #1f1608 100%);
+  background-attachment: fixed;
   color: var(--color-text);
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 /* Scrollbar styling */
@@ -328,3 +330,61 @@ body {
 }
 .kudu-breathe { animation: kudu-breathe 4s ease-in-out infinite; }
 .kudu-ear-twitch { animation: kudu-ear-twitch 5s ease-in-out infinite; transform-origin: bottom center; }
+
+/* Animated Avatars */
+@keyframes avatar-owl-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+@keyframes avatar-springbok-hop {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  40% { transform: translateY(-7px) scale(0.95, 1.05); }
+  70% { transform: translateY(0) scale(1.05, 0.95); }
+}
+@keyframes avatar-lion-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+}
+@keyframes avatar-falcon-tilt {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50% { transform: rotate(4deg) translateY(-2px); }
+}
+.avatar-owl { animation: avatar-owl-float 3s ease-in-out infinite; display: inline-block; }
+.avatar-springbok { animation: avatar-springbok-hop 2.2s cubic-bezier(0.25, 0.8, 0.25, 1) infinite; display: inline-block; }
+.avatar-lion { animation: avatar-lion-pulse 2.8s ease-in-out infinite; display: inline-block; }
+.avatar-falcon { animation: avatar-falcon-tilt 2.5s ease-in-out infinite; display: inline-block; }
+
+/* Animated Battle Hub Mode Card Hover */
+.mode-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mode-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(44, 34, 30, 0.12) !important;
+  border-color: var(--color-accent) !important;
+}
+
+/* Animations for match layout transition */
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.slide-in-left {
+  animation: slide-in-left 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.slide-in-right {
+  animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Confetti & game over modal scaling */
+@keyframes pop-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.pop-in {
+  animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-type ContentTab = 'trivia' | 'card'
+type ContentTab = 'trivia' | 'card' | 'avatar'
 
 export default function AdminContent() {
   const [tab, setTab] = useState<ContentTab>('trivia')
@@ -18,6 +18,10 @@ export default function AdminContent() {
     brains: 50,
   })
 
+  const [avatarForm, setAvatarForm] = useState({
+    id: '', emoji: '', label: '', cssClass: 'avatar-owl', description: ''
+  })
+
   function handleSave() {
     setSavedMsg('Saved successfully!')
     setTimeout(() => setSavedMsg(''), 2000)
@@ -32,7 +36,7 @@ export default function AdminContent() {
 
       {/* Tab selector */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-        {([['trivia', 'Trivia Question Authoring'], ['card', 'Card Set Definitions']] as const).map(([t, label]) => (
+        {([['trivia', 'Trivia Question Authoring'], ['card', 'Card Set Definitions'], ['avatar', 'Avatars']] as const).map(([t, label]) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -239,6 +243,75 @@ export default function AdminContent() {
             <button style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'transparent', color: 'var(--color-muted)', fontWeight: 800, border: '2px solid var(--color-border)', cursor: 'pointer' }}>Save Draft</button>
             <button style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }} onClick={handleSave}>
               Publish Card
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Avatar Form */}
+      {tab === 'avatar' && (
+        <div style={{ padding: 32, borderRadius: 24, background: 'var(--color-card-bg)', border: '2px solid var(--color-border)', boxShadow: '0 8px 32px rgba(44, 34, 30, 0.05)', display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Avatar ID / Key (e.g. 'tiger')</label>
+            <input
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
+              placeholder="tiger"
+              value={avatarForm.id}
+              onChange={(e) => setAvatarForm((f) => ({ ...f, id: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Emoji (e.g. '🐅')</label>
+            <input
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
+              placeholder="🐅"
+              value={avatarForm.emoji}
+              onChange={(e) => setAvatarForm((f) => ({ ...f, emoji: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Label (e.g. 'Fierce Tiger')</label>
+            <input
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
+              placeholder="Fierce Tiger"
+              value={avatarForm.label}
+              onChange={(e) => setAvatarForm((f) => ({ ...f, label: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>CSS Class</label>
+            <input
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
+              placeholder="avatar-owl"
+              value={avatarForm.cssClass}
+              onChange={(e) => setAvatarForm((f) => ({ ...f, cssClass: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Description</label>
+            <input
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
+              placeholder="Prowling strength"
+              value={avatarForm.description}
+              onChange={(e) => setAvatarForm((f) => ({ ...f, description: e.target.value }))}
+            />
+          </div>
+
+          {savedMsg && <div style={{ color: 'var(--color-success)', fontSize: 14, fontWeight: 800 }}>✓ {savedMsg}</div>}
+
+          <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+            <button style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }} onClick={async () => {
+              try {
+                const { createAvatar } = await import('../../services/apiClient');
+                await createAvatar(avatarForm);
+                setSavedMsg('Avatar saved successfully!');
+                setAvatarForm({ id: '', emoji: '', label: '', cssClass: 'avatar-owl', description: '' });
+                setTimeout(() => setSavedMsg(''), 2000);
+              } catch (e: any) {
+                alert('Failed to save avatar: ' + e.message);
+              }
+            }}>
+              Publish Avatar
             </button>
           </div>
         </div>

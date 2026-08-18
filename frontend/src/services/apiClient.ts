@@ -21,6 +21,7 @@ export interface User {
   pvpDraws: number;
   maxStatBudget: number;
   legendaryCap: number;
+  avatar?: string;
 }
 export type MockUser = User; // Compatibility alias
 
@@ -163,4 +164,28 @@ export async function updateMockUser(userId: string, updates: Partial<User>): Pr
     return formatUserMeta(updated);
   }
   return undefined;
+}
+
+export interface Avatar {
+  id: string;
+  emoji: string;
+  label: string;
+  cssClass: string;
+  description: string;
+}
+
+export async function getAvatars(): Promise<Avatar[]> {
+  const res = await fetch(`${BACKEND_URL}/api/avatars`, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Failed to fetch avatars');
+  return res.json();
+}
+
+export async function createAvatar(avatar: Avatar): Promise<Avatar> {
+  const res = await fetch(`${BACKEND_URL}/api/avatars`, {
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(avatar),
+  });
+  if (!res.ok) throw new Error('Failed to create avatar');
+  return res.json();
 }

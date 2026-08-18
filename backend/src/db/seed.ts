@@ -80,6 +80,21 @@ export async function seed(): Promise<void> {
   const db = getDB();
   const now = new Date().toISOString();
 
+  // ── Step 0: Seed avatars ────────────────────────────────────
+  const defaultAvatars = [
+    { id: 'owl', emoji: '🦉', label: 'Academic Owl', cssClass: 'avatar-owl', description: 'Wise and floating' },
+    { id: 'springbok', emoji: '🦌', label: 'Swift Springbok', cssClass: 'avatar-springbok', description: 'Bouncy explorer' },
+    { id: 'lion', emoji: '🦁', label: 'Noble Lion', cssClass: 'avatar-lion', description: 'Pulsing strength' },
+    { id: 'falcon', emoji: '🦅', label: 'Clever Falcon', cssClass: 'avatar-falcon', description: 'Tilting intelligence' }
+  ];
+
+  for (const a of defaultAvatars) {
+    db.run(
+      `INSERT OR IGNORE INTO avatars (id, emoji, label, cssClass, description) VALUES (?, ?, ?, ?, ?)`,
+      [a.id, a.emoji, a.label, a.cssClass, a.description]
+    );
+  }
+
   // ── Step 1: Seed cards ──────────────────────────────────────
   const cardsRaw = readFileSync(CARDS_PATH, 'utf-8');
   const cards: Array<{
@@ -96,7 +111,7 @@ export async function seed(): Promise<void> {
       [c.id, c.name, c.category, c.rarity, c.stats.attack, c.stats.defense, c.stats.speed, c.stats.brains, totalStats, c.image]
     );
   }
-  console.log(`[Seed] Inserted ${cards.length} cards`);
+
 
   // ── Step 2: Seed users (all with password "password123") ────
   const defaultPassword = 'password123';
@@ -104,18 +119,19 @@ export async function seed(): Promise<void> {
 
   for (const u of SEED_USERS) {
     const role = u.email.endsWith('@wits.ac.za') ? 'ADMIN' : 'STUDENT';
+    const avatar = u.id === 'usr_sipho' ? 'springbok' : u.id === 'usr_lerato' ? 'lion' : u.id === 'usr_amahle' ? 'falcon' : 'owl';
     db.run(
       `INSERT OR IGNORE INTO users
        (id, email, studentNumber, username, passwordHash, role, level, currentXP, totalXP,
         essenceBalance, dailyStreakCount, lastCheckInDate, streakMultiplier,
-        eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, createdAt, updatedAt)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        eloRating, divisionTier, pvpWins, pvpLosses, pvpDraws, maxStatBudget, legendaryCap, avatar, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [u.id, u.email, u.studentNumber, u.username, hash, role, u.level, u.currentXP, u.totalXP,
        u.essenceBalance, u.dailyStreakCount, now, u.streakMultiplier,
-       u.eloRating, u.divisionTier, u.pvpWins, u.pvpLosses, u.pvpDraws, u.maxStatBudget, u.legendaryCap, now, now]
+       u.eloRating, u.divisionTier, u.pvpWins, u.pvpLosses, u.pvpDraws, u.maxStatBudget, u.legendaryCap, avatar, now, now]
     );
   }
-  console.log(`[Seed] Inserted ${SEED_USERS.length} test users (password: ${defaultPassword})`);
+
 
   // ── Step 3: Give each user starter cards ────────────────────
   for (const u of SEED_USERS) {
@@ -128,7 +144,7 @@ export async function seed(): Promise<void> {
       );
     }
   }
-  console.log(`[Seed] Assigned ${STARTER_CARD_IDS.length} starter cards to each user`);
+
 
   // Create default deck
   const deckCardIds = ['card-005', 'card-006', 'card-007'];
@@ -147,9 +163,9 @@ export async function seed(): Promise<void> {
       [deckId, u.id, JSON.stringify(deckCardIds), totalCost, now, now]
     );
   }
-  console.log(`[Seed] Created default decks for ${SEED_USERS.length} users (totalStatCost: ${totalCost})`);
+
 
   // Save everything to disk
   persist();
-  console.log('[Seed] Database seeded and persisted to disk');
+
 }
