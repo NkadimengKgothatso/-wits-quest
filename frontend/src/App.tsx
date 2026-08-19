@@ -111,7 +111,7 @@ function AppContent() {
           {/* Trivia modal */}
           {triviaLandmark && (
             <TriviaModal
-              landmark={triviaLandmark}
+              event={triviaLandmark}
               onClose={() => setTriviaLandmark(null)}
               onCardEarned={() => setCardsEarned((c) => c + 1)}
             />

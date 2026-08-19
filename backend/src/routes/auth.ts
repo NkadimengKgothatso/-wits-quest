@@ -205,32 +205,56 @@ router.get('/cards', async (_req: Request, res: Response) => {
 
 // ─── GET USER CARD INVENTORY ───────────────────────────────────────
 router.get('/users/:id/cards', async (req: Request, res: Response) => {
-  // Using Supabase foreign key join
-  const { data: cards, error } = await supabase
+  const { data: owned, error: ownedErr } = await supabase
     .from('user_cards')
-    .select(`
-      *,
-      cards (
-        name, category, rarity, baseAttack, baseDefense, baseSpeed, baseBrains, totalStats, imageUrl
-      )
-    `)
+    .select('*')
     .eq('userId', req.params.id);
-    
-  if (error || !cards) {
+
+  if (ownedErr || !owned || owned.length === 0) {
     res.json([]);
     return;
   }
-  
-  // Flatten for frontend structure expectation
-  const flattened = cards.map(c => {
-    const cardInfo = Array.isArray(c.cards) ? c.cards[0] : c.cards;
-    return {
-      ...c,
-      ...cardInfo
-    };
-  });
-  
-  res.json(flattened);
+
+  const cardIds = [...new Set(owned.map((r: any) => r.cardId))];
+  const { data: cards, error: cardsErr } = await supabase.from('cards').select('*').in('id', cardIds);
+  if (cardsErr) {
+    res.json([]);
+    return;
+  }
+
+  const cardById = new Map((cards ?? []).map((c: any) => [c.id, c]));
+
+  const shaped = owned
+    .map((row: any) => {
+      const card = cardById.get(row.cardId);
+      if (!card) return null;
+      return {
+        inventoryId: row.id,
+        cardId: card.id,
+        name: card.name,
+        category: card.category,
+        rarity: card.rarity,
+        baseAttack: card.baseAttack,
+        baseDefense: card.baseDefense,
+        baseSpeed: card.baseSpeed,
+        baseBrains: card.baseBrains,
+        attack: card.baseAttack + (row.attackBonus ?? 0),
+        defense: card.baseDefense + (row.defenseBonus ?? 0),
+        speed: card.baseSpeed + (row.speedBonus ?? 0),
+        brains: card.baseBrains + (row.brainsBonus ?? 0),
+        totalStats:
+          card.baseAttack + (row.attackBonus ?? 0) +
+          card.baseDefense + (row.defenseBonus ?? 0) +
+          card.baseSpeed + (row.speedBonus ?? 0) +
+          card.baseBrains + (row.brainsBonus ?? 0),
+        imageUrl: card.imageUrl,
+        level: row.level,
+        quantity: row.quantity,
+      };
+    })
+    .filter(Boolean);
+
+  res.json(shaped);
 });
 
 // ─── GET USER DECKS ────────────────────────────────────────────────

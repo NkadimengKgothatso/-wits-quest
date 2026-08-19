@@ -3,7 +3,6 @@ import { Building, BookOpen, FlaskConical, Palette, Trophy, MapPin, Search, Spar
 import { useAuth } from '../context/AuthContext';
 import { getFullCollection, getPlayerInventory } from '../services/inventoryService';
 import { validateDeck, saveDeck as saveDeckRequest } from '../services/deckService';
-import { CATALOG_UPDATED_EVENT } from '../services/cardCatalogService';
 import type { Card } from '../types/card';
 import type { CollectionEntry, InventoryEntry } from '../types/inventory';
 
@@ -361,13 +360,6 @@ export default function CardCollection() {
 
   useEffect(() => {
     loadCollection();
-  }, [user?.id, catFilter, searchTerm]);
-
-  // Refresh when Admin publishes a new card, so it shows up (locked) immediately
-  useEffect(() => {
-    const handler = () => loadCollection();
-    window.addEventListener(CATALOG_UPDATED_EVENT, handler);
-    return () => window.removeEventListener(CATALOG_UPDATED_EVENT, handler);
   }, [user?.id, catFilter, searchTerm]);
 
   const categories: (Card['category'] | 'All')[] = ['All', 'Landmarks', 'History', 'Science', 'Lifestyle', 'Sports'];

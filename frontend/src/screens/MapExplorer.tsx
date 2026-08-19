@@ -152,7 +152,7 @@ const LANDMARKS: Landmark[] = [
 ];
 
 export interface MapExplorerProps {
-  onOpenTrivia?: (landmark: any) => void;
+  onOpenTrivia?: (event: CampusEvent) => void;
 }
 
 // Haversine formula.
@@ -1095,7 +1095,122 @@ export default function MapExplorer({
                 </Marker>
               )}
 
+              {LANDMARKS.map((landmark) => {
+                const distance = userPosition
+                  ? haversineDistance(userPosition, landmark.position)
+                  : null;
 
+                const isNearby =
+                  distance !== null &&
+                  distance <= 25;
+
+                const isDiscovered =
+                  discoveredLandmarks.includes(
+                    landmark.name
+                  );
+
+                const status =
+                  isNearby
+                    ? 'IN_RADIUS'
+                    : 'OUT_OF_RANGE';
+
+                return (
+                  <Circle
+                    key={landmark.name}
+                    center={landmark.position}
+                    radius={isNearby ? 22 : 16}
+                    className={
+                      isDiscovered
+                        ? 'landmark-circle-discovered'
+                        : isNearby
+                        ? 'landmark-circle-nearby'
+                        : 'landmark-circle'
+                    }
+                    pathOptions={{
+                      color: 'transparent',
+
+                      fillColor: isDiscovered
+                        ? '#496894'
+                        : isNearby
+                        ? '#D37A32'
+                        : '#4a3620',
+
+                      fillOpacity: isDiscovered
+                        ? 0.26
+                        : isNearby
+                        ? 0.32
+                        : 0.2,
+
+                      weight: 0,
+                    }}
+                  >
+                    <Popup>
+                      <div
+                        style={{
+                          textAlign: 'center',
+                          fontFamily:
+                            'system-ui, sans-serif',
+                        }}
+                      >
+                        <strong>
+                          {landmark.name}
+                        </strong>
+
+                        {distance === null ? (
+                          <p
+                            style={{
+                              margin:
+                                '8px 0 0',
+                            }}
+                          >
+                            Waiting for your
+                            location...
+                          </p>
+                        ) : status === 'IN_RADIUS' ? (
+                          <>
+                            <p
+                              style={{
+                                margin:
+                                  '8px 0',
+                                fontWeight: 600,
+                                color: '#D37A32',
+                              }}
+                            >
+                              ✦ DISCOVERY ZONE ✦
+                            </p>
+
+                            <p
+                              style={{
+                                margin:
+                                  '4px 0',
+                                fontSize: 12,
+                              }}
+                            >
+                              You found a landmark! Look out for official campus events for challenges and rewards.
+                            </p>
+                          </>
+                        ) : (
+                          <p
+                            style={{
+                              margin:
+                                '8px 0 0',
+                            }}
+                          >
+                            Distance:{' '}
+                            {Math.round(
+                              distance
+                            )}{' '}
+                            meters away.
+                            <br />
+                            Walk closer to
+                            unlock
+                          </p>
+                        )}
+                      </div>
+                    </Popup>
+                  </Circle>
+                );
+              })}
             
               {activeEvents.map((evt) => {
                 const distance = userPosition
@@ -1113,24 +1228,14 @@ export default function MapExplorer({
                     <Popup>
                       <div style={{ textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
                         <strong>{evt.name}</strong>
-                        
+
                         {inRange ? (
                           <>
                             <p style={{ margin: '8px 0', fontWeight: 600, color: '#2e7d32' }}>
-                              Event Unlocked!
+                              ✦ Event Unlocked! ✦
                             </p>
-                            {evt.cardReward && (
-                              <p style={{ margin: '4px 0 0', fontSize: 12, color: '#4a3620' }}>
-                                Reward: {evt.cardReward}
-                              </p>
-                            )}
                             <button
-                              style={{
-                                marginTop: 12, padding: '8px 16px', background: '#D37A32', 
-                                color: 'white', border: 'none', borderRadius: 8, 
-                                fontWeight: 700, cursor: 'pointer', width: '100%',
-                                fontSize: 13
-                              }}
+                              className="trivia-button"
                               onClick={() => onOpenTrivia?.(evt)}
                             >
                               Start Trivia Challenge

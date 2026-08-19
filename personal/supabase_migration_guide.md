@@ -188,7 +188,37 @@ CREATE TABLE "avatars" (
   "cssClass" TEXT NOT NULL,
   "description" TEXT NOT NULL
 );
+
+-- 8. events (campus landmark events with trivia challenges)
+CREATE TABLE "events" (
+  "id" TEXT PRIMARY KEY,
+  "name" TEXT NOT NULL,
+  "lat" DOUBLE PRECISION NOT NULL,
+  "lng" DOUBLE PRECISION NOT NULL,
+  "radius" INTEGER DEFAULT 25,
+  "startDate" TIMESTAMP WITH TIME ZONE,
+  "endDate" TIMESTAMP WITH TIME ZONE,
+  "active" INTEGER DEFAULT 1,
+  "cardReward" TEXT REFERENCES "cards"("id"),
+  "xpAward" INTEGER DEFAULT 100,
+  "essenceAward" INTEGER DEFAULT 50,
+  "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 9. trivia_questions (linked to events, stores the question + answers)
+CREATE TABLE "trivia_questions" (
+  "id" TEXT PRIMARY KEY,
+  "eventId" TEXT NOT NULL REFERENCES "events"("id") ON DELETE CASCADE,
+  "question" TEXT NOT NULL,
+  "questionType" TEXT NOT NULL DEFAULT 'mc',
+  "options" JSONB,
+  "correctIndex" INTEGER,
+  "acceptedAnswers" JSONB,
+  "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 ```
+
+You also need a storage bucket for card images. In the Supabase Dashboard, go to **Storage → New bucket** and create a bucket named `card-images` (public). This is used by the `POST /api/cards/upload` endpoint.
 
 ## Phase 5: Clean up Old Code
 
