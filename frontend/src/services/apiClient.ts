@@ -180,8 +180,9 @@ export async function publishCard(data: {
   baseDefense: number;
   baseSpeed: number;
   baseBrains: number;
+  imageUrl?: string;
 }): Promise<Card> {
-  const res = await fetch(`${BACKEND_URL}/api/mock/cards`, {
+  const res = await fetch(`${BACKEND_URL}/api/cards`, {
     method: 'POST',
     headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -194,11 +195,13 @@ export async function publishCard(data: {
 }
 
 export async function publishTrivia(data: {
+  eventId: string;
   question: string;
   questionType: 'mc' | 'text';
-  correctIndex: number;
+  options?: string[];
+  correctAnswer: string;
 }): Promise<any> {
-  const res = await fetch(`${BACKEND_URL}/api/mock/trivia`, {
+  const res = await fetch(`${BACKEND_URL}/api/trivia`, {
     method: 'POST',
     headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -210,10 +213,32 @@ export async function publishTrivia(data: {
   return result;
 }
 
+export async function getNextTrivia(eventId: string): Promise<any> {
+  const res = await fetch(`${BACKEND_URL}/api/events/${eventId}/next-trivia`, { headers: getAuthHeaders() });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to fetch next trivia');
+  }
+  return result;
+}
+
+export async function submitTriviaAnswer(triviaId: string, answer: string | number): Promise<any> {
+  const res = await fetch(`${BACKEND_URL}/api/trivia/answer`, {
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ triviaId, answer }),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to submit answer');
+  }
+  return result;
+}
+
 export async function getTriviaQuestions(status?: string): Promise<any[]> {
   const url = status
-    ? `${BACKEND_URL}/api/mock/trivia?status=${status}`
-    : `${BACKEND_URL}/api/mock/trivia`;
+    ? `${BACKEND_URL}/api/trivia?status=${status}`
+    : `${BACKEND_URL}/api/trivia`;
   const res = await fetch(url, { headers: getAuthHeaders() });
   if (!res.ok) return [];
   return res.json();

@@ -61,7 +61,7 @@ function getEventHeatIcon(inRange: boolean) {
     className: 'event-heat-marker',
     html: `
       <div class="event-heat-pin ${inRange ? 'in-range' : 'out-of-range'}">
-        <span class="event-icon">${inRange ? '🔓' : '🔒'}</span>
+        <span class="event-icon" style="display: block; width: 12px; height: 12px; border-radius: 50%; background: white;"></span>
       </div>
     `,
     iconSize: [36, 36],
@@ -580,7 +580,7 @@ export default function AdminEvents() {
                   }}
                   title="Close"
                 >
-                  ✕
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
               </div>
 
@@ -683,10 +683,16 @@ export default function AdminEvents() {
               </div>
 
               {savedMsg && (
-                <div style={{ color: THEME.success, fontWeight: 700, fontSize: 13 }}>✓ {savedMsg}</div>
+                <div style={{ color: THEME.success, fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  {savedMsg}
+                </div>
               )}
               {errorMsg && (
-                <div style={{ color: THEME.danger, fontWeight: 700, fontSize: 13 }}>✕ {errorMsg}</div>
+                <div style={{ color: THEME.danger, fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                  {errorMsg}
+                </div>
               )}
 
               <div style={{ display: 'flex', gap: 10, marginTop: 'auto' }}>
