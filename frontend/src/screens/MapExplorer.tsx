@@ -1095,136 +1095,7 @@ export default function MapExplorer({
                 </Marker>
               )}
 
-              {LANDMARKS.map((landmark) => {
-                const distance = userPosition
-                  ? haversineDistance(
-                      userPosition,
-                      landmark.position
-                    )
-                  : null;
 
-                const isNearby =
-                  distance !== null &&
-                  distance <= 25;
-
-                const isDiscovered =
-                  discoveredLandmarks.includes(
-                    landmark.name
-                  );
-
-                const status =
-                  isNearby
-                    ? 'IN_RADIUS'
-                    : 'OUT_OF_RANGE';
-
-                return (
-                  <Circle
-                    key={landmark.name}
-                    center={landmark.position}
-                    radius={isNearby ? 22 : 16}
-                    className={
-                      isDiscovered
-                        ? 'landmark-circle-discovered'
-                        : isNearby
-                        ? 'landmark-circle-nearby'
-                        : 'landmark-circle'
-                    }
-                    pathOptions={{
-                      color: 'transparent',
-
-                      fillColor: isDiscovered
-                        ? '#496894'
-                        : isNearby
-                        ? '#D37A32'
-                        : '#4a3620',
-
-                      fillOpacity: isDiscovered
-                        ? 0.26
-                        : isNearby
-                        ? 0.32
-                        : 0.2,
-
-                      weight: 0,
-                    }}
-                  >
-                    <Popup>
-                      <div
-                        style={{
-                          textAlign: 'center',
-                          fontFamily:
-                            'system-ui, sans-serif',
-                        }}
-                      >
-                        <strong>
-                          {landmark.name}
-                        </strong>
-
-                        {distance === null ? (
-                          <p
-                            style={{
-                              margin:
-                                '8px 0 0',
-                            }}
-                          >
-                            Waiting for your
-                            location...
-                          </p>
-                        ) : status === 'IN_RADIUS' ? (
-                          <>
-                            <p
-                              style={{
-                                margin:
-                                  '8px 0',
-                                fontWeight: 600,
-                                color: '#D37A32',
-                              }}
-                            >
-                              ✦ DISCOVERY ZONE ✦
-                            </p>
-
-                            <p
-                              style={{
-                                margin:
-                                  '4px 0',
-                                fontSize: 12,
-                              }}
-                            >
-                              You found a landmark!
-                            </p>
-
-                            <button
-                              className="trivia-button"
-                              onClick={() =>
-                                onOpenTrivia?.(
-                                  landmark
-                                )
-                              }
-                            >
-                              Start Trivia Challenge
-                            </button>
-                          </>
-                        ) : (
-                          <p
-                            style={{
-                              margin:
-                                '8px 0 0',
-                            }}
-                          >
-                            Distance:{' '}
-                            {Math.round(
-                              distance
-                            )}{' '}
-                            meters away.
-                            <br />
-                            Walk closer to
-                            unlock
-                          </p>
-                        )}
-                      </div>
-                    </Popup>
-                  </Circle>
-                );
-              })}
             
               {activeEvents.map((evt) => {
                 const distance = userPosition
@@ -1283,24 +1154,11 @@ export default function MapExplorer({
             
             </MapContainer>
 
-            <div className="map-info-card">
-              <p className="map-info-label">
-                Nearby Landmarks
-              </p>
-
-              <p className="map-info-value">
-                {nearbyLandmarks} landmark
-                {nearbyLandmarks === 1
-                  ? ''
-                  : 's'}
-              </p>
-            </div>
-
             <div
               style={{
                 position: 'absolute',
-                left: 26,
-                bottom: 100,
+                left: 20,
+                bottom: 20,
                 zIndex: 1000,
                 background: '#f5ecd7',
                 borderRadius: 12,
@@ -1312,18 +1170,18 @@ export default function MapExplorer({
                 color: '#4a3620',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                 <div
                   style={{
-                    width: 14,
-                    height: 14,
+                    width: 12,
+                    height: 12,
                     borderRadius: '50%',
                     background: '#D37A32',
                     border: '2px solid #fffefc',
                     boxShadow: '0 0 0 2px rgba(211, 122, 50, 0.4)',
                   }}
                 />
-                <strong>Active Event</strong>
+                <strong style={{ fontSize: 13 }}>Campus Events</strong>
               </div>
               <p style={{ margin: 0, color: '#7a6644' }}>
                 {activeEvents.length} active event{activeEvents.length === 1 ? '' : 's'} on campus

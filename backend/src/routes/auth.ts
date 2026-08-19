@@ -146,6 +146,20 @@ router.post('/auth/login', async (req: Request, res: Response) => {
       return;
     }
 
+    // Check anti-cheat suspension status
+    const { data: auditRecord } = await supabase
+      .from('telemetry_audit')
+      .select('action')
+      .eq('user_id', user.id)
+      .order('timestamp', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (auditRecord?.action === 'suspended') {
+      res.status(403).json({ error: 'Your account has been suspended for violating the Anti-Cheat policy.' });
+      return;
+    }
+
     // Issue JWT
     const token = signToken(user.id as string);
 
