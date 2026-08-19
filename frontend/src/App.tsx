@@ -94,7 +94,7 @@ function AppContent() {
             {screen === 'map' && (
               <MapExplorer onOpenTrivia={(landmark: any) => setTriviaLandmark(landmark)} />
             )}
-            {screen === 'collection' && <CardCollection onNavigate={(s) => setScreen(s as Screen)} />}
+            {screen === 'collection' && <CardCollection />}
             {screen === 'battle' && <BattleArena />}
             {screen === 'profile' && <Profile onNavigate={(s) => setScreen(s as Screen)} />}
             {screen === 'leaderboard' && <Leaderboard />}
