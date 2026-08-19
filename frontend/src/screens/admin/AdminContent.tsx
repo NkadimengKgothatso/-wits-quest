@@ -1,8 +1,5 @@
-//AdminContent.tsx
-import { useState } from 'react'
-import { addCard, RARITY_TARGET_RANGE } from '../../services/cardCatalogService'
-import type { Card } from '../../types/card'
-import { publishCard, publishTrivia } from '../../services/apiClient'
+import { useState, useEffect } from 'react'
+import { publishCard, publishCard as _unused, uploadCardImage, getEvents, saveEventTrivia, type CampusEvent } from '../../services/apiClient'
 
 type ContentTab = 'trivia' | 'card' | 'avatar'
 type CardCategory = 'Science' | 'History' | 'Landmarks' | 'Lifestyle' | 'Sports'
@@ -22,15 +19,19 @@ const RARITY_COLORS: Record<CardRarity, string> = {
   Legendary: '#dca668',
 }
 
+const RARITY_TARGET_RANGE: Record<CardRarity, [number, number]> = {
+  Common: [40, 50],
+  Rare: [58, 68],
+  Epic: [75, 85],
+  Legendary: [88, 98],
+}
+
 const STAT_META = [
   { key: 'attack', label: 'Attack', icon: '⚔', color: '#e8a6a6' },
   { key: 'defense', label: 'Defense', icon: '🛡', color: '#dca668' },
   { key: 'speed', label: 'Speed', icon: '⚡', color: '#e8c98f' },
   { key: 'brains', label: 'Brains', icon: '🧠', color: '#8fae6e' },
 ] as const
-
-const CATEGORIES: Card['category'][] = ['Landmarks', 'Science', 'History', 'Lifestyle', 'Sports']
-const RARITIES: Card['rarity'][] = ['Common', 'Rare', 'Epic', 'Legendary']
 
 export default function AdminContent() {
   const [tab, setTab] = useState<ContentTab>('trivia')
@@ -40,19 +41,27 @@ export default function AdminContent() {
   const [errorMsg, setErrorMsg] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [questionText, setQuestionText] = useState('')
+  const [mcOptions, setMcOptions] = useState(['', '', '', ''])
+  const [acceptedAnswersText, setAcceptedAnswersText] = useState('')
+
+  const [events, setEvents] = useState<CampusEvent[]>([])
+  const [selectedEventId, setSelectedEventId] = useState<string>('')
+
+  const [cardImageFile, setCardImageFile] = useState<File | null>(null)
+  const [cardImagePreview, setCardImagePreview] = useState<string>('')
 
   const [cardForm, setCardForm] = useState<{
     title: string
-    category: Card['category']
-    rarity: Card['rarity']
+    category: CardCategory
+    rarity: CardRarity
     attack: number
     defense: number
     speed: number
     brains: number
   }>({
     title: '',
-    category: 'Landmarks' as CardCategory,
-    rarity: 'Common' as CardRarity,
+    category: 'Landmarks',
+    rarity: 'Common',
     attack: 50,
     defense: 50,
     speed: 50,
@@ -69,23 +78,65 @@ export default function AdminContent() {
   const [targetMin, targetMax] = RARITY_TARGET_RANGE[cardForm.rarity]
   const costInRange = cardTotalCost >= targetMin && cardTotalCost <= targetMax
 
+  useEffect(() => {
+    getEvents().then((evts) => {
+      setEvents(evts)
+      if (evts.length > 0) setSelectedEventId((prev) => prev || evts[0].id)
+    })
+  }, [])
+
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setCardImageFile(file)
+    setCardImagePreview(URL.createObjectURL(file))
+  }
+
+  function handleMcOptionChange(index: number, value: string) {
+    setMcOptions((opts) => {
+      const next = [...opts]
+      next[index] = value
+      return next
+    })
+  }
+
   async function handleSave() {
     setErrorMsg('')
     if (tab === 'trivia') {
+      if (!selectedEventId) {
+        setErrorMsg('Select an event to link this question to')
+        return
+      }
       if (!questionText.trim()) {
         setErrorMsg('Question text is required')
         return
       }
+      if (questionType === 'mc' && mcOptions.some((o) => !o.trim())) {
+        setErrorMsg('All four answer options are required')
+        return
+      }
+      if (questionType === 'text' && !acceptedAnswersText.trim()) {
+        setErrorMsg('At least one accepted answer is required')
+        return
+      }
+
       setIsSaving(true)
       try {
-        await publishTrivia({
+        await saveEventTrivia(selectedEventId, {
           question: questionText.trim(),
           questionType,
-          correctIndex: correct,
+          options: questionType === 'mc' ? mcOptions.map((o) => o.trim()) : undefined,
+          correctIndex: questionType === 'mc' ? correct : undefined,
+          acceptedAnswers:
+            questionType === 'text'
+              ? acceptedAnswersText.split(',').map((a) => a.trim()).filter(Boolean)
+              : undefined,
         })
-        setSavedMsg('Trivia question submitted for review!')
+        setSavedMsg('Trivia question saved and linked to event!')
         setTimeout(() => setSavedMsg(''), 3000)
         setQuestionText('')
+        setMcOptions(['', '', '', ''])
+        setAcceptedAnswersText('')
         setCorrect(0)
       } catch (err: any) {
         setErrorMsg(err.message || 'Failed to submit trivia')
@@ -94,12 +145,17 @@ export default function AdminContent() {
       }
       return
     }
+
     if (!cardForm.title.trim()) {
       setErrorMsg('Card title is required')
       return
     }
     setIsSaving(true)
     try {
+      let imageUrl: string | undefined
+      if (cardImageFile) {
+        imageUrl = await uploadCardImage(cardImageFile)
+      }
       await publishCard({
         name: cardForm.title.trim(),
         category: cardForm.category,
@@ -108,18 +164,21 @@ export default function AdminContent() {
         baseDefense: cardForm.defense,
         baseSpeed: cardForm.speed,
         baseBrains: cardForm.brains,
+        imageUrl,
       })
       setSavedMsg('Card published to database!')
       setTimeout(() => setSavedMsg(''), 3000)
       setCardForm({
         title: '',
-        category: 'Landmarks' as CardCategory,
-        rarity: 'Common' as CardRarity,
+        category: 'Landmarks',
+        rarity: 'Common',
         attack: 50,
         defense: 50,
         speed: 50,
         brains: 50,
       })
+      setCardImageFile(null)
+      setCardImagePreview('')
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to publish card')
     } finally {
@@ -141,24 +200,6 @@ export default function AdminContent() {
     setTimeout(() => setSavedMsg(''), 2000)
   }
 
-  function handlePublishCard() {
-    if (!cardForm.title.trim()) return
-    addCard({
-      name: cardForm.title.trim(),
-      category: cardForm.category,
-      rarity: cardForm.rarity,
-      stats: {
-        attack: cardForm.attack,
-        defense: cardForm.defense,
-        speed: cardForm.speed,
-        brains: cardForm.brains,
-      },
-    })
-    setSavedMsg(`"${cardForm.title.trim()}" published — it will now appear (locked) on student dashboards.`)
-    setTimeout(() => setSavedMsg(''), 3000)
-    setCardForm({ title: '', category: 'Landmarks', rarity: 'Common', attack: 50, defense: 50, speed: 50, brains: 50 })
-  }
-
   return (
     <div style={{ padding: 24, maxWidth: 760, margin: '0 auto' }}>
       <div style={{ marginBottom: 24 }}>
@@ -166,7 +207,6 @@ export default function AdminContent() {
         <p style={{ fontSize: 14, color: 'var(--color-muted)', margin: 0, fontWeight: 600 }}>Create and edit Wits campus trivia questions and card definitions</p>
       </div>
 
-      {/* Tab selector */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
         {([['trivia', 'Trivia Question Authoring'], ['card', 'Card Set Definitions'], ['avatar', 'Avatars']] as const).map(([t, label]) => {
           const draftCount = drafts.filter((d) => d.type === t).length
@@ -203,20 +243,22 @@ export default function AdminContent() {
         })}
       </div>
 
-      {/* Trivia Form */}
       {tab === 'trivia' && (
         <div style={{ padding: 32, borderRadius: 24, background: 'var(--color-card-bg)', border: '2px solid var(--color-border)', boxShadow: '0 8px 32px rgba(44, 34, 30, 0.05)', display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {/* Event selector */}
           <div>
             <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Linked Event Location</label>
-            <select style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}>
-              <option>The Great Hall History Challenge</option>
-              <option>Science Stadium STEM Quiz</option>
-              <option>Origins Centre Heritage Trail</option>
+            <select
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
+              value={selectedEventId}
+              onChange={(e) => setSelectedEventId(e.target.value)}
+            >
+              {events.length === 0 && <option value="">No events yet — create one in Event Management first</option>}
+              {events.map((evt) => (
+                <option key={evt.id} value={evt.id}>{evt.name}</option>
+              ))}
             </select>
           </div>
 
-          {/* Question type toggle */}
           <div>
             <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Question Type</label>
             <div style={{ display: 'flex', gap: 12 }}>
@@ -238,7 +280,6 @@ export default function AdminContent() {
             </div>
           </div>
 
-          {/* Question text */}
           <div>
             <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Question Text</label>
             <textarea
@@ -249,7 +290,6 @@ export default function AdminContent() {
             />
           </div>
 
-          {/* Options */}
           {questionType === 'mc' ? (
             <div>
               <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 12 }}>
@@ -272,6 +312,8 @@ export default function AdminContent() {
                   <input
                     style={{ flex: 1, padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
                     placeholder={`Option ${opt}`}
+                    value={mcOptions[i]}
+                    onChange={(e) => handleMcOptionChange(i, e.target.value)}
                   />
                 </div>
               ))}
@@ -279,13 +321,17 @@ export default function AdminContent() {
           ) : (
             <div>
               <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Accepted Answers (comma-separated)</label>
-              <input style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }} placeholder="1922, nineteen twenty-two" />
+              <input
+                style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '2px solid var(--color-border)', background: 'var(--color-bg)', color: 'var(--color-text)', outline: 'none', fontSize: 14 }}
+                placeholder="1922, nineteen twenty-two"
+                value={acceptedAnswersText}
+                onChange={(e) => setAcceptedAnswersText(e.target.value)}
+              />
             </div>
           )}
 
-          {savedMsg && (
-            <div style={{ color: '#8fae6e', fontSize: 14, fontWeight: 800 }}>✓ {savedMsg}</div>
-          )}
+          {savedMsg && <div style={{ color: '#8fae6e', fontSize: 14, fontWeight: 800 }}>✓ {savedMsg}</div>}
+          {errorMsg && <div style={{ color: 'var(--color-danger)', fontSize: 14, fontWeight: 800 }}>✕ {errorMsg}</div>}
 
           <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
             <button
@@ -294,17 +340,19 @@ export default function AdminContent() {
             >
               Save Draft
             </button>
-            <button style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }} onClick={handleSave}>
-              Submit for Review
+            <button
+              style={{ flex: 1, fontSize: 14, padding: '14px', borderRadius: 12, background: 'var(--color-accent)', color: 'white', fontWeight: 800, border: 'none', cursor: isSaving ? 'not-allowed' : 'pointer', opacity: isSaving ? 0.6 : 1 }}
+              onClick={handleSave}
+              disabled={isSaving}
+            >
+              {isSaving ? 'Saving…' : 'Submit for Review'}
             </button>
           </div>
         </div>
       )}
 
-      {/* Card Form */}
       {tab === 'card' && (
         <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-          {/* Main form */}
           <div style={{ flex: 1, padding: 32, borderRadius: 24, background: 'var(--color-card-bg)', border: '2px solid var(--color-border)', boxShadow: '0 8px 32px rgba(44, 34, 30, 0.05)', display: 'flex', flexDirection: 'column', gap: 20 }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div>
@@ -357,21 +405,36 @@ export default function AdminContent() {
               </p>
             </div>
 
-            {/* Image uploader */}
             <div>
               <label style={{ fontSize: 13, color: 'var(--color-text)', fontWeight: 700, display: 'block', marginBottom: 8 }}>Card Artwork</label>
-              <div style={{
-                border: '2px dashed var(--color-border)', borderRadius: 16, padding: 32,
-                textAlign: 'center', cursor: 'pointer',
-                background: 'var(--color-bg)'
-              }}>
-                <div style={{ fontSize: 32, marginBottom: 12 }}>🖼️</div>
-                <div style={{ fontSize: 14, color: 'var(--color-text)', fontWeight: 700 }}>Drop artwork here or click to upload</div>
-                <div style={{ fontSize: 12, color: 'var(--color-muted)', marginTop: 8, fontWeight: 600 }}>PNG, JPG, SVG — Recommended 512×512</div>
-              </div>
+              <input
+                id="card-artwork-input"
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                onChange={handleImageSelect}
+                style={{ display: 'none' }}
+              />
+              <label
+                htmlFor="card-artwork-input"
+                style={{
+                  display: 'block',
+                  border: '2px dashed var(--color-border)', borderRadius: 16, padding: 32,
+                  textAlign: 'center', cursor: 'pointer',
+                  background: 'var(--color-bg)'
+                }}
+              >
+                {cardImagePreview ? (
+                  <img src={cardImagePreview} alt="Preview" style={{ maxHeight: 140, borderRadius: 8, margin: '0 auto' }} />
+                ) : (
+                  <>
+                    <div style={{ fontSize: 32, marginBottom: 12 }}>🖼️</div>
+                    <div style={{ fontSize: 14, color: 'var(--color-text)', fontWeight: 700 }}>Drop artwork here or click to upload</div>
+                    <div style={{ fontSize: 12, color: 'var(--color-muted)', marginTop: 8, fontWeight: 600 }}>PNG, JPG, SVG — Recommended 512×512</div>
+                  </>
+                )}
+              </label>
             </div>
 
-            {/* Stat sliders */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                 <label style={{ fontSize: 14, color: 'var(--color-text)', fontWeight: 800 }}>Card Stats</label>
@@ -415,7 +478,6 @@ export default function AdminContent() {
             </div>
           </div>
 
-          {/* Live card preview */}
           <div style={{ width: 200, flexShrink: 0 }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-muted)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Live Preview</div>
             <div style={{
@@ -426,16 +488,19 @@ export default function AdminContent() {
               boxShadow: `0 0 16px ${RARITY_COLORS[cardForm.rarity]}40`,
               background: 'linear-gradient(135deg, #FAF7F2 0%, #E5D5C5 100%)',
             }}>
-              {/* Card art area */}
               <div style={{
                 height: 120,
                 background: `linear-gradient(135deg, ${RARITY_COLORS[cardForm.rarity]}30 0%, ${RARITY_COLORS[cardForm.rarity]}10 100%)`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 36,
+                overflow: 'hidden',
               }}>
-                🖼️
+                {cardImagePreview ? (
+                  <img src={cardImagePreview} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  '🖼️'
+                )}
               </div>
-              {/* Card info */}
               <div style={{ padding: 12 }}>
                 <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--color-text)', marginBottom: 2, minHeight: 18 }}>
                   {cardForm.title || 'Untitled Card'}
@@ -443,7 +508,6 @@ export default function AdminContent() {
                 <div style={{ fontSize: 10, color: 'var(--color-muted)', fontWeight: 700, marginBottom: 10 }}>
                   {cardForm.category} · {cardForm.rarity}
                 </div>
-                {/* Stat grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
                   {STAT_META.map(({ key, label, icon, color }) => (
                     <div key={key} style={{
@@ -456,7 +520,6 @@ export default function AdminContent() {
                     </div>
                   ))}
                 </div>
-                {/* Stat bars */}
                 <div style={{ display: 'flex', gap: 2, marginTop: 8, height: 4 }}>
                   {STAT_META.map(({ key, color }) => (
                     <div key={key} style={{ flex: 1, borderRadius: 2, overflow: 'hidden', background: 'rgba(0,0,0,0.06)' }}>
@@ -470,7 +533,6 @@ export default function AdminContent() {
         </div>
       )}
 
-      {/* Drafts list */}
       {drafts.length > 0 && (
         <div style={{ marginTop: 24, padding: 20, borderRadius: 16, background: 'var(--color-card-bg)', border: '2px solid var(--color-border)' }}>
           <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--color-text)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>

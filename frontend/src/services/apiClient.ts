@@ -180,8 +180,9 @@ export async function publishCard(data: {
   baseDefense: number;
   baseSpeed: number;
   baseBrains: number;
+  imageUrl?: string;
 }): Promise<Card> {
-  const res = await fetch(`${BACKEND_URL}/api/mock/cards`, {
+  const res = await fetch(`${BACKEND_URL}/api/cards`, {
     method: 'POST',
     headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -193,30 +194,21 @@ export async function publishCard(data: {
   return result;
 }
 
-export async function publishTrivia(data: {
-  question: string;
-  questionType: 'mc' | 'text';
-  correctIndex: number;
-}): Promise<any> {
-  const res = await fetch(`${BACKEND_URL}/api/mock/trivia`, {
+export async function uploadCardImage(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const res = await fetch(`${BACKEND_URL}/api/cards/upload`, {
     method: 'POST',
-    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    headers: getAuthHeaders(), // no Content-Type — browser sets multipart boundary itself
+    body: formData,
   });
+
   const result = await res.json();
   if (!res.ok) {
-    throw new Error(result.error || 'Failed to submit trivia');
+    throw new Error(result.error || 'Failed to upload image');
   }
-  return result;
-}
-
-export async function getTriviaQuestions(status?: string): Promise<any[]> {
-  const url = status
-    ? `${BACKEND_URL}/api/mock/trivia?status=${status}`
-    : `${BACKEND_URL}/api/mock/trivia`;
-  const res = await fetch(url, { headers: getAuthHeaders() });
-  if (!res.ok) return [];
-  return res.json();
+  return result.imageUrl;
 }
 
 export interface CampusEvent {
@@ -326,4 +318,56 @@ export async function createAvatar(avatar: Avatar): Promise<Avatar> {
   });
   if (!res.ok) throw new Error('Failed to create avatar');
   return res.json();
+}
+
+// ================== EVENT TRIVIA ==================
+
+export interface TriviaQuestion {
+  id: string;
+  eventId: string;
+  question: string;
+  questionType: 'mc' | 'text';
+  options?: string[];
+}
+
+export async function getEventTrivia(eventId: string): Promise<TriviaQuestion | null> {
+  const res = await fetch(`${BACKEND_URL}/api/events/${eventId}/trivia`, { headers: getAuthHeaders() });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+export async function saveEventTrivia(eventId: string, data: {
+  question: string;
+  questionType: 'mc' | 'text';
+  options?: string[];
+  correctIndex?: number;
+  acceptedAnswers?: string[];
+}): Promise<TriviaQuestion> {
+  const res = await fetch(`${BACKEND_URL}/api/events/${eventId}/trivia`, {
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to save trivia question');
+  }
+  return result;
+}
+
+export async function submitEventAnswer(
+  eventId: string,
+  userId: string,
+  answer: { selectedIndex?: number; textAnswer?: string }
+): Promise<{ correct: boolean; card?: Card | null; xpAwarded?: number; essenceAwarded?: number }> {
+  const res = await fetch(`${BACKEND_URL}/api/events/${eventId}/answer`, {
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId, ...answer }),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || 'Failed to submit answer');
+  }
+  return result;
 }

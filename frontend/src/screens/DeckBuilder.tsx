@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { getPlayerInventory } from '../services/inventoryService'
 import { validateDeck, saveDeck } from '../services/deckService'
-import { CATALOG_UPDATED_EVENT } from '../services/cardCatalogService'
 import type { InventoryEntry } from '../types/inventory'
 
 const RARITY_BORDER: Record<string, string> = {
@@ -30,13 +29,6 @@ export default function DeckBuilder() {
 
   useEffect(() => {
     loadCollection()
-  }, [user?.id])
-
-  // Refresh when Admin publishes a new card so it can show up here once unlocked
-  useEffect(() => {
-    const handler = () => loadCollection()
-    window.addEventListener(CATALOG_UPDATED_EVENT, handler)
-    return () => window.removeEventListener(CATALOG_UPDATED_EVENT, handler)
   }, [user?.id])
 
   const maxStatBudget = user?.maxStatBudget ?? 300

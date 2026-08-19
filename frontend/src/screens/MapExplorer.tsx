@@ -141,7 +141,7 @@ const LANDMARKS: Landmark[] = [
 ];
 
 export interface MapExplorerProps {
-  onOpenTrivia?: (landmark: any) => void;
+  onOpenTrivia?: (event: CampusEvent) => void;
 }
 
 // Haversine formula.
@@ -1146,19 +1146,8 @@ export default function MapExplorer({
                                 fontSize: 12,
                               }}
                             >
-                              You found a landmark!
+                              You found a landmark! Look out for official campus events for challenges and rewards.
                             </p>
-
-                            <button
-                              className="trivia-button"
-                              onClick={() =>
-                                onOpenTrivia?.(
-                                  landmark
-                                )
-                              }
-                            >
-                              Start Trivia Challenge
-                            </button>
                           </>
                         ) : (
                           <p
@@ -1198,17 +1187,18 @@ export default function MapExplorer({
                     <Popup>
                       <div style={{ textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
                         <strong>{evt.name}</strong>
-                        
+
                         {inRange ? (
                           <>
                             <p style={{ margin: '8px 0', fontWeight: 600, color: '#2e7d32' }}>
-                              Event Unlocked!
+                              ✦ Event Unlocked! ✦
                             </p>
-                            {evt.cardReward && (
-                              <p style={{ margin: '4px 0 0', fontSize: 12, color: '#4a3620' }}>
-                                Reward: {evt.cardReward}
-                              </p>
-                            )}
+                            <button
+                              className="trivia-button"
+                              onClick={() => onOpenTrivia?.(evt)}
+                            >
+                              Start Trivia Challenge
+                            </button>
                           </>
                         ) : (
                           <>
