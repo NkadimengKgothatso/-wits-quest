@@ -14,7 +14,7 @@ import {
   type GpsPing,
 } from '../../utils/antiCheat';
 
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 type ActionTaken = 'warned' | 'suspended' | 'false_positive' | null;
 

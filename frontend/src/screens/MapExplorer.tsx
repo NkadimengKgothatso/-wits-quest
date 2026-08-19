@@ -320,7 +320,7 @@ export default function MapExplorer({
 
         if (currentUser?.id) {
           fetch(
-            'http://localhost:3000/api/mock/telemetry/ping',
+            `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/mock/telemetry/ping`,
             {
               method: 'POST',
               headers: {
