@@ -10,7 +10,7 @@ import {
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useAuth } from '../context/AuthContext';
-import { getEvents, type CampusEvent } from '../services/apiClient';
+import { getEvents, getCompletedEvents, type CampusEvent } from '../services/apiClient';
 
 const WITS_CENTER: [number, number] = [
   -26.192885679106496,
@@ -30,12 +30,23 @@ const witsLabelIcon = new L.DivIcon({
   iconAnchor: [35, 35],
 });
 
-function getEventHeatIcon(inRange: boolean) {
+function getEventHeatIcon(inRange: boolean, isCompleted: boolean) {
+  let pinClass = 'out-of-range';
+  let icon = '🔒';
+  
+  if (isCompleted) {
+    pinClass = 'completed';
+    icon = '🔓'; 
+  } else if (inRange) {
+    pinClass = 'in-range';
+    icon = '🔓';
+  }
+
   return new L.DivIcon({
     className: 'event-heat-marker',
     html: `
-      <div class="event-heat-pin ${inRange ? 'in-range' : 'out-of-range'}">
-        <span class="event-icon">${inRange ? '🔓' : '🔒'}</span>
+      <div class="event-heat-pin ${pinClass}">
+        <span class="event-icon">${icon}</span>
       </div>
     `,
     iconSize: [36, 36],
@@ -268,6 +279,23 @@ export default function MapExplorer({
 
   // Active campus events created by admins.
   const [activeEvents, setActiveEvents] = useState<CampusEvent[]>([]);
+  
+  // Events the player has fully completed
+  const [completedEvents, setCompletedEvents] = useState<string[]>([]);
+  
+  const loadCompletedEvents = () => {
+    if (currentUser?.id) {
+      getCompletedEvents().then(setCompletedEvents).catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    loadCompletedEvents();
+    
+    // Listen for when trivia is completed to re-fetch the status
+    window.addEventListener('triviaCompleted', loadCompletedEvents);
+    return () => window.removeEventListener('triviaCompleted', loadCompletedEvents);
+  }, [currentUser?.id]);
 
   useEffect(() => {
     if (!('geolocation' in navigator)) {
@@ -292,7 +320,7 @@ export default function MapExplorer({
 
         if (currentUser?.id) {
           fetch(
-            'http://localhost:3000/api/mock/telemetry/ping',
+            `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/mock/telemetry/ping`,
             {
               method: 'POST',
               headers: {
@@ -651,6 +679,15 @@ export default function MapExplorer({
           animation: event-heat-pulse-in 1.5s infinite;
         }
 
+        .event-heat-pin.completed {
+          background: #D37A32;
+          font-family: Georgia, serif;
+          font-weight: 900;
+          color: white;
+          box-shadow: 0 0 0 4px rgba(211, 122, 50, 0.4), 0 2px 8px rgba(0,0,0,0.4);
+          animation: event-heat-pulse-completed 3s infinite;
+        }
+
         .event-heat-pin.out-of-range {
           background: #b3261e;
           box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.4), 0 2px 8px rgba(0,0,0,0.4);
@@ -661,6 +698,12 @@ export default function MapExplorer({
           0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.6); }
           70% { box-shadow: 0 0 0 15px rgba(46, 125, 50, 0); }
           100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        @keyframes event-heat-pulse-completed {
+          0% { box-shadow: 0 0 0 0 rgba(211, 122, 50, 0.6); }
+          70% { box-shadow: 0 0 0 10px rgba(211, 122, 50, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(211, 122, 50, 0); }
         }
 
         @keyframes event-heat-pulse-out {
@@ -1054,10 +1097,7 @@ export default function MapExplorer({
 
               {LANDMARKS.map((landmark) => {
                 const distance = userPosition
-                  ? haversineDistance(
-                      userPosition,
-                      landmark.position
-                    )
+                  ? haversineDistance(userPosition, landmark.position)
                   : null;
 
                 const isNearby =
@@ -1177,12 +1217,13 @@ export default function MapExplorer({
                   ? haversineDistance(userPosition, [evt.lat, evt.lng])
                   : null;
                 const inRange = distance !== null && distance <= evt.radius;
+                const isCompleted = completedEvents.includes(evt.id);
 
                 return (
                   <Marker
                     key={`${evt.id}-marker`}
                     position={[evt.lat, evt.lng]}
-                    icon={getEventHeatIcon(inRange)}
+                    icon={getEventHeatIcon(inRange, isCompleted)}
                   >
                     <Popup>
                       <div style={{ textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
@@ -1218,24 +1259,11 @@ export default function MapExplorer({
             
             </MapContainer>
 
-            <div className="map-info-card">
-              <p className="map-info-label">
-                Nearby Landmarks
-              </p>
-
-              <p className="map-info-value">
-                {nearbyLandmarks} landmark
-                {nearbyLandmarks === 1
-                  ? ''
-                  : 's'}
-              </p>
-            </div>
-
             <div
               style={{
                 position: 'absolute',
-                left: 26,
-                bottom: 100,
+                left: 20,
+                bottom: 20,
                 zIndex: 1000,
                 background: '#f5ecd7',
                 borderRadius: 12,
@@ -1247,18 +1275,18 @@ export default function MapExplorer({
                 color: '#4a3620',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                 <div
                   style={{
-                    width: 14,
-                    height: 14,
+                    width: 12,
+                    height: 12,
                     borderRadius: '50%',
                     background: '#D37A32',
                     border: '2px solid #fffefc',
                     boxShadow: '0 0 0 2px rgba(211, 122, 50, 0.4)',
                   }}
                 />
-                <strong>Active Event</strong>
+                <strong style={{ fontSize: 13 }}>Campus Events</strong>
               </div>
               <p style={{ margin: 0, color: '#7a6644' }}>
                 {activeEvents.length} active event{activeEvents.length === 1 ? '' : 's'} on campus

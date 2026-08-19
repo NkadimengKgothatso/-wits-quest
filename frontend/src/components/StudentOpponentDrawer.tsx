@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, X, Users, Swords, Filter, ArrowUpDown, Radio, Shield, Zap, Sparkles } from 'lucide-react';
-import { MockUser, getRegisteredStudentOpponents } from '../services/mockDbClient';
+import { type MockUser, getRegisteredStudentOpponents } from '../services/apiClient';
 
 interface StudentOpponentDrawerProps {
   isOpen: boolean;

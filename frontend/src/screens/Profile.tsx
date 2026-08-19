@@ -128,31 +128,7 @@ export default function Profile({ onNavigate }: ProfileProps) {
         ))}
       </div>
 
-      {/* Reputation Badges */}
-      <div>
-        <h3 style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>Reputation Badges</h3>
-        <div className="flex justify-between" style={{ padding: '0 8px' }}>
-          {[
-            { icon: <Award size={20} color="var(--color-text)" />, label: 'First Card', bg: 'rgba(211, 122, 50, 0.15)' },
-            { icon: <Flame size={20} color="var(--color-text)" />, label: `${user.dailyStreakCount}-Day Streak`, bg: 'rgba(74, 124, 89, 0.15)' },
-            { icon: <Medal size={20} color="var(--color-text)" />, label: user.divisionTier, bg: 'rgba(44, 34, 30, 0.1)' },
-            { icon: <Award size={20} color="var(--color-text)" />, label: 'First Win', bg: 'rgba(211, 122, 50, 0.15)' }
-          ].map(badge => (
-            <div key={badge.label} className="flex flex-col items-center gap-2">
-              <div style={{
-                width: '48px', height: '48px', borderRadius: '50%',
-                background: badge.bg,
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}>
-                {badge.icon}
-              </div>
-              <span style={{ fontSize: '10px', color: 'var(--color-text)', fontWeight: 600, textAlign: 'center', maxWidth: '50px' }}>
-                {badge.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+
 
       {/* Avatar Selection Modal */}
       {isAvatarModalOpen && (

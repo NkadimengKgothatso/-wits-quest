@@ -16,38 +16,7 @@ import {
 const WITS_CENTER: [number, number] = [-26.192885679106496, 28.030521047594373];
 const DEFAULT_ZOOM = 18;
 
-interface Landmark {
-  name: string;
-  position: [number, number];
-}
 
-const LANDMARKS: Landmark[] = [
-  { name: 'Great Hall', position: [-26.192177415373987, 28.030361941387124] },
-  { name: 'Humphrey Raikes', position: [-26.192095332747023, 28.03127963680826] },
-  { name: 'Wartenweiler Library', position: [-26.191243529310864, 28.03087176603622] },
-  { name: 'Wits School of the Arts', position: [-26.192037583558378, 28.032449581917486] },
-  { name: 'William Cullen Library', position: [-26.190829656466303, 28.029379817685918] },
-  { name: 'Amphitheatre', position: [-26.190136656782915, 28.029980890402594] },
-  { name: 'John Moffat Pond', position: [-26.190189594404178, 28.02955155274785] },
-  { name: 'TW Kambule Mathematical Sciences Building', position: [-26.19046871964564, 28.026841358802145] },
-  { name: 'Wits Science Stadium', position: [-26.19066603191282, 28.02523134259679] },
-  { name: 'Tower of Light', position: [-26.18978053034198, 28.02594511644781] },
-  { name: 'The Matrix', position: [-26.189616064701625, 28.030808592703018] },
-  { name: 'Chamber of Mines', position: [-26.191709498016966, 28.02699822101696] },
-  { name: 'South West Engineering', position: [-26.19202018489526, 28.02935054349668] },
-  { name: 'Flower Hall', position: [-26.191733973644435, 28.02620961472413] },
-  { name: 'Wits Sturrock Park', position: [-26.19319213569335, 28.021073663028996] },
-  { name: 'Origins Centre', position: [-26.192977185786265, 28.028291004158817] },
-  { name: 'Old Mutual Sport Hall', position: [-26.189627614752393, 28.029321916975654] },
-  { name: 'John Moffat', position: [-26.190151568368808, 28.029334082969147] },
-];
-
-const landmarkIcon = new L.DivIcon({
-  className: 'admin-landmark-marker',
-  html: `<div class="admin-landmark-pin"></div>`,
-  iconSize: [40, 40],
-  iconAnchor: [20, 20],
-});
 
 const selectedIcon = new L.DivIcon({
   className: 'admin-selected-marker',
@@ -61,7 +30,7 @@ function getEventHeatIcon(inRange: boolean) {
     className: 'event-heat-marker',
     html: `
       <div class="event-heat-pin ${inRange ? 'in-range' : 'out-of-range'}">
-        <span class="event-icon">${inRange ? '🔓' : '🔒'}</span>
+        <span class="event-icon" style="display: block; width: 12px; height: 12px; border-radius: 50%; background: white;"></span>
       </div>
     `,
     iconSize: [36, 36],
@@ -254,13 +223,7 @@ export default function AdminEvents() {
     setErrorMsg('');
   }
 
-  function handleLandmarkClick(landmark: Landmark) {
-    if (!formOpen) {
-      openNewForm();
-    }
-    setPosition(landmark.position);
-    setEventName((prev) => prev || `${landmark.name} Challenge`);
-  }
+
 
   async function handleSave() {
     if (!position) {
@@ -335,20 +298,7 @@ export default function AdminEvents() {
       }}
     >
       <style>{`
-        .admin-landmark-pin {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: #4a3620;
-          opacity: 0.24;
-          filter: blur(2px) drop-shadow(0 0 10px rgba(74, 54, 32, 0.55));
-          cursor: pointer;
-          animation: admin-landmark-pulse 2.8s ease-in-out infinite;
-        }
-        @keyframes admin-landmark-pulse {
-          0%, 100% { opacity: 0.18; }
-          50% { opacity: 0.32; }
-        }
+
         .admin-selected-pin {
           width: 24px;
           height: 24px;
@@ -501,19 +451,7 @@ export default function AdminEvents() {
               maxZoom={19}
               className="adventure-tiles"
             />
-            {LANDMARKS.map((landmark) => (
-              <Marker
-                key={landmark.name}
-                position={landmark.position}
-                icon={landmarkIcon}
-                eventHandlers={{
-                  click: (e) => {
-                    L.DomEvent.stopPropagation(e);
-                    handleLandmarkClick(landmark);
-                  },
-                }}
-              />
-            ))}
+
             {userLoc && (
               <Marker
                 position={userLoc}
@@ -580,7 +518,7 @@ export default function AdminEvents() {
                   }}
                   title="Close"
                 >
-                  ✕
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
               </div>
 
@@ -683,10 +621,16 @@ export default function AdminEvents() {
               </div>
 
               {savedMsg && (
-                <div style={{ color: THEME.success, fontWeight: 700, fontSize: 13 }}>✓ {savedMsg}</div>
+                <div style={{ color: THEME.success, fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  {savedMsg}
+                </div>
               )}
               {errorMsg && (
-                <div style={{ color: THEME.danger, fontWeight: 700, fontSize: 13 }}>✕ {errorMsg}</div>
+                <div style={{ color: THEME.danger, fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                  {errorMsg}
+                </div>
               )}
 
               <div style={{ display: 'flex', gap: 10, marginTop: 'auto' }}>

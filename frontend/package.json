@@ -17,6 +17,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
+    "socket.io-client": "^4.7.4",
     "wits-quest-root": "file:.."
   },
   "devDependencies": {
@@ -28,11 +29,11 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
-    "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/coverage-v8": "^4.1.10",
-    "jsdom": "^29.1.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^1.6.0",
+    "jsdom": "^24.0.0",
     "typescript": "^5.2.2",
-    "vite": "^8.2.1",
-    "vitest": "^4.1.10"
+    "vite": "^5.4.14",
+    "vitest": "^1.6.0"
   }
 }

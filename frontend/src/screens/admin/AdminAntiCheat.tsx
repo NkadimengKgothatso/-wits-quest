@@ -1,297 +1,492 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getMockUsers, type MockUser } from '../../services/apiClient';
+import { useAuth } from '../../context/AuthContext';
+import {
+  calculateSpeed,
+  haversineDistance,
+  isTeleport,
+  nearestLandmarkName,
+  secondsBetween,
+  SPEED_THRESHOLD_MS,
+  TELEPORT_MIN_DISTANCE_M,
+  TELEPORT_MAX_SECONDS,
+  isSpeedViolation,
+  type GpsPing,
+} from '../../utils/antiCheat';
 
-interface TrajectoryPoint {
-  time: string;
-  lat: string;
-  lng: string;
-  vel: number;
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+type ActionTaken = 'warned' | 'suspended' | 'false_positive' | null;
+
+interface TelemetryPing extends GpsPing {
+  userId: string;
 }
 
-interface MatchEntry {
-  match: string;
-  result: string;
-  date: string;
-  suspicious: boolean;
+interface SpeedViolation {
+  id: string;
+  userId: string;
+  student: MockUser | undefined;
+  from: GpsPing;
+  to: GpsPing;
+  speed: number;
 }
 
-interface FlaggedPlayer {
-  id: number;
-  email: string;
-  trustScore: number;
-  violations: string[];
-  trajectory: TrajectoryPoint[];
-  matchHistory: MatchEntry[];
+interface TeleportAlert {
+  id: string;
+  userId: string;
+  student: MockUser | undefined;
+  from: GpsPing;
+  to: GpsPing;
+  distance: number;
+  seconds: number;
 }
 
-const FLAGGED_PLAYERS: FlaggedPlayer[] = [
-  {
-    id: 1, email: 'student_xk9@students.wits.ac.za',
-    trustScore: 18, violations: ['Speed Spoofing', 'Rapid Burst Submissions'],
-    trajectory: [
-      { time: '08:14:22', lat: '-26.1918', lng: '28.0302', vel: 0.4 },
-      { time: '08:14:23', lat: '-26.1890', lng: '28.0400', vel: 31.2 },
-      { time: '08:14:24', lat: '-26.1955', lng: '28.0215', vel: 45.8 },
-      { time: '08:14:25', lat: '-26.1918', lng: '28.0302', vel: 38.1 },
-    ],
-    matchHistory: [
-      { match: 'vs CPU', result: 'Win', date: 'Today 08:14', suspicious: true },
-      { match: 'vs Sipho', result: 'Win', date: 'Today 08:10', suspicious: true },
-      { match: 'vs Lerato', result: 'Win', date: 'Yesterday', suspicious: false },
-    ],
-  },
-  {
-    id: 2, email: 'student_bq2@students.wits.ac.za',
-    trustScore: 42, violations: ['Win-Trading'],
-    trajectory: [
-      { time: '10:02:11', lat: '-26.1925', lng: '28.0310', vel: 0.2 },
-      { time: '10:02:45', lat: '-26.1925', lng: '28.0310', vel: 0.1 },
-    ],
-    matchHistory: [
-      { match: 'vs student_xk9', result: 'Loss', date: 'Today 10:02', suspicious: true },
-      { match: 'vs student_xk9', result: 'Loss', date: 'Yesterday', suspicious: true },
-    ],
-  },
-];
+interface AuditRecord {
+  id: string;
+  userId: string;
+  incidentId?: string;
+  action: ActionTaken;
+  adminEmail: string;
+  timestamp: string;
+  student?: MockUser;
+}
 
-type Action = '' | 'warn' | 'verify' | 'suspend' | 'override';
+/* ── Data access ── */
 
-export default function AdminAntiCheat() {
-  const [players, setPlayers] = useState<FlaggedPlayer[]>(FLAGGED_PLAYERS);
-  const [selectedId, setSelectedId] = useState(FLAGGED_PLAYERS[0].id);
-  const [overrideScore, setOverrideScore] = useState(String(FLAGGED_PLAYERS[0].trustScore));
-  const [action, setAction] = useState<Action>('');
-  const [actionDone, setActionDone] = useState(false);
+async function fetchPings(): Promise<TelemetryPing[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/mock/telemetry/pings`);
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
 
-  const selected = players.find((p) => p.id === selectedId) ?? players[0];
-  const maxVel = Math.max(...selected.trajectory.map((t) => t.vel), 1);
+async function fetchAudit(): Promise<AuditRecord[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/mock/telemetry/audit`);
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
 
-  const trustColor = selected.trustScore < 30 ? '#e8a6a6' : selected.trustScore < 60 ? '#e8c98f' : '#8fae6e';
+async function postAudit(
+  userId: string,
+  incidentId: string,
+  action: ActionTaken,
+  adminEmail: string
+) {
+  try {
+    await fetch(`${BACKEND_URL}/api/mock/telemetry/audit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, incidentId, action, adminEmail }),
+    });
+  } catch {
+    // Audit logging must never block the UI
+  }
+}
 
-  function selectPlayer(p: FlaggedPlayer) {
-    setSelectedId(p.id);
-    setOverrideScore(String(p.trustScore));
-    setAction('');
-    setActionDone(false);
+/* ── Detection ── */
+
+function groupByUser(pings: TelemetryPing[]): Map<string, TelemetryPing[]> {
+  const byUser = new Map<string, TelemetryPing[]>();
+  for (const p of pings) {
+    const list = byUser.get(p.userId) ?? [];
+    list.push(p);
+    byUser.set(p.userId, list);
+  }
+  for (const list of byUser.values()) {
+    list.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+  }
+  return byUser;
+}
+
+function byMostRecent<T extends { to: GpsPing }>(a: T, b: T) {
+  return new Date(b.to.timestamp).getTime() - new Date(a.to.timestamp).getTime();
+}
+
+function findViolations(pings: TelemetryPing[], users: MockUser[]): SpeedViolation[] {
+  const violations: SpeedViolation[] = [];
+  for (const [userId, userPings] of groupByUser(pings)) {
+    for (let i = 1; i < userPings.length; i++) {
+      const from = userPings[i - 1];
+      const to = userPings[i];
+      const speed = calculateSpeed(from, to);
+      if (isSpeedViolation(from, to)) {
+        violations.push({
+          id: `spd_${userId}_${to.timestamp}`,
+          userId,
+          student: users.find((u) => u.id === userId),
+          from,
+          to,
+          speed,
+        });
+      }
+    }
+  }
+  return violations.sort(byMostRecent);
+}
+
+function findTeleports(pings: TelemetryPing[], users: MockUser[]): TeleportAlert[] {
+  const alerts: TeleportAlert[] = [];
+  for (const [userId, userPings] of groupByUser(pings)) {
+    for (let i = 1; i < userPings.length; i++) {
+      const from = userPings[i - 1];
+      const to = userPings[i];
+      if (isTeleport(from, to)) {
+        alerts.push({
+          id: `tp_${userId}_${to.timestamp}`,
+          userId,
+          student: users.find((u) => u.id === userId),
+          from,
+          to,
+          distance: haversineDistance(from, to),
+          seconds: secondsBetween(from, to),
+        });
+      }
+    }
+  }
+  return alerts.sort(byMostRecent);
+}
+
+/* ── Formatting ── */
+
+function formatDate(ts: string) {
+  return new Date(ts).toLocaleDateString('en-ZA', {
+    month: 'short', day: 'numeric',
+  });
+}
+
+function formatTime(ts: string) {
+  return new Date(ts).toLocaleTimeString('en-ZA', {
+    hour: '2-digit', minute: '2-digit', hour12: false,
+  });
+}
+
+function actionLabel(action: ActionTaken) {
+  return action === 'warned' ? 'Warning Issued'
+    : action === 'suspended' ? 'Account Suspended'
+    : 'False Positive';
+}
+
+const SECTION_TITLE: React.CSSProperties = {
+  fontSize: 16, fontWeight: 900, color: 'var(--color-text)', marginBottom: 4,
+  letterSpacing: '0.02em', textTransform: 'uppercase',
+};
+
+const EMPTY_STATE: React.CSSProperties = {
+  fontSize: 14, color: 'var(--color-muted)', padding: 20, textAlign: 'center',
+};
+
+const CARD_STYLE: React.CSSProperties = {
+  background: 'var(--color-card-bg)',
+  border: '1px solid var(--color-border)',
+  borderRadius: 16,
+  padding: 16,
+  marginBottom: 12,
+  boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 12,
+};
+
+/* ── Shared cells ── */
+
+function StudentCell({ student, fallback }: { student?: MockUser; fallback: string }) {
+  return (
+    <div>
+      <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--color-text)', marginBottom: 2 }}>
+        {student?.name || student?.username || 'Unknown Student'}
+      </div>
+      <div style={{ fontSize: 12, color: 'var(--color-muted)' }}>
+        {student?.email || fallback}
+      </div>
+    </div>
+  );
+}
+
+function StatusBadge({ action }: { action: ActionTaken }) {
+  const isSuspended = action === 'suspended';
+  const isWarned = action === 'warned';
+  return (
+    <span style={{
+      fontSize: 11, fontWeight: 800,
+      color: isSuspended ? '#fff' : isWarned ? 'var(--color-accent)' : 'var(--color-text)',
+      background: isSuspended ? '#e8a6a6' : isWarned ? 'rgba(211, 122, 50, 0.15)' : 'var(--color-bg)',
+      border: `1px solid ${isSuspended ? '#e8a6a6' : isWarned ? 'rgba(211, 122, 50, 0.3)' : 'var(--color-border)'}`,
+      borderRadius: 12, padding: '4px 10px', whiteSpace: 'nowrap',
+    }}>
+      {actionLabel(action)}
+    </span>
+  );
+}
+
+function ActionCell({
+  taken, onAction,
+}: {
+  taken: ActionTaken;
+  onAction: (a: ActionTaken) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+
+  function choose(action: ActionTaken) {
+    onAction(action);
+    setEditing(false);
   }
 
-  function handleAction(a: Action) {
-    setAction(a);
-    setActionDone(true);
-    setTimeout(() => setActionDone(false), 2500);
-  }
-
-  function applyOverride() {
-    const score = Math.max(0, Math.min(100, Number(overrideScore) || 0));
-    setPlayers((prev) => prev.map((p) => p.id === selected.id ? { ...p, trustScore: score } : p));
-    handleAction('override');
+  if (taken && !editing) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 8 }}>
+        <StatusBadge action={taken} />
+        <button
+          onClick={() => setEditing(true)}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--color-muted)', fontSize: 12, fontWeight: 700,
+            textDecoration: 'underline', padding: 0,
+          }}>
+          Change
+        </button>
+      </div>
+    );
   }
 
   return (
-    <div style={{ display: 'flex', height: '100%', gap: 0, minHeight: 'calc(100vh - 120px)' }}>
-      {/* Left: Flagged list */}
-      <div style={{
-        width: 320,
-        background: 'var(--color-card-bg)',
-        borderRight: '1px solid var(--color-border)',
-        padding: 20,
-        overflowY: 'auto',
-      }}>
-        <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-          Flagged Student Accounts ({players.length})
-        </div>
+    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
+      <button 
+        style={{ fontSize: 12, padding: '6px 12px', borderRadius: 20, background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }}
+        onClick={() => choose('warned')}>
+        Warn
+      </button>
+      <button 
+        style={{ fontSize: 12, padding: '6px 12px', borderRadius: 20, background: '#e8a6a6', border: 'none', color: '#fff', fontWeight: 700, cursor: 'pointer' }}
+        onClick={() => choose('suspended')}>
+        Suspend
+      </button>
+      <button 
+        style={{ fontSize: 12, padding: '6px 12px', borderRadius: 20, background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }}
+        onClick={() => choose('false_positive')}>
+        Clear
+      </button>
+      {editing && (
+        <button
+          onClick={() => setEditing(false)}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--color-muted)', fontSize: 12, fontWeight: 700,
+            textDecoration: 'underline', padding: 0, marginLeft: 8
+          }}>
+          Cancel
+        </button>
+      )}
+    </div>
+  );
+}
 
-        {players.map((p) => {
-          const tc = p.trustScore < 30 ? '#e8a6a6' : p.trustScore < 60 ? '#e8c98f' : '#8fae6e';
-          return (
-            <button
-              key={p.id}
-              onClick={() => selectPlayer(p)}
-              style={{
-                width: '100%', background: 'none', border: 'none', padding: 0,
-                cursor: 'pointer', textAlign: 'left', marginBottom: 12,
-              }}
-            >
-              <div style={{
-                background: selected.id === p.id ? 'var(--color-accent)' : 'var(--color-bg)',
-                border: `2px solid ${selected.id === p.id ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                borderRadius: 12, padding: 12, transition: 'all 0.2s',
-              }}>
-                <div style={{ fontSize: 13, fontWeight: 800, color: selected.id === p.id ? 'white' : 'var(--color-text)', marginBottom: 8, wordBreak: 'break-all' }}>
-                  {p.email}
-                </div>
-                {/* Trust score bar */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  <div style={{ flex: 1, height: 6, background: selected.id === p.id ? 'rgba(255,255,255,0.3)' : 'var(--color-border)', borderRadius: 99, overflow: 'hidden' }}>
-                    <div style={{ width: `${p.trustScore}%`, height: '100%', background: selected.id === p.id ? 'white' : tc, borderRadius: 99 }} />
-                  </div>
-                  <span style={{ fontSize: 12, fontWeight: 800, color: selected.id === p.id ? 'white' : tc }}>{p.trustScore}</span>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {p.violations.map((v) => (
-                    <span key={v} style={{
-                      fontSize: 10, fontWeight: 800, color: selected.id === p.id ? 'var(--color-accent)' : 'var(--color-muted)',
-                      background: selected.id === p.id ? 'white' : 'var(--color-bg)', borderRadius: 6, padding: '4px 8px',
-                      border: `1px solid ${selected.id === p.id ? 'transparent' : 'var(--color-border)'}`
-                    }}>
-                      {v}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </button>
-          );
-        })}
+/* ── Screen ── */
+
+export default function AdminAntiCheat() {
+  const { currentUser } = useAuth();
+  const [violations, setViolations] = useState<SpeedViolation[]>([]);
+  const [teleports, setTeleports] = useState<TeleportAlert[]>([]);
+  const [audit, setAudit] = useState<AuditRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const adminEmail = currentUser?.email || 'unknown@wits.ac.za';
+
+  async function load() {
+    setLoading(true);
+    const [pings, users, auditRecords] = await Promise.all([
+      fetchPings(),
+      getMockUsers(),
+      fetchAudit(),
+    ]);
+
+    setViolations(findViolations(pings, users));
+    setTeleports(findTeleports(pings, users));
+    setAudit(
+      auditRecords.map((r) => ({ ...r, student: users.find((u) => u.id === r.userId) }))
+    );
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    load();
+    const timer = setInterval(load, 15000);
+    return () => clearInterval(timer);
+  }, []);
+
+  async function applyAction(userId: string, incidentId: string, action: ActionTaken) {
+    if (!action) return;
+    await postAudit(userId, incidentId, action, adminEmail);
+    await load();
+  }
+
+  const latestByUser = new Map<string, ActionTaken>();
+  for (const r of audit) {
+    if (!latestByUser.has(r.userId)) latestByUser.set(r.userId, r.action);
+  }
+  const suspendedUsers = new Set(
+    [...latestByUser.entries()].filter(([, a]) => a === 'suspended').map(([id]) => id)
+  );
+
+  const actionByIncident = new Map<string, ActionTaken>();
+  for (const r of audit) {
+    if (r.action === 'suspended' || !r.incidentId) continue;
+    if (!actionByIncident.has(r.incidentId)) actionByIncident.set(r.incidentId, r.action);
+  }
+
+  function statusFor(userId: string, incidentId: string): ActionTaken {
+    if (suspendedUsers.has(userId)) return 'suspended';
+    return actionByIncident.get(incidentId) ?? null;
+  }
+
+  return (
+    <div style={{ padding: '16px 16px 80px', minHeight: '100vh', background: 'var(--color-bg)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+        <div>
+          <h2 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', margin: '0 0 4px', fontFamily: 'var(--font-serif)' }}>
+            Anti-Cheat
+          </h2>
+          <p style={{ fontSize: 13, color: 'var(--color-muted)', margin: 0 }}>
+            Movement verification & moderation
+          </p>
+        </div>
+        <button 
+          style={{ fontSize: 12, padding: '8px 16px', borderRadius: 20, background: 'var(--color-accent)', color: 'white', border: 'none', fontWeight: 800, cursor: 'pointer' }}
+          onClick={load}>
+          Refresh
+        </button>
       </div>
 
-      {/* Right: Audit Evidence Detail View */}
-      <div style={{ flex: 1, padding: 32, overflowY: 'auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
-          <div>
-            <h3 style={{ fontSize: 24, fontWeight: 900, color: 'var(--color-text)', margin: '0 0 8px' }}>{selected.email}</h3>
-            <div style={{ fontSize: 14, color: 'var(--color-muted)', fontWeight: 600 }}>Audit Evidence & Velocity Logs</div>
-          </div>
-          <div style={{
-            background: 'var(--color-card-bg)', border: `2px solid ${trustColor}`,
-            borderRadius: 16, padding: '12px 24px', textAlign: 'center', boxShadow: '0 4px 12px rgba(44, 34, 30, 0.05)'
-          }}>
-            <div style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 800, letterSpacing: '0.05em' }}>TRUST SCORE</div>
-            <div style={{ fontSize: 24, fontWeight: 900, color: trustColor }}>{selected.trustScore} / 100</div>
-          </div>
+      {/* ── Section 1: GPS Speed Violations ── */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={SECTION_TITLE}>
+          Speed Violations ({violations.length})
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--color-muted)', marginBottom: 16 }}>
+          Exceeding {SPEED_THRESHOLD_MS} m/s
         </div>
 
-        {/* Trajectory logs */}
-        <div style={{ background: 'var(--color-card-bg)', borderRadius: 16, padding: 24, marginBottom: 24, border: '2px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-              GPS Movement Trajectory Log
-            </div>
-            {/* Velocity sparkline */}
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 28 }}>
-              {selected.trajectory.map((t, idx) => (
-                <div key={idx} style={{
-                  width: 8, height: `${(t.vel / maxVel) * 100}%`, minHeight: 3,
-                  borderRadius: 2,
-                  background: t.vel > 5 ? '#e8a6a6' : '#8fae6e',
-                  opacity: t.vel > 5 ? 1 : 0.6,
-                }} />
-              ))}
-            </div>
+        {loading ? (
+          <div style={EMPTY_STATE}>Loading telemetry...</div>
+        ) : violations.length === 0 ? (
+          <div style={EMPTY_STATE}>No speed violations detected.</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {violations.map((v) => {
+              const taken = statusFor(v.userId, v.id);
+              return (
+                <div key={v.id} style={{ ...CARD_STYLE, opacity: taken === 'false_positive' ? 0.6 : 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <StudentCell student={v.student} fallback={v.userId} />
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-text)' }}>{formatTime(v.to.timestamp)}</div>
+                      <div style={{ fontSize: 11, color: 'var(--color-muted)' }}>{formatDate(v.to.timestamp)}</div>
+                    </div>
+                  </div>
+                  
+                  <div style={{ background: 'var(--color-bg)', padding: 12, borderRadius: 12, border: '1px solid var(--color-border)' }}>
+                    <div style={{ fontSize: 11, color: 'var(--color-muted)', textTransform: 'uppercase', fontWeight: 800, marginBottom: 4 }}>Detected Speed</div>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: 'var(--color-accent)' }}>
+                      {v.speed.toFixed(1)} m/s
+                    </div>
+                  </div>
+
+                  <ActionCell taken={taken} onAction={(a) => applyAction(v.userId, v.id, a)} />
+                </div>
+              );
+            })}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {selected.trajectory.map((t, idx) => (
-              <div key={idx} style={{
-                display: 'flex', justifyContent: 'space-between', fontSize: 13,
-                padding: '12px 16px', borderRadius: 12,
-                background: t.vel > 5 ? 'rgba(232, 166, 166, 0.12)' : 'var(--color-bg)',
-                border: `1.5px solid ${t.vel > 5 ? 'rgba(232, 166, 166, 0.4)' : 'var(--color-border)'}`,
-              }}>
-                <span style={{ color: 'var(--color-muted)', fontWeight: 700 }}>{t.time}</span>
-                <span style={{ color: 'var(--color-text)', fontWeight: 600 }}>{t.lat}, {t.lng}</span>
-                <span style={{ fontWeight: 800, color: t.vel > 5 ? '#e8a6a6' : 'var(--color-text)' }}>
-                  {t.vel} m/s {t.vel > 5 && '(SPOOF DETECTED)'}
-                </span>
+        )}
+      </div>
+
+      {/* ── Section 2: Teleport Alerts ── */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={SECTION_TITLE}>
+          Teleport Alerts ({teleports.length})
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--color-muted)', marginBottom: 16 }}>
+          Jumps over {TELEPORT_MIN_DISTANCE_M}m in under {TELEPORT_MAX_SECONDS}s
+        </div>
+
+        {loading ? (
+          <div style={EMPTY_STATE}>Loading telemetry...</div>
+        ) : teleports.length === 0 ? (
+          <div style={EMPTY_STATE}>No teleport events detected.</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {teleports.map((t) => {
+              const taken = statusFor(t.userId, t.id);
+              return (
+                <div key={t.id} style={{ ...CARD_STYLE, opacity: taken === 'false_positive' ? 0.6 : 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <StudentCell student={t.student} fallback={t.userId} />
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-text)' }}>{formatTime(t.to.timestamp)}</div>
+                      <div style={{ fontSize: 11, color: 'var(--color-muted)' }}>{formatDate(t.to.timestamp)}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ background: 'var(--color-bg)', padding: 12, borderRadius: 12, border: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, fontWeight: 700 }}>
+                      <span style={{ color: 'var(--color-muted)' }}>From:</span>
+                      <span style={{ color: 'var(--color-text)' }}>{nearestLandmarkName(t.from)}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, fontWeight: 700 }}>
+                      <span style={{ color: 'var(--color-muted)' }}>To:</span>
+                      <span style={{ color: 'var(--color-text)' }}>{nearestLandmarkName(t.to)}</span>
+                    </div>
+                    <div style={{ marginTop: 4, paddingTop: 8, borderTop: '1px solid var(--color-border)', fontSize: 12, fontWeight: 800, color: 'var(--color-accent)' }}>
+                      Jumped {Math.round(t.distance)}m in {t.seconds.toFixed(1)}s
+                    </div>
+                  </div>
+
+                  <ActionCell taken={taken} onAction={(a) => applyAction(t.userId, t.id, a)} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* ── Section 3: Audit Records ── */}
+      <div>
+        <div style={SECTION_TITLE}>
+          Audit Records ({audit.length})
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--color-muted)', marginBottom: 16 }}>
+          Moderation history
+        </div>
+
+        {loading ? (
+          <div style={EMPTY_STATE}>Loading audit records...</div>
+        ) : audit.length === 0 ? (
+          <div style={EMPTY_STATE}>No moderation actions recorded.</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {audit.map((r) => (
+              <div key={r.id} style={CARD_STYLE}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <StudentCell student={r.student} fallback={r.userId} />
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--color-text)' }}>{formatTime(r.timestamp)}</div>
+                    <div style={{ fontSize: 11, color: 'var(--color-muted)' }}>{formatDate(r.timestamp)}</div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+                  <StatusBadge action={r.action} />
+                  <span style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 600 }}>By: {r.adminEmail}</span>
+                </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Suspicious Match History */}
-        <div style={{ background: 'var(--color-card-bg)', borderRadius: 16, padding: 24, marginBottom: 24, border: '2px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}>
-          <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            Suspicious Match History
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {selected.matchHistory.map((m, idx) => (
-              <div key={idx} style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '12px 16px', borderRadius: 12,
-                background: m.suspicious ? 'rgba(232, 166, 166, 0.1)' : 'var(--color-bg)',
-                border: `1.5px solid ${m.suspicious ? 'rgba(232, 166, 166, 0.35)' : 'var(--color-border)'}`,
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text)' }}>{m.match}</span>
-                  {m.suspicious && (
-                    <span style={{
-                      fontSize: 9, fontWeight: 800, color: '#e8a6a6',
-                      background: 'rgba(232, 166, 166, 0.2)', borderRadius: 4, padding: '2px 6px',
-                      border: '1px solid rgba(232, 166, 166, 0.4)',
-                      letterSpacing: '0.05em',
-                    }}>
-                      FLAGGED
-                    </span>
-                  )}
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <span style={{
-                    fontSize: 12, fontWeight: 800,
-                    color: m.result === 'Win' ? '#8fae6e' : '#e8a6a6',
-                  }}>
-                    {m.result}
-                  </span>
-                  <span style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 600 }}>{m.date}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Moderation Action Bar */}
-        <div style={{ background: 'var(--color-card-bg)', borderRadius: 16, padding: 24, border: '2px solid var(--color-border)', boxShadow: '0 4px 16px rgba(44, 34, 30, 0.05)' }}>
-          <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--color-text)', marginBottom: 16, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            Lecturer Moderation Actions
-          </div>
-          {actionDone && (
-            <div style={{ fontSize: 13, color: 'var(--color-success)', marginBottom: 16, fontWeight: 800 }}>
-              {action === 'override' ? `Trust score overridden to ${selected.trustScore}!` : 'Action Applied Successfully!'}
-            </div>
-          )}
-
-          {/* Override Trust Score control */}
-          <div style={{
-            display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16,
-            padding: 12, borderRadius: 12, background: 'var(--color-bg)',
-            border: '1.5px solid var(--color-border)',
-          }}>
-            <label style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text)', whiteSpace: 'nowrap' }}>
-              Override Trust Score:
-            </label>
-            <input
-              type="number"
-              min={0}
-              max={100}
-              value={overrideScore}
-              onChange={(e) => setOverrideScore(e.target.value)}
-              style={{
-                flex: 1, padding: '8px 12px', borderRadius: 8,
-                border: '2px solid var(--color-border)', background: 'var(--color-card-bg)',
-                color: 'var(--color-text)', outline: 'none', fontSize: 14, fontWeight: 700,
-              }}
-            />
-            <button
-              onClick={applyOverride}
-              style={{
-                padding: '8px 16px', borderRadius: 8,
-                background: 'var(--color-accent)', color: 'white',
-                fontWeight: 700, fontSize: 13, border: 'none', cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Apply Override
-            </button>
-          </div>
-
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }} onClick={() => handleAction('warn')}>
-              Issue Warning
-            </button>
-            <button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: 'transparent', border: '2px solid var(--color-border)', color: 'var(--color-text)', fontWeight: 700, cursor: 'pointer' }} onClick={() => handleAction('verify')}>
-              Require Secondary GPS Fix
-            </button>
-            <button style={{ fontSize: 14, padding: '12px 20px', borderRadius: 10, background: '#e8a6a6', border: 'none', color: 'white', fontWeight: 800, cursor: 'pointer' }} onClick={() => handleAction('suspend')}>
-              Suspend Account
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

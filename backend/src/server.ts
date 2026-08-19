@@ -6,7 +6,9 @@ import dotenv from 'dotenv';
 import multer from 'multer';
 import { randomUUID } from 'crypto';
 import { supabase } from './db/supabaseClient.js';
+import telemetryRoutes from './routes/telemetry.js';
 import authRoutes from './routes/auth.js';
+import contentRoutes from './routes/content.js';
 
 dotenv.config();
 
@@ -16,7 +18,9 @@ const io = new Server(httpServer, { cors: { origin: '*', methods: ['GET', 'POST'
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+
+app.use('/api/mock/telemetry', telemetryRoutes);
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -28,7 +32,6 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api', authRoutes);
-
 // ================== CARDS ==================
 
 app.get('/api/cards', async (req, res) => {
@@ -247,6 +250,7 @@ app.post('/api/events/:id/trivia', async (req, res) => {
     payload.correctAnswer = correctIndex;
   } else {
     payload.acceptedAnswers = acceptedAnswers;
+    payload.correctAnswer = (acceptedAnswers ?? []).join(', ');
   }
 
   if (existing) {
@@ -354,10 +358,25 @@ app.post('/api/events/:id/answer', async (req, res) => {
   res.json({ correct: true, card: awardedCard, xpAwarded, essenceAwarded });
 });
 
+// --- Content Routes (additional: next-trivia, trivia/answer, completed-events) ---
+app.use('/api', contentRoutes);
+
 // ================== SOCKETS ==================
 
 import { setupBattleSocketHandler } from './services/battleSocketHandler.js';
 setupBattleSocketHandler(io);
 io.on('connection', (socket) => console.log(`[Socket.io] Player connected: ${socket.id}`));
 
-httpServer.listen(PORT, () => console.log(`Wits Quest Backend running on http://localhost:${PORT}`));
+// Bootstrap: start server
+function startServer() {
+  try {
+    httpServer.listen(PORT, () => {
+      console.log(`Wits Quest Backend API running on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error('[Server] Failed to start:', err);
+    process.exit(1);
+  }
+}
+
+startServer();
