@@ -10,7 +10,7 @@ import {
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useAuth } from '../context/AuthContext';
-import { getEvents, type CampusEvent } from '../services/apiClient';
+import { getEvents, getCompletedEvents, type CampusEvent } from '../services/apiClient';
 
 const WITS_CENTER: [number, number] = [
   -26.192885679106496,
@@ -30,12 +30,23 @@ const witsLabelIcon = new L.DivIcon({
   iconAnchor: [35, 35],
 });
 
-function getEventHeatIcon(inRange: boolean) {
+function getEventHeatIcon(inRange: boolean, isCompleted: boolean) {
+  let pinClass = 'out-of-range';
+  let icon = '🔒';
+  
+  if (isCompleted) {
+    pinClass = 'completed';
+    icon = '🔓'; 
+  } else if (inRange) {
+    pinClass = 'in-range';
+    icon = '🔓';
+  }
+
   return new L.DivIcon({
     className: 'event-heat-marker',
     html: `
-      <div class="event-heat-pin ${inRange ? 'in-range' : 'out-of-range'}">
-        <span class="event-icon">${inRange ? '🔓' : '🔒'}</span>
+      <div class="event-heat-pin ${pinClass}">
+        <span class="event-icon">${icon}</span>
       </div>
     `,
     iconSize: [36, 36],
@@ -268,6 +279,23 @@ export default function MapExplorer({
 
   // Active campus events created by admins.
   const [activeEvents, setActiveEvents] = useState<CampusEvent[]>([]);
+  
+  // Events the player has fully completed
+  const [completedEvents, setCompletedEvents] = useState<string[]>([]);
+  
+  const loadCompletedEvents = () => {
+    if (currentUser?.id) {
+      getCompletedEvents().then(setCompletedEvents).catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    loadCompletedEvents();
+    
+    // Listen for when trivia is completed to re-fetch the status
+    window.addEventListener('triviaCompleted', loadCompletedEvents);
+    return () => window.removeEventListener('triviaCompleted', loadCompletedEvents);
+  }, [currentUser?.id]);
 
   useEffect(() => {
     if (!('geolocation' in navigator)) {
@@ -651,6 +679,15 @@ export default function MapExplorer({
           animation: event-heat-pulse-in 1.5s infinite;
         }
 
+        .event-heat-pin.completed {
+          background: #D37A32;
+          font-family: Georgia, serif;
+          font-weight: 900;
+          color: white;
+          box-shadow: 0 0 0 4px rgba(211, 122, 50, 0.4), 0 2px 8px rgba(0,0,0,0.4);
+          animation: event-heat-pulse-completed 3s infinite;
+        }
+
         .event-heat-pin.out-of-range {
           background: #b3261e;
           box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.4), 0 2px 8px rgba(0,0,0,0.4);
@@ -661,6 +698,12 @@ export default function MapExplorer({
           0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.6); }
           70% { box-shadow: 0 0 0 15px rgba(46, 125, 50, 0); }
           100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        @keyframes event-heat-pulse-completed {
+          0% { box-shadow: 0 0 0 0 rgba(211, 122, 50, 0.6); }
+          70% { box-shadow: 0 0 0 10px rgba(211, 122, 50, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(211, 122, 50, 0); }
         }
 
         @keyframes event-heat-pulse-out {
@@ -1188,12 +1231,13 @@ export default function MapExplorer({
                   ? haversineDistance(userPosition, [evt.lat, evt.lng])
                   : null;
                 const inRange = distance !== null && distance <= evt.radius;
+                const isCompleted = completedEvents.includes(evt.id);
 
                 return (
                   <Marker
                     key={`${evt.id}-marker`}
                     position={[evt.lat, evt.lng]}
-                    icon={getEventHeatIcon(inRange)}
+                    icon={getEventHeatIcon(inRange, isCompleted)}
                   >
                     <Popup>
                       <div style={{ textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
@@ -1209,6 +1253,17 @@ export default function MapExplorer({
                                 Reward: {evt.cardReward}
                               </p>
                             )}
+                            <button
+                              style={{
+                                marginTop: 12, padding: '8px 16px', background: '#D37A32', 
+                                color: 'white', border: 'none', borderRadius: 8, 
+                                fontWeight: 700, cursor: 'pointer', width: '100%',
+                                fontSize: 13
+                              }}
+                              onClick={() => onOpenTrivia?.(evt)}
+                            >
+                              Start Trivia Challenge
+                            </button>
                           </>
                         ) : (
                           <>

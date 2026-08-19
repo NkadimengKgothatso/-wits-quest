@@ -244,6 +244,12 @@ export async function getTriviaQuestions(status?: string): Promise<any[]> {
   return res.json();
 }
 
+export async function getCompletedEvents(): Promise<string[]> {
+  const res = await fetch(`${BACKEND_URL}/api/player/completed-events`, { headers: getAuthHeaders() });
+  if (!res.ok) return [];
+  return res.json();
+}
+
 export interface CampusEvent {
   id: string;
   name: string;
@@ -349,6 +355,9 @@ export async function createAvatar(avatar: Avatar): Promise<Avatar> {
     headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(avatar),
   });
-  if (!res.ok) throw new Error('Failed to create avatar');
-  return res.json();
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.error || result.detail || 'Failed to create avatar');
+  }
+  return result;
 }

@@ -56,6 +56,7 @@ export default function AdminContent() {
     defense: number
     speed: number
     brains: number
+    imageUrl?: string
   }>({
     title: '',
     category: 'Landmarks',
@@ -64,11 +65,12 @@ export default function AdminContent() {
     defense: 50,
     speed: 50,
     brains: 50,
+    imageUrl: '',
   })
 
   // Avatar State
   const [avatarForm, setAvatarForm] = useState({
-    id: '', iconName: '', label: '', cssClass: 'avatar-default', description: ''
+    label: '', emoji: ''
   })
 
   const [drafts, setDrafts] = useState<Draft[]>([])
@@ -127,23 +129,24 @@ export default function AdminContent() {
           baseDefense: cardForm.defense,
           baseSpeed: cardForm.speed,
           baseBrains: cardForm.brains,
+          imageUrl: cardForm.imageUrl,
         })
         
         setSavedMsg('Card published to database!')
-        setCardForm({ ...cardForm, title: '', attack: 50, defense: 50, speed: 50, brains: 50 })
+        setCardForm({ ...cardForm, title: '', attack: 50, defense: 50, speed: 50, brains: 50, imageUrl: '' })
       } else if (tab === 'avatar') {
-        if (!avatarForm.id || !avatarForm.label || !avatarForm.description) {
-          throw new Error('ID, Label, and Description are required')
+        if (!avatarForm.label || !avatarForm.emoji) {
+          throw new Error('Avatar Name and Emoji are required')
         }
         await createAvatar({
-          id: avatarForm.id,
-          emoji: avatarForm.iconName || 'User', // Using iconName field instead of emoji
+          id: avatarForm.label.toLowerCase().replace(/\s+/g, '_'),
+          emoji: avatarForm.emoji,
           label: avatarForm.label,
-          cssClass: avatarForm.cssClass,
-          description: avatarForm.description
+          cssClass: 'avatar-default',
+          description: '',
         })
-        setSavedMsg('Avatar published!')
-        setAvatarForm({ id: '', iconName: '', label: '', cssClass: 'avatar-default', description: '' })
+        setSavedMsg('Avatar saved to database!')
+        setAvatarForm({ label: '', emoji: '' })
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to publish content')
@@ -365,15 +368,37 @@ export default function AdminContent() {
 
             <div>
               <label style={labelStyle}>Card Artwork</label>
-              <div style={{
+              <label style={{
                 border: '2px dashed var(--color-border)', borderRadius: 16, padding: 40,
                 textAlign: 'center', cursor: 'pointer', background: 'var(--color-bg)',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                position: 'relative', overflow: 'hidden'
               }}>
-                <ImageIcon size={48} color="var(--color-muted)" />
-                <div style={{ fontSize: 15, color: 'var(--color-text)', fontWeight: 700 }}>Click to upload artwork</div>
-                <div style={{ fontSize: 13, color: 'var(--color-muted)' }}>PNG, JPG, SVG — Recommended 512×512</div>
-              </div>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  style={{ display: 'none' }} 
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (ev) => {
+                        setCardForm(f => ({ ...f, imageUrl: ev.target?.result as string }));
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+                {cardForm.imageUrl ? (
+                  <img src={cardForm.imageUrl} alt="Preview" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                ) : (
+                  <>
+                    <ImageIcon size={48} color="var(--color-muted)" />
+                    <div style={{ fontSize: 15, color: 'var(--color-text)', fontWeight: 700 }}>Click to upload artwork</div>
+                    <div style={{ fontSize: 13, color: 'var(--color-muted)' }}>PNG, JPG, SVG — Recommended 512×512</div>
+                  </>
+                )}
+              </label>
             </div>
 
             <div>
@@ -416,8 +441,13 @@ export default function AdminContent() {
                 height: 140,
                 background: `linear-gradient(135deg, ${RARITY_COLORS[cardForm.rarity]}40 0%, ${RARITY_COLORS[cardForm.rarity]}10 100%)`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                overflow: 'hidden', position: 'relative'
               }}>
-                <ImageIcon size={48} color={RARITY_COLORS[cardForm.rarity]} style={{ opacity: 0.5 }} />
+                {cardForm.imageUrl ? (
+                  <img src={cardForm.imageUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <ImageIcon size={48} color={RARITY_COLORS[cardForm.rarity]} style={{ opacity: 0.5 }} />
+                )}
               </div>
               <div style={{ padding: 16 }}>
                 <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--color-text)', marginBottom: 4 }}>
@@ -449,50 +479,23 @@ export default function AdminContent() {
         <div style={formCardStyle}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
             <div>
-              <label style={labelStyle}>Avatar ID</label>
+              <label style={labelStyle}>Avatar Name</label>
               <input
                 style={inputStyle}
-                placeholder="avatar_owl"
-                value={avatarForm.id}
-                onChange={(e) => setAvatarForm({ ...avatarForm, id: e.target.value })}
-              />
-            </div>
-            <div>
-              <label style={labelStyle}>Icon Name (Lucide)</label>
-              <input
-                style={inputStyle}
-                placeholder="User, Bird, Ghost..."
-                value={avatarForm.iconName}
-                onChange={(e) => setAvatarForm({ ...avatarForm, iconName: e.target.value })}
-              />
-            </div>
-            <div>
-              <label style={labelStyle}>Label</label>
-              <input
-                style={inputStyle}
-                placeholder="Wise Owl"
+                placeholder="e.g. Wise Owl"
                 value={avatarForm.label}
                 onChange={(e) => setAvatarForm({ ...avatarForm, label: e.target.value })}
               />
             </div>
             <div>
-              <label style={labelStyle}>CSS Class</label>
+              <label style={labelStyle}>Emoji</label>
               <input
                 style={inputStyle}
-                placeholder="avatar-owl"
-                value={avatarForm.cssClass}
-                onChange={(e) => setAvatarForm({ ...avatarForm, cssClass: e.target.value })}
+                placeholder="e.g. 🦉"
+                value={avatarForm.emoji}
+                onChange={(e) => setAvatarForm({ ...avatarForm, emoji: e.target.value })}
               />
             </div>
-          </div>
-          <div>
-            <label style={labelStyle}>Description</label>
-            <textarea
-              style={{ ...inputStyle, minHeight: 80 }}
-              placeholder="Awarded for getting 50 questions right."
-              value={avatarForm.description}
-              onChange={(e) => setAvatarForm({ ...avatarForm, description: e.target.value })}
-            />
           </div>
         </div>
       )}

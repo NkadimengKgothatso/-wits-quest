@@ -347,7 +347,7 @@ export default function CardCollection() {
       getPlayerInventory(user.id),
     ])
       .then(([full, owned]) => {
-        setEntries(full);
+        setEntries(full.filter((e) => e.unlocked));
         setOwnedForDeck(owned);
       })
       .catch(() => {

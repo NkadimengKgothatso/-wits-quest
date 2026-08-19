@@ -56,6 +56,7 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
     try {
       const res = await submitTriviaAnswer(trivia.id, answer);
       setResult(res);
+      window.dispatchEvent(new Event('triviaCompleted'));
       
       if (res.isCorrect) {
         setTimeout(() => {
@@ -252,36 +253,76 @@ export default function TriviaModal({ landmark, onClose, onCardEarned }: TriviaM
         /* Reward / Failure Modal */
         <div
           className="slide-up"
-          style={{ width: '100%', maxWidth: 360, background: 'var(--color-bg)', padding: 32, borderRadius: 24, textAlign: 'center' }}
+          style={{ width: '100%', maxWidth: 360, background: 'var(--color-bg)', padding: 32, borderRadius: 24, textAlign: 'center', position: 'relative' }}
         >
+          <style>{`
+            @keyframes card-bounce-win {
+              0% { transform: scale(0.3) translateY(100px); opacity: 0; }
+              50% { transform: scale(1.1) translateY(-20px); opacity: 1; }
+              70% { transform: scale(0.95) translateY(5px); }
+              100% { transform: scale(1) translateY(0); }
+            }
+            .animate-card-win {
+              animation: card-bounce-win 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            }
+          `}</style>
           <div style={{ 
-            fontSize: 14, fontWeight: 800, marginBottom: 8, letterSpacing: '0.1em',
-            color: result.isCorrect ? 'var(--color-success)' : 'var(--color-danger)'
+            fontSize: 14, fontWeight: 900, marginBottom: 16, letterSpacing: '0.15em',
+            color: result.isCorrect ? 'var(--color-success)' : 'var(--color-danger)',
+            textTransform: 'uppercase'
           }}>
-            {result.isCorrect ? 'CARD UNLOCKED' : 'REWARD MISSED'}
+            {result.isCorrect ? '✨ Challenge Conquered ✨' : 'Challenge Failed'}
           </div>
           
-          <div style={{ fontSize: 13, color: 'var(--color-text)', marginBottom: 24, fontWeight: 600 }}>
-            {result.isCorrect 
-              ? `You earned ${result.xpAwarded} XP and ${result.essenceAwarded} Essence!` 
-              : 'You missed out on this card. Better luck next time!'}
-          </div>
+          {result.isCorrect ? (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 24 }}>
+              {result.xpAwarded > 0 && (
+                <div style={{ background: 'rgba(211, 122, 50, 0.1)', color: 'var(--color-accent)', padding: '6px 12px', borderRadius: 20, fontSize: 13, fontWeight: 800 }}>
+                  +{result.xpAwarded} XP
+                </div>
+              )}
+              {result.essenceAwarded > 0 && (
+                <div style={{ background: 'rgba(143, 174, 110, 0.1)', color: '#8fae6e', padding: '6px 12px', borderRadius: 20, fontSize: 13, fontWeight: 800 }}>
+                  +{result.essenceAwarded} Essence
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ fontSize: 14, color: 'var(--color-muted)', marginBottom: 24, fontWeight: 600, lineHeight: 1.4 }}>
+              You missed out on this card.<br/>Better luck next time!
+            </div>
+          )}
 
           {result.cardReward && (
             <div
+              className={result.isCorrect ? 'animate-card-win' : ''}
               style={{
-                width: 200, margin: '0 auto 32px', borderRadius: 16, padding: 24,
-                background: result.isCorrect ? 'var(--color-card-bg)' : 'rgba(0,0,0,0.05)',
-                border: `2px solid ${result.isCorrect ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                boxShadow: result.isCorrect ? '0 8px 24px rgba(211, 122, 50, 0.2)' : 'none',
-                filter: result.isCorrect ? 'none' : 'grayscale(100%) opacity(0.6)'
+                width: 200, margin: '0 auto 32px', borderRadius: 16, overflow: 'hidden',
+                background: result.isCorrect ? 'linear-gradient(135deg, #f5ecd7 0%, #e8d9b8 100%)' : 'rgba(0,0,0,0.05)',
+                border: `3px solid ${result.isCorrect ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                boxShadow: result.isCorrect ? '0 16px 32px rgba(211, 122, 50, 0.3)' : 'none',
+                filter: result.isCorrect ? 'none' : 'grayscale(100%) opacity(0.5)',
+                display: 'flex', flexDirection: 'column'
               }}
             >
-              <div style={{ fontWeight: 800, fontSize: 18, color: 'var(--color-text)', marginBottom: 8 }}>
-                {result.cardReward.name}
+              <div style={{ 
+                height: 140, width: '100%', 
+                background: result.isCorrect ? 'rgba(211, 122, 50, 0.2)' : 'var(--color-border)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden'
+              }}>
+                {result.cardReward.imageUrl ? (
+                  <img src={result.cardReward.imageUrl} alt={result.cardReward.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ fontSize: 40, opacity: 0.2 }}>🖼️</div>
+                )}
               </div>
-              <div style={{ fontSize: 12, color: 'var(--color-muted)', fontWeight: 700 }}>
-                {result.cardReward.rarity}
+              <div style={{ padding: '16px 12px', background: 'var(--color-card-bg)', flex: 1 }}>
+                <div style={{ fontWeight: 900, fontSize: 16, color: 'var(--color-text)', marginBottom: 4, lineHeight: 1.1 }}>
+                  {result.cardReward.name}
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--color-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  {result.cardReward.rarity}
+                </div>
               </div>
             </div>
           )}

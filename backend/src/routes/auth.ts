@@ -368,8 +368,8 @@ router.get('/avatars', async (_req: Request, res: Response) => {
 router.post('/avatars', async (req: Request, res: Response) => {
   try {
     const { id, emoji, label, cssClass, description } = req.body;
-    if (!id || !emoji || !label || !cssClass || !description) {
-      res.status(400).json({ error: 'All fields (id, emoji, label, cssClass, description) are required' });
+    if (!id || !emoji || !label) {
+      res.status(400).json({ error: 'id, emoji, and label are required' });
       return;
     }
     await supabase.from('avatars').insert({

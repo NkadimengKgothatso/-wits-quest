@@ -187,11 +187,18 @@ router.post('/trivia/answer', authMiddleware, async (req: Request, res: Response
     let isCorrect = false;
     if (trivia.questionType === 'mc') {
       // For mc, answer is the index (number)
-      isCorrect = Number(answer) === Number(trivia.correctAnswer);
+      const selectedOptionText = trivia.options[Number(answer)];
+      isCorrect = selectedOptionText === trivia.correctAnswer;
     } else {
-      // For text, answer is a string, check against comma-separated list of accepted answers
-      const accepted = (trivia.correctAnswer as string).split(',').map(a => a.trim().toLowerCase());
-      isCorrect = accepted.includes(String(answer).trim().toLowerCase());
+      // For text, check if the user's answer contains any of the accepted comma-separated keywords
+      const acceptedKeywords = (trivia.correctAnswer as string)
+        .split(',')
+        .map(a => a.trim().toLowerCase())
+        .filter(Boolean);
+      const userAnswer = String(answer).trim().toLowerCase();
+      
+      // Mark correct if the user's answer contains ANY of the keywords
+      isCorrect = acceptedKeywords.some(keyword => userAnswer.includes(keyword));
     }
 
     // Record attempt
@@ -278,5 +285,44 @@ router.post('/trivia/answer', authMiddleware, async (req: Request, res: Response
     res.status(500).json({ error: 'Failed to submit answer', detail: err.message });
   }
 });
+
+// Get completed events (where user has attempted all published trivia)
+router.get('/player/completed-events', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+    const { data: allTrivia } = await supabase.from('trivia_questions').select('id, eventId').eq('status', 'published');
+    const { data: attempts } = await supabase.from('user_trivia_attempts').select('triviaId').eq('userId', userId);
+    
+    if (!allTrivia || !attempts) {
+      res.json([]);
+      return;
+    }
+
+    const attemptedIds = new Set(attempts.map(a => a.triviaId));
+    
+    const eventTriviaCount: Record<string, number> = {};
+    const eventAttemptedCount: Record<string, number> = {};
+
+    for (const t of allTrivia) {
+      eventTriviaCount[t.eventId] = (eventTriviaCount[t.eventId] || 0) + 1;
+      if (attemptedIds.has(t.id)) {
+        eventAttemptedCount[t.eventId] = (eventAttemptedCount[t.eventId] || 0) + 1;
+      }
+    }
+
+    const completed = [];
+    for (const eventId in eventTriviaCount) {
+      if (eventTriviaCount[eventId] === eventAttemptedCount[eventId]) {
+        completed.push(eventId);
+      }
+    }
+
+    res.json(completed);
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to fetch completed events', detail: err.message });
+  }
+});
+
+
 
 export default router;
