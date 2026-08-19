@@ -16,20 +16,26 @@ function toClientCard(c: ApiCard): Card {
 export async function getPlayerInventory(userId: string, filters?: InventoryFilters): Promise<InventoryEntry[]> {
   const owned = await getMockUserCards(userId);
   return owned
-    .filter((c: any) => !filters?.rarity?.length || filters.rarity.includes(c.rarity))
-    .filter((c: any) => !filters?.category || c.category === filters.category)
-    .filter((c: any) => !filters?.search || c.name.toLowerCase().includes(filters.search.toLowerCase()))
-    .map((c: any) => {
-      const effectiveStats: CardStats = { attack: c.attack, defense: c.defense, speed: c.speed, brains: c.brains };
+    .filter((c) => !filters?.rarity?.length || filters.rarity.includes(c.card.rarity))
+    .filter((c) => !filters?.category || c.card.category === filters.category)
+    .filter((c) => !filters?.search || c.card.name.toLowerCase().includes(filters.search.toLowerCase()))
+    .map((c) => {
+      const bonusStats: CardStats = { attack: c.attackBonus, defense: c.defenseBonus, speed: c.speedBonus, brains: c.brainsBonus };
+      const effectiveStats: CardStats = {
+        attack: c.card.baseAttack + c.attackBonus,
+        defense: c.card.baseDefense + c.defenseBonus,
+        speed: c.card.baseSpeed + c.speedBonus,
+        brains: c.card.baseBrains + c.brainsBonus,
+      };
       return {
         unlocked: true,
         inventoryId: c.inventoryId,
-        card: { id: c.cardId, name: c.name, category: c.category, rarity: c.rarity, stats: effectiveStats, image: c.imageUrl ?? '' },
+        card: { id: c.card.id, name: c.card.name, category: c.card.category as Card['category'], rarity: c.card.rarity, stats: effectiveStats, image: c.card.imageUrl ?? '' },
         level: c.level,
-        quantity: c.quantity,
-        bonusStats: { attack: 0, defense: 0, speed: 0, brains: 0 },
+        quantity: c.owned,
+        bonusStats,
         effectiveStats,
-        totalStatCost: c.totalStats,
+        totalStatCost: effectiveStats.attack + effectiveStats.defense + effectiveStats.speed + effectiveStats.brains,
       } satisfies InventoryEntry;
     });
 }

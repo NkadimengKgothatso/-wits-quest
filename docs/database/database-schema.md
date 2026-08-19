@@ -114,3 +114,49 @@ Manages asynchronous turn-based challenges and stores failure feedback for offli
 | `defenderTelemetry` | `JSON` | `NULLABLE` | Defensive failure report (failed stat, deficit, advice) |
 | `expiresAt` | `TIMESTAMP` | `NOT NULL` | 24-hour expiration timestamp |
 | `createdAt` | `TIMESTAMP` | `DEFAULT NOW()` | Creation timestamp |
+
+## `avatars` — Profile Avatar Catalog
+
+Customizable avatar emojis available to students for their profile.
+
+| Column Name | Data Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `VARCHAR(50)` | `PRIMARY KEY` | Avatar identifier (e.g. `owl`, `lion`) |
+| `emoji` | `VARCHAR(10)` | `NOT NULL` | Emoji character |
+| `label` | `VARCHAR(50)` | `NOT NULL` | Display name |
+| `cssClass` | `VARCHAR(50)` | `NOT NULL` | CSS class for animation styling |
+| `description` | `VARCHAR(100)` | `NOT NULL` | Short description |
+
+## `events` — Campus Landmark Events
+
+Geofenced campus events linked to landmark trivia challenges. Students walk within the radius and answer a trivia question to earn card rewards and XP.
+
+| Column Name | Data Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `VARCHAR(36)` | `PRIMARY KEY` | Event ID |
+| `name` | `VARCHAR(100)` | `NOT NULL` | Event/landmark name |
+| `lat` | `DOUBLE PRECISION` | `NOT NULL` | Latitude of event center |
+| `lng` | `DOUBLE PRECISION` | `NOT NULL` | Longitude of event center |
+| `radius` | `INTEGER` | `DEFAULT 25` | Geofence radius in meters |
+| `startDate` | `TIMESTAMP` | `NULLABLE` | Event start date |
+| `endDate` | `TIMESTAMP` | `NULLABLE` | Event end date |
+| `active` | `INTEGER` | `DEFAULT 1` | 1 = active, 0 = inactive |
+| `cardReward` | `VARCHAR(36)` | `FOREIGN KEY, NULLABLE` | References `cards.id` — card awarded on correct answer |
+| `xpAward` | `INTEGER` | `DEFAULT 100` | XP awarded on correct answer |
+| `essenceAward` | `INTEGER` | `DEFAULT 50` | Essence awarded on correct answer |
+| `createdAt` | `TIMESTAMP` | `DEFAULT NOW()` | Creation timestamp |
+
+## `trivia_questions` — Event Trivia Questions
+
+Stores the trivia question for each event. One question per event (create-or-replace on POST). Answers are withheld from the GET response to prevent client-side cheating.
+
+| Column Name | Data Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `VARCHAR(36)` | `PRIMARY KEY` | Question ID |
+| `eventId` | `VARCHAR(36)` | `FOREIGN KEY` | References `events.id` (cascade delete) |
+| `question` | `TEXT` | `NOT NULL` | Question text |
+| `questionType` | `VARCHAR(10)` | `NOT NULL DEFAULT 'mc'` | `mc` (multiple choice) or `text` (text match) |
+| `options` | `JSONB` | `NULLABLE` | Array of 4 option strings (MC only) |
+| `correctIndex` | `INTEGER` | `NULLABLE` | Index of correct option (MC only) |
+| `acceptedAnswers` | `JSONB` | `NULLABLE` | Array of accepted answer strings (text only) |
+| `createdAt` | `TIMESTAMP` | `DEFAULT NOW()` | Creation timestamp |

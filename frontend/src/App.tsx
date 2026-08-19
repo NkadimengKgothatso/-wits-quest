@@ -94,7 +94,7 @@ function AppContent() {
             {screen === 'map' && (
               <MapExplorer onOpenTrivia={(landmark: any) => setTriviaLandmark(landmark)} />
             )}
-            {screen === 'collection' && <CardCollection onNavigate={(s) => setScreen(s as Screen)} />}
+            {screen === 'collection' && <CardCollection />}
             {screen === 'battle' && <BattleArena />}
             {screen === 'profile' && <Profile onNavigate={(s) => setScreen(s as Screen)} />}
             {screen === 'leaderboard' && <Leaderboard />}
@@ -111,7 +111,7 @@ function AppContent() {
           {/* Trivia modal */}
           {triviaLandmark && (
             <TriviaModal
-              landmark={triviaLandmark}
+              event={triviaLandmark}
               onClose={() => setTriviaLandmark(null)}
               onCardEarned={() => setCardsEarned((c) => c + 1)}
             />

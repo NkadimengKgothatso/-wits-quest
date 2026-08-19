@@ -234,14 +234,20 @@ app.post('/api/events/:id/trivia', async (req, res) => {
     .eq('eventId', req.params.id)
     .maybeSingle();
 
-  const payload = {
+  // Only include fields relevant to the question type so the payload
+  // doesn't reference columns that may not exist in the table yet.
+  const payload: Record<string, any> = {
     eventId: req.params.id,
     question,
     questionType,
-    options: questionType === 'mc' ? options : null,
-    correctIndex: questionType === 'mc' ? correctIndex : null,
-    acceptedAnswers: questionType === 'text' ? acceptedAnswers : null,
   };
+
+  if (questionType === 'mc') {
+    payload.options = options;
+    payload.correctAnswer = correctIndex;
+  } else {
+    payload.acceptedAnswers = acceptedAnswers;
+  }
 
   if (existing) {
     const { data, error } = await supabase
@@ -256,7 +262,7 @@ app.post('/api/events/:id/trivia', async (req, res) => {
 
   const { data, error } = await supabase
     .from('trivia_questions')
-    .insert({ id: randomUUID(), ...payload, createdAt: new Date().toISOString() })
+    .insert({ id: randomUUID(), ...payload })
     .select()
     .single();
   if (error) return res.status(400).json({ error: error.message });
@@ -285,7 +291,7 @@ app.post('/api/events/:id/answer', async (req, res) => {
 
   let correct = false;
   if (qRow.questionType === 'mc') {
-    correct = selectedIndex === qRow.correctIndex;
+    correct = Number(selectedIndex) === Number(qRow.correctAnswer);
   } else {
     const normalized = (textAnswer ?? '').trim().toLowerCase();
     const accepted: string[] = qRow.acceptedAnswers ?? [];

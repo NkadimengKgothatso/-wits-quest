@@ -131,7 +131,16 @@ export async function saveMockBattleResult(data: {
   return undefined;
 }
 
-export async function getMockUserCards(userId: string): Promise<{ card: Card; owned: number; level: number }[]> {
+export async function getMockUserCards(userId: string): Promise<{
+  card: Card;
+  owned: number;
+  level: number;
+  inventoryId: string;
+  attackBonus: number;
+  defenseBonus: number;
+  speedBonus: number;
+  brainsBonus: number;
+}[]> {
   const res = await fetch(`${BACKEND_URL}/api/users/${userId}/cards`, { headers: getAuthHeaders() });
   if (!res.ok) return [];
   const cards = await res.json();
@@ -149,7 +158,12 @@ export async function getMockUserCards(userId: string): Promise<{ card: Card; ow
       imageUrl: c.imageUrl
     },
     owned: c.quantity,
-    level: c.level
+    level: c.level,
+    inventoryId: c.inventoryId ?? c.id,
+    attackBonus: c.attackBonus ?? 0,
+    defenseBonus: c.defenseBonus ?? 0,
+    speedBonus: c.speedBonus ?? 0,
+    brainsBonus: c.brainsBonus ?? 0,
   }));
 }
 
