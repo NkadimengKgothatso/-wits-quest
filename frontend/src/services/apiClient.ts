@@ -22,6 +22,7 @@ export interface User {
   maxStatBudget: number;
   legendaryCap: number;
   avatar?: string;
+  emailVerified?: boolean;
 }
 export type MockUser = User; // Compatibility alias
 

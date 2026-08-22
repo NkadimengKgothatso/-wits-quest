@@ -143,6 +143,7 @@ function AuthForm({ mode, onSwitch, onLogin, onBack }: { mode: 'login' | 'regist
   const { login, register } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [name, setName] = useState('');
   const [error, setError] = useState('');
@@ -182,6 +183,10 @@ function AuthForm({ mode, onSwitch, onLogin, onBack }: { mode: 'login' | 'regist
       setError('Please provide your full student name');
       return;
     }
+    if (mode === 'register' && password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
 
     setError('');
     setLoading(true);
@@ -217,7 +222,7 @@ function AuthForm({ mode, onSwitch, onLogin, onBack }: { mode: 'login' | 'regist
           {(['login', 'register'] as const).map((m) => (
             <button
               key={m}
-              onClick={() => { onSwitch(m); setError(''); }}
+              onClick={() => { onSwitch(m); setError(''); setConfirmPassword(''); }}
               style={{
                 flex: 1, padding: '12px 16px', fontSize: 14, borderRadius: 12, fontWeight: 700,
                 background: mode === m ? '#dca668' : 'transparent',
@@ -318,6 +323,37 @@ function AuthForm({ mode, onSwitch, onLogin, onBack }: { mode: 'login' | 'regist
               </button>
             </div>
           </div>
+
+          {mode === 'register' && (
+            <div>
+              <label style={{ fontSize: 13, color: '#1f1608', fontWeight: 700, display: 'block', marginBottom: 8 }}>Confirm Password</label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  style={{
+                    width: '100%', padding: '12px 16px', borderRadius: 12,
+                    border: `1.5px solid ${confirmPassword && password !== confirmPassword ? '#EF4444' : 'rgba(139, 105, 58, 0.25)'}`,
+                    background: '#fcfaf6',
+                    color: '#1f1608', outline: 'none', paddingRight: 40,
+                  }}
+                  type={showPw ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => { setConfirmPassword(e.target.value); setError(''); }}
+                />
+                {confirmPassword && (
+                  <div style={{
+                    position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                    fontSize: 14, color: password === confirmPassword ? 'var(--color-success)' : '#EF4444',
+                  }}>
+                    {password === confirmPassword ? '✓' : '✕'}
+                  </div>
+                )}
+              </div>
+              {confirmPassword && password !== confirmPassword && (
+                <p style={{ fontSize: 12, color: '#EF4444', marginTop: 6, fontWeight: 600 }}>Passwords do not match</p>
+              )}
+            </div>
+          )}
 
           {error && (
             <div style={{

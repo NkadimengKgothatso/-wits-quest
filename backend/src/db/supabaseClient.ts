@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import { WebSocket } from 'ws';
 dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -10,4 +11,8 @@ if (!supabaseUrl || !supabaseKey) {
   process.exit(1);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  realtime: {
+    transport: WebSocket as any,
+  },
+});

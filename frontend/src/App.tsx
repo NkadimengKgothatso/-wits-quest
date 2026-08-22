@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './screens/Login';
+import EmailVerification from './screens/EmailVerification';
 import MapExplorer from './screens/MapExplorer';
 import TriviaModal from './screens/TriviaModal';
 import CardCollection from './screens/CardCollection';
@@ -27,7 +28,7 @@ const ADMIN_NAV: { id: AdminScreen; label: string }[] = [
 
 
 function AppContent() {
-  const { loggedIn, loading, currentUser } = useAuth();
+  const { loggedIn, loading, currentUser, pendingEmail, pendingName, pendingPreviewUrl } = useAuth();
   const [screen, setScreen] = useState<Screen>('map');
   const [adminMode, setAdminMode] = useState(false);
   const [adminScreen, setAdminScreen] = useState<AdminScreen>('events');
@@ -63,6 +64,17 @@ function AppContent() {
   }
 
   if (!loggedIn) {
+    if (pendingEmail) {
+      return (
+        <EmailVerification
+          email={pendingEmail}
+          studentName={pendingName || ''}
+          previewUrl={pendingPreviewUrl || undefined}
+          onVerified={() => { /* AuthContext handles state update */ }}
+          onBack={() => { /* Allow going back to login */ }}
+        />
+      );
+    }
     return <Login />;
   }
 

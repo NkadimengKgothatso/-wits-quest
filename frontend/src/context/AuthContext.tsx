@@ -21,6 +21,12 @@ interface AuthContextType {
   logout: () => void;
   refreshUser: () => Promise<void>;
   updateUserLocally: (user: MockUser) => void;
+  /** Email pending verification — set after register, cleared after verify */
+  pendingEmail: string | null;
+  pendingName: string | null;
+  pendingPreviewUrl: string | null;
+  verifyEmail: (code: string) => Promise<void>;
+  clearPendingVerification: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -66,6 +72,7 @@ function backendUserToMockUser(u: Record<string, any>): MockUser {
     maxStatBudget: u.maxStatBudget ?? 300,
     legendaryCap: u.legendaryCap ?? 1,
     avatar: u.avatar || 'owl',
+    emailVerified: !!u.emailVerified,
   };
 }
 
@@ -74,6 +81,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null);
+  const [pendingName, setPendingName] = useState<string | null>(null);
+  const [pendingPreviewUrl, setPendingPreviewUrl] = useState<string | null>(null);
 
   // Load persisted session on startup
   useEffect(() => {
@@ -151,6 +161,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!res.ok) {
         const err = await res.json();
+        // If login requires email verification, enter pending mode instead of throwing
+        if (err.verificationRequired) {
+          setPendingEmail(email);
+          setPendingName(null);
+          setPendingPreviewUrl(err.previewUrl || null);
+          return { id: '', email, username: email.split('@')[0] } as MockUser;
+        }
         throw new Error(err.error || 'Login failed');
       }
 
@@ -160,6 +177,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Store token and user ID
       localStorage.setItem(TOKEN_KEY, data.token);
       localStorage.setItem(STORAGE_KEY, user.id);
+
+      // If the backend says a verification email was sent, enter pending-verification mode
+      if ((data.verificationSent || data.verificationRequired) && !user.emailVerified) {
+        setPendingEmail(user.email);
+        setPendingName(user.name || user.username);
+        setPendingPreviewUrl(data.previewUrl || null);
+        // Don't mark as fully logged in yet — the verification screen will handle it
+        setCurrentUser(null);
+        setLoggedIn(false);
+        return user;
+      }
 
       setStudentOnlineStatus(user.id, true);
       const formatted = formatUserMeta({ ...user, isOnline: true });
@@ -191,6 +219,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const data = await res.json();
+
+      // If the backend sent a verification email, enter pending-verification mode
+      if (data.verificationSent) {
+        setPendingEmail(email);
+        setPendingName(name);
+        setPendingPreviewUrl(data.previewUrl || null);
+        // Return a placeholder user object
+        return { id: '', email, username: name || email.split('@')[0] } as MockUser;
+      }
+
       const user = backendUserToMockUser(data.user);
 
       localStorage.setItem(TOKEN_KEY, data.token);
@@ -207,6 +245,54 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       throw new Error('Backend offline. Please start the backend server.');
     }
+  };
+
+  /**
+   * Verify the 6-digit email code.
+   * On success, marks the user as verified and completes login.
+   */
+  const verifyEmail = async (code: string): Promise<void> => {
+    if (!pendingEmail) throw new Error('No pending verification email');
+
+    const res = await fetch(`${API_BASE}/api/auth/verify-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: pendingEmail, code }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Verification failed');
+    }
+
+    const data = await res.json();
+    if (data.token && data.user) {
+      // Store the fresh token
+      if (data.token) {
+        localStorage.setItem(TOKEN_KEY, data.token);
+      }
+
+      const user = backendUserToMockUser(data.user);
+      localStorage.setItem(STORAGE_KEY, user.id);
+      setStudentOnlineStatus(user.id, true);
+      const formatted = formatUserMeta({ ...user, isOnline: true });
+      setCurrentUser(formatted);
+      setLoggedIn(true);
+
+      // Clear pending state
+      setPendingEmail(null);
+      setPendingName(null);
+      setPendingPreviewUrl(null);
+    }
+  };
+
+  const clearPendingVerification = () => {
+    setPendingEmail(null);
+    setPendingName(null);
+    setPendingPreviewUrl(null);
+    // Also clear the stored token since the user isn't fully verified
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   const logout = () => {
@@ -231,6 +317,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         refreshUser,
         updateUserLocally,
+        pendingEmail,
+        pendingName,
+        pendingPreviewUrl,
+        verifyEmail,
+        clearPendingVerification,
       }}
     >
       {children}

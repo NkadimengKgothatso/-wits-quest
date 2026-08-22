@@ -18,8 +18,44 @@ import { randomUUID } from 'node:crypto';
 import bcrypt from 'bcrypt';
 import { signToken, authMiddleware } from '../middleware/auth.js';
 import { supabase } from '../db/supabaseClient.js';
+import { sendVerificationEmail } from '../services/emailService.js';
 
 const router = Router();
+
+// ─── In-memory email verification store ──────────────────────────────
+// Tracks which users have verified their email. No DB schema changes needed.
+interface VerificationCode {
+  userId: string;
+  code: string;
+  expiresAt: Date;
+  used: boolean;
+}
+const verificationCodes: VerificationCode[] = [];
+const verifiedUsers = new Set<string>(); // Set of user IDs that have verified
+
+function generateCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+function storeCode(userId: string): string {
+  const code = generateCode();
+  // Invalidate previous codes for this user
+  verificationCodes.forEach(c => { if (c.userId === userId) c.used = true; });
+  verificationCodes.push({
+    userId,
+    code,
+    expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+    used: false,
+  });
+  return code;
+}
+
+function validateCode(userId: string, code: string): boolean {
+  const now = new Date();
+  return verificationCodes.some(
+    c => c.userId === userId && c.code === code && !c.used && c.expiresAt > now
+  );
+}
 
 // Student email must be exactly 7 digits followed by @students.wits.ac.za
 // Admin email must be @wits.ac.za
@@ -108,14 +144,15 @@ router.post('/auth/register', async (req: Request, res: Response) => {
     });
     if (deckErr) throw deckErr;
 
-    // Issue JWT
-    const token = signToken(id);
+    // Generate 6-digit verification code (in-memory)
+    const code = storeCode(id);
 
-    // Fetch the full user row to return
-    const { data: user } = await supabase.from('users').select('*').eq('id', id).single();
-
+    // Send verification email
+    const previewUrl = await sendVerificationEmail(email, code, name || username);
     console.log(`[Auth] Registered new student: ${email} (${id})`);
-    res.status(201).json({ token, user });
+    if (previewUrl) console.log(`[Email] Preview URL: ${previewUrl}`);
+
+    res.status(201).json({ verificationSent: true, previewUrl });
   } catch (err: any) {
     console.error('[Auth] Register error:', err);
     res.status(500).json({ error: 'Registration failed', detail: err.message });
@@ -143,6 +180,22 @@ router.post('/auth/login', async (req: Request, res: Response) => {
     const valid = await bcrypt.compare(password, user.passwordHash as string);
     if (!valid) {
       res.status(401).json({ error: 'Incorrect password' });
+      return;
+    }
+
+    // Check email verification status (in-memory)
+    if (!verifiedUsers.has(user.id as string)) {
+      // Generate a new verification code
+      const code = storeCode(user.id as string);
+
+      const previewUrl = await sendVerificationEmail(email, code, user.username as string);
+      if (previewUrl) console.log(`[Email] Preview URL: ${previewUrl}`);
+
+      res.status(403).json({
+        verificationRequired: true,
+        previewUrl,
+        error: 'Email not verified. Please check your inbox for the verification code.'
+      });
       return;
     }
 
@@ -544,6 +597,81 @@ router.delete('/events/:id', async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error('[Events] Delete error:', err);
     res.status(500).json({ error: 'Failed to delete event', detail: err.message });
+  }
+});
+
+// ─── SEND VERIFICATION CODE ─────────────────────────────────────────
+router.post('/auth/send-code', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      res.status(400).json({ error: 'Email is required' });
+      return;
+    }
+
+    const { data: user } = await supabase.from('users').select('*').eq('email', email).single();
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    if (verifiedUsers.has(user.id as string)) {
+      res.json({ alreadyVerified: true });
+      return;
+    }
+
+    // Generate new code (in-memory)
+    const code = storeCode(user.id as string);
+
+    const previewUrl = await sendVerificationEmail(email, code, user.username as string);
+    console.log(`[Auth] Verification code sent to ${email}`);
+    if (previewUrl) console.log(`[Email] Preview URL: ${previewUrl}`);
+
+    res.json({ sent: true, previewUrl });
+  } catch (err: any) {
+    console.error('[Auth] Send code error:', err);
+    res.status(500).json({ error: 'Failed to send verification code' });
+  }
+});
+
+// ─── VERIFY EMAIL ───────────────────────────────────────────────────
+router.post('/auth/verify-email', async (req: Request, res: Response) => {
+  try {
+    const { email, code } = req.body;
+    if (!email || !code) {
+      res.status(400).json({ error: 'Email and code are required' });
+      return;
+    }
+
+    const { data: user } = await supabase.from('users').select('*').eq('email', email).single();
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    if (verifiedUsers.has(user.id as string)) {
+      const token = signToken(user.id as string);
+      res.json({ token, user, alreadyVerified: true });
+      return;
+    }
+
+    // Validate code (in-memory)
+    if (!validateCode(user.id as string, code)) {
+      res.status(400).json({ error: 'Invalid or expired verification code' });
+      return;
+    }
+
+    // Mark user as verified
+    verifiedUsers.add(user.id as string);
+
+    const token = signToken(user.id as string);
+    const { data: updatedUser } = await supabase.from('users').select('*').eq('id', user.id).single();
+
+    console.log(`[Auth] Email verified for: ${email} (${user.id})`);
+    res.json({ token, user: updatedUser, verified: true });
+  } catch (err: any) {
+    console.error('[Auth] Verify email error:', err);
+    res.status(500).json({ error: 'Verification failed', detail: err.message });
   }
 });
 
