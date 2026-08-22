@@ -1,0 +1,1973 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../database-plan/">
+      
+      
+        <link rel="next" href="../../meetings/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Database Schema - Wits-Quest Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#database-schema" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wits-Quest Documentation" class="md-header__button md-logo" aria-label="Wits-Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wits-Quest Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Database Schema
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wits-Quest Documentation" class="md-nav__button md-logo" aria-label="Wits-Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wits-Quest Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML Diagrams
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UML Diagrams
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/01_system_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/02_battle_state_machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Battle State Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/03_use_case_diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/04_erd_database_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ERD Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#users-student-registration-profile-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        users — Student Registration &amp; Profile State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cards-master-landmark-card-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cards — Master Landmark Card Catalog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_cards-student-inventory-card-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_cards — Student Inventory &amp; Card Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_decks-constructed-battle-decks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_decks — Constructed Battle Decks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#battle_matches-combat-history-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        battle_matches — Combat History &amp; Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#async_pvp_challenges-async-turn-queue-defensive-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        async_pvp_challenges — Async Turn Queue &amp; Defensive Telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avatars-profile-avatar-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        avatars — Profile Avatar Catalog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events-campus-landmark-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        events — Campus Landmark Events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trivia_questions-event-trivia-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trivia_questions — Event Trivia Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meetings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Meetings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meetings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meeting Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/technical-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#users-student-registration-profile-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        users — Student Registration &amp; Profile State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cards-master-landmark-card-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cards — Master Landmark Card Catalog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_cards-student-inventory-card-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_cards — Student Inventory &amp; Card Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_decks-constructed-battle-decks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_decks — Constructed Battle Decks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#battle_matches-combat-history-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        battle_matches — Combat History &amp; Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#async_pvp_challenges-async-turn-queue-defensive-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        async_pvp_challenges — Async Turn Queue &amp; Defensive Telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avatars-profile-avatar-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        avatars — Profile Avatar Catalog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events-campus-landmark-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        events — Campus Landmark Events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trivia_questions-event-trivia-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trivia_questions — Event Trivia Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="database-schema">Database Schema<a class="headerlink" href="#database-schema" title="Permanent link">&para;</a></h1>
+<p>Full column-level specifications for each table. See <a href="../database-plan/">Database Plan</a> for the ERD and how these tables relate.</p>
+<h2 id="users-student-registration-profile-state"><code>users</code> — Student Registration &amp; Profile State<a class="headerlink" href="#users-student-registration-profile-state" title="Permanent link">&para;</a></h2>
+<p>Authentication credentials, student identification, progression levels, XP, Essence currency, streak multipliers, and competitive Elo ladder standing.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Unique User UUID / Student ID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>email</code></td>
+<td style="text-align: left;"><code>VARCHAR(255)</code></td>
+<td style="text-align: left;"><code>UNIQUE, NOT NULL</code></td>
+<td style="text-align: left;">Wits student email (<code>@students.wits.ac.za</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>studentNumber</code></td>
+<td style="text-align: left;"><code>VARCHAR(20)</code></td>
+<td style="text-align: left;"><code>UNIQUE, NOT NULL</code></td>
+<td style="text-align: left;">Wits student reference number</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>username</code></td>
+<td style="text-align: left;"><code>VARCHAR(50)</code></td>
+<td style="text-align: left;"><code>UNIQUE, NOT NULL</code></td>
+<td style="text-align: left;">Explorer avatar display name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>passwordHash</code></td>
+<td style="text-align: left;"><code>VARCHAR(255)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Bcrypted secure password hash</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>role</code></td>
+<td style="text-align: left;"><code>ENUM</code></td>
+<td style="text-align: left;"><code>DEFAULT 'STUDENT'</code></td>
+<td style="text-align: left;"><code>STUDENT</code>, <code>ADMIN</code>, <code>LECTURER</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>level</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1</code></td>
+<td style="text-align: left;">Current player level (<code>Lv.1</code> → <code>Lv.28</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>currentXP</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">XP accumulated within current level</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>totalXP</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Lifetime XP score</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>essenceBalance</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 100</code></td>
+<td style="text-align: left;">Shard currency for Card Forge upgrades</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>dailyStreakCount</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1</code></td>
+<td style="text-align: left;">Consecutive 24-hr check-in streak</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lastCheckInDate</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Timestamp of last GPS landmark check-in</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>streakMultiplier</code></td>
+<td style="text-align: left;"><code>FLOAT</code></td>
+<td style="text-align: left;"><code>DEFAULT 1.0</code></td>
+<td style="text-align: left;"><code>1.0</code> (0d), <code>1.10</code> (+10% at 3d), <code>1.25</code> (+25% at 7d)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>eloRating</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1000</code></td>
+<td style="text-align: left;">Competitive Ranked rating score</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>divisionTier</code></td>
+<td style="text-align: left;"><code>ENUM</code></td>
+<td style="text-align: left;"><code>DEFAULT 'GOLD'</code></td>
+<td style="text-align: left;"><code>BRONZE</code>, <code>SILVER</code>, <code>GOLD</code>, <code>PLATINUM</code>, <code>DIAMOND</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pvpWins</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Total PvP victory counter</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pvpLosses</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Total PvP defeat counter</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pvpDraws</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Total PvP tie counter</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>maxStatBudget</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 300</code></td>
+<td style="text-align: left;">Max stat points allowed per deck (upgrades with level)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>legendaryCap</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1</code></td>
+<td style="text-align: left;">Maximum Legendary cards allowed in deck</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>createdAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Registration timestamp</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>updatedAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Last profile update timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cards-master-landmark-card-catalog"><code>cards</code> — Master Landmark Card Catalog<a class="headerlink" href="#cards-master-landmark-card-catalog" title="Permanent link">&para;</a></h2>
+<p>Master reference catalog defining landmark collectible cards across Wits campus.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Card identifier (<code>card-101</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>name</code></td>
+<td style="text-align: left;"><code>VARCHAR(100)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Card name (e.g. <em>Great Hall Pillars</em>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>category</code></td>
+<td style="text-align: left;"><code>ENUM</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;"><code>Science</code>, <code>History</code>, <code>Landmarks</code>, <code>Lifestyle</code>, <code>Sports</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rarity</code></td>
+<td style="text-align: left;"><code>ENUM</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;"><code>Common</code>, <code>Rare</code>, <code>Epic</code>, <code>Legendary</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>baseAttack</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Base ATK value</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>baseDefense</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Base DEF value</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>baseSpeed</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Base SPD value</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>baseBrains</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Base BRN value</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>totalStats</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Sum of base stat points</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>imageUrl</code></td>
+<td style="text-align: left;"><code>VARCHAR(255)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">WebP artwork path</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>landmarkId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>NULLABLE</code></td>
+<td style="text-align: left;">Associated campus landmark ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="user_cards-student-inventory-card-upgrades"><code>user_cards</code> — Student Inventory &amp; Card Upgrades<a class="headerlink" href="#user_cards-student-inventory-card-upgrades" title="Permanent link">&para;</a></h2>
+<p>Tracks cards owned by each student along with upgrade levels from the Card Forge.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Inventory record ID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>userId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">References <code>users.id</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cardId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">References <code>cards.id</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>level</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1</code></td>
+<td style="text-align: left;">Forge upgrade level (+5 all stats per level)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>attackBonus</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Accumulated ATK bonus</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>defenseBonus</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Accumulated DEF bonus</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>speedBonus</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Accumulated SPD bonus</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>brainsBonus</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 0</code></td>
+<td style="text-align: left;">Accumulated BRN bonus</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>quantity</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1</code></td>
+<td style="text-align: left;">Duplicate count for scrapping</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>acquiredAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Acquisition timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="user_decks-constructed-battle-decks"><code>user_decks</code> — Constructed Battle Decks<a class="headerlink" href="#user_decks-constructed-battle-decks" title="Permanent link">&para;</a></h2>
+<p>Stores custom 5-card battle decks created by students under budget constraints.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Deck ID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>userId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">References <code>users.id</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>deckName</code></td>
+<td style="text-align: left;"><code>VARCHAR(50)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Deck display name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cardIds</code></td>
+<td style="text-align: left;"><code>JSON</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Array of exactly 5 card IDs</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>totalStatCost</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Sum of stat costs (must be ≤ <code>user.maxStatBudget</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>isDefault</code></td>
+<td style="text-align: left;"><code>BOOLEAN</code></td>
+<td style="text-align: left;"><code>DEFAULT FALSE</code></td>
+<td style="text-align: left;">Active battle deck indicator</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>createdAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Creation timestamp</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>updatedAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Update timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="battle_matches-combat-history-logs"><code>battle_matches</code> — Combat History &amp; Logs<a class="headerlink" href="#battle_matches-combat-history-logs" title="Permanent link">&para;</a></h2>
+<p>Logs end-of-match outcomes across CPU, Live WebSocket, and Async PvP modes.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Match UUID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>matchType</code></td>
+<td style="text-align: left;"><code>ENUM</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;"><code>CPU</code>, <code>LIVE_PVP</code>, <code>ASYNC_PVP</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>challengerId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">References <code>users.id</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>opponentId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">References <code>users.id</code> or <code>'CPU_BOT'</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>winnerId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Winner User ID or <code>'DRAW'</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>roundsWonChallenger</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Rounds won by challenger</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>roundsWonOpponent</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Rounds won by opponent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>xpAwarded</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">XP granted to winner/loser</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>essenceAwarded</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Essence granted</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>eloChange</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Elo points delta (+15 to +25)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>roundsData</code></td>
+<td style="text-align: left;"><code>JSON</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Detailed round stat picks &amp; outcomes</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>createdAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Match timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="async_pvp_challenges-async-turn-queue-defensive-telemetry"><code>async_pvp_challenges</code> — Async Turn Queue &amp; Defensive Telemetry<a class="headerlink" href="#async_pvp_challenges-async-turn-queue-defensive-telemetry" title="Permanent link">&para;</a></h2>
+<p>Manages asynchronous turn-based challenges and stores failure feedback for offline defenders.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Challenge ID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>challengerId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">Initiated by player</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>defenderId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">Challenged offline player</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>status</code></td>
+<td style="text-align: left;"><code>ENUM</code></td>
+<td style="text-align: left;"><code>DEFAULT 'PENDING'</code></td>
+<td style="text-align: left;"><code>PENDING_DEFENDER_TURN</code>, <code>COMPLETED</code>, <code>EXPIRED</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>currentRound</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1</code></td>
+<td style="text-align: left;">Active round number</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>defenderTelemetry</code></td>
+<td style="text-align: left;"><code>JSON</code></td>
+<td style="text-align: left;"><code>NULLABLE</code></td>
+<td style="text-align: left;">Defensive failure report (failed stat, deficit, advice)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>expiresAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">24-hour expiration timestamp</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>createdAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Creation timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="avatars-profile-avatar-catalog"><code>avatars</code> — Profile Avatar Catalog<a class="headerlink" href="#avatars-profile-avatar-catalog" title="Permanent link">&para;</a></h2>
+<p>Customizable avatar emojis available to students for their profile.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(50)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Avatar identifier (e.g. <code>owl</code>, <code>lion</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>emoji</code></td>
+<td style="text-align: left;"><code>VARCHAR(10)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Emoji character</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>label</code></td>
+<td style="text-align: left;"><code>VARCHAR(50)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Display name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cssClass</code></td>
+<td style="text-align: left;"><code>VARCHAR(50)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">CSS class for animation styling</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>description</code></td>
+<td style="text-align: left;"><code>VARCHAR(100)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Short description</td>
+</tr>
+</tbody>
+</table>
+<h2 id="events-campus-landmark-events"><code>events</code> — Campus Landmark Events<a class="headerlink" href="#events-campus-landmark-events" title="Permanent link">&para;</a></h2>
+<p>Geofenced campus events linked to landmark trivia challenges. Students walk within the radius and answer a trivia question to earn card rewards and XP.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Event ID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>name</code></td>
+<td style="text-align: left;"><code>VARCHAR(100)</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Event/landmark name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lat</code></td>
+<td style="text-align: left;"><code>DOUBLE PRECISION</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Latitude of event center</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lng</code></td>
+<td style="text-align: left;"><code>DOUBLE PRECISION</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Longitude of event center</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>radius</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 25</code></td>
+<td style="text-align: left;">Geofence radius in meters</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>startDate</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>NULLABLE</code></td>
+<td style="text-align: left;">Event start date</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>endDate</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>NULLABLE</code></td>
+<td style="text-align: left;">Event end date</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>active</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 1</code></td>
+<td style="text-align: left;">1 = active, 0 = inactive</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cardReward</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY, NULLABLE</code></td>
+<td style="text-align: left;">References <code>cards.id</code> — card awarded on correct answer</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>xpAward</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 100</code></td>
+<td style="text-align: left;">XP awarded on correct answer</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>essenceAward</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>DEFAULT 50</code></td>
+<td style="text-align: left;">Essence awarded on correct answer</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>createdAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Creation timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="trivia_questions-event-trivia-questions"><code>trivia_questions</code> — Event Trivia Questions<a class="headerlink" href="#trivia_questions-event-trivia-questions" title="Permanent link">&para;</a></h2>
+<p>Stores the trivia question for each event. One question per event (create-or-replace on POST). Answers are withheld from the GET response to prevent client-side cheating.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Column Name</th>
+<th style="text-align: left;">Data Type</th>
+<th style="text-align: left;">Constraints</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>id</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>PRIMARY KEY</code></td>
+<td style="text-align: left;">Question ID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>eventId</code></td>
+<td style="text-align: left;"><code>VARCHAR(36)</code></td>
+<td style="text-align: left;"><code>FOREIGN KEY</code></td>
+<td style="text-align: left;">References <code>events.id</code> (cascade delete)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>question</code></td>
+<td style="text-align: left;"><code>TEXT</code></td>
+<td style="text-align: left;"><code>NOT NULL</code></td>
+<td style="text-align: left;">Question text</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>questionType</code></td>
+<td style="text-align: left;"><code>VARCHAR(10)</code></td>
+<td style="text-align: left;"><code>NOT NULL DEFAULT 'mc'</code></td>
+<td style="text-align: left;"><code>mc</code> (multiple choice) or <code>text</code> (text match)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>options</code></td>
+<td style="text-align: left;"><code>JSONB</code></td>
+<td style="text-align: left;"><code>NULLABLE</code></td>
+<td style="text-align: left;">Array of 4 option strings (MC only)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>correctIndex</code></td>
+<td style="text-align: left;"><code>INTEGER</code></td>
+<td style="text-align: left;"><code>NULLABLE</code></td>
+<td style="text-align: left;">Index of correct option (MC only)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>acceptedAnswers</code></td>
+<td style="text-align: left;"><code>JSONB</code></td>
+<td style="text-align: left;"><code>NULLABLE</code></td>
+<td style="text-align: left;">Array of accepted answer strings (text only)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>createdAt</code></td>
+<td style="text-align: left;"><code>TIMESTAMP</code></td>
+<td style="text-align: left;"><code>DEFAULT NOW()</code></td>
+<td style="text-align: left;">Creation timestamp</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
