@@ -42,19 +42,19 @@
 
 **Agenda**:
 - Sprint 2 progress update from each member
-- Integration of Supabase migration
-- Email verification feature discussion
-- Anti-cheat and content tab status
+- Task allocation and card/event mechanics discussion
+- Authentication, CI/CD pipeline, and testing status
 
 **Decisions**:
-- Database migration to Supabase confirmed as complete
-- Email verification feature assigned to Kgothatso
-- Remaining tasks: Content Tab (Nontokozo), Anti-Cheat merge (Oratile)
+- Cards should only work at one event per player — flagged after first use (other players can still collect at the same location, but the same player cannot get it at another event)
+- Map UI cleanup and "near me" functionality assigned to Junior
 
 **Action items**:
-- [ ] Kgothatso — Email verification with nodemailer — 2026-08-22
-- [ ] Nontokozo — Content Tab implementation — TBD
-- [ ] Oratile — Anti-Cheat system merge — TBD
+- [ ] Junior — Clean out map UI and complete "near me" functionality — TBD
+- [ ] Rea — Implement card-per-event flagging system (card flagged after first use per player) — TBD
+- [ ] Kgothatso — Auth system (email verification, login, registration) — 2026-08-22
+- [ ] Clayton — Game strategies, previous game history, CD pipeline, tests — TBD
+- [ ] Others — Test and polish individual deliverables — Ongoing
 
 
 ## 2026-08-13 — Team Meeting
