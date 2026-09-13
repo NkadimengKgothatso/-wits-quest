@@ -26,6 +26,7 @@ Players physically travel to real campus landmarks, answer trivia about Wits his
 - **Team**: Big-O (6 members)
 - **Stack**: Vite + React 18 + TypeScript frontend, Node.js + Express backend, Supabase PostgreSQL database
 - **Deployment**: Vercel (frontend), Render (backend)
+- **Live Docs**: [https://nkadimengkgothatso.github.io/-wits-quest/](https://nkadimengkgothatso.github.io/-wits-quest/)
 
 ---
 

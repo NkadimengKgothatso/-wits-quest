@@ -9,7 +9,7 @@
 
 **Centralised documentation for the Wits Quest project — a location-aware, turn-based campus adventure game.**
 
-[Gitea Repository](https://sdp.ms.wits.ac.za/big-o/Wits-Quest) • [Live Application](https://wits-quest.vercel.app) • [Gitea Docs](https://sdp.ms.wits.ac.za/pages/big-o/Wits-Quest/)
+[Gitea Repository](https://sdp.ms.wits.ac.za/big-o/Wits-Quest) • [Live Application](https://wits-quest.vercel.app) • [Live Documentation](https://nkadimengkgothatso.github.io/-wits-quest/)
 
 </div>
 
@@ -136,6 +136,7 @@ Then visit **http://localhost:8000** in your browser.
 | :--- | :--- |
 | **Source Code (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
 | **Documentation (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Documantation |
+| **Live Documentation (MkDocs)** | https://nkadimengkgothatso.github.io/-wits-quest/ |
 | **Live Application** | https://wits-quest.vercel.app |
 | **GitHub Mirror** | https://github.com/mahlatseclayton/wits_quest |
 
