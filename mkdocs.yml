@@ -60,26 +60,23 @@ markdown_extensions:
 nav:
   - Home: index.md
 
-  - Getting Started:
-      - Project Overview: project/overview.md
+  - Project:
+      - Overview: project/overview.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
 
-  - Sprints:
-      - Sprint 1: sprints/SPRINT1.md
-      - Sprint 1 Guide: sprints/WITS_QUEST_SPRINT1_GUIDE.md
-      - Sprint 2 Features: sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md
-      - Sprint 2 Handover: sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE.md
-
   - Architecture & Design:
       - System Architecture: uml/01_system_architecture.md
-      - Battle State Machine: uml/02_battle_state_machine.md
-      - Use Case Diagram: uml/03_use_case_diagram.md
-      - ERD Database Schema: uml/04_erd_database_schema.md
-      - Activity Diagrams: uml/activity-diagrams.md
-      - Sequence Diagrams: uml/sequence-diagrams.md
       - Class Diagram: uml/class-diagram.md
+      - Use Case Diagram: uml/03_use_case_diagram.md
       - Use Case Description: uml/use-case.md
+      - ERD Database Schema: uml/04_erd_database_schema.md
+
+  - Behaviour & Flow:
+      - Battle State Machine: uml/02_battle_state_machine.md
+      - Sequence Diagrams: uml/sequence-diagrams.md
+      - Activity Diagrams: uml/activity-diagrams.md
+      - UML Overview: uml/index.md
 
   - Database:
       - Database Plan: database/database-plan.md
@@ -87,10 +84,9 @@ nav:
 
   - Development:
       - Architecture: development/architecture.md
-      - Git Workflow: development/git-workflow.md
+      - Decisions Log: development/decisions-log.md
       - Technical Decisions: development/technical-decisions.md
-      - Decisions Log: development/decisions.md
-      - Issues vs. Projects: development/issues-vs-projects.md
+      - Git Workflow: development/git-workflow.md
       - CPU Battle Rulebook: development/cpu-battle-rules.md
 
   - Meetings:

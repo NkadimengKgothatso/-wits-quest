@@ -1,30 +1,25 @@
 # Meeting Records
 
-## 2026-09-13 — Discord Sprint 2 Coordination
+## 2026-09-13 — Sprint 2 Documentation & Infrastructure Sync
 
-![Discord meeting on 2026-09-13](images/2026-09-13-discord-meeting.png)
+![Team communication on Discord — Sprint 2](images/discord-team-communication.png)
 
-**Channel**: Software Design Project — General
+**Context:** Ongoing team communication via the Software Design Project Discord server during Sprint 2.
 
-**Attendees**: Kgothatso, Mahlatse (The Compiler), and team
+**Key discussion points:**
 
-**Context**: Sprint 2 coordination via Discord. Key discussion points included:
-
-- Documentation site deployment (dedicated docs repo created and deployed)
 - Lint configurations completed
 - Migration of GitHub Actions to Gitea Actions completed
-- Repository separation completed (frontend, backend, docs)
+- Repository separation (frontend / backend / docs) completed
+- Documentation repository established as a dedicated repo for all project documentation
 
-**Decisions**:
+**Decisions:**
 
-- Documentation lives in a separate repository (`big-o/Documantation`)
-- CI/CD migrated from GitHub Actions to Gitea Actions
-- Monorepo split into separate frontend, backend, and docs repos
+- Documentation to live in a separate repo ([big-o/Documantation](https://sdp.ms.wits.ac.za/big-o/Documantation)) rather than the main source code repo
+- Gitea Actions to replace GitHub Actions for CI/CD
+- Repository split into frontend, backend, and docs confirmed
 
-**Action items**:
-
-- [x] Kgothatso — Set up documentation repo and deploy MkDocs site
-- [x] Mahlatse — Complete lint configurations and Gitea Actions migration
+**See also:** [Decisions Log](../development/decisions-log.md) for full rationale.
 
 ---
 
