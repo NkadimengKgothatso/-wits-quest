@@ -13,10 +13,12 @@ Players physically travel to real campus landmarks, answer trivia about Wits his
 | Section | Contents |
 | :--- | :--- |
 | **[Project](project/overview.md)** | Game concept, functional requirements (Basic / Intermediate / Advanced tiers), and project scope |
-| **[UML Diagrams](uml/index.md)** | Use case, class, sequence, and activity diagrams |
+| **[Architecture & Design](uml/01_system_architecture.md)** | System architecture, class diagrams, use cases, and ERD |
+| **[Behaviour & Flow](uml/02_battle_state_machine.md)** | Battle state machine, sequence diagrams, and activity diagrams |
 | **[Database](database/database-plan.md)** | Entity relationship design and full table schema |
+| **[Development](development/architecture.md)** | System architecture, decisions log, technical decisions, and git workflow |
 | **[Meetings](meetings/index.md)** | Team meeting records and decisions log |
-| **[Development](development/architecture.md)** | System architecture, git workflow, and technical decisions |
+| **[Sprints](sprints/README.md)** | Sprint 1 & 2 specifications, implementation guides, and handover docs |
 
 ---
 
@@ -37,7 +39,6 @@ Beyond this MkDocs site, the full documentation repository also includes:
 | Section | Description |
 | :--- | :--- |
 | **[Battle AI](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/battle-ai)** | CPU battle engine implementation plans and walkthroughs |
-| **[Sprints](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/sprints)** | Sprint 1 & 2 specifications, guides, and handover docs |
 | **[Implementation Plans](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/implementation-plans)** | Feature-level implementation plans (PvP, anti-cheat, migrations, etc.) |
 | **[Deployment](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/deployment)** | Platform deployment guides |
 | **[Master Guides](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/)** | Master guide, feature handover, gap analysis, and fixes tracker |

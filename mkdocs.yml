@@ -91,3 +91,10 @@ nav:
 
   - Meetings:
       - Meeting Records: meetings/index.md
+
+  - Sprints:
+      - Overview: sprints/README.md
+      - Sprint 1 Specification: sprints/SPRINT1.md
+      - Sprint 1 Implementation Guide: sprints/WITS_QUEST_SPRINT1_GUIDE.md
+      - Sprint 2 Feature Selection: sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md
+      - Sprint 2 Handover Guide: sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE.md
