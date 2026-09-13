@@ -1,0 +1,90 @@
+site_name: Wits Quest Documentation
+site_url: https://sdp.ms.wits.ac.za/pages/big-o/Documantation
+site_description: >
+  Centralised documentation for Wits Quest — a location-aware, turn-based campus
+  adventure game developed by Team Big-O for the Wits University Software
+  Development Project (COMS3011A).
+
+repo_name: big-o/Documantation
+repo_url: https://sdp.ms.wits.ac.za/big-o/Documantation
+
+theme:
+  name: material
+
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: amber
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: amber
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+
+  icon:
+    repo: fontawesome/brands/git-alt
+
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+
+  - Project:
+      - Overview: project/overview.md
+      - Requirements: project/requirements.md
+      - Scope: project/scope.md
+
+  - UML Diagrams:
+      - Overview: uml/index.md
+      - System Architecture: uml/01_system_architecture.md
+      - Battle State Machine: uml/02_battle_state_machine.md
+      - Use Case Diagram: uml/03_use_case_diagram.md
+      - ERD Database Schema: uml/04_erd_database_schema.md
+      - Activity Diagrams: uml/activity-diagrams.md
+      - Sequence Diagrams: uml/sequence-diagrams.md
+      - Class Diagram: uml/class-diagram.md
+      - Use Case Description: uml/use-case.md
+
+  - Database:
+      - Database Plan: database/database-plan.md
+      - Database Schema: database/database-schema.md
+
+  - Meetings:
+      - Meeting Records: meetings/index.md
+
+  - Development:
+      - Architecture: development/architecture.md
+      - Git Workflow: development/git-workflow.md
+      - Technical Decisions: development/technical-decisions.md
+      - CPU Battle Rulebook: development/cpu-battle-rules.md
