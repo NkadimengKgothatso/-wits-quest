@@ -12,11 +12,14 @@ Players physically travel to real campus landmarks, answer trivia about Wits his
 
 | Section | Contents |
 | :--- | :--- |
-| **[Project](project/overview.md)** | Game concept, functional requirements (Basic / Intermediate / Advanced tiers), and project scope |
-| **[UML Diagrams](uml/index.md)** | Use case, class, sequence, and activity diagrams |
+| **[Getting Started](project/overview.md)** | Game concept, functional requirements (Basic / Intermediate / Advanced tiers), and project scope |
+| **[Sprints](sprints/SPRINT1.md)** | Sprint 1 & 2 specifications, implementation guides, and handover documentation |
+| **[Architecture & Design](uml/01_system_architecture.md)** | System architecture, state machines, use cases, ERDs, activity & sequence diagrams |
 | **[Database](database/database-plan.md)** | Entity relationship design and full table schema |
-| **[Meetings](meetings/index.md)** | Team meeting records and decisions log |
-| **[Development](development/architecture.md)** | System architecture, git workflow, and technical decisions |
+| **[Development](development/architecture.md)** | System architecture, git workflow, technical decisions, and battle rulebook |
+| **[Decisions Log](development/decisions.md)** | Team process decisions — why we chose Issues over Projects, separate docs repo, and more |
+| **[Issues vs. Projects](development/issues-vs-projects.md)** | Detailed rationale for using Gitea Issues instead of Gitea Projects for work tracking |
+| **[Meetings](meetings/index.md)** | Team meeting records, Discord coordination logs, and decisions |
 
 ---
 
@@ -37,7 +40,6 @@ Beyond this MkDocs site, the full documentation repository also includes:
 | Section | Description |
 | :--- | :--- |
 | **[Battle AI](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/battle-ai)** | CPU battle engine implementation plans and walkthroughs |
-| **[Sprints](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/sprints)** | Sprint 1 & 2 specifications, guides, and handover docs |
 | **[Implementation Plans](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/implementation-plans)** | Feature-level implementation plans (PvP, anti-cheat, migrations, etc.) |
 | **[Deployment](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/deployment)** | Platform deployment guides |
 | **[Master Guides](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/)** | Master guide, feature handover, gap analysis, and fixes tracker |

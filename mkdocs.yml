@@ -60,13 +60,18 @@ markdown_extensions:
 nav:
   - Home: index.md
 
-  - Project:
-      - Overview: project/overview.md
+  - Getting Started:
+      - Project Overview: project/overview.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
 
-  - UML Diagrams:
-      - Overview: uml/index.md
+  - Sprints:
+      - Sprint 1: sprints/SPRINT1.md
+      - Sprint 1 Guide: sprints/WITS_QUEST_SPRINT1_GUIDE.md
+      - Sprint 2 Features: sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md
+      - Sprint 2 Handover: sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE.md
+
+  - Architecture & Design:
       - System Architecture: uml/01_system_architecture.md
       - Battle State Machine: uml/02_battle_state_machine.md
       - Use Case Diagram: uml/03_use_case_diagram.md
@@ -80,11 +85,13 @@ nav:
       - Database Plan: database/database-plan.md
       - Database Schema: database/database-schema.md
 
-  - Meetings:
-      - Meeting Records: meetings/index.md
-
   - Development:
       - Architecture: development/architecture.md
       - Git Workflow: development/git-workflow.md
       - Technical Decisions: development/technical-decisions.md
+      - Decisions Log: development/decisions.md
+      - Issues vs. Projects: development/issues-vs-projects.md
       - CPU Battle Rulebook: development/cpu-battle-rules.md
+
+  - Meetings:
+      - Meeting Records: meetings/index.md
