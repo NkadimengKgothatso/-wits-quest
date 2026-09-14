@@ -64,13 +64,13 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
 
-# Nav sections are named after the Milestone 2 rubric categories (weights in
-# brackets) and ordered by weight, so the site can be walked category-by-
-# category during the presentation. Supporting material follows.
+# Nav sections are named after the Milestone 2 rubric categories, ordered by
+# rubric weight, so the site can be walked category-by-category during the
+# presentation. Supporting material follows.
 nav:
   - Home: index.md
 
-  - Core Features (25%):
+  - Core Features:
       - Game Overview & Tiers: project/overview.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
@@ -78,38 +78,38 @@ nav:
       - Live PvP Walkthrough: development/live-pvp-walkthrough.md
       - Async PvP Walkthrough: development/async-pvp-walkthrough.md
 
-  - API (15%):
+  - API:
       - API Reference: development/api-reference.md
 
-  - Automated Testing (10%):
+  - Automated Testing:
       - Test Results & Coverage: development/testing.md
 
-  - Stakeholder Reviews (10%):
+  - Stakeholder Reviews:
       - Meeting Records: meetings/index.md
 
-  - User Feedback (10%):
+  - User Feedback:
       - Feedback Form & Survey: project/user-feedback.md
 
-  - Methodology (10%):
+  - Methodology:
       - Methodology: project/methodology.md
       - Git Workflow: development/git-workflow.md
       - Decisions Log: development/decisions-log.md
       - Technical Decisions: development/technical-decisions.md
       - Gitea Actions Migration: development/gitea-actions-migration-plan.md
 
-  - Bug Tracker (5%):
+  - Bug Tracker:
       - Bug Tracking: development/bug-tracking.md
       - Fix Register: development/fix-register.md
 
-  - Database Docs (5%):
+  - Database Docs:
       - Database Plan: database/database-plan.md
       - Database Schema: database/database-schema.md
       - ERD: uml/04_erd_database_schema.md
 
-  - Third-Party Docs (5%):
+  - Third-Party Docs:
       - Third-Party Code & Services: development/third-party.md
 
-  - Testing Docs (5%):
+  - Testing Docs:
       - Testing & CI/CD Plan: development/testing-plan.md
 
   - System Design (UML):

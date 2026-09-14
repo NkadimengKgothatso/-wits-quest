@@ -9,25 +9,6 @@
 
 ---
 
-## Milestone 2 Presentation Guide
-
-The sidebar is organized by the Milestone 2 rubric categories, in weight order. Walk the presentation category-by-category — each row below is one click away.
-
-| Rubric Category | Weight | Where to Present |
-| :--- | :--- | :--- |
-| **Core Features** | 25% | [Game Overview & Tiers](project/overview.md) · [Requirements](project/requirements.md) · [CPU Battle Rulebook](development/cpu-battle-rules.md) · [Live PvP](development/live-pvp-walkthrough.md) · [Async PvP](development/async-pvp-walkthrough.md) |
-| **API** | 15% | [API Reference](development/api-reference.md) |
-| **Automated Testing** | 10% | [Test Results & Coverage](development/testing.md) |
-| **Stakeholder Reviews** | 10% | [Meeting Records](meetings/index.md) |
-| **User Feedback** | 10% | [Feedback Form & Survey](project/user-feedback.md) |
-| **Methodology** | 10% | [Methodology](project/methodology.md) · [Git Workflow](development/git-workflow.md) · [Decisions Log](development/decisions-log.md) |
-| **Bug Tracker** | 5% | [Bug Tracking](development/bug-tracking.md) · [Fix Register](development/fix-register.md) |
-| **Database Docs** | 5% | [Database Plan](database/database-plan.md) · [Database Schema](database/database-schema.md) · [ERD](uml/04_erd_database_schema.md) |
-| **Third-Party Docs** | 5% | [Third-Party Code & Services](development/third-party.md) |
-| **Testing Docs** | 5% | [Testing & CI/CD Plan](development/testing-plan.md) |
-
-Supporting material — full UML design set ([System Design](uml/01_system_architecture.md)) and [Sprint guides](sprints/README.md) — follows the rubric sections in the sidebar.
-
 ## Explore the Documentation
 
 ### Understanding the Project
