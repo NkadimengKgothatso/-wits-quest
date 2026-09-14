@@ -20,6 +20,17 @@
 This repository contains all documentation, architectural plans, sprint guides, and technical specifications for **Wits Quest**, developed by Team Big-O for the University of the Witwatersrand Software Development Project (COMS3011A).
 
 Wits Quest is a location-gated progressive web application that turns the Wits University campus into a Pokémon GO–style exploration and collectible card battle game. Students physically travel to real campus landmarks, answer trivia about Wits history, collect cards, and battle each other or AI opponents.
+---
+
+## Repository Links
+
+| Resource | URL |
+| :--- | :--- |
+| **Source Code (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
+| **Documentation (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation |
+| **Documentation (GitHub)** | https://github.com/NkadimengKgothatso/-wits-quest |
+| **Live Documentation (MkDocs)** | https://nkadimengkgothatso.github.io/-wits-quest/ |
+| **Live Application** | https://wits-quest.vercel.app |
 
 ---
 
@@ -128,17 +139,6 @@ mkdocs build
 
 Then visit **http://localhost:8000** in your browser.
 
----
-
-## Repository Links
-
-| Resource | URL |
-| :--- | :--- |
-| **Source Code (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
-| **Documentation (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation |
-| **Documentation (GitHub)** | https://github.com/NkadimengKgothatso/-wits-quest |
-| **Live Documentation (MkDocs)** | https://nkadimengkgothatso.github.io/-wits-quest/ |
-| **Live Application** | https://wits-quest.vercel.app |
 
 ---
 
