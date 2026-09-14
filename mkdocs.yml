@@ -5,9 +5,9 @@ site_description: >
   adventure game developed by Team Big-O for the Wits University Software
   Development Project (COMS3011A).
 
-repo_name: big-o/Wits-Quest-Documentation
-repo_url: https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation
-edit_uri: https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/
+repo_name: NkadimengKgothatso/-wits-quest
+repo_url: https://github.com/NkadimengKgothatso/-wits-quest
+edit_uri: edit/main/docs/
 
 theme:
   name: material
@@ -15,16 +15,16 @@ theme:
   palette:
     - media: '(prefers-color-scheme: light)'
       scheme: default
-      primary: amber
-      accent: orange
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
 
     - media: '(prefers-color-scheme: dark)'
       scheme: slate
-      primary: amber
-      accent: orange
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
@@ -45,6 +45,9 @@ theme:
   icon:
     repo: fontawesome/brands/git-alt
 
+extra_css:
+  - stylesheets/extra.css
+
 markdown_extensions:
   - admonition
   - tables
@@ -61,50 +64,64 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
 
+# Nav sections are named after the Milestone 2 rubric categories (weights in
+# brackets) and ordered by weight, so the site can be walked category-by-
+# category during the presentation. Supporting material follows.
 nav:
   - Home: index.md
 
-  - Project:
-      - Overview: project/overview.md
+  - Core Features (25%):
+      - Game Overview & Tiers: project/overview.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
-      - Methodology: project/methodology.md
+      - CPU Battle Rulebook: development/cpu-battle-rules.md
+      - Live PvP Walkthrough: development/live-pvp-walkthrough.md
+      - Async PvP Walkthrough: development/async-pvp-walkthrough.md
 
-  - Architecture & Design:
+  - API (15%):
+      - API Reference: development/api-reference.md
+
+  - Automated Testing (10%):
+      - Test Results & Coverage: development/testing.md
+
+  - Stakeholder Reviews (10%):
+      - Meeting Records: meetings/index.md
+
+  - User Feedback (10%):
+      - Feedback Form & Survey: project/user-feedback.md
+
+  - Methodology (10%):
+      - Methodology: project/methodology.md
+      - Git Workflow: development/git-workflow.md
+      - Decisions Log: development/decisions-log.md
+      - Technical Decisions: development/technical-decisions.md
+      - Gitea Actions Migration: development/gitea-actions-migration-plan.md
+
+  - Bug Tracker (5%):
+      - Bug Tracking: development/bug-tracking.md
+      - Fix Register: development/fix-register.md
+
+  - Database Docs (5%):
+      - Database Plan: database/database-plan.md
+      - Database Schema: database/database-schema.md
+      - ERD: uml/04_erd_database_schema.md
+
+  - Third-Party Docs (5%):
+      - Third-Party Code & Services: development/third-party.md
+
+  - Testing Docs (5%):
+      - Testing & CI/CD Plan: development/testing-plan.md
+
+  - System Design (UML):
       - System Architecture: uml/01_system_architecture.md
+      - Development Architecture: development/architecture.md
       - Class Diagram: uml/class-diagram.md
       - Use Case Diagram: uml/03_use_case_diagram.md
       - Use Case Description: uml/use-case.md
-      - ERD Database Schema: uml/04_erd_database_schema.md
-
-  - Behaviour & Flow:
       - Battle State Machine: uml/02_battle_state_machine.md
       - Sequence Diagrams: uml/sequence-diagrams.md
       - Activity Diagrams: uml/activity-diagrams.md
       - UML Overview: uml/index.md
-
-  - Database:
-      - Database Plan: database/database-plan.md
-      - Database Schema: database/database-schema.md
-
-  - Development:
-      - Architecture: development/architecture.md
-      - API Reference: development/api-reference.md
-      - Decisions Log: development/decisions-log.md
-      - Technical Decisions: development/technical-decisions.md
-      - Git Workflow: development/git-workflow.md
-      - CPU Battle Rulebook: development/cpu-battle-rules.md
-      - Testing: development/testing.md
-      - Testing & CI/CD Plan: development/testing-plan.md
-      - Third-Party Code & Services: development/third-party.md
-      - Bug Tracking: development/bug-tracking.md
-      - Fix Register: development/fix-register.md
-      - Live PvP Walkthrough: development/live-pvp-walkthrough.md
-      - Async PvP Walkthrough: development/async-pvp-walkthrough.md
-      - Gitea Actions Migration: development/gitea-actions-migration-plan.md
-
-  - Meetings:
-      - Meeting Records: meetings/index.md
 
   - Sprints:
       - Overview: sprints/README.md

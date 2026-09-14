@@ -9,9 +9,26 @@
 
 ---
 
-## Explore the Documentation
+## Milestone 2 Presentation Guide
 
-Use the sidebar to navigate, or jump to a section below:
+The sidebar is organized by the Milestone 2 rubric categories, in weight order. Walk the presentation category-by-category — each row below is one click away.
+
+| Rubric Category | Weight | Where to Present |
+| :--- | :--- | :--- |
+| **Core Features** | 25% | [Game Overview & Tiers](project/overview.md) · [Requirements](project/requirements.md) · [CPU Battle Rulebook](development/cpu-battle-rules.md) · [Live PvP](development/live-pvp-walkthrough.md) · [Async PvP](development/async-pvp-walkthrough.md) |
+| **API** | 15% | [API Reference](development/api-reference.md) |
+| **Automated Testing** | 10% | [Test Results & Coverage](development/testing.md) |
+| **Stakeholder Reviews** | 10% | [Meeting Records](meetings/index.md) |
+| **User Feedback** | 10% | [Feedback Form & Survey](project/user-feedback.md) |
+| **Methodology** | 10% | [Methodology](project/methodology.md) · [Git Workflow](development/git-workflow.md) · [Decisions Log](development/decisions-log.md) |
+| **Bug Tracker** | 5% | [Bug Tracking](development/bug-tracking.md) · [Fix Register](development/fix-register.md) |
+| **Database Docs** | 5% | [Database Plan](database/database-plan.md) · [Database Schema](database/database-schema.md) · [ERD](uml/04_erd_database_schema.md) |
+| **Third-Party Docs** | 5% | [Third-Party Code & Services](development/third-party.md) |
+| **Testing Docs** | 5% | [Testing & CI/CD Plan](development/testing-plan.md) |
+
+Supporting material — full UML design set ([System Design](uml/01_system_architecture.md)) and [Sprint guides](sprints/README.md) — follows the rubric sections in the sidebar.
+
+## Explore the Documentation
 
 ### Understanding the Project
 
@@ -50,21 +67,22 @@ Use the sidebar to navigate, or jump to a section below:
 
 | | |
 | :--- | :--- |
-| **Stack** | Vite + React 18 + TypeScript (frontend), Node.js + Express (backend), Supabase PostgreSQL |
-| **Deployment** | Vercel (frontend), Render (backend) |
-| **Testing** | Vitest with 80%+ coverage gate on both frontend and backend |
-| **CI/CD** | Gitea Actions (migrated from GitHub Actions) |
+| **Stack** | Vite + React 18 + TypeScript (frontend), Node.js 20 + Express (backend), Supabase (PostgreSQL + Auth + Storage + Realtime) |
+| **Auth** | Supabase Auth — email OTP sign-up, browser client with anon key, backend verifies tokens server-side |
+| **Deployment** | Vercel (frontend), Render (backend), GitHub Pages (this site) |
+| **Testing** | Vitest with an 80%+ coverage gate on both frontend and backend — 132 frontend tests and 54 backend tests passing |
+| **CI/CD** | Gitea Actions on the university instance (migrated from GitHub Actions in Sprint 2) |
 | **Team Size** | 6 members, each owning a domain end-to-end |
 
 ---
 
 ## Additional Resources
 
-These documents live in the [Gitea repository](https://sdp.ms.wits.ac.za/big-o/Documantation) alongside this MkDocs site:
+These documents live in the [source repository](https://sdp.ms.wits.ac.za/big-o/Wits-Quest) on the university Gitea instance (student login required) alongside this MkDocs site:
 
 | Resource | Description |
 | :--- | :--- |
-| [Battle AI Docs](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/battle-ai) | CPU battle engine implementation plans and walkthroughs |
-| [Implementation Plans](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/implementation-plans) | Feature-level plans: PvP, anti-cheat, migrations, design system |
-| [Deployment Guides](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/deployment) | Platform deployment configuration |
-| [Master Guides](https://sdp.ms.wits.ac.za/big-o/Documantation/src/branch/Kgothatso/documatation_migration/) | Master guide, feature handover, gap analysis, and fixes tracker |
+| [Battle AI Docs](https://sdp.ms.wits.ac.za/big-o/Wits-Quest/src/branch/main/battle_AI_docs) | CPU battle engine implementation plans and walkthroughs |
+| [Feature Implementation Plans](https://sdp.ms.wits.ac.za/big-o/Wits-Quest/src/branch/main/ai) | Feature-level plans: Live PvP, Async PvP, anti-cheat, map challenges, design system |
+| [Migration Plans](https://sdp.ms.wits.ac.za/big-o/Wits-Quest/src/branch/main/personal) | Supabase Auth migration plan and other Sprint 2 infrastructure moves |
+| [Master Guides](https://sdp.ms.wits.ac.za/big-o/Wits-Quest/src/branch/main) | Master guide, feature handover, gap analysis, and fixes tracker |

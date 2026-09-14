@@ -1,5 +1,8 @@
 # Wits Quest (COMS3011A Project 6) — Master Architecture & Task Specification Guide — v2.0
 
+!!! warning "Read with the post-migration state in mind"
+    This guide is a point-in-time snapshot dated **7 September 2026**. Sections describing the auth stack (custom JWT + bcrypt + nodemailer OTP, e.g. §1 and §3) predate the **Supabase Auth migration** that landed later in Sprint 2 — current auth facts are in the [API Reference](../development/api-reference.md) and [Third-Party Docs](../development/third-party.md). Likewise the CI pipeline is now native Gitea Actions (`.gitea/workflows/`), not the legacy path described here.
+
 **Prepared by:** Mahlatse Clayton
 **Date:** 7 September 2026
 **Revision:** v2.0 — Roadmap Update. Supersedes the execution plan of the 4 August 2026 v1 guide (which remains on record as the original specification).

@@ -93,16 +93,19 @@ Conventions:
 
 ---
 
-## Highest-severity open items
+## Highest-severity items — current status
 
-The current items that most threaten the milestone, per the register:
+Verified against the Sprint 2 code as of 2026-09-14:
 
-| ID | Defect | Why it's severe |
+| ID | Defect | Status |
 | :--- | :--- | :--- |
-| **F7** | Real Gmail app password + JWT secret committed in a deployment doc | Live credential exposure — rotation required regardless of any code fix |
-| **F1, F36** | Trivia location gate is client-side only | Defeats the game's core premise — "trust nothing from the client" |
-| **F6** | Correct answers re-award cards/XP/Essence on every submission | Economy-breaking exploit |
-| **F4, F5** | Authoring routes unauthenticated via route shadowing; no role guard | Any student can author events/cards by calling the API directly |
-| **F47** | Backend never deployed — live frontend has no API to talk to | The deployed product is non-functional end-to-end |
+| **F7** | Real Gmail app password + JWT secret committed in a deployment doc | ✅ Scrubbed from the document — credential rotation still advised (values were public) |
+| **F1, F36** | Trivia location gate is client-side only | ⚠ Open — defeats the game's core premise ("trust nothing from the client") |
+| **F6** | Correct answers re-award cards/XP/Essence on every submission | ✅ Fixed — `user_trivia_attempts` / `event_attempts` tables reject duplicate attempts (400) and completed events (409) |
+| **F4** | Authoring routes unauthenticated via route shadowing | ✅ Fixed — shadowing inline routes removed from `server.ts` |
+| **F5** | No ADMIN role guard on authoring endpoints | ⚠ Open — any authenticated student can author events/cards by calling the API directly |
+| **F2** | CPU battle outcomes are client-declared | ⚠ Open — `/api/battle/record` persists the client-claimed winner |
+| **F47** | Backend never deployed — live frontend has no API to talk to | ⚠ Open per the register — Render deployment configured (`render.yaml`, `/api/health` probe), live verification pending |
+| **F9** | OTP codes held in process memory | ✅ Resolved by the Supabase Auth migration — Supabase owns OTP delivery; no credentials in our database |
 
-Resolved Sprint 2 highlights — async PvP hardcoded mock data (F14), the unreachable multiplayer screens (F13/F17), the password-hash leak on `GET /api/users`, and the best-of-5 match-length bug — were verified fixed live against the running backend and documented in the `battle-ai/` and `implementation-plans/` walkthroughs.
+Resolved Sprint 2 highlights — async PvP hardcoded mock data (F14), the unreachable multiplayer screens (F13/F17), the password-hash leak on `GET /api/users`, the best-of-5 match-length bug, the hardcoded leaderboard (F18), and the trivia answer-leak on `GET /api/events/:id/trivia` — were verified fixed in the code and documented in the `battle-ai/` and `implementation-plans/` walkthroughs.

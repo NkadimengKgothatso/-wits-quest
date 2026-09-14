@@ -135,10 +135,10 @@ Then visit **http://localhost:8000** in your browser.
 | Resource | URL |
 | :--- | :--- |
 | **Source Code (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
-| **Documentation (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Documantation |
+| **Documentation (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation |
+| **Documentation (GitHub)** | https://github.com/NkadimengKgothatso/-wits-quest |
 | **Live Documentation (MkDocs)** | https://nkadimengkgothatso.github.io/-wits-quest/ |
 | **Live Application** | https://wits-quest.vercel.app |
-| **GitHub Mirror** | https://github.com/mahlatseclayton/wits_quest |
 
 ---
 

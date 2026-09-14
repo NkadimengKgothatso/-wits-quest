@@ -53,7 +53,7 @@ All sprint tasks are tracked as Issues with labels (`bug`, `feature`, `docs`, `i
 
 ### Decision
 
-Documentation lives in a dedicated repository ([big-o/Documantation](https://sdp.ms.wits.ac.za/big-o/Documantation)) rather than inside the main source code repository ([big-o/Wits-Quest](https://sdp.ms.wits.ac.za/big-o/Wits-Quest)).
+Documentation lives in a dedicated repository ([big-o/Wits-Quest-Documentation](https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation), mirrored to [GitHub](https://github.com/NkadimengKgothatso/-wits-quest) for the Pages deployment) rather than inside the main source code repository ([big-o/Wits-Quest](https://sdp.ms.wits.ac.za/big-o/Wits-Quest)).
 
 ### Rationale
 
@@ -69,23 +69,23 @@ Documentation lives in a dedicated repository ([big-o/Documantation](https://sdp
 
 ### Outcome
 
-All project documentation — UML diagrams, database design, sprint guides, implementation plans, meeting records, and this decisions log — lives in the Documantation repository, served via MkDocs at [https://nkadimengkgothatso.github.io/-wits-quest/](https://nkadimengkgothatso.github.io/-wits-quest/).
+All project documentation — UML diagrams, database design, sprint guides, implementation plans, meeting records, and this decisions log — lives in the Wits-Quest-Documentation repository, served via MkDocs at [https://nkadimengkgothatso.github.io/-wits-quest/](https://nkadimengkgothatso.github.io/-wits-quest/).
 
 ---
 
 ## D-03: Repository Split (Monorepo → 3 Repos)
 
 **Date:** Sprint 2 (September 2026)
-**Status:** Planned
+**Status:** Active — implemented as automated subtree-split mirrors
 **Decided by:** Team Big-O (Junior, Kgothatso)
 
 ### Decision
 
-At the Sprint 2 freeze, the monorepo splits into three repositories:
+The monorepo is published to three repositories via the `sync-mirrors.yml` Gitea Actions workflow (subtree split on every push to main):
 
-1. **`wits-quest-frontend`** — Vite + React frontend
-2. **`wits-quest-backend`** — Node.js + Express backend
-3. **`Documantation`** — MkDocs documentation (already separated)
+1. **`Wits-Quest-frontend`** — Vite + React frontend
+2. **`Wits-Quest-Backend`** — Node.js + Express backend
+3. **`Wits-Quest-Documentation`** — MkDocs documentation (also mirrored to GitHub for the Pages deployment)
 
 ### Rationale
 

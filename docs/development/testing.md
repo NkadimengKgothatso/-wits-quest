@@ -42,7 +42,7 @@ Screens with heavy live interaction — `LivePvPArena.tsx` and `AsyncPvP.tsx` �
 
 | Area | Verified behaviours |
 | :--- | :--- |
-| Auth routes (`/api/auth/*`) | Wits email regex validation, bcrypt hashing, JWT verification, suspension interceptor |
+| Auth middleware | Supabase token verification (`supabase.auth.getUser`), request rejection with 401 on missing/invalid bearer tokens |
 | Deck management | Server-side 5-card count, stat budget, and legendary-cap validation |
 | Content, events & trivia | Authoring CRUD, answer verification, XP/Essence rewards, card distribution |
 | Battle resolution | CPU/Live/Async share one resolution path — validated for stat values, card ownership, no-repeat rules |
@@ -56,12 +56,16 @@ Both packages enforce a hard **≥80% coverage gate** on lines, functions, state
 
 ### Current status
 
+Verified by running both suites locally on 2026-09-14 against the merged Sprint 2 code:
+
 | Package | Tests | Coverage | Notes |
 | :--- | :--- | :--- | :--- |
-| **Frontend** | 88 / 88 passing | ~92% statements | `battleEngine.ts` logic is exhaustively tested (round mechanics, quotas, replenishment) |
-| **Backend** | 31 / 31 passing | Gate holds | Includes 12 tests for `battleResolution.ts` and 8 for `asyncChallengeState.ts` |
+| **Frontend** | **132 / 132 passing** (19 files) | **95.19% statements · 82.85% branches · 92.1% functions · 95.19% lines** | All four 80% thresholds cleared; `battleEngine.ts` logic is exhaustively tested (round mechanics, quotas, replenishment) |
+| **Backend** | **54 / 54 passing** (6 files) | Gate holds on the tested set | Includes `battleResolution.ts` (10 tests), `asyncChallengeState.ts` (18), `auth` middleware (3), plus route suites for leaderboard and decks |
 
-Numbers are per the latest Sprint 2 merges; each feature walkthrough records the suite state at merge time.
+One backend suite — `deckService.test.ts` — is **environment-gated, not failing logic**: importing it pulls in the Supabase client, which calls `process.exit(1)` when `SUPABASE_URL`/`SUPABASE_KEY` are absent, so it only runs where those environment variables (or a `.env`) are present. The other six suites run cleanly in a bare checkout.
+
+Frontend suite details worth quoting in the presentation: 19 test files covering battle engine and AI, anti-cheat, auth context, battle/deck screens, leaderboard, trivia modal, card collection, and navigation — with the coverage allowlist design explained [below](#the-deliberate-manual-testing-boundary).
 
 ---
 
