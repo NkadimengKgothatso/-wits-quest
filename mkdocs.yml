@@ -5,8 +5,8 @@ site_description: >
   adventure game developed by Team Big-O for the Wits University Software
   Development Project (COMS3011A).
 
-repo_name: big-o/Documantation
-repo_url: https://sdp.ms.wits.ac.za/big-o/Documantation
+repo_name: big-o/Wits-Quest-Documentation
+repo_url: https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation
 edit_uri: https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/
 
 theme:
@@ -68,6 +68,7 @@ nav:
       - Overview: project/overview.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
+      - Methodology: project/methodology.md
 
   - Architecture & Design:
       - System Architecture: uml/01_system_architecture.md
@@ -88,16 +89,26 @@ nav:
 
   - Development:
       - Architecture: development/architecture.md
+      - API Reference: development/api-reference.md
       - Decisions Log: development/decisions-log.md
       - Technical Decisions: development/technical-decisions.md
       - Git Workflow: development/git-workflow.md
       - CPU Battle Rulebook: development/cpu-battle-rules.md
+      - Testing: development/testing.md
+      - Testing & CI/CD Plan: development/testing-plan.md
+      - Third-Party Code & Services: development/third-party.md
+      - Bug Tracking: development/bug-tracking.md
+      - Fix Register: development/fix-register.md
+      - Live PvP Walkthrough: development/live-pvp-walkthrough.md
+      - Async PvP Walkthrough: development/async-pvp-walkthrough.md
+      - Gitea Actions Migration: development/gitea-actions-migration-plan.md
 
   - Meetings:
       - Meeting Records: meetings/index.md
 
   - Sprints:
       - Overview: sprints/README.md
+      - Master Guide V2: sprints/master-guide-v2.md
       - Sprint 1 Specification: sprints/SPRINT1.md
       - Sprint 1 Implementation Guide: sprints/WITS_QUEST_SPRINT1_GUIDE.md
       - Sprint 2 Feature Selection: sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md

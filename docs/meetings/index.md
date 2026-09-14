@@ -4,6 +4,24 @@ A log of team meetings, decisions, and action items throughout the project.
 
 ---
 
+## 2026-09-14 — Sprint 2 Final Sync (Milestone 2 Preparation)
+
+**Channels:** Software Design Project video call + Big-O (SDP) Discord — Lounge voice channel
+
+![Video call — Sprint 2 final sync, 2026-09-14](images/2026-09-14-meeting.jpeg)
+
+![Discord Lounge voice session — 2026-09-14](images/2026-09-14-discord-meeting.jpeg)
+
+**Context:** Final full-team sync the night before the Milestone 2 deadline (2026-09-15). The team ran a video call to walk through Sprint 2 deliverables, then continued working together in the Discord Lounge voice channel.
+
+**Focus areas:**
+
+- Review of Sprint 2 deliverables ahead of the Milestone 2 deadline
+- Documentation completion (API reference, testing, methodology, and rubric-alignment pages)
+- Final verification of battle (CPU / Async PvP / Live PvP), map, and authentication features
+
+---
+
 ## 2026-09-13 — Sprint 2: Documentation & Infrastructure Sync
 
 **Channel:** Software Design Project Discord — General
