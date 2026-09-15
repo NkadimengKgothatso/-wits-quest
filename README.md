@@ -20,6 +20,8 @@
 This repository contains all documentation, architectural plans, sprint guides, and technical specifications for **Wits Quest**, developed by Team Big-O for the University of the Witwatersrand Software Development Project (COMS3011A).
 
 Wits Quest is a location-gated progressive web application that turns the Wits University campus into a Pokémon GO–style exploration and collectible card battle game. Students physically travel to real campus landmarks, answer trivia about Wits history, collect cards, and battle each other or AI opponents.
+
+
 ---
 
 ## Repository Links
