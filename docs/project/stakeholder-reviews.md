@@ -7,7 +7,7 @@ Formal feedback sessions with the course tutor — the project's primary stakeho
 ## Sprint 2 Review — 2026-09-15
 
 **Type:** Tutor check-in — verification of Sprint 1 feedback and Sprint 2 progress review
-**Timing:** Scheduled during the **university recess** — with lectures paused, the team and tutor used the recess window to meet in person on campus and close out Sprint 2.
+**Timing:** Scheduled after the **university recess** — with lectures paused, the team  used the recess window to work on the implementation and tutor met us in person on campus and close out Sprint 2.
 **Attendees:** Team Big-O and the course tutor (in person)
 
 ### What was verified
