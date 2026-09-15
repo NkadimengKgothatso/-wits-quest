@@ -24,7 +24,7 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 **Channels:** Software Design Project video call + Big-O (SDP) Discord — Lounge voice channel
 
-![Video call — Sprint 2 final sync, 2026-09-14](images/2026-09-14-meeting.jpeg)
+
 
 ![Discord Lounge voice session — 2026-09-14](images/2026-09-14-discord-meeting.jpeg)
 
