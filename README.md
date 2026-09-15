@@ -19,14 +19,15 @@ mkdocs serve
 
 Then open **http://localhost:8000** in your browser.
 
-## Links
+## Repository Links
 
 | Resource | URL |
 | :--- | :--- |
-| Source code (Gitea) | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
-| Documentation (Gitea) | https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation |
-| Documentation (GitHub) | https://github.com/NkadimengKgothatso/-wits-quest |
-| Live application | https://wits-quest.vercel.app |
+| **Source Code (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
+| **Documentation (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation |
+| **Documentation (GitHub)** | https://github.com/NkadimengKgothatso/-wits-quest |
+| **Live Documentation (MkDocs)** | https://nkadimengkgothatso.github.io/-wits-quest/ |
+| **Live Application** | https://wits-quest.vercel.app |
 
 ---
 
