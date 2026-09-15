@@ -4,6 +4,14 @@ How Team Big-O plans, prioritises, reviews, and delivers Wits Quest — the proc
 
 ---
 
+## Master architecture & task specification guide
+
+The full master specification the sprints execute against — system architecture, the member-by-member task matrix, the priority ladder (P0 > P1 > P2), and the Definition of Done. It is the source document for the sprint plans and selection guides in [Sprints](../sprints/README.md).
+
+**📄 [Download the Master Architecture & Task Specification Guide (PDF)](files/wits-quest-master-architecture-task-specification-guide.pdf)**
+
+---
+
 ## Approach: sprint-based agile
 
 The project runs as a sequence of **timeboxed sprints anchored to the official course milestones**, with each sprint carrying a theme, a priority ladder, and pre-agreed exit criteria:

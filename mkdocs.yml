@@ -95,6 +95,7 @@ nav:
 
   - Methodology:
       - Methodology: project/methodology.md
+      - Master Architecture Guide (PDF): project/files/wits-quest-master-architecture-task-specification-guide.pdf
       - Git Workflow: development/git-workflow.md
       - Decisions Log: development/decisions-log.md
       - Technical Decisions: development/technical-decisions.md
