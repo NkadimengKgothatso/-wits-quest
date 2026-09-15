@@ -15,13 +15,7 @@ The project runs as a sequence of **timeboxed sprints anchored to the official c
 | **Sprint 3** | 15 → 29 Sep | Intermediate Complete + Selective Advanced | Every Intermediate requirement (I-1…I-7) verifiably done; live PvP playable |
 | **Sprint 4** | 29 Sep → 11 Oct | Production Hardening & Submission | Full stack deployed; CI green from `main`; docs complete; **feature freeze 04 Oct** |
 
-The Sprint 2 re-plan (documented in the [Master Guide V2](../sprints/master-guide-v2.md)) added three standing planning rules:
 
-1. **Integrity before features** — every reward path becomes server-verified *before* new features consume it. A reward from an unverified endpoint devalues everything downstream.
-2. **Finish before new** — wiring six already-built-but-unrouted screens takes days; replacing them with new work takes weeks.
-3. **Select Advanced by foundation, not ambition** — live PvP (existing socket handler) and Elo (existing code) are cheap Advanced wins; 2PC trading and PostGIS have zero foundation and were descoped with explicit re-entry criteria.
-
-If time runs short, the drop order is pre-agreed via the priority ladder (**P0 > P1 > P2**) rather than improvised under pressure.
 
 ---
 
