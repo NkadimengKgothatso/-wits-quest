@@ -59,6 +59,17 @@ This is why the documentation can show not just *what* the system does but *how 
 
 ---
 
+## Code-quality gates
+
+Sprint 1 shipped with **no automated code-quality checks** — a gap flagged in the tutor's Sprint 1 review ([Stakeholder Reviews](stakeholder-reviews.md)). Sprint 2 closed it:
+
+- **ESLint + Prettier** run on every commit via husky `lint-staged` pre-commit hooks — badly formatted code cannot be committed at all.
+- **CI enforces the full gate on every push**: lint, `tsc --noEmit`, and the Vitest test suite with 80% coverage gates for both packages.
+
+The enforcement table (what runs where) is in [Git Workflow](../development/git-workflow.md); the tooling itself is documented in [Third-Party Code & Services](../development/third-party.md).
+
+---
+
 ## Git workflow
 
 - **Feature branches** off `main`, one branch per feature or fix (`feature/<member>-<desc>` or `<name>/<feature>`); no direct pushes to `main` past early scaffolding.

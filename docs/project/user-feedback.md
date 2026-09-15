@@ -1,9 +1,6 @@
 # User Feedback
 
-How Team Big-O collects and acts on feedback from real players — the survey instrument, what it asks, and how responses feed the Sprint 2 retrospective and the Sprint 3 backlog.
-
-!!! info "Rubric alignment"
-    User Feedback carries **10%** of the Milestone 2 (Sprint 2) mark. The deliverable is evidence of a real feedback loop: a structured instrument, real respondents, and documented outcomes.
+How Team Big-O collects and acts on feedback from real players — the survey instrument, what it asks, and how responses feed the Sprint 2 retrospective and the Sprint 3 backlog. The deliverable is evidence of a real feedback loop: a structured instrument, real respondents, and documented outcomes.
 
 ---
 

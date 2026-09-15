@@ -1,6 +1,22 @@
 # Meeting Records
 
-A log of team meetings, decisions, and action items throughout the project.
+A log of **internal team meetings**, decisions, and action items throughout the project.
+
+## How meetings are recorded
+
+Every entry on this page follows the same fixed structure, in this order:
+
+1. **Date & channel** — when and where (video call, Discord voice, in person)
+2. **Attendees** — who was present
+3. **Context / agenda** — what the meeting was for
+4. **Decisions** — what was agreed
+5. **Action items** — owner, task, due date
+
+Entries are listed most recent first.
+
+## Client & stakeholder sessions
+
+Meetings with the tutor / client are recorded **separately** on the [Stakeholder Reviews](../project/stakeholder-reviews.md) page — with minutes **and a photo taken at the session** — per the tutor's instruction. They do not appear on this page.
 
 ---
 
@@ -102,11 +118,24 @@ A log of team meetings, decisions, and action items throughout the project.
 
 ---
 
-## 2026-08-13 — Team Meeting
+## 2026-08-13 — Sprint 1 Close-Out
 
 ![Meeting on 2026-08-13](images/2026-08-13-meeting.jpeg)
 
-*Meeting notes pending.*
+**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea
+
+**Context:** Sprint 1 close-out. The team debriefed the tutor's Sprint 1 review (recorded in full on the [Stakeholder Reviews](../project/stakeholder-reviews.md) page) and triaged the feedback into the Sprint 2 plan.
+
+**Decisions:**
+
+- Sprint 2 to include: automated code-quality checks (ESLint + Prettier), the three-repo separation, slimmer READMEs, and documentation of every tracked decision (Issues-vs-Projects, git standards, tech-stack rationale)
+- Authentication to be reviewed against the security feedback — leading to the Supabase Auth migration
+
+**Action items:**
+
+| Owner | Task | Due |
+| :--- | :--- | :--- |
+| All members | Carry the tutor's feedback points into Sprint 2 task selection | Sprint 2 planning (2026-08-17) |
 
 ---
 

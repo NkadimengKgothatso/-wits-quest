@@ -1,9 +1,6 @@
 # Testing
 
-How Wits Quest is tested across the frontend, backend, and CI pipeline — the strategy, the tooling, the coverage gate, and the current state of the suite.
-
-!!! info "Rubric alignment"
-    Automated Testing carries **10%** and Testing Documentation **5%** of the Milestone 2 (Sprint 2) mark. The full pipeline design lives in implementation-plans/testing_and_ci_cd_plan.md (mirrored as [testing-plan.md](testing-plan.md)); this page is the project-level summary.
+How Wits Quest is tested across the frontend, backend, and CI pipeline — the strategy, the tooling, the coverage gate, and the current state of the suite. The full pipeline design lives in implementation-plans/testing_and_ci_cd_plan.md (mirrored as [testing-plan.md](testing-plan.md)); this page is the project-level summary.
 
 ---
 
