@@ -36,7 +36,7 @@ Six members, each owning a vertical domain end-to-end (design, UI, UX, and inter
 | Kgothatso | Database architecture, secure API & authentication |
 | Rea | Admin authoring console (events, trivia, cards) |
 | Nontokozo | Card collection, deck construction & progression |
-| Keoratile | Anti-cheat telemetry & analytics |
+| Oratile | Anti-cheat telemetry & analytics |
 
 Domain ownership keeps every screen single-owner during a sprint; cross-domain work (shared battle resolution, reward logic) is extracted into shared modules by the domain owner who built it.
 
