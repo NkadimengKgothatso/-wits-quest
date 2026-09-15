@@ -24,11 +24,11 @@ The location claim from a player's device is never trusted outright — it's tre
 - **Authoring/Admin Console** — event placement, question/card authoring, curation review pipeline, anti-cheat review, analytics.
 
 ###Sprint 2 — Core Features###
--**Card Creation** — implemented the creation and management of collectible cards.
--**Event Curation** — implemented tools for creating and curating location-based events.
--**Online Players** — added visibility of players currently online.
--**Leaderboard** — added player rankings to encourage competition.
--**Battle Page** — implemented a live, multiplayer battle interface for real-time card battles.
+- **Card Creation** — implemented the creation and management of collectible cards.
+- **Event Curation** — implemented tools for creating and curating location-based events.
+- **Online Players** — added visibility of players currently online.
+- **Leaderboard** — added player rankings to encourage competition.
+- **Battle Page** — implemented a live, multiplayer battle interface for real-time card battles.
 
 ## Delivery tiers
 
