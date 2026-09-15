@@ -4,6 +4,36 @@ Formal feedback sessions with the course tutor — the project's primary stakeho
 
 ---
 
+## Live Demo & New Feedback — 2026-09-15
+
+**Type:** Live app demo to stakeholders with new feature feedback — the second session on review day, straight after the [Sprint 2 review](#sprint-2-review-2026-09-15).
+**Attendees:** Team Big-O and stakeholders (in person, on campus)
+
+### What was demonstrated
+
+- **Mobile** — the game running on phones.
+- **New Sprint 2 features** — including **offline play** (the game can now be played without a connection).
+- **The live deployed app** — the production build at [wits-quest.vercel.app](https://wits-quest.vercel.app/).
+- **Division system** — players are divided by divisions, and you can't challenge someone in a division lower than yours.
+- **Challenging players two ways** — through the leaderboard, or directly through the map.
+
+### New feedback received
+
+> **Friend system.** Add a friend system — if you want to play a specific person, you currently have to scroll through everyone. Instead, players should be able to add friends and choose who to play.
+
+> **Map clutter.** On the map, show the player's avatar instead of their whole name — full names make the map look crowded.
+
+### How the team responded
+
+| Feedback | Response / where it goes |
+| :--- | :--- |
+| Friend system for direct challenges | Logged as a **Sprint 3 backlog feature** — friends list with a direct "challenge a friend" flow |
+| Avatars instead of full names on the map | **Sprint 3 polish task** — show avatars on map markers to reduce clutter |
+
+![Team Big-O demoing the live app to stakeholders after the Sprint 2 review, 2026-09-15](images/2026-09-15-demo-feedback.jpg)
+
+---
+
 ## Sprint 2 Review — 2026-09-15
 
 **Type:** Tutor check-in — verification of Sprint 1 feedback and Sprint 2 progress review
