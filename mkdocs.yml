@@ -71,6 +71,7 @@ nav:
   - Home: index.md
 
   - Core Features:
+      - Motivation: project/motivation.md
       - Game Overview & Tiers: project/overview.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
@@ -79,10 +80,14 @@ nav:
       - Async PvP Walkthrough: development/async-pvp-walkthrough.md
 
   - API:
+      - API Quick Start (Verified): development/api-quickstart.md
       - API Reference: development/api-reference.md
 
   - Automated Testing:
       - Test Results & Coverage: development/testing.md
+
+  - Deployment:
+      - Deployment & Hosting: development/deployment.md
 
   - Stakeholder Reviews:
       - Tutor Review Records: project/stakeholder-reviews.md
@@ -113,7 +118,8 @@ nav:
   - Third-Party Docs:
       - Third-Party Code & Services: development/third-party.md
 
-  - Testing Docs:
+  - Testing Documentation:
+      - Overview: development/testing-documentation.md
       - Testing & CI/CD Plan: development/testing-plan.md
 
   - System Design (UML):

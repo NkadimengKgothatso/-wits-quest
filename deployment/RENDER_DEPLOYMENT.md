@@ -46,11 +46,11 @@ In your Render Service Dashboard, navigate to the **Environment** tab and add th
 | -------------- | ----------------------------------------------------------------------------------------------------- |
 | `NODE_ENV`     | `production`                                                                                          |
 | `PORT`         | `10000` _(Render sets this automatically, but backend handles it)_                                    |
-| `JWT_SECRET`   | `witsquest_secret_jwt_key_2024_auth_token_super_secure_9812739128371` _(or any strong random string)_ |
+| `JWT_SECRET`   | `<generate-a-strong-random-string>` _(never commit a real value)_                                      |
 | `SMTP_HOST`    | `smtp.gmail.com`                                                                                      |
 | `SMTP_PORT`    | `465`                                                                                                 |
-| `SMTP_USER`    | `mahlatseclayton1@gmail.com` _(your Google account email)_                                            |
-| `SMTP_PASS`    | `ugtscmmjofelivxz` _(Google App Password)_                                                            |
+| `SMTP_USER`    | `<your-google-account@gmail.com>` _(your Google account email)_                                        |
+| `SMTP_PASS`    | `<your-google-app-password>` _(store in the Render dashboard only — never in the repo)_               |
 | `SUPABASE_URL` | `https://<your-project>.supabase.co`                                                                  |
 | `SUPABASE_KEY` | `<your-supabase-anon-or-service-role-key>`                                                            |
 
