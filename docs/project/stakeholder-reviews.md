@@ -4,6 +4,38 @@ Formal feedback sessions with the course tutor — the project's primary stakeho
 
 ---
 
+## Sprint 2 Review — 2026-09-15
+
+**Type:** Tutor check-in — verification of Sprint 1 feedback and Sprint 2 progress review
+**Timing:** Scheduled during the **university recess** — with lectures paused, the team and tutor used the recess window to meet in person on campus and close out Sprint 2.
+**Attendees:** Team Big-O and the course tutor (in person)
+
+### What was verified
+
+The tutor reviewed each item from her [Sprint 1 feedback](#sprint-1-review-2026-08-13) against the current project and **verified that the changes she requested at the first review have been implemented**:
+
+| Sprint 1 request | Verified state |
+| :--- | :--- |
+| Code-quality checks (linters, Prettier) | ESLint + Prettier enforced by husky pre-commit hooks and CI |
+| Three-repo separation (no monorepo) | Frontend, backend, and documentation live in separate repositories, kept in sync |
+| README slimmed to basics | READMEs now only cover what the app is and how to run it; the detail moved to this site |
+| Why Issues, not Projects | Recorded in [Decision D-01](../development/decisions-log.md#d-01-issues-over-projects-for-work-tracking) |
+| Git methodology standard | Branch-naming structure and Conventional Commits documented in [Git Workflow](../development/git-workflow.md) |
+| Project methodology / roadmap | [Methodology](methodology.md) and [Sprints](../sprints/README.md) pages |
+| Security — OAuth, no password hashing | Auth migrated to Supabase Auth; the custom JWT + bcrypt code was removed |
+| Tech-stack rationale | Team-specific reasoning documented in [Technical Decisions](../development/technical-decisions.md) |
+| Meeting structure + stakeholder minutes | Fixed meeting record format in use; stakeholder sessions recorded on this page, separate from team meetings |
+
+### Notes
+
+- The session was deliberately scheduled **now, during recess**, since the break gave the team and the tutor a window to meet on campus between sprints.
+- The tutor **confirmed the Sprint 1 feedback items are implemented** — the verification doubles as evidence of a working feedback loop: feedback received → triaged into the sprint plan → implemented → verified by the stakeholder.
+- Sprint 2 outcomes demonstrated: live app deployment, the user feedback survey with real responses ([User Feedback](user-feedback.md)), and the MkDocs documentation site.
+
+![Team Big-O with the course tutor after the Sprint 2 review, 2026-09-15](images/2026-09-15-tutor-review.jpg)
+
+---
+
 ## Sprint 1 Review — 2026-08-13
 
 **Type:** Tutor review of Sprint 1 deliverables (Core Loop & Foundation: campus map, geofenced trivia, card collection, CPU battles, authoring console)
