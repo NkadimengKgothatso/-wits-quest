@@ -1,7 +1,48 @@
 # Stakeholder Reviews
 
 Formal feedback sessions with the course tutor — the project's primary stakeholder reviewer. These records are kept **separate from internal team meetings** (per the tutor's own instruction) and every future session is recorded the same way: **minutes plus a photo with the stakeholder**, dated.
-
+## Stakeholder Check-in — 2026-09-28
+ 
+**Type:** Follow-up meeting with the stakeholder (Google Meet)
+**Attendees:** Team Big-O and the stakeholder (online, 6 participants)
+ 
+### What was discussed
+ 
+- The team asked the stakeholder for a **PDF review of the app**.
+- The live app link ([wits-quest.vercel.app](https://wits-quest.vercel.app/)) was shared in the call chat.
+### Action items
+ 
+| Owner | Task | Due |
+| :--- | :--- | :--- |
+| Stakeholder | Provide a PDF review of the app | TBD |
+ 
+![Team Big-O on Google Meet with the stakeholder, 2026-09-28](images/2026-09-28-stakeholder-meeting.jpeg)
+ 
+---
+ 
+## Supervisor Meeting — 2026-09-26
+ 
+**Type:** Supervisor check-in (Google Meet)
+**Attendees:** Team Big-O and the supervisor (online, 6 participants)
+ 
+### Summary
+ 
+| Topic | Outcome |
+| :--- | :--- |
+| App review | The team asked the supervisor to review the application and give feedback |
+| Next meeting | Rescheduled to Monday (to be confirmed) |
+| Advice received | Keep working on the identified issues and address them as development progresses |
+ 
+### Action items
+ 
+| Owner | Task | Due |
+| :--- | :--- | :--- |
+| Team | Continue fixing the identified issues during development | Ongoing |
+| Team | Confirm the Monday meeting | TBD |
+ 
+![Team Big-O on Google Meet with the supervisor, 2026-09-26](images/2026-09-26-stakeholder-meeting.jpeg)
+ 
+---
 ---
 
 ## Live Demo & New Feedback — 2026-09-15
