@@ -23,7 +23,7 @@ This document outlines the end-to-end plan for full test coverage across Wits Qu
 | Sprint 3 (current) | **60%** | Frontend and backend, enforced in CI |
 | Final submission | **80%** | Frontend and backend, enforced in CI |
 
-The frontend already exceeds the final 80% target on all four metrics (see [Sprint 3 status](#6-sprint-3-status)); the backend figures are recorded on the Test Results page once its suite is run.
+The frontend already exceeds the final 80% target on all four metrics. The backend passes the current 60% gate on all four metrics but is **below the final 80% target** on statements, functions and lines, and just short on branches (see [Sprint 3 status](#6-sprint-3-status)).
 
 ---
 
@@ -66,6 +66,7 @@ The frontend already exceeds the final 80% target on all four metrics (see [Spri
 
 - Vitest + Supertest with Node.js 20 environment.
 - Supabase client integration testing and mocked database fixtures.
+- **Feature rule:** every new backend endpoint ships with Supertest API tests covering the success path, validation failures, authentication/authorisation, and the 500 error path, in the same PR as the feature.
 
 ### Target Test Coverage Areas
 
@@ -134,7 +135,8 @@ The "current gate" is 60% in Sprint 3 and 80% for the final submission.
 2. **Backend Tests**: Run `npm test` inside `backend/` $\rightarrow$ verify all API and socket test suites pass and code coverage meets the current gate.
 3. **Builds**: Run `npm run build` on both frontend and backend $\rightarrow$ 0 TypeScript / bundling errors.
 4. **CI Configuration**: Validate `.github/workflows/ci.yml` and `.gitea/workflows/ci.yml` syntax.
-5. **Feature rule**: For every new feature PR, confirm it includes Supertest API tests (backend) and React Testing Library UI tests (frontend) before merge.
+5. **Performance and accessibility**: Run PageSpeed Insights (Lighthouse) against the production URL for both Desktop and Mobile and record the scores (see section 7).
+6. **Feature rule**: For every new feature PR, confirm it includes Supertest API tests (backend) and React Testing Library UI tests (frontend) before merge.
 
 ---
 
@@ -212,6 +214,162 @@ These fall below 80% at file or area level even though the global thresholds pas
 
 Section 2 lists the target suite. Several planned files (`Login`, `MapExplorer`, `DeckBuilder`, `Profile`, and the three `Admin*` tests) do not appear in the current run, while the delivered suite adds `antiCheat`, `elo`, `services`, `components`, `AsyncBattleArena`, `AsyncPvP`, `BattleArena.deck` and `BottomNav`. The coverage numbers meet the gate, but the plan's per-screen list is not yet fully delivered.
 
-### Backend run
+### Backend run (2026-09-29)
 
-Backend results (test files, tests, coverage against the gate) are recorded on the Test Results & Coverage page once the `backend/` suite is run.
+Command: `npm run test` in `backend/` (`vitest run --coverage`, Vitest v1.6.1, V8 coverage, Supertest for API tests).
+
+![Backend test run and V8 coverage report, 2026-09-29](images/2026-09-29-backend-coverage.jpeg)
+
+*Terminal output of `npm run test` in `backend/`: 29 files and 452 tests passing, with the V8 coverage report.*
+
+| Metric | Result |
+| :--- | :--- |
+| Test files | **29 passed** (29) |
+| Tests | **452 passed** (452) |
+| Duration | 8.85 s |
+
+**Overall coverage**
+
+| Statements | Branches | Functions | Lines | Current gate (60%) | Final gate (80%) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **63.91%** | **78.74%** | **70.90%** | **63.91%** | ✅ Pass | ❌ Not yet (branches 1.26 points short; statements, functions and lines further) |
+
+**Test files and tests per suite**
+
+| Suite | Tests |
+| :--- | :--- |
+| `routes/content.test.ts` | 60 |
+| `routes/contentLifecycle.test.ts` | 46 |
+| `routes/trades.test.ts` | 38 |
+| `routes/auth.test.ts` | 30 |
+| `routes/asyncBattle.test.ts` | 24 |
+| `server.test.ts` | 21 |
+| `routes/ranked.test.ts` | 20 |
+| `routes/campaigns.test.ts` | 19 |
+| `utils/asyncChallengeState.test.ts` | 18 |
+| `utils/cpuBattle.test.ts` | 16 |
+| `services/battleSocketHandler.test.ts` | 15 |
+| `routes/adminGuards.test.ts` | 15 |
+| `utils/presence.test.ts` | 14 |
+| `services/deckService.data.test.ts` | 12 |
+| `utils/streakRules.test.ts` | 12 |
+| `utils/analyticsRules.test.ts` | 11 |
+| `utils/battleResolution.test.ts` | 10 |
+| `routes/leaderboard.test.ts` | 10 |
+| `routes/deck.test.ts` | 9 |
+| `services/eventPlacementService.test.ts` | 8 |
+| `services/applyMatchResult.test.ts` | 7 |
+| `utils/streak.test.ts` | 7 |
+| `middleware/auth.test.ts` | 6 |
+| `routes/battle.test.ts` | 6 |
+| `services/deckService.test.ts` | 4 |
+| `routes/usersUpdate.test.ts` | 4 |
+| `routes/routing.test.ts` | 4 |
+| `services/autoPublishContent.test.ts` | 3 |
+| `routes/telemetry.daysAgo.test.ts` | 3 |
+
+**Coverage by area**
+
+| Area | Statements | Branches | Functions | Lines |
+| :--- | :--- | :--- | :--- | :--- |
+| `src` (`server.ts`) | 68.36% | 68.42% | 66.66% | 68.36% |
+| `src/config` | 100% | 100% | 100% | 100% |
+| `src/db` | 1.70% | 0% | 0% | 1.70% |
+| `src/middleware` | 93.75% | 85% | 100% | 93.75% |
+| `src/routes` | 62.22% | 77.24% | 45.83% | 62.22% |
+| `src/services` | 83.33% | 74.69% | 85.71% | 83.33% |
+| `src/utils` | 84.73% | 91.07% | 75% | 84.73% |
+
+**Strong areas:** `content.ts` (92.15% statements), `requireAdmin.ts`, `dropRates.ts`, `campaignWindow.ts`, `streak.ts` and `streakRules.ts` (100%), `applyMatchResult.ts` (97.91%), `deckService.ts` (100% statements and lines), and the socket layer `battleSocketHandler.ts` (76.82% statements, 89.47% functions) covering lobby, challenges, divisions, spectators, turn validation and round resolution.
+
+**Negative-path evidence:** the `stderr` lines in the run (for example `[Cards] Create error`, `ACCEPT TRADE ERROR: Trade has expired`, `OPENROUTESERVICE_API_KEY is not configured`) are not failures. They are the application's error handlers logging while tests deliberately trigger database failures, expired trades, missing configuration and upstream 502s to prove the correct 4xx/5xx responses.
+
+### Backend known gaps (reported honestly)
+
+| File | Coverage | Uncovered (main ranges) |
+| :--- | :--- | :--- |
+| `db/productionContent.ts` | 0% (751 lines) | Production seed content, lines 1-751 |
+| `db/seedProduction.ts` | 0% (113 lines) | Seed script, lines 1-113 |
+| `routes/telemetry.ts` | 17.63% statements, 16.66% functions | Most ingestion and audit handlers |
+| `routes/adminAchievements.ts` | 29.37% statements, 0% functions | Lines 32-171 |
+| `utils/achievements.ts` | 26.59% statements, 0% functions | Lines 36-188 |
+| `routes/battle.ts` | 38.5% statements, 0% functions | Lines 54-261 |
+| `routes/analyticsQuestions.ts` | 41.66% statements | Lines 16-46 |
+| `routes/trades.ts` | 66.98% statements, 0% functions | Trade creation and listing handlers |
+| `routes/auth.ts` | 64.88% statements, 0% functions | Lines 61-286 |
+| `utils/antiCheat.ts` | 66.89% statements, 25% functions | Lines 46-123 |
+| `services/battleSocketHandler.ts` | 76.82% statements | Reconnect and late-game handlers, lines 744-820 |
+
+**What is dragging the total below 80%:** the two seed files under `src/db` account for about 860 lines at 0%, which alone pulls the statement and line totals down. The remaining gap sits in `telemetry.ts`, the achievements modules, `battle.ts`, and `antiCheat.ts`.
+
+### Path to the 80% final gate (backend)
+
+1. Decide whether one-off seed scripts (`productionContent.ts`, `seedProduction.ts`) belong in the coverage denominator; if they are excluded in the Vitest `coverage.exclude` config, document that decision in the decisions log with its rationale.
+2. Add Supertest tests for `telemetry.ts` (GPS ingestion, Haversine speed violations, audit log, flag/suspend actions), which is the anti-cheat feature the stakeholder praised.
+3. Add tests for `adminAchievements.ts` and `achievements.ts`, the remaining `battle.ts` handlers, and the uncovered functions in `trades.ts` and `auth.ts`.
+4. Re-run and record the new figures on this page before the final submission.
+
+---
+
+## 7. Performance and accessibility testing
+
+Beyond functional tests, the deployed production build was audited with Google PageSpeed Insights (Lighthouse) to check load performance, accessibility, best practices and SEO.
+
+**Run details:** [wits-quest.vercel.app](https://wits-quest.vercel.app/), **Desktop** form factor, 2026-09-29 at 13:43 (GMT+2), emulated desktop, initial page load, single page session.
+
+![PageSpeed Insights category scores for wits-quest.vercel.app, Desktop, 2026-09-29](images/2026-09-29-pagespeed-scores.jpeg)
+
+| Category | Score | Result |
+| :--- | :--- | :--- |
+| Performance | **99** | ✅ Green (90-100) |
+| Accessibility | **97** | ✅ Green, one issue flagged (below) |
+| Best Practices | **100** | ✅ Green |
+| SEO | **90** | ✅ Green (at the lower edge of the band) |
+| Agentic Browsing | **2/2** | ✅ All checks passed |
+
+### Core performance metrics
+
+![PageSpeed Insights core web vitals metrics, Desktop, 2026-09-29](images/2026-09-29-pagespeed-metrics.jpeg)
+
+| Metric | Result | Status |
+| :--- | :--- | :--- |
+| First Contentful Paint (FCP) | 0.7 s | ✅ Good |
+| Largest Contentful Paint (LCP) | 0.9 s | ✅ Good |
+| Total Blocking Time (TBT) | 0 ms | ✅ Good |
+| Cumulative Layout Shift (CLS) | 0 | ✅ Good |
+| Speed Index | 0.7 s | ✅ Good |
+
+All five metrics fall in the green band. The real-user (field data) panel shows "No Data", which is expected for a new site without enough Chrome traffic, so these are lab results only.
+
+### Accessibility finding
+
+![PageSpeed Insights accessibility audit, Desktop, 2026-09-29](images/2026-09-29-pagespeed-accessibility.png)
+
+| Finding | Category | Impact | Planned fix |
+| :--- | :--- | :--- | :--- |
+| Document does not have a main landmark | Accessibility best practice | Screen-reader users cannot jump straight to the main content | Wrap the primary page content in a single `<main>` element in the app shell |
+
+![PageSpeed Insights accessibility audit summary and Best Practices score, Desktop, 2026-09-29](images/2026-09-29-pagespeed-audit-summary.jpeg)
+
+| Accessibility audit breakdown | Count |
+| :--- | :--- |
+| Failed (flagged) | 1 |
+| Passed audits | 14 |
+| Additional items to check manually | 10 |
+| Not applicable | 48 |
+
+The 10 manual-check items are areas that automated tools cannot cover (keyboard navigation, focus order, screen-reader behaviour, and similar). Related manual finding from the stakeholder review: text boxes lose visibility in dark mode ([Stakeholder Reviews](../project/stakeholder-reviews.md)), which automated audits do not catch.
+
+### Limits of this evidence
+
+- Only the **Desktop** run is recorded. Wits Quest is played on phones, so a **Mobile** run (which applies throttled CPU and network) should be captured and added before the final submission.
+- Scores are a single-run lab snapshot and vary slightly between runs.
+- The SEO score of 90 is green but has the least headroom; the individual failing audit was not captured.
+
+### Actions
+
+| Action | Owner | Status |
+| :--- | :--- | :--- |
+| Add a `<main>` landmark to the app shell | Team | To do |
+| Run and record the Mobile audit | Team | To do |
+| Re-run after fixes and record the new accessibility score | Team | To do |
