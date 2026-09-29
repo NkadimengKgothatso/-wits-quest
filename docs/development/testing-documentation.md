@@ -25,8 +25,6 @@ Full breakdown, per-file gaps and the plan to reach 80% on the backend are in [T
 
 ![Frontend test run and V8 coverage report, 2026-09-29](images/2026-09-29-frontend-coverage.jpeg)
 
-![Backend test run and V8 coverage report, 2026-09-29](images/2026-09-29-backend-coverage.jpeg)
-
 ---
 
 ## 1. User feedback — the formal process

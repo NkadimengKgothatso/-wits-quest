@@ -218,10 +218,6 @@ Section 2 lists the target suite. Several planned files (`Login`, `MapExplorer`,
 
 Command: `npm run test` in `backend/` (`vitest run --coverage`, Vitest v1.6.1, V8 coverage, Supertest for API tests).
 
-![Backend test run and V8 coverage report, 2026-09-29](images/2026-09-29-backend-coverage.jpeg)
-
-*Terminal output of `npm run test` in `backend/`: 29 files and 452 tests passing, with the V8 coverage report.*
-
 | Metric | Result |
 | :--- | :--- |
 | Test files | **29 passed** (29) |
