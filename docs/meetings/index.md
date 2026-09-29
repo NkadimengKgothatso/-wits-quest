@@ -20,6 +20,70 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ---
 
+## 2026-09-28 — Final Client Meeting Prep & PR Process
+
+**Channel:** Big-O (SDP) Discord — Lounge voice channel
+
+![Discord Lounge voice session — 2026-09-28](images/2026-09-28-discord-meeting.jpeg)
+
+**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile
+
+**Context:** Preparation for the final client meeting and a reminder of how the team should handle testing and pull requests.
+
+**Decisions:**
+
+| Decision | Detail |
+| :--- | :--- |
+| Final client meeting | 2026-09-29 at 11:00 on Google Meet. This is the last meeting with the client. |
+| Test locally before opening a PR | Confirm every feature works locally first. The runners are slow, so they should not be the only test. |
+| Project review | Ask the extra tutor, Zayd, to review the project and give feedback. |
+| Availability | Mahlatse is available from 12:00. |
+
+**Action items:**
+
+| Owner | Task | Due |
+| :--- | :--- | :--- |
+| Team | Prepare for the final client meeting | 2026-09-29, 11:00 |
+| Team | Have the Google Meet link ready | 2026-09-29, 11:00 |
+| All members | Test all implemented features locally | Before each PR |
+| All members | Only open a PR after local functionality is confirmed | Ongoing |
+| Team | Coordinate with Mahlatse from 12:00 | 2026-09-29 |
+| Team | Request a project review from Zayd | TBD |
+
+---
+
+## 2026-09-23 — Sprint 3 Task Review & Client Meeting Schedule
+
+**Channel:** Big-O (SDP) Discord — Lounge voice channel
+
+![Discord Lounge voice session — 2026-09-23](images/2026-09-23-discord-meeting.jpeg)
+
+**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea
+
+**Context:** Review of the tasks assigned for the current sprint, including the endpoint documentation, and agreement on the client meeting dates.
+
+**Decisions:**
+
+| Decision | Detail |
+| :--- | :--- |
+| Client meeting dates | Friday during lunch time (agreed with the client), then Monday and Tuesday. |
+| Documentation | Oratile and Kgothatso work on the documentation, including the endpoint documentation. |
+| Sprint deadline | All sprint work, including the endpoint documentation, is due next Sunday. |
+| Next internal meetings | Monday and Thursday. |
+
+**Also discussed:** Oratile asked for the sound issue to be fixed, and Nontokozo asked whether SASCO won.
+
+**Action items:**
+
+| Owner | Task | Due |
+| :--- | :--- | :--- |
+| Oratile & Kgothatso | Work on the documentation, including the endpoints | Next Sunday |
+| Rea | Fix the sound issue | TBD |
+| Team | Complete assigned sprint tasks | Next Sunday |
+| Team | Attend the Monday and Thursday meetings | Ongoing |
+
+---
+
 ## 2026-09-14 — Sprint 2 Final Sync (Milestone 2 Preparation)
 
 **Channels:** Software Design Project video call + Big-O (SDP) Discord — Lounge voice channel
@@ -115,7 +179,6 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 | Owner | Task | Due |
 | :--- | :--- | :--- |
 | All members | Complete assigned Sprint 2 tasks | 2026-08-22 |
-
 ---
 
 ## 2026-08-13 — Sprint 1 Close-Out
