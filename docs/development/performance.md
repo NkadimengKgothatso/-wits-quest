@@ -39,6 +39,15 @@ Recorded per sprint; update this table when a new measurement is taken.
 | --- | --- | --- | --- |
 | 2026-09 | Tests | Frontend 132/132 passing; both packages clear the 80% coverage gate | [Testing](testing.md) |
 | 2026-09 | CI | Pipeline runs both suites + gates on free cloud runners | [Testing & CI/CD plan](testing-plan.md) |
+| 2026-09-29 | Docs site — Home | Lighthouse: Perf 76 · A11y 93 · Best Practices 96 · SEO 100. FCP 3.3 s, LCP 4.4 s, TBT 0 ms, CLS 0 | Lighthouse default **mobile throttling** from a South African connection; zero blocking time and zero layout shift — the FCP/LCP figures are network-bound, not app-bound |
+| 2026-09-29 | Docs site — API Reference | Lighthouse: Perf 72 · A11y 93 · Best Practices 96 · SEO 100. FCP 3.9 s, LCP 4.7 s, TBT 0 ms, CLS 0.028 | Same conditions as above; long single-page reference adds a little parse time |
+
+**Reading of the 2026-09-29 results:** with TBT at 0 ms and CLS ~0, the pages are not
+doing expensive work on the main thread and do not jump while loading — the "slow"
+FCP/LCP is dominated by network latency to GitHub Pages under simulated mobile
+conditions. Actions available if we want the score up: preload the theme fonts and
+self-host them (Google Fonts round-trip), and trim the largest-contentful hero text
+render path. Not blocking Sprint 3.
 
 ## How to reproduce the measurements
 
