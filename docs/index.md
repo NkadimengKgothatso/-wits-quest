@@ -39,7 +39,7 @@
 
 | Section | What You'll Find |
 | :--- | :--- |
-| [**Sprints**](sprints/README.md) | Sprint 1 & 2 specifications, implementation guides, and handover docs |
+| [**Sprints**](sprints/README.md) | Sprint 1, 2 & 3 specifications, guides, task boards, and handover docs |
 | [**Stakeholder Reviews**](project/stakeholder-reviews.md) | Tutor feedback from formal review sessions and how the team responded |
 | [**Meetings**](meetings/index.md) | Team meeting records, decisions, and action items |
 | [**User Feedback**](project/user-feedback.md) | The player feedback form and how responses shape the backlog |
