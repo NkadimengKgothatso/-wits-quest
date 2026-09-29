@@ -1,0 +1,3382 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Centralised documentation for Wits Quest — a location-aware, turn-based campus adventure game developed by Team Big-O for the Wits University Software Development Project (COMS3011A).
+">
+      
+      
+      
+        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/development/fix-register/">
+      
+      
+        <link rel="prev" href="../bug-tracking/">
+      
+      
+        <link rel="next" href="../../database/database-plan/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Fix Register - Wits Quest Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wits-quest-master-fixes-outstanding-features-worklist" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wits Quest Documentation" class="md-header__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wits Quest Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fix Register
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wits Quest Documentation" class="md-nav__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wits Quest Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game Overview & Tiers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpu-battle-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU Battle Rulebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../live-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Quick Start (Verified)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Automated Testing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Automated Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Results & Coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment & Hosting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stakeholder Reviews
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Stakeholder Reviews
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/stakeholder-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutor Review Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team Meetings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Team Meetings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meetings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meeting Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Feedback
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Feedback
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/user-feedback/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feedback Form & Responses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/files/wits-quest-master-architecture-task-specification-guide.pdf" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Architecture Guide (PDF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../decisions-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitea-actions-migration-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gitea Actions Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bug Tracker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bug-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fix Register
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fix Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-all-things-to-be-fixed-master-fix-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1 — All Things To Be Fixed (Master Fix List)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1 — All Things To Be Fixed (Master Fix List)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-game-integrity-server-authority-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Game-Integrity &amp; Server-Authority Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-security-access-control-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Security &amp; Access-Control Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-routing-navigation-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Routing &amp; Navigation Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-static-screens-live-data-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Static Screens → Live-Data Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-backend-correctness-consistency-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Backend Correctness &amp; Consistency Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-anti-cheat-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Anti-Cheat Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-progression-economy-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Progression &amp; Economy Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-offline-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.8 Offline Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-cicd-repository-hygiene-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.9 CI/CD &amp; Repository-Hygiene Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#110-documentation-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.10 Documentation Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-outstanding-features-selected-from-the-pdf-basic-intermediate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2 — Outstanding Features Selected from the PDF (Basic + Intermediate)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2 — Outstanding Features Selected from the PDF (Basic + Intermediate)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-basic-tier-pdf-111-outstanding-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Basic Tier (PDF §1.1.1) — outstanding items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-intermediate-tier-pdf-112-outstanding-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Intermediate Tier (PDF §1.1.2) — outstanding features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-deliberately-deferred-advanced-tier-pdf-113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Deliberately deferred (Advanced tier, PDF §1.1.3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-recommended-execution-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3 — Recommended Execution Order
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/04_erd_database_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ERD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Third-Party Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Code & Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & CI/CD Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design (UML)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design (UML)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/01_system_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/class-diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/03_use_case_diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/use-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Description
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/02_battle_state_machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Battle State Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/activity-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Activity Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/master-guide-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Guide V2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT1_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Implementation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Feature Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Handover Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT3_GUIDE.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT3_TASK_BOARD.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Task Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-all-things-to-be-fixed-master-fix-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1 — All Things To Be Fixed (Master Fix List)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1 — All Things To Be Fixed (Master Fix List)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-game-integrity-server-authority-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Game-Integrity &amp; Server-Authority Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-security-access-control-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Security &amp; Access-Control Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-routing-navigation-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Routing &amp; Navigation Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-static-screens-live-data-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Static Screens → Live-Data Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-backend-correctness-consistency-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Backend Correctness &amp; Consistency Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-anti-cheat-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Anti-Cheat Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-progression-economy-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Progression &amp; Economy Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-offline-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.8 Offline Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-cicd-repository-hygiene-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.9 CI/CD &amp; Repository-Hygiene Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#110-documentation-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.10 Documentation Fixes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-outstanding-features-selected-from-the-pdf-basic-intermediate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2 — Outstanding Features Selected from the PDF (Basic + Intermediate)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2 — Outstanding Features Selected from the PDF (Basic + Intermediate)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-basic-tier-pdf-111-outstanding-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Basic Tier (PDF §1.1.1) — outstanding items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-intermediate-tier-pdf-112-outstanding-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Intermediate Tier (PDF §1.1.2) — outstanding features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-deliberately-deferred-advanced-tier-pdf-113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Deliberately deferred (Advanced tier, PDF §1.1.3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-recommended-execution-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3 — Recommended Execution Order
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/development/fix-register.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="wits-quest-master-fixes-outstanding-features-worklist">Wits Quest — Master Fixes &amp; Outstanding Features Worklist<a class="headerlink" href="#wits-quest-master-fixes-outstanding-features-worklist" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Document Purpose</strong>: A single consolidated worklist of (a) everything in the codebase that needs to be fixed, and (b) the outstanding features selected from the <strong>Basic</strong> and <strong>Intermediate</strong> tiers of the official course brief (<code>wits_quest.pdf</code>, COMS3011A Project 6).</p>
+<p><strong>Sources</strong>: <code>wits_quest.pdf</code> (official brief), <code>FEATURES_STATUS_AND_GAP_ANALYSIS.md</code>, <code>SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md</code>, <code>WITS_QUEST_FEATURE_HANDOVER_GUIDE.md</code>, plus a line-level audit of the current codebase. All file/line references below were verified against the working tree at the time of writing.</p>
+</blockquote>
+<hr />
+<h2 id="part-1-all-things-to-be-fixed-master-fix-list">Part 1 — All Things To Be Fixed (Master Fix List)<a class="headerlink" href="#part-1-all-things-to-be-fixed-master-fix-list" title="Permanent link">&para;</a></h2>
+<h3 id="11-game-integrity-server-authority-fixes">1.1 Game-Integrity &amp; Server-Authority Fixes<a class="headerlink" href="#11-game-integrity-server-authority-fixes" title="Permanent link">&para;</a></h3>
+<p><em>The brief's core principle: "trust nothing from the client" — location, answers, and match outcomes are all server-verified.</em></p>
+<p><strong>F1. No server-side location verification on trivia attempts.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: The client sends only <code>{ triviaId, answer }</code> to <code>POST /api/trivia/answer</code> (<code>frontend/src/services/apiClient.ts:315-323</code>). No coordinates are transmitted, and the parallel <code>POST /api/events/:id/answer</code> (<code>backend/src/server.ts:279</code>) also receives no coordinates. The 25 m Haversine gate lives only in <code>MapExplorer.tsx</code> on the client.</li>
+<li><strong>Fix</strong>: Attach <code>lat</code>, <code>lng</code>, <code>accuracy</code>, and <code>timestamp</code> to every attempt; server recomputes the Haversine distance against the event's <code>lat</code>/<code>lng</code>/<code>radius</code> and rejects out-of-range attempts before marking the answer.</li>
+</ul>
+<p><strong>F2. Battle round resolution is client-side.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/utils/battleEngine.ts</code> decides every round winner; <code>POST /api/battle/record</code> (<code>backend/src/routes/battle.ts:9</code>) persists whatever outcome the client declares.</li>
+<li><strong>Fix</strong>: Add a server-side round-resolution endpoint, or have <code>/record</code> validate each entry of <code>roundsData</code> against the server-held deck (fetch the deck's cards, verify claimed stat values, recompute outcomes) before awarding XP/Essence/Elo.</li>
+</ul>
+<p><strong>F3. <code>POST /api/events/:id/answer</code> trusts <code>userId</code> from the request body.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>backend/src/server.ts:279-281</code> reads <code>userId</code> straight from <code>req.body</code> with no <code>authMiddleware</code> — anyone can answer trivia on behalf of any student.</li>
+<li><strong>Fix</strong>: Delete this duplicate endpoint (the frontend uses the protected <code>/api/trivia/answer</code> flow anyway) or protect it and derive <code>userId</code> from the JWT.</li>
+</ul>
+<p><strong>F4. Unprotected inline routes shadow the protected route-file versions.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>backend/src/server.ts</code> registers inline handlers — <code>POST /api/cards</code> (line 45), <code>GET/POST /api/events</code> (150/158), <code>PUT/DELETE /api/events/:id</code> (183/202), <code>GET/POST /api/events/:id/trivia</code> (211/224), <code>POST /api/events/:id/answer</code> (279) — <strong>before</strong> mounting <code>contentRoutes</code> at line 364. Express matches in registration order, so the <code>authMiddleware</code>-protected <code>POST /api/cards</code> in <code>backend/src/routes/content.ts:11</code> is never reached; card creation is fully unauthenticated.</li>
+<li><strong>Fix</strong>: Remove the inline duplicates from <code>server.ts</code>, keep the route-file versions, and audit every remaining inline route for missing middleware.</li>
+</ul>
+<p><strong>F5. No ADMIN/LECTURER role guard anywhere in the backend.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: No <code>role</code> check exists in <code>server.ts</code> or any file under <code>backend/src/routes/</code> (verified by search). The frontend hides admin screens by role, but any authenticated student can call the authoring/CRUD APIs directly.</li>
+<li><strong>Fix</strong>: Add a <code>requireAdmin</code> middleware (checks <code>users.role === 'ADMIN' | 'LECTURER'</code> after JWT verification) and apply it to all event/card/trivia authoring and telemetry-audit endpoints.</li>
+</ul>
+<p><strong>F6. Repeat-answer farming.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>POST /api/events/:id/answer</code> re-awards card quantity + XP + Essence on <em>every</em> correct submission (<code>backend/src/server.ts:315-357</code>) — there is no once-per-event-per-player guard. The brief says a correct answer awards the card "once".</li>
+<li><strong>Fix</strong>: Record attempts (an <code>event_attempts</code> table or the existing completed-events logic) and block repeat attempts for the same player/event; confirm the protected <code>/api/trivia/answer</code> path enforces the same rule once the duplicate endpoint is removed.</li>
+</ul>
+<h3 id="12-security-access-control-fixes">1.2 Security &amp; Access-Control Fixes<a class="headerlink" href="#12-security-access-control-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F7. Real credentials committed in <code>deployment/RENDER_DEPLOYMENT.md</code>.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: Lines 46-50 contain a plaintext Gmail app password and a JWT secret as example values.</li>
+<li><strong>Fix</strong>: Rotate the Gmail app password and JWT secret immediately, strip the values from the document, and keep secrets only in environment variables / dashboard settings.</li>
+</ul>
+<p><strong>F8. <code>.env.example</code> is gitignored.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>.gitignore</code> line 4 excludes <code>.env.example</code> (and line 14's <code>.env*</code> matches it too) — environment templates are not versioned, so new cloners can't follow the documented setup.</li>
+<li><strong>Fix</strong>: Remove <code>.env.example</code> from <code>.gitignore</code> (keep <code>.env</code>, <code>.env.local</code>, <code>.env.*.local</code> ignored) and commit the templates.</li>
+</ul>
+<p><strong>F9. Email-verification and password-reset OTP codes are stored in in-memory arrays.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: Backend auth flow keeps codes in process memory (per audit of <code>routes/auth.ts</code> / <code>emailService.ts</code>) — lost on server restart, unusable across multiple instances.</li>
+<li><strong>Fix</strong>: Persist codes to a table with expiry timestamps, or use signed, self-expiring tokens.</li>
+</ul>
+<p><strong>F10. CORS allows all origins (Express and Socket.IO).</strong></p>
+<ul>
+<li><strong>Fix</strong>: Restrict origins to the production frontend URL plus <code>localhost</code> in development.</li>
+</ul>
+<p><strong>F11. <code>websocketClient.ts</code> hardcodes <code>http://localhost:3000</code>.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/utils/websocketClient.ts:3</code>. Any deployed frontend cannot reach live battles.</li>
+<li><strong>Fix</strong>: Read the socket URL from <code>VITE_API_URL</code> (env), falling back to localhost in dev.</li>
+</ul>
+<p><strong>F12. <code>supabaseClient.ts</code> exits the process when credentials are missing.</strong></p>
+<ul>
+<li><strong>Fix</strong>: Lazy-initialise the client and return graceful 503s on data routes instead of killing the server (which also kills <code>/api/health</code>).</li>
+</ul>
+<h3 id="13-routing-navigation-fixes">1.3 Routing &amp; Navigation Fixes<a class="headerlink" href="#13-routing-navigation-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F13. <code>DeckBuilder</code> can never render.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/App.tsx:8</code> imports it and line 20 includes <code>'deck'</code> in the <code>Screen</code> union, but there is no <code>{screen === 'deck' &amp;&amp; &lt;DeckBuilder /&gt;}</code> block in the JSX — the screen is unreachable.</li>
+<li><strong>Fix</strong>: Add the render block plus a navigation entry (see F15).</li>
+</ul>
+<p><strong>F14. Six built screens are completely unrouted.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>AsyncPvP.tsx</code>, <code>LivePvPArena.tsx</code>, <code>QuestTrails.tsx</code>, <code>Trades.tsx</code>, <code>CardForge.tsx</code>, <code>TerritoryMap.tsx</code> are not imported or switched on in <code>App.tsx</code>.</li>
+<li><strong>Fix</strong>: Add each to the <code>Screen</code> union + render switch as its backing feature goes live.</li>
+</ul>
+<p><strong>F15. <code>Profile</code>'s <code>onNavigate</code> prop is unused.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/screens/Profile.tsx</code> receives <code>onNavigate</code> (passed at <code>App.tsx:113</code>) but never calls it — there is no hub to reach deck/leaderboard/ranked/etc.</li>
+<li><strong>Fix</strong>: Implement the quick-access navigation grid (Sprint 2 Task 5.1): Deck Builder, Leaderboard, Ranked, Quest Trails, Card Forge, Trades.</li>
+</ul>
+<p><strong>F16. <code>BottomNav</code> is capped at 5 player tabs and 3 admin tabs.</strong></p>
+<ul>
+<li><strong>Fix</strong>: Add <code>CURATION</code> and <code>ANALYTICS</code> tabs when those screens exist; consider making the player nav extensible/scrollable.</li>
+</ul>
+<p><strong>F17. <code>alert("Multiplayer is coming soon!")</code> blocks the multiplayer hub.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/screens/BattleArena.tsx:338</code>.</li>
+<li><strong>Fix</strong>: Replace with real navigation to CPU / Async PvP / Live PvP choices (Sprint 2 Task 2.1).</li>
+</ul>
+<h3 id="14-static-screens-live-data-fixes">1.4 Static Screens → Live-Data Fixes<a class="headerlink" href="#14-static-screens-live-data-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F18. Leaderboard is hardcoded.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/screens/Leaderboard.tsx:4</code> defines <code>DEFAULT_PLAYERS</code>; no call to <code>GET /api/users</code> exists in the file.</li>
+<li><strong>Fix</strong>: Fetch live users, sort by <code>totalXP</code>/<code>eloRating</code>, render division badges and streaks.</li>
+</ul>
+<p><strong>F19. <code>RankedMatchmaking</code> shows a mock ladder</strong> — wire to real player data + a matchmaking queue (see Intermediate I-3/deferred Advanced work).</p>
+<p><strong>F20. <code>CardForge</code> is a static dummy UI</strong> — needs the backend scrap/upgrade endpoints and the player's real duplicates (Fix F40).</p>
+<p><strong>F21. <code>QuestTrails</code> is a hardcoded mock</strong> — needs the full feature (Intermediate I-6).</p>
+<p><strong>F22. <code>Trades</code> computes stat fairness client-side only</strong> — needs a backend atomic-exchange endpoint (Advanced tier — defer).</p>
+<p><strong>F23. <code>TerritoryMap</code> renders hardcoded SVG percentages</strong> — needs precinct/faction persistence (Advanced tier — defer).</p>
+<p><strong>F24. <code>LivePvPArena</code> uses hardcoded <code>PLAYER_CARDS</code>/<code>OPPONENT_CARDS</code></strong> — needs the real saved deck + Socket.IO hookup (Advanced tier — defer, but blocked on F11 too).</p>
+<p><strong>F25. Locked cards are hidden from the collection.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/screens/CardCollection.tsx:353</code> — <code>setEntries(full.filter((e) =&gt; e.unlocked))</code>. The brief expects players to browse and see what is still to collect; the <code>CardTile</code> component already renders a locked style (lines 29-63).</li>
+<li><strong>Fix</strong>: Remove the filter so locked cards remain, rendered dimmed with "Walk to X to unlock" hints.</li>
+</ul>
+<h3 id="15-backend-correctness-consistency-fixes">1.5 Backend Correctness &amp; Consistency Fixes<a class="headerlink" href="#15-backend-correctness-consistency-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F26. Division-tier thresholds are inconsistent.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>backend/src/routes/battle.ts:77-78</code> uses <code>DIAMOND &gt;= 2000</code>, <code>PLATINUM &gt;= 1500</code>; <code>backend/src/services/mockDb.ts</code> (<code>calculateDivisionTier</code>) uses <code>DIAMOND &gt;= 1800</code>; the database plan and schema docs say Diamond is 1800+.</li>
+<li><strong>Fix</strong>: Pick one source of truth (documented 1800+), centralise the calculation in a shared helper, and use it from both paths.</li>
+</ul>
+<p><strong>F27. Trivia XP never levels the player up.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>POST /api/events/:id/answer</code> adds <code>currentXP</code>/<code>totalXP</code> (<code>backend/src/server.ts:347-358</code>) with no level-up loop, while <code>battle.ts</code> promotes levels with <code>while (currentXP &gt;= level * 200)</code>.</li>
+<li><strong>Fix</strong>: Extract a shared <code>applyXpAndLevel()</code> helper and use it in every XP-awarding path (battle, trivia, events, trails). Verify the protected <code>/api/trivia/answer</code> path also runs it.</li>
+</ul>
+<p><strong>F28. Daily-streak fields are written at registration and never again.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: No route updates <code>lastCheckInDate</code>, <code>dailyStreakCount</code>, or <code>streakMultiplier</code> on check-in.</li>
+<li><strong>Fix</strong>: On the first <em>verified</em> check-in of each day, compare against <code>lastCheckInDate</code>: increment the streak within 24 h, reset beyond 48 h, and store the multiplier (1.0 / 1.10 @ 3d / 1.25 @ 7d).</li>
+</ul>
+<p><strong>F29. Trivia answer column mismatch: <code>correctAnswer</code> vs <code>correctIndex</code>.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>server.ts:252,255</code> writes <code>correctAnswer</code> and <code>server.ts:300</code> reads <code>correctAnswer</code>, but the documented schema (<code>docs/database/database-schema.md</code>) and the migration SQL (<code>personal/supabase_migration_guide.md</code>) define <code>correctIndex</code>. A table created from the migration SQL breaks MC questions silently.</li>
+<li><strong>Fix</strong>: Align the column name across code, migration SQL, and docs.</li>
+</ul>
+<p><strong>F30. <code>mockDb</code> fallback is not wired — Supabase outages crash auth.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: Sprint 2 Task 3.1 documents the root cause (<code>ENOTFOUND</code> from Supabase crashes <code>POST /api/auth/register</code>); <code>mockDb.ts</code> exists but is only used by tests.</li>
+<li><strong>Fix</strong>: Wrap Supabase calls in try/catch; fall back to <code>mockDb</code> (or return clear 503s) when Supabase is unreachable; ensure starter cards + deck are seeded either way.</li>
+</ul>
+<p><strong>F31. Two overlapping battle-result endpoints.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>POST /api/battle/record</code> and <code>POST /api/battle/result</code> both compute XP/Essence/Elo awards.</li>
+<li><strong>Fix</strong>: Consolidate to one implementation.</li>
+</ul>
+<p><strong>F32. <code>backend/scratch_server.ts</code> is dead code with broken imports</strong> (references non-existent <code>initDB</code>/<code>createTables</code>). <strong>Fix</strong>: delete it.</p>
+<p><strong>F33. Backend depends on itself via <code>"wits-quest-root": "file:.."</code></strong> (<code>backend/package.json</code>). <strong>Fix</strong>: remove the dependency and reinstall.</p>
+<p><strong>F34. Campus landmark list is duplicated.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>frontend/src/utils/antiCheat.ts:73-96</code> re-declares <code>CAMPUS_LANDMARKS</code> with a TODO to share it with <code>MapExplorer.tsx</code>.</li>
+<li><strong>Fix</strong>: Export <code>LANDMARKS</code> from one module (e.g. <code>mapdata/</code>) and import it everywhere.</li>
+</ul>
+<h3 id="16-anti-cheat-fixes">1.6 Anti-Cheat Fixes<a class="headerlink" href="#16-anti-cheat-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F35. All spoof detection is client-side; the server only stores pings.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>antiCheat.ts</code> computes speed/teleport violations in the browser; the backend's <code>telemetry.ts</code> persists <code>telemetry_pings</code> but never evaluates them.</li>
+<li><strong>Fix</strong>: On ping ingestion, compute Haversine distance/velocity server-side against the previous ping (thresholds: &gt; 15 m/s speed; ≥ 200 m within ≤ 5 s teleport) and persist violations.</li>
+</ul>
+<p><strong>F36. Violations don't gate anything.</strong></p>
+<ul>
+<li><strong>Fix</strong>: When a trivia attempt arrives (F1), check the player's recent violations and reject attempts made from flagged movement sessions.</li>
+</ul>
+<p><strong>F37. No low-accuracy GPS handling.</strong></p>
+<ul>
+<li><strong>Fix</strong>: The brief requires that a fix "too poor to rely on" needs corroboration — require <code>accuracy</code> below a threshold or a second corroborating ping before trusting a check-in.</li>
+</ul>
+<p><em>(Trust scoring, duplicate-submission detection, and account-pairing analysis are Advanced tier — deferred.)</em></p>
+<h3 id="17-progression-economy-fixes">1.7 Progression &amp; Economy Fixes<a class="headerlink" href="#17-progression-economy-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F38. Streak multipliers are stored but never applied.</strong></p>
+<ul>
+<li><strong>Fix</strong>: Apply <code>streakMultiplier</code> inside the shared XP helper (F27) to trivia and battle rewards.</li>
+</ul>
+<p><strong>F39. Achievements are entirely missing</strong> (Intermediate tier).</p>
+<ul>
+<li><strong>Fix</strong>: Add an <code>achievements</code> + <code>user_achievements</code> schema, award logic on check-ins/battles/streaks, and a Profile display section.</li>
+</ul>
+<p><strong>F40. Card Forge backend is missing.</strong></p>
+<ul>
+<li><strong>Fix</strong>: Implement scrap (duplicate → Essence) and upgrade (2 duplicates + 100 Essence → +5 ATK/DEF/SPD/BRN) endpoints, then wire <code>CardForge.tsx</code> (F20).</li>
+</ul>
+<p><strong>F41. Stat-budget scaling may not run on the Supabase path.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>mockDb.recordBattleResult</code> scales <code>maxStatBudget</code> (300 → 350 @ Lv.10 → 400 @ Lv.20); verify the Supabase update in <code>battle.ts</code> does the same.</li>
+<li><strong>Fix</strong>: Move the scaling into the shared progression helper so both paths match.</li>
+</ul>
+<h3 id="18-offline-fixes">1.8 Offline Fixes<a class="headerlink" href="#18-offline-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F42. The offline queue is written but nothing ever enqueues.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>offlineQueue.ts</code> implements enqueue/dequeue/<code>processQueue</code>, and <code>main.tsx:13-53</code> listens for reconnects — but <code>TriviaModal.tsx</code> contains no <code>navigator.onLine</code> / offlineQueue usage (verified: zero matches).</li>
+<li><strong>Fix</strong>: In <code>TriviaModal</code>, when <code>!navigator.onLine</code>, store the attempt via <code>enqueueCheckIn()</code> <strong>with the coordinates and timestamp captured at attempt time</strong> (so the server can validate "as it would have been at the time" — ties into F1); show an "Offline Mode Active — answers will sync when reconnected" badge; <code>processQueue</code> then replays via <code>POST /api/trivia/checkin</code> on reconnect.</li>
+</ul>
+<p><strong>F43. Service-worker API caching needs review once offline play is live</strong> — ensure stale questions/answers are never served from cache during an offline attempt.</p>
+<h3 id="19-cicd-repository-hygiene-fixes">1.9 CI/CD &amp; Repository-Hygiene Fixes<a class="headerlink" href="#19-cicd-repository-hygiene-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F44. README references workflows that don't exist.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: README's file structure lists <code>.gitea/workflows/ci.yml</code> and <code>.github/workflows/docs.yml</code>; only <code>.github/workflows/ci.yml</code> exists (docs deploy is a job inside it).</li>
+<li><strong>Fix</strong>: Create the Gitea workflow (Sprint 2 Task 7.1) and/or correct the README.</li>
+</ul>
+<p><strong>F45. Production deploys trigger from a personal branch.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>.github/workflows/ci.yml:89,136</code> deploys docs + Vercel on pushes to <code>mahlatse_task2</code> <strong>or</strong> <code>main</code>.</li>
+<li><strong>Fix</strong>: Restrict deploys to <code>main</code> (or explicit tags) so no member's WIP branch ships production.</li>
+</ul>
+<p><strong>F46. <code>deployment/docker-compose.yml</code> references a missing <code>deployment/Dockerfile</code>.</strong></p>
+<ul>
+<li><strong>Fix</strong>: Add the Dockerfile or delete the compose file.</li>
+</ul>
+<p><strong>F47. The backend is not deployed anywhere.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: <code>render.yaml</code> and the Render guide exist but were never executed; the live Vercel frontend therefore has no API to talk to (and <code>websocketClient.ts</code> points at localhost — F11).</li>
+<li><strong>Fix</strong>: Deploy the backend (Render), set <code>VITE_API_URL</code> on Vercel, and point the socket client at the deployed URL.</li>
+</ul>
+<p><strong>F48. README links to a non-existent file.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: Links to <code>personal/ci_cd_testing_battle_ai_anticheat_guide.md</code>; the actual file is <code>personal/testing_and_ci_cd_plan.md</code>.</li>
+<li><strong>Fix</strong>: Correct the link.</li>
+</ul>
+<h3 id="110-documentation-fixes">1.10 Documentation Fixes<a class="headerlink" href="#110-documentation-fixes" title="Permanent link">&para;</a></h3>
+<p><strong>F49. Unresolved Git merge-conflict markers committed in <code>WITS_QUEST_FEATURE_HANDOVER_GUIDE.md</code>.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: Lines 120-126 contain <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; ddc5bd7…</code> around the Member 5/6 name rows (Nontokozo/Keoratile vs Nontobeko/Kea).</li>
+<li><strong>Fix</strong>: Resolve the names and remove the markers.</li>
+</ul>
+<p><strong>F50. Division tiers are defined twice, differently.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: Database plan uses Elo ranges only; handover guide §1.6 adds Total-XP bands for the same divisions (and conflicts with F26's code thresholds).</li>
+<li><strong>Fix</strong>: Reconcile to a single definition across docs and code.</li>
+</ul>
+<p><strong>F51. Most UML diagrams are still scaffolds.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: Use-case (03), battle state machine (02), and ERD (04) are authored; use-case/class/sequence/activity pages under <code>docs/uml/</code> are placeholders.</li>
+<li><strong>Fix</strong>: Author the remaining diagrams (course deliverable risk).</li>
+</ul>
+<p><strong>F52. Meeting records for 2026-08-06 and 2026-08-13 are empty templates</strong> (<code>docs/meetings/index.md</code>). <strong>Fix</strong>: backfill or remove.</p>
+<p><strong>F53. Two competing design systems are documented.</strong></p>
+<ul>
+<li><strong>Evidence</strong>: README describes the parchment "Wits Adventure Scroll" palette; <code>ai/UI_DESIGN_SYSTEM.md</code> and the current <code>variables.css</code> use a navy/anime-realism palette.</li>
+<li><strong>Fix</strong>: Pick one, align the CSS tokens and docs.</li>
+</ul>
+<hr />
+<h2 id="part-2-outstanding-features-selected-from-the-pdf-basic-intermediate">Part 2 — Outstanding Features Selected from the PDF (Basic + Intermediate)<a class="headerlink" href="#part-2-outstanding-features-selected-from-the-pdf-basic-intermediate" title="Permanent link">&para;</a></h2>
+<p>The brief stages delivery in three tiers. Per the gap analysis the codebase sits at ~85% Basic, ~35% Intermediate, ~15% Advanced. The selected work below covers <strong>only Basic and Intermediate</strong> — finishing these before touching Advanced.</p>
+<h3 id="21-basic-tier-pdf-111-outstanding-items">2.1 Basic Tier (PDF §1.1.1) — outstanding items<a class="headerlink" href="#21-basic-tier-pdf-111-outstanding-items" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th style="text-align: left;">Brief requirement (PDF)</th>
+<th style="text-align: left;">Current status</th>
+<th style="text-align: left;">Outstanding work (fix refs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">B-1</td>
+<td style="text-align: left;">Map of campus; player sees where they are and what's near; events active within a radius <strong>and a time window</strong>; tell at a glance which are in reach / too far / <strong>passed</strong></td>
+<td style="text-align: left;">Map, GPS, 25 m radius, and status pins work</td>
+<td style="text-align: left;">Surface the <strong>time window</strong>: flag events as UPCOMING / ACTIVE / EXPIRED from <code>startDate</code>/<code>endDate</code> and render an explicit "passed" state in <code>MapExplorer.tsx</code></td>
+</tr>
+<tr>
+<td style="text-align: center;">B-2</td>
+<td style="text-align: left;">Device position is a <strong>claim to be checked</strong>, not fact — someone not at the location must not be able to attempt the challenge</td>
+<td style="text-align: left;">Client-side Haversine gate only</td>
+<td style="text-align: left;"><strong>Server-side verification of coordinates on every attempt</strong> (F1), plus violation gating (F36) — the single most important Basic gap</td>
+</tr>
+<tr>
+<td style="text-align: center;">B-3</td>
+<td style="text-align: left;">Trivia drawn from alumni/history/landmarks; <strong>varied formats</strong>; marked by the game; player learns the answer either way</td>
+<td style="text-align: left;">Done — MC + text, server-marked, answer always revealed</td>
+<td style="text-align: left;">Harden: remove/protect the duplicate answer endpoint (F3), un-shadow the protected routes (F4)</td>
+</tr>
+<tr>
+<td style="text-align: center;">B-4</td>
+<td style="text-align: left;">Correct answer awards the event's card <strong>once</strong>; cards carry category + attributes; varying rarity; browse collection</td>
+<td style="text-align: left;">Awarding works; rarity/categories work</td>
+<td style="text-align: left;">Enforce <strong>once-per-player-per-event</strong> (F6); show locked cards with unlock hints instead of hiding them (F25)</td>
+</tr>
+<tr>
+<td style="text-align: center;">B-5</td>
+<td style="text-align: left;">Choose a deck; turn-based match vs the computer; attribute compared round by round; <strong>rules enforced by the game, not the player</strong>; finished matches kept</td>
+<td style="text-align: left;">Battle + match persistence work; but resolution is client-side and the Deck Builder is unreachable</td>
+<td style="text-align: left;">Move/duplicate round resolution <strong>server-side</strong> (F2); mount <code>DeckBuilder</code> in <code>App.tsx</code> (F13) and link it from Profile (F15)</td>
+</tr>
+<tr>
+<td style="text-align: center;">B-6</td>
+<td style="text-align: left;">Authors' console: place events, write questions/answers, define cards and attributes</td>
+<td style="text-align: left;"><code>AdminEvents</code> + <code>AdminContent</code> functional</td>
+<td style="text-align: left;">Add auth + <strong>admin role guard</strong> to all authoring endpoints (F4, F5); curation workflow is Intermediate (I-7)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-intermediate-tier-pdf-112-outstanding-features">2.2 Intermediate Tier (PDF §1.1.2) — outstanding features<a class="headerlink" href="#22-intermediate-tier-pdf-112-outstanding-features" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th style="text-align: left;">Brief requirement (PDF)</th>
+<th style="text-align: left;">Current status</th>
+<th style="text-align: left;">Outstanding work (fix refs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">I-1</td>
+<td style="text-align: left;"><strong>Offline play</strong> — a player with no signal can still answer a reached event; attempt held on device and checked later as it would have been at the time</td>
+<td style="text-align: left;">Queue service + reconnect listeners exist; nothing enqueues</td>
+<td style="text-align: left;">Wire <code>enqueueCheckIn()</code> into <code>TriviaModal</code> with captured coords/timestamp, offline badge, replay via <code>/api/trivia/checkin</code> (F42, F43); server must validate using the <em>captured-time</em> position (F1)</td>
+</tr>
+<tr>
+<td style="text-align: center;">I-2</td>
+<td style="text-align: left;"><strong>Harder location checks</strong> — movement history, journeys nobody could walk, attempts faster than the walk allows, fixes too poor to rely on</td>
+<td style="text-align: left;">Detection is client-side only; server passively stores pings</td>
+<td style="text-align: left;">Server-side velocity/teleport evaluation on ping ingestion (F35); gate attempts on violations (F36); accuracy corroboration (F37)</td>
+</tr>
+<tr>
+<td style="text-align: center;">I-3</td>
+<td style="text-align: left;"><strong>Async PvP</strong> — challenge another player, each turn when it suits them, game holds the match in between, abandonment eventually forfeits</td>
+<td style="text-align: left;">Not implemented — <code>AsyncPvP.tsx</code> is a static mock; no endpoints (the <code>async_pvp_challenges</code> table exists in the migration SQL and <code>mockDb.createAsyncChallenge</code> exists)</td>
+<td style="text-align: left;">Build <code>POST /api/battle/async/challenge</code>, <code>GET /api/battle/async/my-matches</code>, <code>POST /api/battle/async/play-turn</code>; expire/forfeit on <code>expiresAt</code> (24 h); store <code>defenderTelemetry</code> (failed stat + deficit) on completion; route <code>AsyncPvP.tsx</code> (F14) and link from the battle hub (F17)</td>
+</tr>
+<tr>
+<td style="text-align: center;">I-4</td>
+<td style="text-align: left;"><strong>Retention</strong> — profile, points, achievements, days kept up in a row, standings against everyone</td>
+<td style="text-align: left;">Profile/XP partial; leaderboard hardcoded; streaks never evaluated; no achievements</td>
+<td style="text-align: left;">Live leaderboard from <code>GET /api/users</code> (F18); streak evaluation + multipliers on first daily check-in (F28, F38); achievements schema + awarding + display (F39)</td>
+</tr>
+<tr>
+<td style="text-align: center;">I-5</td>
+<td style="text-align: left;"><strong>Card depth</strong> — rarer cards, duplicates that are worth something, decks assembled under constraints</td>
+<td style="text-align: left;">Rarity + deck-constraint validation built; duplicates are dead weight; Deck Builder unreachable</td>
+<td style="text-align: left;">Mount Deck Builder (F13); implement scrap + upgrade endpoints and wire <code>CardForge.tsx</code> (F20, F40); route CardForge (F14)</td>
+</tr>
+<tr>
+<td style="text-align: center;">I-6</td>
+<td style="text-align: left;"><strong>Quest trails</strong> — events joined up and completed in order; game points to what's nearby and still unvisited</td>
+<td style="text-align: left;">Not implemented — <code>QuestTrails.tsx</code> is a hardcoded mock</td>
+<td style="text-align: left;">New <code>quest_trails</code> + <code>user_trail_progress</code> tables; endpoints for trail fetch/progress/next-stop; wire <code>QuestTrails.tsx</code> (F14, F21); surface unvisited nearby stops on the map</td>
+</tr>
+<tr>
+<td style="text-align: center;">I-7</td>
+<td style="text-align: left;"><strong>Curation</strong> — content drafted, reviewed, published (not live as written); campaigns scheduled; old events retired; questions everybody gets wrong surfaced for repair</td>
+<td style="text-align: left;">Not implemented — <code>AdminCuration.tsx</code> doesn't exist; admin publishes directly to Supabase</td>
+<td style="text-align: left;">Content <code>status</code> lifecycle (<code>draft → pending_review → published → retired</code>); build <code>AdminCuration.tsx</code> review board + nav tab (F16); enforce campaign <code>startDate</code>/<code>endDate</code>; track per-question pass/fail counts and surface frequently-missed questions for repair</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-deliberately-deferred-advanced-tier-pdf-113">2.3 Deliberately deferred (Advanced tier, PDF §1.1.3)<a class="headerlink" href="#23-deliberately-deferred-advanced-tier-pdf-113" title="Permanent link">&para;</a></h3>
+<p>Not selected for this worklist: live WebSocket arena hookup (F24), adaptive trust scoring, procedural event placement, ranked seasons/queue (F19), territory control (F23), P2P trading with atomic exchange (F22), and the analytics console. These stay parked until Basic + Intermediate are complete.</p>
+<hr />
+<h2 id="part-3-recommended-execution-order">Part 3 — Recommended Execution Order<a class="headerlink" href="#part-3-recommended-execution-order" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Phase</th>
+<th style="text-align: left;">Work items</th>
+<th style="text-align: left;">Why first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1. Security stopgaps</strong></td>
+<td style="text-align: left;">F7 (rotate leaked creds), F4 + F5 (protect routes, add admin guard), F3</td>
+<td style="text-align: left;">Cheap, fast, and closes the biggest integrity holes before more players use the system</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2. Finish Basic integrity</strong></td>
+<td style="text-align: left;">F1 (server-side location verify), F6 (award once), F2 (server-side battle rules), B-1 (event time-window states)</td>
+<td style="text-align: left;">Completes the Basic tier as the brief defines it — everything else builds on trustworthy check-ins</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3. Make built work reachable</strong></td>
+<td style="text-align: left;">F13, F15, F17, F25</td>
+<td style="text-align: left;">Deck Builder, locked-card hints, and the battle hub are already built — routing fixes unlock them with minimal effort</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>4. Intermediate resilience</strong></td>
+<td style="text-align: left;">F42 + F43 (offline), F35-F37 (server-side anti-spoofing)</td>
+<td style="text-align: left;">Both harden the same check-in path and depend on F1's coordinate submission</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>5. Progression wiring</strong></td>
+<td style="text-align: left;">F26-F28, F38, F41, F18, F39</td>
+<td style="text-align: left;">Shared XP/level/streak helper + live leaderboard + achievements — makes retention real</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>6. Async PvP</strong></td>
+<td style="text-align: left;">I-3 full stack</td>
+<td style="text-align: left;">Highest-value Intermediate feature; mock DB + schema groundwork already exist</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>7. Economy + trails</strong></td>
+<td style="text-align: left;">F40 + F20 (Forge), I-6 (Quest Trails)</td>
+<td style="text-align: left;">Depends on duplicates being meaningful (Phase 5) and map surfacing (Phase 3)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>8. Curation</strong></td>
+<td style="text-align: left;">I-7</td>
+<td style="text-align: left;">Last Intermediate item; benefits from question pass/fail telemetry built in Phase 5</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>9. Continuous hygiene</strong></td>
+<td style="text-align: left;">F8, F10-F12, F30-F34, F44-F53</td>
+<td style="text-align: left;">Fold in alongside every phase; repo/docs/CI cleanup keeps the course deliverables clean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>This worklist supersedes the roadmap section of <code>FEATURES_STATUS_AND_GAP_ANALYSIS.md</code> for execution purposes; update both as items land.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../bug-tracking/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Bug Tracking">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Bug Tracking
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../database/database-plan/" class="md-footer__link md-footer__link--next" aria-label="Next: Database Plan">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Database Plan
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

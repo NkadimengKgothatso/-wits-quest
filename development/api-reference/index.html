@@ -1,0 +1,3599 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Centralised documentation for Wits Quest — a location-aware, turn-based campus adventure game developed by Team Big-O for the Wits University Software Development Project (COMS3011A).
+">
+      
+      
+      
+        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/development/api-reference/">
+      
+      
+        <link rel="prev" href="../api-quickstart/">
+      
+      
+        <link rel="next" href="../testing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>API Reference - Wits Quest Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wits Quest Documentation" class="md-header__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wits Quest Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wits Quest Documentation" class="md-nav__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wits Quest Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game Overview & Tiers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpu-battle-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU Battle Rulebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../live-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Quick Start (Verified)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-supabase-auth-apiauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication — Supabase Auth + /api/auth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#users-progression-apiusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users &amp; Progression — /api/users
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cards-deck-apicards-apiplayer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cards &amp; Deck — /api/cards, /api/player
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events-apievents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events — /api/events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trivia-apitrivia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trivia — /api/trivia
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpu-battle-apibattle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU Battle — /api/battle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#async-pvp-apibattleasync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async PvP — /api/battle/async
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#live-pvp-socketio-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live PvP — Socket.IO events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-cheat-telemetry-apimocktelemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-Cheat Telemetry — /api/mock/telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sprint-3-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 3 APIs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sprint 3 APIs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#routing-apirouting-openrouteservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Routing — /api/routing (OpenRouteService)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievements-apiachievements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Achievements — /api/achievements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analytics-apimocktelemetryanalytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analytics — /api/mock/telemetry/analytics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-api-level-defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known API-level defects
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Automated Testing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Automated Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Results & Coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment & Hosting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stakeholder Reviews
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Stakeholder Reviews
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/stakeholder-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutor Review Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team Meetings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Team Meetings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meetings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meeting Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Feedback
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Feedback
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/user-feedback/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feedback Form & Responses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/files/wits-quest-master-architecture-task-specification-guide.pdf" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Architecture Guide (PDF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../decisions-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitea-actions-migration-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gitea Actions Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bug Tracker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bug-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fix-register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fix Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/04_erd_database_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ERD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Third-Party Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Code & Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & CI/CD Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design (UML)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design (UML)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/01_system_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/class-diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/03_use_case_diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/use-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Description
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/02_battle_state_machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Battle State Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/activity-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Activity Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/master-guide-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Guide V2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT1_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Implementation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Feature Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Handover Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT3_GUIDE.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT3_TASK_BOARD.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Task Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-supabase-auth-apiauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication — Supabase Auth + /api/auth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#users-progression-apiusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users &amp; Progression — /api/users
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cards-deck-apicards-apiplayer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cards &amp; Deck — /api/cards, /api/player
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events-apievents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events — /api/events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trivia-apitrivia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trivia — /api/trivia
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpu-battle-apibattle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU Battle — /api/battle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#async-pvp-apibattleasync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async PvP — /api/battle/async
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#live-pvp-socketio-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live PvP — Socket.IO events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-cheat-telemetry-apimocktelemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-Cheat Telemetry — /api/mock/telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sprint-3-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 3 APIs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sprint 3 APIs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#routing-apirouting-openrouteservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Routing — /api/routing (OpenRouteService)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#achievements-apiachievements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Achievements — /api/achievements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analytics-apimocktelemetryanalytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analytics — /api/mock/telemetry/analytics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-api-level-defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known API-level defects
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/development/api-reference.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h1>
+<p>Wits Quest exposes a <strong>hand-written REST API</strong> (Express + TypeScript) plus a <strong>Socket.IO WebSocket layer</strong> for real-time PvP. Supabase provides the Postgres database, authentication, and card-image storage, but never generates an API — every route below is team-written code, satisfying the course brief's hand-written API requirement.</p>
+<ul>
+<li><strong>Base URL (development):</strong> <code>http://localhost:3000</code></li>
+<li><strong>Base URL (production):</strong> <code>https://wits-quest-backend.onrender.com</code> (configured via <code>render.yaml</code>, health probe at <code>/api/health</code>)</li>
+<li><strong>Content type:</strong> <code>application/json</code></li>
+<li><strong>Authentication:</strong> <code>Authorization: Bearer &lt;token&gt;</code> where the token is <strong>issued by Supabase Auth</strong> (the frontend obtains it via <code>supabase.auth.signIn/signUp</code>). The backend never mints, stores, or refreshes tokens — its <code>authMiddleware</code> verifies each request with <code>supabase.auth.getUser(token)</code> using the service-role key and rejects anything invalid with 401.</li>
+</ul>
+<p>Endpoint status legend:</p>
+<ul>
+<li><strong>Verified</strong> — implemented and checked against the code</li>
+<li><strong>Unverified</strong> — implemented per the code audit; not yet re-verified live</li>
+<li><strong>Defect</strong> — implemented but has a known tracked defect (fix ID in brackets, see the <a href="../fix-register/">Fix Register</a>)</li>
+</ul>
+<hr />
+<h2 id="authentication-supabase-auth-apiauth">Authentication — Supabase Auth + <code>/api/auth</code><a class="headerlink" href="#authentication-supabase-auth-apiauth" title="Permanent link">&para;</a></h2>
+<p>Since the Sprint 2 auth migration, account creation and sign-in happen <strong>client-side against Supabase Auth directly</strong> (email + password, OTP verification email delivered by Supabase). The backend's auth surface is deliberately tiny:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/auth/complete-signup</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Idempotent profile completion after Supabase sign-up: creates the users row, seeds Level 1 / 100 Essence / Elo 1000, grants the 5 starter cards (<code>card-008</code>…<code>card-012</code>), and builds the default deck. Role (STUDENT/ADMIN) is derived from the verified Wits email domain.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/auth/me</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">The authenticated user's own profile — self-heals a missing users row and returns 403 if a telemetry audit has suspended the account.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<h2 id="users-progression-apiusers">Users &amp; Progression — <code>/api/users</code><a class="headerlink" href="#users-progression-apiusers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/users</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">List students — explicit public-column set (id, username, level, Elo, division, avatar). No credential columns exist in the table since the Supabase Auth migration.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/users/:id</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Public profile of one student.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">PUT</td>
+<td style="text-align: left;"><code>/api/users/:id</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Update profile (avatar, username).</td>
+<td style="text-align: left;">Unverified; no ownership check yet</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/users/leaderboard</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Real division ladder — top 100 players from the database, sortable via <code>?sort=elo</code>.</td>
+<td style="text-align: left;">Verified; formerly hardcoded [F18], fixed</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/users/:id/cards</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">The user's card collection with resolved stats.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/users/:id/decks</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Retrieve a player's decks.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/avatars</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Avatar catalogue.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/avatars</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Add an avatar.</td>
+<td style="text-align: left;">Unverified; authoring route, no role guard yet [F5]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cards-deck-apicards-apiplayer">Cards &amp; Deck — <code>/api/cards</code>, <code>/api/player</code><a class="headerlink" href="#cards-deck-apicards-apiplayer" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/cards</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Published card catalogue only (category, rarity, ATK/DEF/SPD/BRN) — what players see.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/cards/all</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Full catalogue including drafts — the authoring console view.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/cards</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Author a new card (starts as a draft).</td>
+<td style="text-align: left;">Defect: no ADMIN role guard yet [F5]</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/cards/upload</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Multipart card-image upload (multer, 5 MB limit) into the Supabase Storage <code>card-images</code> bucket.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/player/deck</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Save a deck with full server-side validation: exactly 5 cards, no duplicates, every card owned by the player, total stat budget enforced.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<h2 id="events-apievents">Events — <code>/api/events</code><a class="headerlink" href="#events-apievents" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/events</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Active campus events (lat/lng, 25 m radius, time window) — what the map shows.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/events/all</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Every event including inactive — authoring console view.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/events</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Create an event.</td>
+<td style="text-align: left;">Defect: no auth middleware or role guard [F5]</td>
+</tr>
+<tr>
+<td style="text-align: left;">PUT</td>
+<td style="text-align: left;"><code>/api/events/:id</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Update an event.</td>
+<td style="text-align: left;">Defect: no auth middleware or role guard [F5]</td>
+</tr>
+<tr>
+<td style="text-align: left;">DELETE</td>
+<td style="text-align: left;"><code>/api/events/:id</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Delete an event.</td>
+<td style="text-align: left;">Defect: no auth middleware or role guard [F5]</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/events/:id/trivia</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">List an event's trivia questions — <strong>withholds the correct answers</strong>.</td>
+<td style="text-align: left;">Verified; answer-leak fixed</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/events/:id/trivia</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Author trivia for an event.</td>
+<td style="text-align: left;">Defect: no role guard [F5]</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/events/:id/answer</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;"><em>Legacy duplicate</em> answer endpoint that trusts <code>userId</code> from the body.</td>
+<td style="text-align: left;">Defect: slated for removal [F3]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="trivia-apitrivia">Trivia — <code>/api/trivia</code><a class="headerlink" href="#trivia-apitrivia" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/trivia</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">List trivia questions (authoring).</td>
+<td style="text-align: left;">Defect: no role guard [F5]</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/trivia</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Author a trivia question.</td>
+<td style="text-align: left;">Defect: no role guard [F5]</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/events/:eventId/next-trivia</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">The next unanswered question for the current player at an event.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/trivia/answer</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Submit <code>{ triviaId, answer }</code>. The server grades multiple-choice and text answers, <strong>rejects duplicate attempts (400)</strong> and already-completed events (<strong>409</strong>), awards card + XP + Essence, and reveals the correct answer.</td>
+<td style="text-align: left;">Verified; repeat farming closed [F6]. Defect: no server-side 25 m coordinate check [F1]</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/trivia/checkin</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Replay an offline-queued attempt (with captured coordinates and timestamp) after reconnect.</td>
+<td style="text-align: left;">Unverified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/player/completed-events</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Events the player has already cleared — drives map markers.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cpu-battle-apibattle">CPU Battle — <code>/api/battle</code><a class="headerlink" href="#cpu-battle-apibattle" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/battle/record</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Record a finished CPU battle and apply rewards (XP/Essence/Elo, level-ups, streak multipliers).</td>
+<td style="text-align: left;">Defect: persists the client-declared outcome without re-validation [F2]</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/battle/result</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;"><em>Overlapping legacy reward endpoint</em> (registered in the auth router).</td>
+<td style="text-align: left;">Defect: unauthenticated; to be consolidated with <code>/record</code> [F15]</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/battle/history</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">The player's past battles.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/battle/live-online</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Players currently online for the live-match lobby.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<h2 id="async-pvp-apibattleasync">Async PvP — <code>/api/battle/async</code><a class="headerlink" href="#async-pvp-apibattleasync" title="Permanent link">&para;</a></h2>
+<p>All routes behind <code>authMiddleware</code>. The full lifecycle is a 6-status state machine:
+<code>PENDING_ACCEPTANCE → CHALLENGER_TURN / DEFENDER_TURN → COMPLETED / EXPIRED / DECLINED</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/battle/async/opponents</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Every other registered student (public fields only) for the challenge picker.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/battle/async/my-matches</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Matches bucketed into <strong>Your Turn / Waiting / Challenges / History</strong>; lazily expires stale challenges on read.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/battle/async/:id</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Full match detail for the play-turn view. Returns <code>yourDeck</code> and <code>usedCardIds</code>; only reveals <strong>your</strong> current card — never the opponent's in-flight card.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/battle/async/challenge</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;"><code>{ defenderId }</code> — snapshots both default decks, sets 24 h <code>expiresAt</code>, status <code>PENDING_ACCEPTANCE</code>. Rejects a duplicate active challenge in either direction (409).</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/battle/async/:id/accept</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Defender accepts; flips to <code>CHALLENGER_TURN</code>.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/battle/async/:id/decline</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Defender declines; terminal status <code>DECLINED</code>.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/battle/async/:id/play-turn</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;"><code>{ cardId, stat }</code> — only the side whose turn it is may call. The server resolves both sides' cards and the round via <code>battleResolution.ts</code>; on match decision it runs <code>applyMatchResult</code> for both sides and returns a <code>matchEnd</code> reward object.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<p>Design notes:</p>
+<ul>
+<li><strong>Turn state is derived, not stored.</strong> Whose turn it is and each side's per-stat quota are recomputed from <code>roundsHistory</code> on every read (<code>asyncChallengeState.ts</code>), eliminating a class of stored-state drift bugs.</li>
+<li><strong>24-hour expiry is lazy-checked</strong>, on every read — a lapsed invite expires with no forfeit; a match already underway forfeits to the side <em>not</em> holding the pick.</li>
+<li>The client <strong>only ever sends a card + stat choice</strong> — never a claimed result.</li>
+</ul>
+<h2 id="live-pvp-socketio-events">Live PvP — Socket.IO events<a class="headerlink" href="#live-pvp-socketio-events" title="Permanent link">&para;</a></h2>
+<p>Transport: Socket.IO over the same server. The server is authoritative: it fetches both real decks itself, resolves every round, and rejects invalid picks.</p>
+<p><strong>Client → server</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Event</th>
+<th style="text-align: left;">Payload</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>join_battle</code></td>
+<td style="text-align: left;"><code>matchId</code>, <code>userId</code></td>
+<td style="text-align: left;">Join the shared lobby / resume a match. No deck is trusted from the client — the server fetches it.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>submit_turn</code></td>
+<td style="text-align: left;"><code>cardId</code>, <code>stat</code></td>
+<td style="text-align: left;">The current picker's move. Only the picker's submission is accepted.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>set_active_card</code></td>
+<td style="text-align: left;"><code>cardId</code></td>
+<td style="text-align: left;">Change which of your cards is "up" when you're not the picker.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Server → client</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Event</th>
+<th style="text-align: left;">Payload</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>battle_start</code></td>
+<td style="text-align: left;">real deck</td>
+<td style="text-align: left;">Both sides' resolved decks (to each their own).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>turn_state</code></td>
+<td style="text-align: left;"><code>isYourTurn</code>, <code>pickerUsername</code>, <code>turnEndsAt</code>, <code>roundNumber</code></td>
+<td style="text-align: left;">Emitted whenever the picker changes; drives the synchronized countdown.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>round_outcome</code></td>
+<td style="text-align: left;">shared <code>stat</code>, <code>wasYourPick</code>, <code>autoPicked</code>, outcome, category edge</td>
+<td style="text-align: left;">Round reveal.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>battle_end</code></td>
+<td style="text-align: left;">result + rewards</td>
+<td style="text-align: left;">Final result with XP/Essence/Elo changes.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>player_disconnected</code> / <code>player_reconnected</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Connection status; a disconnect starts a 60 s grace window, after which the match is forfeited.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>turn_error</code> / <code>join_error</code></td>
+<td style="text-align: left;">message</td>
+<td style="text-align: left;">Rejections (not your turn, quota-locked stat, repeated card, no saved deck).</td>
+</tr>
+</tbody>
+</table>
+<p>Server-enforced rules: alternating picker (win keeps the pick, tie holds, loss flips), <strong>30-second turn timer</strong> that auto-picks on expiry, no-repeat cards with hand replenishment, 2-use-per-stat quota, first-to-3 within 5 rounds.</p>
+<h2 id="anti-cheat-telemetry-apimocktelemetry">Anti-Cheat Telemetry — <code>/api/mock/telemetry</code><a class="headerlink" href="#anti-cheat-telemetry-apimocktelemetry" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/mock/telemetry/ping</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Ingest a GPS ping; Haversine velocity check flags movement &gt; 15 m/s as a teleportation/speeding violation.</td>
+<td style="text-align: left;">Unverified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/mock/telemetry/pings</code> / <code>/players</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Review ingested telemetry for a player / all players.</td>
+<td style="text-align: left;">Unverified</td>
+</tr>
+<tr>
+<td style="text-align: left;">POST / GET</td>
+<td style="text-align: left;"><code>/api/mock/telemetry/audit</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Record and list manual audit actions (e.g. suspensions).</td>
+<td style="text-align: left;">Unverified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/mock/telemetry/status/:userId</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">A player's anti-cheat standing.</td>
+<td style="text-align: left;">Unverified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/mock/telemetry/suspended</code></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">The suspended-player list (feeds the <code>/api/auth/me</code> 403 gate).</td>
+<td style="text-align: left;">Unverified</td>
+</tr>
+</tbody>
+</table>
+<h2 id="health">Health<a class="headerlink" href="#health" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/health</code></td>
+<td style="text-align: left;">Liveness probe for the Render deployment.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="sprint-3-apis">Sprint 3 APIs<a class="headerlink" href="#sprint-3-apis" title="Permanent link">&para;</a></h2>
+<h3 id="routing-apirouting-openrouteservice">Routing — <code>/api/routing</code> (OpenRouteService)<a class="headerlink" href="#routing-apirouting-openrouteservice" title="Permanent link">&para;</a></h3>
+<p>Powers the <strong>Next Stop</strong> feature: a walking route from the player to the nearest incomplete active event, drawn on the campus map. The backend calls the OpenRouteService Directions API (<code>foot-walking</code> profile), so the API key never reaches the client.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/routing/route</code></td>
+<td style="text-align: left;">Bearer</td>
+<td style="text-align: left;">Query: <code>startLat</code>, <code>startLng</code>, <code>endLat</code>, <code>endLng</code>. Validates the coordinates, requests a walking route from OpenRouteService and returns it.</td>
+<td style="text-align: left;">Unverified</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Fallback:</strong> if OpenRouteService is down, errors, or returns no usable route, the app draws a straight line to the destination.</li>
+<li><strong>Caching:</strong> the frontend caches routes per event and approximate player location to avoid repeat requests.</li>
+<li><strong>Errors handled:</strong> missing or invalid coordinates, missing API key, failed or unusable OpenRouteService response.</li>
+<li><strong>Config:</strong> <code>OPENROUTESERVICE_API_KEY=&lt;your-api-key&gt;</code> on the backend only. Never put the real key in docs, source code, commits or screenshots.</li>
+</ul>
+<h3 id="achievements-apiachievements">Achievements — <code>/api/achievements</code><a class="headerlink" href="#achievements-apiachievements" title="Permanent link">&para;</a></h3>
+<p>Admin-defined rules. Unlocks are checked after trivia answers and matches and returned as <code>achievementsUnlocked</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">POST</td>
+<td style="text-align: left;"><code>/api/achievements</code></td>
+<td style="text-align: left;">Bearer + Admin</td>
+<td style="text-align: left;">Create a rule: <code>name</code>, <code>icon</code>, <code>ruleType</code>, <code>target</code> (required); <code>description</code>, <code>category</code> (optional).</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/achievements/all</code></td>
+<td style="text-align: left;">Bearer + Admin</td>
+<td style="text-align: left;">List all rules, active and inactive.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">PATCH</td>
+<td style="text-align: left;"><code>/api/achievements/:id</code></td>
+<td style="text-align: left;">Bearer + Admin</td>
+<td style="text-align: left;">Edit <code>name</code>, <code>description</code>, <code>icon</code>, <code>category</code> or <code>target</code>. Rule type cannot change.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">PATCH</td>
+<td style="text-align: left;"><code>/api/achievements/:id/deactivate</code></td>
+<td style="text-align: left;">Bearer + Admin</td>
+<td style="text-align: left;">Disable a rule (never deleted, so past unlocks stay valid).</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<p>Rule types: <code>cards_collected</code>, <code>battles_won</code>, <code>level_reached</code>, <code>events_completed</code>, <code>streak_days</code>. <code>trail_finished</code> is rejected (400) until trail completion is tracked server-side.</p>
+<h3 id="analytics-apimocktelemetryanalytics">Analytics — <code>/api/mock/telemetry/analytics</code><a class="headerlink" href="#analytics-apimocktelemetryanalytics" title="Permanent link">&para;</a></h3>
+<p>Feeds the admin Analytics screen.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Path</th>
+<th style="text-align: left;">Auth</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/mock/telemetry/analytics/question-pass-rates</code></td>
+<td style="text-align: left;">Bearer + Admin</td>
+<td style="text-align: left;">Per trivia question: attempts, passes, fails, <code>passRate</code>. Hardest first; unattempted questions last with <code>passRate: null</code>.</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+<tr>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"><code>/api/mock/telemetry/analytics/rarity-drop-rates</code></td>
+<td style="text-align: left;">Bearer + Admin</td>
+<td style="text-align: left;">Actual vs intended share per rarity, with <code>delta</code> and <code>status</code> (<code>on_target</code>, <code>over</code>, <code>under</code>; flagged beyond 5 percentage points).</td>
+<td style="text-align: left;">Verified</td>
+</tr>
+</tbody>
+</table>
+<p>Intended rates are placeholders in <code>config/dropRates.ts</code> (Common 60, Rare 25, Epic 12, Legendary 3) until the team agrees real targets.</p>
+<hr />
+<h2 id="known-api-level-defects">Known API-level defects<a class="headerlink" href="#known-api-level-defects" title="Permanent link">&para;</a></h2>
+<p>The security and integrity gaps flagged as Defect above are tracked with evidence and fixes in the <a href="../fix-register/">Fix Register</a>. Current state after the Sprint 2 hardening pass:</p>
+<ul>
+<li><strong>Fixed this sprint</strong> — <strong>F4</strong> (unauthenticated inline routes shadowing the protected route files — removed; registration order now documented in <code>server.ts</code>), <strong>F6</strong> (repeat-answer card farming — <code>user_trivia_attempts</code>/<code>event_attempts</code> tables reject duplicates), <strong>F18</strong> (hardcoded leaderboard — now a real top-100 query), and the trivia answer-leak on <code>GET /api/events/:id/trivia</code>.</li>
+<li><strong>Resolved by the auth migration</strong> — <strong>F9</strong> (OTP codes in process memory) no longer applies: Supabase Auth owns OTP delivery, and no credentials live in our database. <strong>F7</strong> (published credentials in the Render deployment guide) has been scrubbed; rotation is still advised.</li>
+<li><strong>Still open</strong> — <strong>F1</strong> (no server-side 25 m location check on trivia attempts), <strong>F2</strong> (CPU battle outcomes are client-declared), <strong>F3</strong> (legacy <code>/api/events/:id/answer</code> trusts <code>userId</code> from the body — slated for removal), <strong>F5</strong> (no ADMIN role guard on authoring endpoints).</li>
+</ul>
+<p>PvP routes (<code>/api/battle/async/*</code>, Socket.IO) already follow the target pattern — authenticated, server-resolved, client sends choices only — and are the reference implementation for the server-authority migration of the rest of the API.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../api-quickstart/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API Quick Start (Verified)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                API Quick Start (Verified)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../testing/" class="md-footer__link md-footer__link--next" aria-label="Next: Test Results &amp; Coverage">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Test Results & Coverage
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

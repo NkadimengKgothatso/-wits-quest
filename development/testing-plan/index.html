@@ -1,0 +1,4042 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Centralised documentation for Wits Quest — a location-aware, turn-based campus adventure game developed by Team Big-O for the Wits University Software Development Project (COMS3011A).
+">
+      
+      
+      
+        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/development/testing-plan/">
+      
+      
+        <link rel="prev" href="../testing-documentation/">
+      
+      
+        <link rel="next" href="../../uml/01_system_architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Testing & CI/CD Plan - Wits Quest Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#full-application-testing-gitea-cicd-pipeline-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wits Quest Documentation" class="md-header__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wits Quest Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Testing & CI/CD Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wits Quest Documentation" class="md-nav__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wits Quest Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game Overview & Tiers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpu-battle-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU Battle Rulebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../live-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Quick Start (Verified)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Automated Testing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Automated Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Results & Coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment & Hosting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stakeholder Reviews
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Stakeholder Reviews
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/stakeholder-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutor Review Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team Meetings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Team Meetings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meetings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meeting Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Feedback
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Feedback
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/user-feedback/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feedback Form & Responses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/files/wits-quest-master-architecture-task-specification-guide.pdf" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Architecture Guide (PDF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../decisions-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitea-actions-migration-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gitea Actions Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bug Tracker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bug-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fix-register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fix Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/04_erd_database_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ERD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Third-Party Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Code & Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & CI/CD Plan
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & CI/CD Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview &amp; Objectives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Overview &amp; Objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coverage-gate-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage gate schedule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-frontend-test-suite-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Frontend Test Suite Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Frontend Test Suite Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup &amp; Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#target-test-coverage-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Target Test Coverage Areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-backend-test-suite-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Backend Test Suite Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Backend Test Suite Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-configuration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup &amp; Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#target-test-coverage-areas_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Target Test Coverage Areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-cicd-pipeline-gitea-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. CI/CD Pipeline &amp; Gitea Integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. CI/CD Pipeline &amp; Gitea Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-architecture-githubworkflowsciyml-giteaworkflowsciyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Architecture (.github/workflows/ci.yml &amp; .gitea/workflows/ci.yml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitea-status-reflection-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gitea Status Reflection Mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-verification-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Verification Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sprint-3-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Sprint 3 status
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Sprint 3 status">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-run-2026-09-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend run (2026-09-29)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-gaps-reported-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known gaps (reported honestly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-versus-delivered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned versus delivered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-run-2026-09-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend run (2026-09-29)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-known-gaps-reported-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend known gaps (reported honestly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path-to-the-80-final-gate-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path to the 80% final gate (backend)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-performance-and-accessibility-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Performance and accessibility testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Performance and accessibility testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-performance-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core performance metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessibility-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessibility finding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limits-of-this-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits of this evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design (UML)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design (UML)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/01_system_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/class-diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/03_use_case_diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/use-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Description
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/02_battle_state_machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Battle State Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/activity-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Activity Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/master-guide-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Guide V2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT1_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Implementation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Feature Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Handover Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/WITS_QUEST_SPRINT3_GUIDE.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/SPRINT3_TASK_BOARD.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Task Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Overview &amp; Objectives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Overview &amp; Objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coverage-gate-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage gate schedule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-frontend-test-suite-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Frontend Test Suite Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Frontend Test Suite Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup &amp; Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#target-test-coverage-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Target Test Coverage Areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-backend-test-suite-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Backend Test Suite Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Backend Test Suite Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-configuration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup &amp; Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#target-test-coverage-areas_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Target Test Coverage Areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-cicd-pipeline-gitea-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. CI/CD Pipeline &amp; Gitea Integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. CI/CD Pipeline &amp; Gitea Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-architecture-githubworkflowsciyml-giteaworkflowsciyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Architecture (.github/workflows/ci.yml &amp; .gitea/workflows/ci.yml)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitea-status-reflection-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gitea Status Reflection Mechanism
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-verification-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Verification Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sprint-3-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Sprint 3 status
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Sprint 3 status">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-run-2026-09-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend run (2026-09-29)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-gaps-reported-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known gaps (reported honestly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-versus-delivered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned versus delivered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-run-2026-09-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend run (2026-09-29)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-known-gaps-reported-honestly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend known gaps (reported honestly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path-to-the-80-final-gate-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path to the 80% final gate (backend)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-performance-and-accessibility-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Performance and accessibility testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Performance and accessibility testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-performance-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core performance metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessibility-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessibility finding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limits-of-this-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits of this evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/development/testing-plan.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="full-application-testing-gitea-cicd-pipeline-plan">Full-Application Testing &amp; Gitea CI/CD Pipeline Plan<a class="headerlink" href="#full-application-testing-gitea-cicd-pipeline-plan" title="Permanent link">&para;</a></h1>
+<p>This document outlines the end-to-end plan for full test coverage across Wits Quest (Frontend &amp; Backend) and configuring a GitHub/Gitea CI/CD pipeline with a staged test coverage gate (<strong>60% now, rising to 80% for the final submission</strong>).</p>
+<hr />
+<h2 id="1-overview-objectives">1. Overview &amp; Objectives<a class="headerlink" href="#1-overview-objectives" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Full Application Test Suite</strong>:</li>
+<li>Meet the <strong>coverage gate</strong> across lines, functions, statements, and branches on both <code>frontend</code> and <code>backend</code>: <strong>60% minimum</strong> (the rubric's advanced band) during Sprint 3, <strong>raised to 80%</strong> for the final submission.</li>
+<li>Comprehensive unit, integration, and UI component tests covering all user flows, admin management, battle mechanics, landmark geolocation, anti-cheat detection, and Supabase data operations.</li>
+<li><strong>Every new feature ships with tests</strong>: API tests (Supertest) for backend endpoints and UI tests (React Testing Library) for frontend behaviour, written in the same PR as the feature.</li>
+<li><strong>CI/CD Pipeline with GitHub &amp; Gitea Reflection</strong>:</li>
+<li>Run all tests, linting, typechecks, and coverage checks on free cloud runners via GitHub Actions.</li>
+<li>CI reports coverage for <strong>both code bases</strong> and fails the build if either falls below the current gate.</li>
+<li>Automatically report commit statuses, test results, and coverage metrics back to Gitea via the Gitea Commit Status REST API (<code>POST /api/v1/repos/:owner/:repo/statuses/:sha</code>).</li>
+<li>Strict Deployment Gate: Deploys only when all tests pass and coverage meets the current gate.</li>
+</ul>
+<h3 id="coverage-gate-schedule">Coverage gate schedule<a class="headerlink" href="#coverage-gate-schedule" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Stage</th>
+<th style="text-align: left;">Gate (statements, branches, functions, lines)</th>
+<th style="text-align: left;">Applies to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Sprint 3 (current)</td>
+<td style="text-align: left;"><strong>60%</strong></td>
+<td style="text-align: left;">Frontend and backend, enforced in CI</td>
+</tr>
+<tr>
+<td style="text-align: left;">Final submission</td>
+<td style="text-align: left;"><strong>80%</strong></td>
+<td style="text-align: left;">Frontend and backend, enforced in CI</td>
+</tr>
+</tbody>
+</table>
+<p>The frontend already exceeds the final 80% target on all four metrics. The backend passes the current 60% gate on all four metrics but is <strong>below the final 80% target</strong> on statements, functions and lines, and just short on branches (see <a href="#6-sprint-3-status">Sprint 3 status</a>).</p>
+<hr />
+<h2 id="2-frontend-test-suite-architecture">2. Frontend Test Suite Architecture<a class="headerlink" href="#2-frontend-test-suite-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="setup-configuration">Setup &amp; Configuration<a class="headerlink" href="#setup-configuration" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Vitest with <code>jsdom</code>, <code>@testing-library/react</code>, <code>@testing-library/jest-dom</code>, and <code>@testing-library/dom</code>, with V8 coverage (<code>vitest run --coverage</code>).</li>
+<li>Global mocks for browser APIs (<code>fetch</code>, <code>localStorage</code>, <code>navigator.geolocation</code>, Leaflet map containers, canvas-confetti).</li>
+</ul>
+<h3 id="target-test-coverage-areas">Target Test Coverage Areas<a class="headerlink" href="#target-test-coverage-areas" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Authentication &amp; Session</strong>:</li>
+<li><code>AuthContext.test.tsx</code> &amp; <code>Login.test.tsx</code>: Student vs Admin authentication, JWT handling, error states, role redirection.</li>
+<li><strong>Battle Engine &amp; AI</strong>:</li>
+<li><code>battleEngine.test.ts</code>: Round resolution, stat match-ups (Attack vs Defense, Speed vs Brains), tie-breakers, XP/Essence rewards.</li>
+<li><code>battleAI.test.ts</code>: Predictive card selection, counter-card choice against user hand.</li>
+<li><code>BattleArena.test.tsx</code>: Interactive combat loop, round timers, victory/defeat modal display.</li>
+<li><strong>Campus Landmarks &amp; Trivia</strong>:</li>
+<li><code>MapExplorer.test.tsx</code>: Geolocation radar, 25m radius geofence detection, interactive landmark markers.</li>
+<li><code>TriviaModal.test.tsx</code>: Multiple-choice selection, text keyword matching, rewards granting (XP/cards), cooldown handling.</li>
+<li><strong>Card Collection &amp; Deck Builder</strong>:</li>
+<li><code>CardCollection.test.tsx</code>: Category &amp; rarity filtering, locked vs unlocked cards, card detail dialog.</li>
+<li><code>DeckBuilder.test.tsx</code> &amp; <code>deckService.test.ts</code>: 5-card deck constraint, stat budget limit ($300$), legendary cap ($1$), server persistence.</li>
+<li><strong>Leaderboard &amp; Profile</strong>:</li>
+<li><code>Leaderboard.test.tsx</code>: Division tiers (Bronze $\rightarrow$ Diamond), Elo sorting, active status indicators.</li>
+<li><code>Profile.test.tsx</code>: Avatar customization, daily streak multiplier, stats summary.</li>
+<li><strong>Admin Portals</strong>:</li>
+<li><code>AdminContent.test.tsx</code>: Card authoring, trivia creation, image upload handling.</li>
+<li><code>AdminEvents.test.tsx</code>: Event creation, active status toggles, date validation.</li>
+<li><code>AdminAntiCheat.test.tsx</code>: Telemetry audit log display, violation flagging, account suspension actions.</li>
+<li><strong>Service Layer</strong>:</li>
+<li><code>apiClient.test.ts</code>, <code>inventoryService.test.ts</code>, <code>offlineQueue.test.ts</code>.</li>
+</ol>
+<hr />
+<h2 id="3-backend-test-suite-architecture">3. Backend Test Suite Architecture<a class="headerlink" href="#3-backend-test-suite-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="setup-configuration_1">Setup &amp; Configuration<a class="headerlink" href="#setup-configuration_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Vitest + Supertest with Node.js 20 environment.</li>
+<li>Supabase client integration testing and mocked database fixtures.</li>
+<li><strong>Feature rule:</strong> every new backend endpoint ships with Supertest API tests covering the success path, validation failures, authentication/authorisation, and the 500 error path, in the same PR as the feature.</li>
+</ul>
+<h3 id="target-test-coverage-areas_1">Target Test Coverage Areas<a class="headerlink" href="#target-test-coverage-areas_1" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Authentication Routes</strong> (<code>/api/auth/*</code>):</li>
+<li>Register validation (Wits student email regex <code>\d{7}@students.wits.ac.za</code>, admin <code>@wits.ac.za</code>).</li>
+<li>Bcrypt password hashing, JWT creation &amp; <code>authMiddleware</code> verification.</li>
+<li>Account suspension interceptor (anti-cheat policy enforcement).</li>
+<li><strong>User &amp; Inventory Routes</strong> (<code>/api/users/*</code>):</li>
+<li>User profile queries, stat updates, and inventory card queries.</li>
+<li><strong>Deck Management Routes</strong> (<code>/api/player/deck</code>, <code>/api/users/:id/decks</code>):</li>
+<li>Server-side validation of 5-card count, stat budget, and legendary card limit.</li>
+<li>Supabase <code>user_decks</code> upsert and retrieval.</li>
+<li><strong>Content, Events &amp; Trivia Routes</strong> (<code>/api/cards</code>, <code>/api/events</code>, <code>/api/trivia</code>, <code>/api/events/:id/answer</code>):</li>
+<li>Card catalogue queries and creation.</li>
+<li>Campus events CRUD.</li>
+<li>Server-side trivia answer verification, XP &amp; Essence rewards, and card distribution into <code>user_cards</code>.</li>
+<li><strong>Anti-Cheat &amp; Telemetry Routes</strong> (<code>/api/mock/telemetry/*</code>):</li>
+<li>Ingestion of student GPS coordinates.</li>
+<li>Haversine velocity calculations ($&gt;15\text{ m/s}$ threshold triggers teleportation/speeding violation).</li>
+<li>Audit log querying and admin action execution (<code>flagged</code> / <code>suspended</code>).</li>
+<li><strong>Real-time Battle WebSockets</strong>:</li>
+<li>Socket.io connection, room matchmaking, live stat emit, and round resolution events.</li>
+</ol>
+<hr />
+<h2 id="4-cicd-pipeline-gitea-integration">4. CI/CD Pipeline &amp; Gitea Integration<a class="headerlink" href="#4-cicd-pipeline-gitea-integration" title="Permanent link">&para;</a></h2>
+<h3 id="workflow-architecture-githubworkflowsciyml-giteaworkflowsciyml">Workflow Architecture (<code>.github/workflows/ci.yml</code> &amp; <code>.gitea/workflows/ci.yml</code>)<a class="headerlink" href="#workflow-architecture-githubworkflowsciyml-giteaworkflowsciyml" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    A[Push / PR to Git / GitHub / Gitea] --&gt; B[GitHub Actions Runner]
+    B --&gt; C[1. Lint &amp; Typecheck: tsc --noEmit]
+    C --&gt; D[2. Frontend Tests: Vitest with coverage gate]
+    D --&gt; E[3. Backend Tests: Vitest + Supertest with coverage gate]
+    E --&gt; F[4. Production Build: npm run build]
+    F --&gt; G{All Passed &amp; Coverage &gt;= current gate?}
+    G -- Yes --&gt; H[Deploy Production / Staging]
+    H --&gt; I[Post Success to Gitea Commit Status API ✓]
+    G -- No --&gt; J[Block Deployment &amp; Fail Build]
+    J --&gt; K[Post Failure to Gitea Commit Status API ✗]</code></pre>
+<p>The "current gate" is 60% in Sprint 3 and 80% for the final submission.</p>
+<h3 id="gitea-status-reflection-mechanism">Gitea Status Reflection Mechanism<a class="headerlink" href="#gitea-status-reflection-mechanism" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The workflow concludes with an HTTP call to Gitea's Commit Status API:
+  <div class="highlight"><pre><span></span><code>POST<span class="w"> </span>https://&lt;gitea-domain&gt;/api/v1/repos/&lt;owner&gt;/&lt;repo&gt;/statuses/&lt;commit_sha&gt;
+Header:<span class="w"> </span>Authorization:<span class="w"> </span>token<span class="w"> </span>&lt;GITEA_TOKEN&gt;
+Body:<span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;state&quot;</span>:<span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="s2">&quot;failure&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;target_url&quot;</span>:<span class="w"> </span><span class="s2">&quot;https://github.com/&lt;owner&gt;/&lt;repo&gt;/actions/runs/&lt;run_id&gt;&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;description&quot;</span>:<span class="w"> </span><span class="s2">&quot;Coverage: 89% | All tests passed&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;context&quot;</span>:<span class="w"> </span><span class="s2">&quot;ci/github-actions&quot;</span>
+<span class="o">}</span>
+</code></pre></div></li>
+<li>Result: Gitea's web UI displays live green checkmarks or red X badges next to commits and pull requests.</li>
+</ul>
+<hr />
+<h2 id="5-verification-plan">5. Verification Plan<a class="headerlink" href="#5-verification-plan" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Frontend Tests</strong>: Run <code>npm test</code> inside <code>frontend/</code> $\rightarrow$ verify all test suites pass and code coverage meets the current gate (60% now, 80% final).</li>
+<li><strong>Backend Tests</strong>: Run <code>npm test</code> inside <code>backend/</code> $\rightarrow$ verify all API and socket test suites pass and code coverage meets the current gate.</li>
+<li><strong>Builds</strong>: Run <code>npm run build</code> on both frontend and backend $\rightarrow$ 0 TypeScript / bundling errors.</li>
+<li><strong>CI Configuration</strong>: Validate <code>.github/workflows/ci.yml</code> and <code>.gitea/workflows/ci.yml</code> syntax.</li>
+<li><strong>Performance and accessibility</strong>: Run PageSpeed Insights (Lighthouse) against the production URL for both Desktop and Mobile and record the scores (see section 7).</li>
+<li><strong>Feature rule</strong>: For every new feature PR, confirm it includes Supertest API tests (backend) and React Testing Library UI tests (frontend) before merge.</li>
+</ol>
+<hr />
+<h2 id="6-sprint-3-status">6. Sprint 3 status<a class="headerlink" href="#6-sprint-3-status" title="Permanent link">&para;</a></h2>
+<h3 id="frontend-run-2026-09-29">Frontend run (2026-09-29)<a class="headerlink" href="#frontend-run-2026-09-29" title="Permanent link">&para;</a></h3>
+<p>Command: <code>npm run test</code> in <code>frontend/</code> (<code>vitest run --coverage</code>, Vitest v1.6.1, V8 coverage).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Test files</td>
+<td style="text-align: left;"><strong>20 passed</strong> (20)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tests</td>
+<td style="text-align: left;"><strong>163 passed</strong> (163)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Duration</td>
+<td style="text-align: left;">13.84 s</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Frontend test run and V8 coverage report, 2026-09-29" src="images/2026-09-29-frontend-coverage.jpeg" /></p>
+<p><em>Terminal output of <code>npm run test</code> in <code>frontend/</code>: 20 files and 163 tests passing, with the V8 coverage report.</em></p>
+<p><strong>Overall coverage</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Statements</th>
+<th style="text-align: left;">Branches</th>
+<th style="text-align: left;">Functions</th>
+<th style="text-align: left;">Lines</th>
+<th style="text-align: left;">Current gate (60%)</th>
+<th style="text-align: left;">Final gate (80%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>89.21%</strong></td>
+<td style="text-align: left;"><strong>83.03%</strong></td>
+<td style="text-align: left;"><strong>83.33%</strong></td>
+<td style="text-align: left;"><strong>89.21%</strong></td>
+<td style="text-align: left;">✅ Pass</td>
+<td style="text-align: left;">✅ Pass</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test files and tests per suite</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Suite</th>
+<th style="text-align: left;">Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>utils/battleEngine.test.ts</code></td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/elo.test.ts</code></td>
+<td style="text-align: left;">17</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/services.test.ts</code></td>
+<td style="text-align: left;">17</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/antiCheat.test.ts</code></td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>screens/Leaderboard.test.tsx</code></td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/battleAI.test.ts</code></td>
+<td style="text-align: left;">13</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/offlineQueue.test.ts</code></td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>context/AuthContext.test.tsx</code></td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/cardCollection.test.tsx</code></td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/components.test.tsx</code></td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>screens/TriviaModal.test.tsx</code></td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/battleAI.test.ts</code></td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/battleEngine.test.ts</code></td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>screens/BattleArena.test.tsx</code></td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>components/BottomNav.test.tsx</code></td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>screens/AsyncBattleArena.test.tsx</code></td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>screens/AsyncPvP.test.tsx</code></td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>screens/BattleArena.deck.test.tsx</code></td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>__tests__/index.test.ts</code></td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>App.test.tsx</code></td>
+<td style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Coverage by area</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Area</th>
+<th style="text-align: left;">Statements</th>
+<th style="text-align: left;">Branches</th>
+<th style="text-align: left;">Functions</th>
+<th style="text-align: left;">Lines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>components</code></td>
+<td style="text-align: left;">84.08%</td>
+<td style="text-align: left;">73.33%</td>
+<td style="text-align: left;">57.14%</td>
+<td style="text-align: left;">84.08%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>screens</code></td>
+<td style="text-align: left;">79.91%</td>
+<td style="text-align: left;">65.21%</td>
+<td style="text-align: left;">33.33%</td>
+<td style="text-align: left;">79.91%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services</code></td>
+<td style="text-align: left;">98.34%</td>
+<td style="text-align: left;">67.74%</td>
+<td style="text-align: left;">100%</td>
+<td style="text-align: left;">98.34%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils</code></td>
+<td style="text-align: left;">92.87%</td>
+<td style="text-align: left;">93.60%</td>
+<td style="text-align: left;">92%</td>
+<td style="text-align: left;">92.87%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fully covered:</strong> <code>antiCheat.ts</code> (100% on every metric), <code>deckService.ts</code> (100% statements, functions and lines), <code>battleAI.ts</code> (100% statements, functions and lines).</p>
+<h3 id="known-gaps-reported-honestly">Known gaps (reported honestly)<a class="headerlink" href="#known-gaps-reported-honestly" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Gap</th>
+<th style="text-align: left;">Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>RankedMatchmaking.tsx</code></td>
+<td style="text-align: left;">33.33% functions, 65.21% branches</td>
+<td style="text-align: left;">Uncovered lines 16-17, 31-38, 121-160</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TopBar.tsx</code></td>
+<td style="text-align: left;">33.33% functions, 53.84% branches</td>
+<td style="text-align: left;">Uncovered lines 40-46, 219-269</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KuduMascot.tsx</code></td>
+<td style="text-align: left;">50% functions</td>
+<td style="text-align: left;">Uncovered lines 34, 40-45, 110, 192-205</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cardCatalogService.ts</code></td>
+<td style="text-align: left;">41.66% branches</td>
+<td style="text-align: left;">Uncovered lines 146, 149-150, 158-159</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>battleEngine.ts</code></td>
+<td style="text-align: left;">75% functions</td>
+<td style="text-align: left;">Uncovered lines 239, 242, 280-285, 295-342</td>
+</tr>
+</tbody>
+</table>
+<p>These fall below 80% at file or area level even though the global thresholds pass. They are the first targets for the final-submission push.</p>
+<h3 id="planned-versus-delivered">Planned versus delivered<a class="headerlink" href="#planned-versus-delivered" title="Permanent link">&para;</a></h3>
+<p>Section 2 lists the target suite. Several planned files (<code>Login</code>, <code>MapExplorer</code>, <code>DeckBuilder</code>, <code>Profile</code>, and the three <code>Admin*</code> tests) do not appear in the current run, while the delivered suite adds <code>antiCheat</code>, <code>elo</code>, <code>services</code>, <code>components</code>, <code>AsyncBattleArena</code>, <code>AsyncPvP</code>, <code>BattleArena.deck</code> and <code>BottomNav</code>. The coverage numbers meet the gate, but the plan's per-screen list is not yet fully delivered.</p>
+<h3 id="backend-run-2026-09-29">Backend run (2026-09-29)<a class="headerlink" href="#backend-run-2026-09-29" title="Permanent link">&para;</a></h3>
+<p>Command: <code>npm run test</code> in <code>backend/</code> (<code>vitest run --coverage</code>, Vitest v1.6.1, V8 coverage, Supertest for API tests).</p>
+<p><img alt="Backend test run and V8 coverage report, 2026-09-29" src="images/2026-09-29-backend-coverage.jpeg" /></p>
+<p><em>Terminal output of <code>npm run test</code> in <code>backend/</code>: 29 files and 452 tests passing, with the V8 coverage report.</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Test files</td>
+<td style="text-align: left;"><strong>29 passed</strong> (29)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tests</td>
+<td style="text-align: left;"><strong>452 passed</strong> (452)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Duration</td>
+<td style="text-align: left;">8.85 s</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Overall coverage</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Statements</th>
+<th style="text-align: left;">Branches</th>
+<th style="text-align: left;">Functions</th>
+<th style="text-align: left;">Lines</th>
+<th style="text-align: left;">Current gate (60%)</th>
+<th style="text-align: left;">Final gate (80%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>63.91%</strong></td>
+<td style="text-align: left;"><strong>78.74%</strong></td>
+<td style="text-align: left;"><strong>70.90%</strong></td>
+<td style="text-align: left;"><strong>63.91%</strong></td>
+<td style="text-align: left;">✅ Pass</td>
+<td style="text-align: left;">❌ Not yet (branches 1.26 points short; statements, functions and lines further)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test files and tests per suite</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Suite</th>
+<th style="text-align: left;">Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>routes/content.test.ts</code></td>
+<td style="text-align: left;">60</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/contentLifecycle.test.ts</code></td>
+<td style="text-align: left;">46</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/trades.test.ts</code></td>
+<td style="text-align: left;">38</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/auth.test.ts</code></td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/asyncBattle.test.ts</code></td>
+<td style="text-align: left;">24</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>server.test.ts</code></td>
+<td style="text-align: left;">21</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/ranked.test.ts</code></td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/campaigns.test.ts</code></td>
+<td style="text-align: left;">19</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/asyncChallengeState.test.ts</code></td>
+<td style="text-align: left;">18</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/cpuBattle.test.ts</code></td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/battleSocketHandler.test.ts</code></td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/adminGuards.test.ts</code></td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/presence.test.ts</code></td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/deckService.data.test.ts</code></td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/streakRules.test.ts</code></td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/analyticsRules.test.ts</code></td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/battleResolution.test.ts</code></td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/leaderboard.test.ts</code></td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/deck.test.ts</code></td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/eventPlacementService.test.ts</code></td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/applyMatchResult.test.ts</code></td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/streak.test.ts</code></td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>middleware/auth.test.ts</code></td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/battle.test.ts</code></td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/deckService.test.ts</code></td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/usersUpdate.test.ts</code></td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/routing.test.ts</code></td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/autoPublishContent.test.ts</code></td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/telemetry.daysAgo.test.ts</code></td>
+<td style="text-align: left;">3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Coverage by area</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Area</th>
+<th style="text-align: left;">Statements</th>
+<th style="text-align: left;">Branches</th>
+<th style="text-align: left;">Functions</th>
+<th style="text-align: left;">Lines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>src</code> (<code>server.ts</code>)</td>
+<td style="text-align: left;">68.36%</td>
+<td style="text-align: left;">68.42%</td>
+<td style="text-align: left;">66.66%</td>
+<td style="text-align: left;">68.36%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>src/config</code></td>
+<td style="text-align: left;">100%</td>
+<td style="text-align: left;">100%</td>
+<td style="text-align: left;">100%</td>
+<td style="text-align: left;">100%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>src/db</code></td>
+<td style="text-align: left;">1.70%</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">1.70%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>src/middleware</code></td>
+<td style="text-align: left;">93.75%</td>
+<td style="text-align: left;">85%</td>
+<td style="text-align: left;">100%</td>
+<td style="text-align: left;">93.75%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>src/routes</code></td>
+<td style="text-align: left;">62.22%</td>
+<td style="text-align: left;">77.24%</td>
+<td style="text-align: left;">45.83%</td>
+<td style="text-align: left;">62.22%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>src/services</code></td>
+<td style="text-align: left;">83.33%</td>
+<td style="text-align: left;">74.69%</td>
+<td style="text-align: left;">85.71%</td>
+<td style="text-align: left;">83.33%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>src/utils</code></td>
+<td style="text-align: left;">84.73%</td>
+<td style="text-align: left;">91.07%</td>
+<td style="text-align: left;">75%</td>
+<td style="text-align: left;">84.73%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Strong areas:</strong> <code>content.ts</code> (92.15% statements), <code>requireAdmin.ts</code>, <code>dropRates.ts</code>, <code>campaignWindow.ts</code>, <code>streak.ts</code> and <code>streakRules.ts</code> (100%), <code>applyMatchResult.ts</code> (97.91%), <code>deckService.ts</code> (100% statements and lines), and the socket layer <code>battleSocketHandler.ts</code> (76.82% statements, 89.47% functions) covering lobby, challenges, divisions, spectators, turn validation and round resolution.</p>
+<p><strong>Negative-path evidence:</strong> the <code>stderr</code> lines in the run (for example <code>[Cards] Create error</code>, <code>ACCEPT TRADE ERROR: Trade has expired</code>, <code>OPENROUTESERVICE_API_KEY is not configured</code>) are not failures. They are the application's error handlers logging while tests deliberately trigger database failures, expired trades, missing configuration and upstream 502s to prove the correct 4xx/5xx responses.</p>
+<h3 id="backend-known-gaps-reported-honestly">Backend known gaps (reported honestly)<a class="headerlink" href="#backend-known-gaps-reported-honestly" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Coverage</th>
+<th style="text-align: left;">Uncovered (main ranges)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>db/productionContent.ts</code></td>
+<td style="text-align: left;">0% (751 lines)</td>
+<td style="text-align: left;">Production seed content, lines 1-751</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>db/seedProduction.ts</code></td>
+<td style="text-align: left;">0% (113 lines)</td>
+<td style="text-align: left;">Seed script, lines 1-113</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/telemetry.ts</code></td>
+<td style="text-align: left;">17.63% statements, 16.66% functions</td>
+<td style="text-align: left;">Most ingestion and audit handlers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/adminAchievements.ts</code></td>
+<td style="text-align: left;">29.37% statements, 0% functions</td>
+<td style="text-align: left;">Lines 32-171</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/achievements.ts</code></td>
+<td style="text-align: left;">26.59% statements, 0% functions</td>
+<td style="text-align: left;">Lines 36-188</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/battle.ts</code></td>
+<td style="text-align: left;">38.5% statements, 0% functions</td>
+<td style="text-align: left;">Lines 54-261</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/analyticsQuestions.ts</code></td>
+<td style="text-align: left;">41.66% statements</td>
+<td style="text-align: left;">Lines 16-46</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/trades.ts</code></td>
+<td style="text-align: left;">66.98% statements, 0% functions</td>
+<td style="text-align: left;">Trade creation and listing handlers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>routes/auth.ts</code></td>
+<td style="text-align: left;">64.88% statements, 0% functions</td>
+<td style="text-align: left;">Lines 61-286</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>utils/antiCheat.ts</code></td>
+<td style="text-align: left;">66.89% statements, 25% functions</td>
+<td style="text-align: left;">Lines 46-123</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>services/battleSocketHandler.ts</code></td>
+<td style="text-align: left;">76.82% statements</td>
+<td style="text-align: left;">Reconnect and late-game handlers, lines 744-820</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What is dragging the total below 80%:</strong> the two seed files under <code>src/db</code> account for about 860 lines at 0%, which alone pulls the statement and line totals down. The remaining gap sits in <code>telemetry.ts</code>, the achievements modules, <code>battle.ts</code>, and <code>antiCheat.ts</code>.</p>
+<h3 id="path-to-the-80-final-gate-backend">Path to the 80% final gate (backend)<a class="headerlink" href="#path-to-the-80-final-gate-backend" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Decide whether one-off seed scripts (<code>productionContent.ts</code>, <code>seedProduction.ts</code>) belong in the coverage denominator; if they are excluded in the Vitest <code>coverage.exclude</code> config, document that decision in the decisions log with its rationale.</li>
+<li>Add Supertest tests for <code>telemetry.ts</code> (GPS ingestion, Haversine speed violations, audit log, flag/suspend actions), which is the anti-cheat feature the stakeholder praised.</li>
+<li>Add tests for <code>adminAchievements.ts</code> and <code>achievements.ts</code>, the remaining <code>battle.ts</code> handlers, and the uncovered functions in <code>trades.ts</code> and <code>auth.ts</code>.</li>
+<li>Re-run and record the new figures on this page before the final submission.</li>
+</ol>
+<hr />
+<h2 id="7-performance-and-accessibility-testing">7. Performance and accessibility testing<a class="headerlink" href="#7-performance-and-accessibility-testing" title="Permanent link">&para;</a></h2>
+<p>Beyond functional tests, the deployed production build was audited with Google PageSpeed Insights (Lighthouse) to check load performance, accessibility, best practices and SEO.</p>
+<p><strong>Run details:</strong> <a href="https://wits-quest.vercel.app/">wits-quest.vercel.app</a>, <strong>Desktop</strong> form factor, 2026-09-29 at 13:43 (GMT+2), emulated desktop, initial page load, single page session.</p>
+<p><img alt="PageSpeed Insights category scores for wits-quest.vercel.app, Desktop, 2026-09-29" src="images/2026-09-29-pagespeed-scores.jpeg" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Score</th>
+<th style="text-align: left;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Performance</td>
+<td style="text-align: left;"><strong>99</strong></td>
+<td style="text-align: left;">✅ Green (90-100)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Accessibility</td>
+<td style="text-align: left;"><strong>97</strong></td>
+<td style="text-align: left;">✅ Green, one issue flagged (below)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Best Practices</td>
+<td style="text-align: left;"><strong>100</strong></td>
+<td style="text-align: left;">✅ Green</td>
+</tr>
+<tr>
+<td style="text-align: left;">SEO</td>
+<td style="text-align: left;"><strong>90</strong></td>
+<td style="text-align: left;">✅ Green (at the lower edge of the band)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Agentic Browsing</td>
+<td style="text-align: left;"><strong>2/2</strong></td>
+<td style="text-align: left;">✅ All checks passed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-performance-metrics">Core performance metrics<a class="headerlink" href="#core-performance-metrics" title="Permanent link">&para;</a></h3>
+<p><img alt="PageSpeed Insights core web vitals metrics, Desktop, 2026-09-29" src="images/2026-09-29-pagespeed-metrics.jpeg" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Result</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">First Contentful Paint (FCP)</td>
+<td style="text-align: left;">0.7 s</td>
+<td style="text-align: left;">✅ Good</td>
+</tr>
+<tr>
+<td style="text-align: left;">Largest Contentful Paint (LCP)</td>
+<td style="text-align: left;">0.9 s</td>
+<td style="text-align: left;">✅ Good</td>
+</tr>
+<tr>
+<td style="text-align: left;">Total Blocking Time (TBT)</td>
+<td style="text-align: left;">0 ms</td>
+<td style="text-align: left;">✅ Good</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cumulative Layout Shift (CLS)</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">✅ Good</td>
+</tr>
+<tr>
+<td style="text-align: left;">Speed Index</td>
+<td style="text-align: left;">0.7 s</td>
+<td style="text-align: left;">✅ Good</td>
+</tr>
+</tbody>
+</table>
+<p>All five metrics fall in the green band. The real-user (field data) panel shows "No Data", which is expected for a new site without enough Chrome traffic, so these are lab results only.</p>
+<h3 id="accessibility-finding">Accessibility finding<a class="headerlink" href="#accessibility-finding" title="Permanent link">&para;</a></h3>
+<p><img alt="PageSpeed Insights accessibility audit, Desktop, 2026-09-29" src="images/2026-09-29-pagespeed-accessibility.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Finding</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Impact</th>
+<th style="text-align: left;">Planned fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Document does not have a main landmark</td>
+<td style="text-align: left;">Accessibility best practice</td>
+<td style="text-align: left;">Screen-reader users cannot jump straight to the main content</td>
+<td style="text-align: left;">Wrap the primary page content in a single <code>&lt;main&gt;</code> element in the app shell</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="PageSpeed Insights accessibility audit summary and Best Practices score, Desktop, 2026-09-29" src="images/2026-09-29-pagespeed-audit-summary.jpeg" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Accessibility audit breakdown</th>
+<th style="text-align: left;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Failed (flagged)</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Passed audits</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr>
+<td style="text-align: left;">Additional items to check manually</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Not applicable</td>
+<td style="text-align: left;">48</td>
+</tr>
+</tbody>
+</table>
+<p>The 10 manual-check items are areas that automated tools cannot cover (keyboard navigation, focus order, screen-reader behaviour, and similar). Related manual finding from the stakeholder review: text boxes lose visibility in dark mode (<a href="../../project/stakeholder-reviews/">Stakeholder Reviews</a>), which automated audits do not catch.</p>
+<h3 id="limits-of-this-evidence">Limits of this evidence<a class="headerlink" href="#limits-of-this-evidence" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Only the <strong>Desktop</strong> run is recorded. Wits Quest is played on phones, so a <strong>Mobile</strong> run (which applies throttled CPU and network) should be captured and added before the final submission.</li>
+<li>Scores are a single-run lab snapshot and vary slightly between runs.</li>
+<li>The SEO score of 90 is green but has the least headroom; the individual failing audit was not captured.</li>
+</ul>
+<h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Action</th>
+<th style="text-align: left;">Owner</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Add a <code>&lt;main&gt;</code> landmark to the app shell</td>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">To do</td>
+</tr>
+<tr>
+<td style="text-align: left;">Run and record the Mobile audit</td>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">To do</td>
+</tr>
+<tr>
+<td style="text-align: left;">Re-run after fixes and record the new accessibility score</td>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">To do</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../testing-documentation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../uml/01_system_architecture/" class="md-footer__link md-footer__link--next" aria-label="Next: System Architecture">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                System Architecture
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

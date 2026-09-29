@@ -1,0 +1,3755 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Centralised documentation for Wits Quest — a location-aware, turn-based campus adventure game developed by Team Big-O for the Wits University Software Development Project (COMS3011A).
+">
+      
+      
+      
+        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE/">
+      
+      
+        <link rel="prev" href="../WITS_QUEST_SPRINT1_GUIDE/">
+      
+      
+        <link rel="next" href="../WITS_QUEST_SPRINT2_HANDOVER_GUIDE/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Sprint 2 Feature Selection - Wits Quest Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wits-quest-sprint-2-feature-guide-team-task-selection-matrix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wits Quest Documentation" class="md-header__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wits Quest Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sprint 2 Feature Selection
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wits Quest Documentation" class="md-nav__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wits Quest Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game Overview & Tiers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/cpu-battle-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU Battle Rulebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/live-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/async-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/api-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Quick Start (Verified)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Automated Testing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Automated Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Results & Coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment & Hosting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stakeholder Reviews
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Stakeholder Reviews
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/stakeholder-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutor Review Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team Meetings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Team Meetings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meetings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meeting Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Feedback
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Feedback
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/user-feedback/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feedback Form & Responses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/files/wits-quest-master-architecture-task-specification-guide.pdf" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Architecture Guide (PDF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/decisions-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/technical-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/gitea-actions-migration-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gitea Actions Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bug Tracker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/bug-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/fix-register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fix Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/04_erd_database_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ERD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Third-Party Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Code & Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing-documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & CI/CD Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design (UML)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design (UML)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/01_system_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/class-diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/03_use_case_diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/use-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Description
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/02_battle_state_machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Battle State Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/activity-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Activity Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../master-guide-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Guide V2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SPRINT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WITS_QUEST_SPRINT1_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Implementation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Feature Selection
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Feature Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sprint-2-focus-core-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Sprint 2 Focus &amp; Core Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-team-task-selection-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Team Task Selection Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-detailed-domain-tasks-implementation-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Detailed Domain Tasks &amp; Implementation Guides
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Detailed Domain Tasks &amp; Implementation Guides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain-1-geolocation-gis-nearby-avatars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 1: Geolocation, GIS &amp; Nearby Avatars
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 1: Geolocation, GIS &amp; Nearby Avatars">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-11-live-nearby-student-avatars-on-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1.1: Live Nearby Student Avatars on Map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-12-nearby-player-challenge-interaction-modal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1.2: Nearby Player Challenge Interaction Modal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-2-battle-engine-live-async-multiplayer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 2: Battle Engine, Live &amp; Async Multiplayer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 2: Battle Engine, Live &amp; Async Multiplayer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-21-remove-coming-soon-alert-connect-battle-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2.1: Remove "Coming Soon" Alert &amp; Connect Battle Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-22-live-websocket-battle-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2.2: Live WebSocket Battle Connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-23-asynchronous-pvp-backend-match-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2.3: Asynchronous PvP Backend &amp; Match State
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-3-auth-bug-fix-offline-sync-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 3: Auth Bug Fix, Offline Sync &amp; Database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 3: Auth Bug Fix, Offline Sync &amp; Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-31-fix-broken-sign-up-implement-resilient-db-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3.1: Fix Broken Sign-Up &amp; Implement Resilient DB Fallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-32-wire-offline-queue-into-map-trivia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3.2: Wire Offline Queue into Map &amp; Trivia
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-4-admin-governance-curation-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 4: Admin Governance, Curation &amp; Analytics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 4: Admin Governance, Curation &amp; Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-41-build-admin-curation-board-admincurationtsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4.1: Build Admin Curation Board (AdminCuration.tsx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-42-build-campus-heatmaps-analytics-console-adminanalyticstsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4.2: Build Campus Heatmaps &amp; Analytics Console (AdminAnalytics.tsx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-5-progression-deck-builder-trails-forge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 5: Progression, Deck Builder, Trails &amp; Forge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 5: Progression, Deck Builder, Trails &amp; Forge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-51-mount-deckbuilder-screen-add-profile-navigation-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.1: Mount DeckBuilder Screen &amp; Add Profile Navigation Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-52-un-hide-locked-landmark-cards-in-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.2: Un-hide Locked Landmark Cards in Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-53-connect-live-data-to-campus-leaderboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.3: Connect Live Data to Campus Leaderboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-54-activate-duplicate-card-forge-scrapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.4: Activate Duplicate Card Forge &amp; Scrapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-6-anti-cheat-trust-score-ranked-territory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 6: Anti-Cheat Trust Score, Ranked &amp; Territory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 6: Anti-Cheat Trust Score, Ranked &amp; Territory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-61-adaptive-trust-scoring-engine-0100-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6.1: Adaptive Trust Scoring Engine (0–100 Scale)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-62-ranked-matchmaking-queue-seasonal-divisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6.2: Ranked Matchmaking Queue &amp; Seasonal Divisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-63-campus-faction-territory-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6.3: Campus Faction Territory Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-shared-devops-quality-documentation-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Shared DevOps, Quality &amp; Documentation Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Shared DevOps, Quality &amp; Documentation Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-71-migrate-cicd-pipeline-to-gitea-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.1: Migrate CI/CD Pipeline to Gitea Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-72-consolidate-all-documentation-into-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.2: Consolidate All Documentation into MkDocs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-73-streamline-root-readmemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.3: Streamline Root README.md
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-74-repository-separation-frontend-backend-on-gitea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.4: Repository Separation (Frontend &amp; Backend on Gitea)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-to-claim-a-task-git-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. How to Claim a Task &amp; Git Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WITS_QUEST_SPRINT2_HANDOVER_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Handover Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WITS_QUEST_SPRINT3_GUIDE.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SPRINT3_TASK_BOARD.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Task Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sprint-2-focus-core-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Sprint 2 Focus &amp; Core Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-team-task-selection-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Team Task Selection Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-detailed-domain-tasks-implementation-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Detailed Domain Tasks &amp; Implementation Guides
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Detailed Domain Tasks &amp; Implementation Guides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain-1-geolocation-gis-nearby-avatars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 1: Geolocation, GIS &amp; Nearby Avatars
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 1: Geolocation, GIS &amp; Nearby Avatars">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-11-live-nearby-student-avatars-on-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1.1: Live Nearby Student Avatars on Map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-12-nearby-player-challenge-interaction-modal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1.2: Nearby Player Challenge Interaction Modal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-2-battle-engine-live-async-multiplayer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 2: Battle Engine, Live &amp; Async Multiplayer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 2: Battle Engine, Live &amp; Async Multiplayer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-21-remove-coming-soon-alert-connect-battle-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2.1: Remove "Coming Soon" Alert &amp; Connect Battle Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-22-live-websocket-battle-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2.2: Live WebSocket Battle Connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-23-asynchronous-pvp-backend-match-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2.3: Asynchronous PvP Backend &amp; Match State
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-3-auth-bug-fix-offline-sync-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 3: Auth Bug Fix, Offline Sync &amp; Database
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 3: Auth Bug Fix, Offline Sync &amp; Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-31-fix-broken-sign-up-implement-resilient-db-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3.1: Fix Broken Sign-Up &amp; Implement Resilient DB Fallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-32-wire-offline-queue-into-map-trivia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3.2: Wire Offline Queue into Map &amp; Trivia
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-4-admin-governance-curation-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 4: Admin Governance, Curation &amp; Analytics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 4: Admin Governance, Curation &amp; Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-41-build-admin-curation-board-admincurationtsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4.1: Build Admin Curation Board (AdminCuration.tsx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-42-build-campus-heatmaps-analytics-console-adminanalyticstsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4.2: Build Campus Heatmaps &amp; Analytics Console (AdminAnalytics.tsx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-5-progression-deck-builder-trails-forge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 5: Progression, Deck Builder, Trails &amp; Forge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 5: Progression, Deck Builder, Trails &amp; Forge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-51-mount-deckbuilder-screen-add-profile-navigation-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.1: Mount DeckBuilder Screen &amp; Add Profile Navigation Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-52-un-hide-locked-landmark-cards-in-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.2: Un-hide Locked Landmark Cards in Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-53-connect-live-data-to-campus-leaderboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.3: Connect Live Data to Campus Leaderboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-54-activate-duplicate-card-forge-scrapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5.4: Activate Duplicate Card Forge &amp; Scrapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-6-anti-cheat-trust-score-ranked-territory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain 6: Anti-Cheat Trust Score, Ranked &amp; Territory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain 6: Anti-Cheat Trust Score, Ranked &amp; Territory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-61-adaptive-trust-scoring-engine-0100-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6.1: Adaptive Trust Scoring Engine (0–100 Scale)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-62-ranked-matchmaking-queue-seasonal-divisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6.2: Ranked Matchmaking Queue &amp; Seasonal Divisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-63-campus-faction-territory-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6.3: Campus Faction Territory Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-shared-devops-quality-documentation-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Shared DevOps, Quality &amp; Documentation Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Shared DevOps, Quality &amp; Documentation Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-71-migrate-cicd-pipeline-to-gitea-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.1: Migrate CI/CD Pipeline to Gitea Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-72-consolidate-all-documentation-into-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.2: Consolidate All Documentation into MkDocs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-73-streamline-root-readmemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.3: Streamline Root README.md
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-74-repository-separation-frontend-backend-on-gitea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7.4: Repository Separation (Frontend &amp; Backend on Gitea)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-to-claim-a-task-git-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. How to Claim a Task &amp; Git Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="wits-quest-sprint-2-feature-guide-team-task-selection-matrix">Wits Quest — Sprint 2 Feature Guide &amp; Team Task Selection Matrix<a class="headerlink" href="#wits-quest-sprint-2-feature-guide-team-task-selection-matrix" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Document Purpose</strong>: This guide is designed for the Wits Quest development team (COMS3011A Project 6). It breaks down all features across the <strong>Basic</strong>, <strong>Intermediate</strong>, and <strong>Advanced</strong> tiers, details the exact updates and polishing required for Sprint 2, and maps out actionable tasks so every team member can choose what to take on.</p>
+</blockquote>
+<hr />
+<h2 id="1-sprint-2-focus-core-objectives">1. Sprint 2 Focus &amp; Core Objectives<a class="headerlink" href="#1-sprint-2-focus-core-objectives" title="Permanent link">&para;</a></h2>
+<p>Following our Sprint 1 review and project requirements audit, the primary goals for <strong>Sprint 2</strong> are:</p>
+<ol>
+<li><strong>Fix Broken Sign-Up &amp; Auth Resilience</strong>: Resolve cloud database connectivity issues with a reliable local fallback so registration works 100% of the time.</li>
+<li><strong>Polish Basic Tier Deliverables</strong>: Ensure 100% completion of map exploration, trivia grading, deck building, and AI combat persistence.</li>
+<li><strong>Bring Intermediate Tier to Life</strong>: Integrate offline queueing with IndexedDB, un-hide locked cards in the collection gallery, activate dynamic leaderboard rankings, and build async challenges.</li>
+<li><strong>Elevate Code Quality &amp; CI/CD</strong>: Clean up linting errors, maintain $\ge 80\%$ test coverage, move CI/CD to Gitea Actions runners, and consolidate all documentation into MkDocs.</li>
+</ol>
+<hr />
+<h2 id="2-team-task-selection-matrix">2. Team Task Selection Matrix<a class="headerlink" href="#2-team-task-selection-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th style="text-align: left;">Domain Area</th>
+<th style="text-align: left;">Recommended Lead</th>
+<th style="text-align: left;">Core Screens / Files</th>
+<th style="text-align: center;">Priority</th>
+<th style="text-align: center;">Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: left;"><strong>Geolocation, GIS &amp; Nearby Avatars</strong></td>
+<td style="text-align: left;"><strong>Junior</strong> (Member 1)</td>
+<td style="text-align: left;"><code>MapExplorer.tsx</code>, <code>apiClient.ts</code></td>
+<td style="text-align: center;"><strong>HIGH</strong></td>
+<td style="text-align: center;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: left;"><strong>Battle Engine, Live &amp; Async Multiplayer</strong></td>
+<td style="text-align: left;"><strong>Mahlatse</strong> (Member 2)</td>
+<td style="text-align: left;"><code>BattleArena.tsx</code>, <code>LivePvPArena.tsx</code>, <code>AsyncPvP.tsx</code></td>
+<td style="text-align: center;"><strong>CRITICAL</strong></td>
+<td style="text-align: center;">High</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: left;"><strong>Auth Bug Fix, Offline Sync &amp; Database</strong></td>
+<td style="text-align: left;"><strong>Kgothatso</strong> (Member 3)</td>
+<td style="text-align: left;"><code>auth.ts</code>, <code>Login.tsx</code>, <code>offlineQueue.ts</code>, <code>mockDb.ts</code></td>
+<td style="text-align: center;"><strong>CRITICAL</strong></td>
+<td style="text-align: center;">High</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: left;"><strong>Admin Governance, Curation &amp; Analytics</strong></td>
+<td style="text-align: left;"><strong>Rea</strong> (Member 4)</td>
+<td style="text-align: left;"><code>AdminCuration.tsx</code>, <code>AdminAnalytics.tsx</code>, <code>AdminContent.tsx</code></td>
+<td style="text-align: center;"><strong>MEDIUM</strong></td>
+<td style="text-align: center;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: left;"><strong>Progression, Deck Builder, Trails &amp; Forge</strong></td>
+<td style="text-align: left;"><strong>Nontokozo</strong> (Member 5)</td>
+<td style="text-align: left;"><code>CardCollection.tsx</code>, <code>DeckBuilder.tsx</code>, <code>Leaderboard.tsx</code>, <code>QuestTrails.tsx</code></td>
+<td style="text-align: center;"><strong>HIGH</strong></td>
+<td style="text-align: center;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>6</strong></td>
+<td style="text-align: left;"><strong>Anti-Cheat Trust Score, Ranked &amp; Territory</strong></td>
+<td style="text-align: left;"><strong>Keoratile</strong> (Member 6)</td>
+<td style="text-align: left;"><code>antiCheat.ts</code>, <code>RankedMatchmaking.tsx</code>, <code>TerritoryMap.tsx</code></td>
+<td style="text-align: center;"><strong>MEDIUM</strong></td>
+<td style="text-align: center;">High</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-detailed-domain-tasks-implementation-guides">3. Detailed Domain Tasks &amp; Implementation Guides<a class="headerlink" href="#3-detailed-domain-tasks-implementation-guides" title="Permanent link">&para;</a></h2>
+<hr />
+<h3 id="domain-1-geolocation-gis-nearby-avatars">Domain 1: Geolocation, GIS &amp; Nearby Avatars<a class="headerlink" href="#domain-1-geolocation-gis-nearby-avatars" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Assigned Lead</strong>: <strong>Junior</strong> (Member 1)</li>
+<li><strong>Current Status</strong>: Leaflet map renders campus with 25m radius unlocks and GPS telemetry pings.</li>
+<li><strong>What Needs to be Polished / Built</strong>:</li>
+</ul>
+<h4 id="task-11-live-nearby-student-avatars-on-map">Task 1.1: Live Nearby Student Avatars on Map<a class="headerlink" href="#task-11-live-nearby-student-avatars-on-map" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target File</strong>: <code>frontend/src/screens/MapExplorer.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Fetch active students via <code>getRegisteredStudentOpponents(currentUser.id)</code> from <code>apiClient.ts</code>.</li>
+<li>Place avatar markers at campus landmark coordinates or near the user's position.</li>
+<li>Render custom Leaflet <code>DivIcon</code> markers displaying student initials, avatar emojis, and online status badges.</li>
+<li><strong>Acceptance Criteria</strong>: Other active students appear as pins/avatars on the Wits map.</li>
+</ul>
+<h4 id="task-12-nearby-player-challenge-interaction-modal">Task 1.2: Nearby Player Challenge Interaction Modal<a class="headerlink" href="#task-12-nearby-player-challenge-interaction-modal" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target File</strong>: <code>frontend/src/screens/MapExplorer.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Clicking a student's map avatar opens a bottom sheet or popup dialog.</li>
+<li>Display the student's level, division tier, and Elo rating.</li>
+<li>Provide 3 action buttons:<ul>
+<li><strong>Challenge to Live Match</strong>: Navigates to <code>LivePvPArena</code>.</li>
+<li><strong>Send Async Challenge</strong>: Sends a turn-based invite via <code>AsyncPvP</code>.</li>
+<li><strong>Propose Card Trade</strong>: Opens <code>Trades</code>.</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria</strong>: Clicking an avatar displays their profile and provides quick-action combat and trading triggers.</li>
+</ul>
+<hr />
+<h3 id="domain-2-battle-engine-live-async-multiplayer">Domain 2: Battle Engine, Live &amp; Async Multiplayer<a class="headerlink" href="#domain-2-battle-engine-live-async-multiplayer" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Assigned Lead</strong>: <strong>Mahlatse</strong> (Member 2)</li>
+<li><strong>Current Status</strong>: 5-round CPU Battle against Kudu Computer AI works with match history recording.</li>
+<li><strong>What Needs to be Polished / Built</strong>:</li>
+</ul>
+<h4 id="task-21-remove-coming-soon-alert-connect-battle-hub">Task 2.1: Remove "Coming Soon" Alert &amp; Connect Battle Hub<a class="headerlink" href="#task-21-remove-coming-soon-alert-connect-battle-hub" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target File</strong>: <code>frontend/src/screens/BattleArena.tsx</code> (Line 338)</li>
+<li><strong>What to do</strong>:</li>
+<li>Remove <code>onClick={() =&gt; alert("Multiplayer is coming soon!")}</code>.</li>
+<li>Replace with a sub-navigation state allowing students to choose between:<ul>
+<li><strong>Kudu Computer Bot Duel</strong> (CPU mode with Easy, Medium, Hard).</li>
+<li><strong>Asynchronous Turn-Based Challenges</strong> (<code>AsyncPvP</code>).</li>
+<li><strong>Synchronous Real-Time WebSocket Duel</strong> (<code>LivePvPArena</code>).</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria</strong>: Clicking multiplayer navigates to live or async battle screens without browser alerts.</li>
+</ul>
+<h4 id="task-22-live-websocket-battle-connection">Task 2.2: Live WebSocket Battle Connection<a class="headerlink" href="#task-22-live-websocket-battle-connection" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/screens/LivePvPArena.tsx</code>, <code>backend/src/services/battleSocketHandler.ts</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Replace hardcoded mock arrays (<code>PLAYER_CARDS</code>, <code>OPPONENT_CARDS</code>) with user's actual saved deck.</li>
+<li>Connect to backend Socket.io: <code>socket.emit('join_battle', { matchId, userId, username })</code>.</li>
+<li>Emit <code>submit_turn</code> with the selected card attribute and listen for <code>round_outcome</code>.</li>
+<li>Display live round timer (15s) and spectator count.</li>
+<li><strong>Acceptance Criteria</strong>: Two browser tabs can join the same match ID and play synchronous turns over WebSockets.</li>
+</ul>
+<h4 id="task-23-asynchronous-pvp-backend-match-state">Task 2.3: Asynchronous PvP Backend &amp; Match State<a class="headerlink" href="#task-23-asynchronous-pvp-backend-match-state" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>backend/src/routes/battle.ts</code>, <code>frontend/src/screens/AsyncPvP.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Create endpoints:<ul>
+<li><code>POST /api/battle/async/challenge</code>: Send turn-based challenge with active deck.</li>
+<li><code>GET /api/battle/async/my-matches</code>: Fetch "Your Turn", "Waiting", and "Pending" matches.</li>
+<li><code>POST /api/battle/async/play-turn</code>: Lock in round attribute choice.</li>
+</ul>
+</li>
+<li>Replace static arrays in <code>AsyncPvP.tsx</code> with live data fetched from these endpoints.</li>
+<li><strong>Acceptance Criteria</strong>: Students can send a challenge, log off, and have the opponent take their turn later.</li>
+</ul>
+<hr />
+<h3 id="domain-3-auth-bug-fix-offline-sync-database">Domain 3: Auth Bug Fix, Offline Sync &amp; Database<a class="headerlink" href="#domain-3-auth-bug-fix-offline-sync-database" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Assigned Lead</strong>: <strong>Kgothatso</strong> (Member 3)</li>
+<li><strong>Current Status</strong>: JWT auth and email OTP exist, but sign-up is broken when Supabase is unreachable.</li>
+<li><strong>What Needs to be Polished / Built</strong>:</li>
+</ul>
+<h4 id="task-31-fix-broken-sign-up-implement-resilient-db-fallback">Task 3.1: Fix Broken Sign-Up &amp; Implement Resilient DB Fallback<a class="headerlink" href="#task-31-fix-broken-sign-up-implement-resilient-db-fallback" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>backend/src/routes/auth.ts</code>, <code>backend/src/db/supabaseClient.ts</code>, <code>backend/src/services/mockDb.ts</code></li>
+<li><strong>Root Cause</strong>: <code>https://kbazdskiqglyxsdvopsa.supabase.co</code> fails with <code>ENOTFOUND</code>, crashing <code>POST /api/auth/register</code> with <code>TypeError: fetch failed</code>.</li>
+<li><strong>What to do</strong>:</li>
+<li>Wrap Supabase queries in <code>try/catch</code> blocks.</li>
+<li>If Supabase is unreachable (<code>fetch failed</code> or <code>ENOTFOUND</code>), automatically fall back to local <code>mockDb.ts</code> / SQLite so registration and login work seamlessly.</li>
+<li>Ensure default cards and starter deck are properly generated during registration.</li>
+<li>Ensure <code>@students.wits.ac.za</code> email regex accepts all valid student accounts.</li>
+<li><strong>Acceptance Criteria</strong>: New students can register and immediately log in with zero 500 errors.</li>
+</ul>
+<h4 id="task-32-wire-offline-queue-into-map-trivia">Task 3.2: Wire Offline Queue into Map &amp; Trivia<a class="headerlink" href="#task-32-wire-offline-queue-into-map-trivia" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/services/offlineQueue.ts</code>, <code>frontend/src/screens/TriviaModal.tsx</code>, <code>frontend/src/screens/MapExplorer.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>In <code>TriviaModal.tsx</code>, detect if <code>!navigator.onLine</code>.</li>
+<li>If offline, save the trivia attempt into IndexedDB using <code>enqueueCheckIn()</code>.</li>
+<li>Listen for <code>window.addEventListener('online')</code> to trigger <code>processQueue()</code> and synchronize saved attempts to the server when network connectivity is restored.</li>
+<li>Display an <em>"Offline Mode Active — Answers will sync when reconnected"</em> badge.</li>
+<li><strong>Acceptance Criteria</strong>: Disconnecting Wi-Fi allows answering reached trivia questions, and reconnecting syncs the earned cards.</li>
+</ul>
+<hr />
+<h3 id="domain-4-admin-governance-curation-analytics">Domain 4: Admin Governance, Curation &amp; Analytics<a class="headerlink" href="#domain-4-admin-governance-curation-analytics" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Assigned Lead</strong>: <strong>Rea</strong> (Member 4)</li>
+<li><strong>Current Status</strong>: <code>AdminEvents.tsx</code> and <code>AdminContent.tsx</code> allow direct publishing without moderation review.</li>
+<li><strong>What Needs to be Polished / Built</strong>:</li>
+</ul>
+<h4 id="task-41-build-admin-curation-board-admincurationtsx">Task 4.1: Build Admin Curation Board (<code>AdminCuration.tsx</code>)<a class="headerlink" href="#task-41-build-admin-curation-board-admincurationtsx" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/screens/admin/AdminCuration.tsx</code> (NEW), <code>frontend/src/components/BottomNav.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Create <code>AdminCuration.tsx</code> implementing a <strong>Draft $\to$ Review $\to$ Published $\to$ Retired</strong> workflow.</li>
+<li>Table displaying:<ul>
+<li>Submitted trivia questions and user-created cards.</li>
+<li>Review actions: "Approve &amp; Publish", "Request Revisions", "Retire Old Content".</li>
+</ul>
+</li>
+<li>Add <code>CURATION</code> tab to Admin <code>BottomNav.tsx</code>.</li>
+<li><strong>Acceptance Criteria</strong>: Authoring console saves content as "Draft/Pending", and admins approve it in <code>AdminCuration</code> before it goes live.</li>
+</ul>
+<h4 id="task-42-build-campus-heatmaps-analytics-console-adminanalyticstsx">Task 4.2: Build Campus Heatmaps &amp; Analytics Console (<code>AdminAnalytics.tsx</code>)<a class="headerlink" href="#task-42-build-campus-heatmaps-analytics-console-adminanalyticstsx" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/screens/admin/AdminAnalytics.tsx</code> (NEW), <code>backend/src/routes/telemetry.ts</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Fetch GPS pings from <code>/api/mock/telemetry/pings</code>.</li>
+<li>Render a campus activity distribution breakdown:<ul>
+<li>Most visited vs. under-visited campus landmarks.</li>
+<li>Trivia question failure rates (surfacing questions that are too difficult/frequently missed).</li>
+<li>Card rarity drop rate distribution.</li>
+</ul>
+</li>
+<li>Add <code>ANALYTICS</code> tab to Admin <code>BottomNav.tsx</code>.</li>
+<li><strong>Acceptance Criteria</strong>: Admins can see telemetry graphs and missed question statistics.</li>
+</ul>
+<hr />
+<h3 id="domain-5-progression-deck-builder-trails-forge">Domain 5: Progression, Deck Builder, Trails &amp; Forge<a class="headerlink" href="#domain-5-progression-deck-builder-trails-forge" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Assigned Lead</strong>: <strong>Nontokozo / Nontobeko</strong> (Member 5)</li>
+<li><strong>Current Status</strong>: Card collection works, but locked cards are hidden, and DeckBuilder is not mounted in routing.</li>
+<li><strong>What Needs to be Polished / Built</strong>:</li>
+</ul>
+<h4 id="task-51-mount-deckbuilder-screen-add-profile-navigation-hub">Task 5.1: Mount DeckBuilder Screen &amp; Add Profile Navigation Hub<a class="headerlink" href="#task-51-mount-deckbuilder-screen-add-profile-navigation-hub" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/App.tsx</code>, <code>frontend/src/screens/Profile.tsx</code>, <code>frontend/src/screens/DeckBuilder.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>In <code>App.tsx</code>, add <code>{screen === 'deck' &amp;&amp; &lt;DeckBuilder /&gt;}</code> to the screen content switcher.</li>
+<li>In <code>Profile.tsx</code>, implement a navigation grid using <code>onNavigate</code>:<ul>
+<li>Quick buttons for <strong>Deck Builder</strong>, <strong>Campus Leaderboard</strong>, <strong>Ranked Matches</strong>, <strong>Quest Trails</strong>, <strong>Card Forge</strong>, and <strong>Trading</strong>.</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria</strong>: Players can open and edit their 5-card battle deck directly from the navigation.</li>
+</ul>
+<h4 id="task-52-un-hide-locked-landmark-cards-in-collection">Task 5.2: Un-hide Locked Landmark Cards in Collection<a class="headerlink" href="#task-52-un-hide-locked-landmark-cards-in-collection" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target File</strong>: <code>frontend/src/screens/CardCollection.tsx</code> (Line 353)</li>
+<li><strong>What to do</strong>:</li>
+<li>Remove <code>.filter((e) =&gt; e.unlocked)</code> so both unlocked and locked cards remain in the state.</li>
+<li>Unlocked cards display full stats and holographic effects.</li>
+<li>Locked cards render with dimmed styling, lock badges, and their specific landmark unlock hints (e.g. <em>"Walk to Great Hall to unlock"</em>).</li>
+<li><strong>Acceptance Criteria</strong>: Collection gallery displays the complete campus album, motivating exploration.</li>
+</ul>
+<h4 id="task-53-connect-live-data-to-campus-leaderboard">Task 5.3: Connect Live Data to Campus Leaderboard<a class="headerlink" href="#task-53-connect-live-data-to-campus-leaderboard" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target File</strong>: <code>frontend/src/screens/Leaderboard.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Replace hardcoded <code>DEFAULT_PLAYERS</code> with a live call to <code>getMockUsers()</code> (<code>/api/users</code>).</li>
+<li>Sort students by Total XP or Elo rating.</li>
+<li>Display division badges (Bronze, Silver, Gold, Platinum, Diamond) and daily streak indicators.</li>
+<li><strong>Acceptance Criteria</strong>: Newly registered users and recent battle winners dynamically appear on the leaderboard.</li>
+</ul>
+<h4 id="task-54-activate-duplicate-card-forge-scrapping">Task 5.4: Activate Duplicate Card Forge &amp; Scrapping<a class="headerlink" href="#task-54-activate-duplicate-card-forge-scrapping" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/screens/CardForge.tsx</code>, <code>backend/src/routes/content.ts</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Connect <code>CardForge.tsx</code> to user's real card duplicates (<code>quantity &gt; 1</code>).</li>
+<li>Allow scrapping duplicate cards for Essence currency.</li>
+<li>Allow upgrading card level (+5 ATK, +5 DEF, +5 SPD, +5 BRN) for 100 Essence + 1 duplicate card copy.</li>
+<li><strong>Acceptance Criteria</strong>: Duplicate cards are meaningful assets rather than dead inventory weight.</li>
+</ul>
+<hr />
+<h3 id="domain-6-anti-cheat-trust-score-ranked-territory">Domain 6: Anti-Cheat Trust Score, Ranked &amp; Territory<a class="headerlink" href="#domain-6-anti-cheat-trust-score-ranked-territory" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Assigned Lead</strong>: <strong>Keoratile / Kea</strong> (Member 6)</li>
+<li><strong>Current Status</strong>: Speed violation and teleport alerts exist in <code>antiCheat.ts</code>; user schema tracks Elo.</li>
+<li><strong>What Needs to be Polished / Built</strong>:</li>
+</ul>
+<h4 id="task-61-adaptive-trust-scoring-engine-0100-scale">Task 6.1: Adaptive Trust Scoring Engine (0–100 Scale)<a class="headerlink" href="#task-61-adaptive-trust-scoring-engine-0100-scale" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/utils/antiCheat.ts</code>, <code>backend/src/routes/telemetry.ts</code>, <code>frontend/src/screens/admin/AdminAntiCheat.tsx</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Implement trust scoring algorithm:<ul>
+<li>Baseline score: 100 points.</li>
+<li>Speed violation ($v &gt; 15\text{ m/s}$): $-15$ points.</li>
+<li>Teleport violation ($&gt; 500\text{m}$ in $&lt; 30\text{s}$): $-30$ points.</li>
+<li>Duplicate simultaneous check-ins: $-25$ points.</li>
+</ul>
+</li>
+<li>Display student Trust Score badge in <code>AdminAntiCheat.tsx</code>.</li>
+<li>Accounts with trust scores below 40 are flagged for human review; below 20 are restricted from ranked queue.</li>
+<li><strong>Acceptance Criteria</strong>: Students have a dynamic trust rating that decreases upon suspicious movement.</li>
+</ul>
+<h4 id="task-62-ranked-matchmaking-queue-seasonal-divisions">Task 6.2: Ranked Matchmaking Queue &amp; Seasonal Divisions<a class="headerlink" href="#task-62-ranked-matchmaking-queue-seasonal-divisions" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/screens/RankedMatchmaking.tsx</code>, <code>backend/src/routes/battle.ts</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Connect <code>RankedMatchmaking.tsx</code> to active student list (<code>/api/users</code>).</li>
+<li>Allow queueing for ranked matches with Elo matchmaking bracket ($\pm 200$ Elo).</li>
+<li>Post-match Elo calculation updates user record and moves them across division tiers.</li>
+<li><strong>Acceptance Criteria</strong>: Players can queue against matched student opponents and climb the ranked ladder.</li>
+</ul>
+<h4 id="task-63-campus-faction-territory-control">Task 6.3: Campus Faction Territory Control<a class="headerlink" href="#task-63-campus-faction-territory-control" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Target Files</strong>: <code>frontend/src/screens/TerritoryMap.tsx</code>, <code>backend/src/routes/battle.ts</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Define 3 campus precincts: <em>East Campus</em>, <em>West Campus</em>, and <em>Health Sciences</em>.</li>
+<li>Winning battles within a precinct shifts control percentage towards the student's faction.</li>
+<li>Update SVG polygon colors and control bars dynamically.</li>
+<li><strong>Acceptance Criteria</strong>: Winning card duels shifts zone control influence over campus sectors.</li>
+</ul>
+<hr />
+<h2 id="4-shared-devops-quality-documentation-tasks">4. Shared DevOps, Quality &amp; Documentation Tasks<a class="headerlink" href="#4-shared-devops-quality-documentation-tasks" title="Permanent link">&para;</a></h2>
+<h3 id="task-71-migrate-cicd-pipeline-to-gitea-actions">Task 7.1: Migrate CI/CD Pipeline to Gitea Actions<a class="headerlink" href="#task-71-migrate-cicd-pipeline-to-gitea-actions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Target File</strong>: <code>.gitea/workflows/ci.yml</code> (NEW)</li>
+<li><strong>What to do</strong>:</li>
+<li>Create <code>.gitea/workflows/ci.yml</code> configured for Wits Gitea runners (<code>https://sdp.ms.wits.ac.za</code>).</li>
+<li>Remove the GitHub-only check (<code>if: github.server_url == 'https://github.com'</code>).</li>
+<li>Pipeline stages:<ul>
+<li>Install dependencies.</li>
+<li>ESLint code quality gate.</li>
+<li>TypeScript typecheck (<code>tsc --noEmit</code>).</li>
+<li>Vitest suite with $\ge 80\%$ coverage threshold.</li>
+<li>Frontend &amp; backend production builds.</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria</strong>: Gitea triggers automated tests on every push and pull request with green checkmarks.</li>
+</ul>
+<h3 id="task-72-consolidate-all-documentation-into-mkdocs">Task 7.2: Consolidate All Documentation into MkDocs<a class="headerlink" href="#task-72-consolidate-all-documentation-into-mkdocs" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Target Files</strong>: <code>docs/</code>, <code>mkdocs.yml</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Move standalone root markdown files into <code>docs/</code>:<ul>
+<li><code>SPRINT1.md</code> $\to$ <code>docs/sprints/sprint-1.md</code></li>
+<li><code>WITS_QUEST_FEATURE_HANDOVER_GUIDE.md</code> $\to$ <code>docs/project/handover-guide.md</code></li>
+<li><code>WITS_QUEST_DATABASE_PLAN.md</code> $\to$ <code>docs/database/database-plan.md</code></li>
+<li><code>FEATURES_STATUS_AND_GAP_ANALYSIS.md</code> $\to$ <code>docs/project/gap-analysis.md</code></li>
+</ul>
+</li>
+<li>Update <code>mkdocs.yml</code> navigation structure to index all documentation pages.</li>
+<li>Test build with <code>python -m mkdocs build</code> to ensure 0 broken links.</li>
+<li><strong>Acceptance Criteria</strong>: One unified MkDocs documentation site contains all project guides, UML, and sprint history.</li>
+</ul>
+<h3 id="task-73-streamline-root-readmemd">Task 7.3: Streamline Root <code>README.md</code><a class="headerlink" href="#task-73-streamline-root-readmemd" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Target File</strong>: <code>README.md</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Condense the 25KB verbose document into a sleek, executive-level project portal.</li>
+<li>Include badges (Build, Coverage, Gitea Actions, Version).</li>
+<li>Showcase feature highlights with screenshots/ASCII diagrams.</li>
+<li>Provide clean 2-step setup instructions (<code>npm run dev:frontend</code>, <code>npm run dev:backend</code>).</li>
+<li>Direct all deep-dive architecture and domain guides to the MkDocs portal.</li>
+<li><strong>Acceptance Criteria</strong>: Clean, professional README that immediately impresses markers.</li>
+</ul>
+<h3 id="task-74-repository-separation-frontend-backend-on-gitea">Task 7.4: Repository Separation (Frontend &amp; Backend on Gitea)<a class="headerlink" href="#task-74-repository-separation-frontend-backend-on-gitea" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Target Files</strong>: <code>scripts/split-repos.ps1</code>, <code>scripts/split-repos.sh</code></li>
+<li><strong>What to do</strong>:</li>
+<li>Provide git subtree scripts to cleanly export:<ul>
+<li><code>frontend/</code> $\to$ <code>https://sdp.ms.wits.ac.za/big-o/wits-quest-frontend.git</code></li>
+<li><code>backend/</code> $\to$ <code>https://sdp.ms.wits.ac.za/big-o/wits-quest-backend.git</code></li>
+</ul>
+</li>
+<li>Maintain standalone <code>package.json</code>, environment templates, and CI configs in each repository.</li>
+<li><strong>Acceptance Criteria</strong>: Team members can clone and run frontend or backend in dedicated repositories.</li>
+</ul>
+<hr />
+<h2 id="5-how-to-claim-a-task-git-workflow">5. How to Claim a Task &amp; Git Workflow<a class="headerlink" href="#5-how-to-claim-a-task-git-workflow" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Pick a Task</strong>: Review the matrix in Section 2 and choose your feature task.</li>
+<li><strong>Create a Feature Branch</strong>:
+   <div class="highlight"><pre><span></span><code>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/&lt;your_name&gt;-&lt;feature_name&gt;
+<span class="c1"># Example: git checkout -b feature/junior-nearby-avatars</span>
+<span class="c1"># Example: git checkout -b feature/kgothatso-auth-fallback</span>
+</code></pre></div></li>
+<li><strong>Run Verification Before Committing</strong>:
+   <div class="highlight"><pre><span></span><code><span class="c1"># Run tests and ensure 80%+ coverage</span>
+npm<span class="w"> </span><span class="nb">test</span>
+<span class="c1"># Run build check</span>
+npm<span class="w"> </span>run<span class="w"> </span>build
+</code></pre></div></li>
+<li><strong>Push &amp; Open Pull Request</strong>:
+   <div class="highlight"><pre><span></span><code>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature/&lt;your_name&gt;-&lt;feature_name&gt;
+</code></pre></div>
+   Open a Pull Request on Gitea (<code>https://sdp.ms.wits.ac.za/big-o/Wits-Quest</code>) and request review from your teammates.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../WITS_QUEST_SPRINT1_GUIDE/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sprint 1 Implementation Guide">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Sprint 1 Implementation Guide
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../WITS_QUEST_SPRINT2_HANDOVER_GUIDE/" class="md-footer__link md-footer__link--next" aria-label="Next: Sprint 2 Handover Guide">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Sprint 2 Handover Guide
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

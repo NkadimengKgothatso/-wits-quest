@@ -1,0 +1,3953 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Centralised documentation for Wits Quest — a location-aware, turn-based campus adventure game developed by Team Big-O for the Wits University Software Development Project (COMS3011A).
+">
+      
+      
+      
+        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/sprints/master-guide-v2/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../SPRINT1/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Master Guide V2 - Wits Quest Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wits-quest-coms3011a-project-6-master-architecture-task-specification-guide-v20" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wits Quest Documentation" class="md-header__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wits Quest Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Master Guide V2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wits Quest Documentation" class="md-nav__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wits Quest Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game Overview & Tiers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/cpu-battle-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU Battle Rulebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/live-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/async-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/api-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Quick Start (Verified)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Automated Testing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Automated Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Results & Coverage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment & Hosting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stakeholder Reviews
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Stakeholder Reviews
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/stakeholder-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutor Review Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team Meetings
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Team Meetings
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meetings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meeting Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Feedback
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Feedback
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/user-feedback/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feedback Form & Responses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/files/wits-quest-master-architecture-task-specification-guide.pdf" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Architecture Guide (PDF)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/decisions-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/technical-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/gitea-actions-migration-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gitea Actions Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bug Tracker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/bug-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/fix-register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fix Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/database-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/04_erd_database_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ERD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Third-Party Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Code & Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing-documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & CI/CD Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design (UML)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design (UML)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/01_system_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/class-diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/03_use_case_diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/use-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Description
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/02_battle_state_machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Battle State Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/activity-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Activity Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../uml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Guide V2
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Guide V2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-system-context-software-background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. System Context &amp; Software Background
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. System Context &amp; Software Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-wits-quest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What is Wits Quest?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-system-architecture-overview-as-implemented-7-sep-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 System Architecture Overview (as implemented, 7 Sep 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-technology-stack-v1-recommendation-vs-implemented-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Technology Stack — v1 Recommendation vs Implemented Reality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-verified-delivery-status-audit-of-7-sep-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Verified Delivery Status (audit of 7 Sep 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-project-execution-strategy-milestone-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Project Execution Strategy &amp; Milestone Timeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Project Execution Strategy &amp; Milestone Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-strategic-rationale-v2-consolidate-complete-extend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Strategic Rationale v2: Consolidate → Complete → Extend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-official-milestone-schedule-unchanged-course-dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Official Milestone Schedule (unchanged — course dates)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-revised-sprint-plan-the-v2-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Revised Sprint Plan (the v2 roadmap)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-revised-milestone-acceptance-replaces-v1s-100-100-by-15-sep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Revised Milestone Acceptance (replaces v1's "100% + 100% by 15 Sep")
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-analysis-of-project-tier-expectations-status-annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Analysis of Project Tier Expectations (status-annotated)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Analysis of Project Tier Expectations (status-annotated)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-basic-tier-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Basic Tier Expectations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-intermediate-tier-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Intermediate Tier Expectations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-advanced-tier-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Advanced Tier Expectations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-engineering-software-task-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Engineering &amp; Software Task Matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Engineering &amp; Software Task Matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-sprint-2-rescue-window-integrity-secured-core-07-sep-15-sep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 SPRINT 2 — Rescue Window: Integrity-Secured Core (07 Sep → 15 Sep)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-sprint-3-intermediate-complete-selective-advanced-15-sep-29-sep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 SPRINT 3 — Intermediate Complete + Selective Advanced (15 Sep → 29 Sep)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-sprint-4-production-hardening-submission-29-sep-11-oct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 SPRINT 4 — Production Hardening &amp; Submission (29 Sep → 11 Oct)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-definition-of-done-qa-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Definition of Done &amp; QA Standard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-uiux-screen-specifications-component-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. UI/UX Screen Specifications &amp; Component Breakdown
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. UI/UX Screen Specifications &amp; Component Breakdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-selected-screen-components-status-annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Selected Screen Components (status-annotated)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-navigation-reachability-matrix-new-in-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Navigation Reachability Matrix (new in v2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-risk-register-descoping-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Risk Register &amp; Descoping Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Risk Register &amp; Descoping Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-risk-register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Risk Register
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-descope-register-advanced-tier-parked-with-re-entry-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Descope Register (Advanced tier — parked with re-entry criteria)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SPRINT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WITS_QUEST_SPRINT1_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Implementation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Feature Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WITS_QUEST_SPRINT2_HANDOVER_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Handover Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../WITS_QUEST_SPRINT3_GUIDE.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SPRINT3_TASK_BOARD.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Task Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-system-context-software-background" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. System Context &amp; Software Background
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. System Context &amp; Software Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-wits-quest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What is Wits Quest?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-system-architecture-overview-as-implemented-7-sep-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 System Architecture Overview (as implemented, 7 Sep 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-technology-stack-v1-recommendation-vs-implemented-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Technology Stack — v1 Recommendation vs Implemented Reality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-verified-delivery-status-audit-of-7-sep-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Verified Delivery Status (audit of 7 Sep 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-project-execution-strategy-milestone-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Project Execution Strategy &amp; Milestone Timeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Project Execution Strategy &amp; Milestone Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-strategic-rationale-v2-consolidate-complete-extend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Strategic Rationale v2: Consolidate → Complete → Extend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-official-milestone-schedule-unchanged-course-dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Official Milestone Schedule (unchanged — course dates)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-revised-sprint-plan-the-v2-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Revised Sprint Plan (the v2 roadmap)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-revised-milestone-acceptance-replaces-v1s-100-100-by-15-sep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Revised Milestone Acceptance (replaces v1's "100% + 100% by 15 Sep")
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-analysis-of-project-tier-expectations-status-annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Analysis of Project Tier Expectations (status-annotated)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Analysis of Project Tier Expectations (status-annotated)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-basic-tier-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Basic Tier Expectations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-intermediate-tier-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Intermediate Tier Expectations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-advanced-tier-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Advanced Tier Expectations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-engineering-software-task-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Engineering &amp; Software Task Matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Engineering &amp; Software Task Matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-sprint-2-rescue-window-integrity-secured-core-07-sep-15-sep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 SPRINT 2 — Rescue Window: Integrity-Secured Core (07 Sep → 15 Sep)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-sprint-3-intermediate-complete-selective-advanced-15-sep-29-sep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 SPRINT 3 — Intermediate Complete + Selective Advanced (15 Sep → 29 Sep)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-sprint-4-production-hardening-submission-29-sep-11-oct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 SPRINT 4 — Production Hardening &amp; Submission (29 Sep → 11 Oct)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-definition-of-done-qa-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Definition of Done &amp; QA Standard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-uiux-screen-specifications-component-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. UI/UX Screen Specifications &amp; Component Breakdown
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. UI/UX Screen Specifications &amp; Component Breakdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-selected-screen-components-status-annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Selected Screen Components (status-annotated)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-navigation-reachability-matrix-new-in-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Navigation Reachability Matrix (new in v2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-risk-register-descoping-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Risk Register &amp; Descoping Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Risk Register &amp; Descoping Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-risk-register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Risk Register
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-descope-register-advanced-tier-parked-with-re-entry-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Descope Register (Advanced tier — parked with re-entry criteria)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/sprints/master-guide-v2.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="wits-quest-coms3011a-project-6-master-architecture-task-specification-guide-v20">Wits Quest (COMS3011A Project 6) — Master Architecture &amp; Task Specification Guide — v2.0<a class="headerlink" href="#wits-quest-coms3011a-project-6-master-architecture-task-specification-guide-v20" title="Permanent link">&para;</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Read with the post-migration state in mind</p>
+<p>This guide is a point-in-time snapshot dated <strong>7 September 2026</strong>. Sections describing the auth stack (custom JWT + bcrypt + nodemailer OTP, e.g. §1 and §3) predate the <strong>Supabase Auth migration</strong> that landed later in Sprint 2 — current auth facts are in the <a href="../../development/api-reference/">API Reference</a> and <a href="../../development/third-party/">Third-Party Docs</a>. Likewise the CI pipeline is now native Gitea Actions (<code>.gitea/workflows/</code>), not the legacy path described here.</p>
+</div>
+<p><strong>Prepared by:</strong> Mahlatse Clayton
+<strong>Date:</strong> 7 September 2026
+<strong>Revision:</strong> v2.0 — Roadmap Update. Supersedes the execution plan of the 4 August 2026 v1 guide (which remains on record as the original specification).
+<strong>Project:</strong> COMS3011A Software Design Project
+<strong>Affiliation:</strong> University of the Witwatersrand, Johannesburg</p>
+<p><strong>What changed in v2</strong></p>
+<ul>
+<li><strong>Section 1.3</strong> now records the <em>implemented</em> stack against the v1 recommendation (Prisma, Redis, PostGIS, Mapbox GL and NestJS were never adopted — see the descope register in §7.2).</li>
+<li><strong>Section 2</strong> replaces the "2-Sprint Front-Load Push" with a <strong>consolidate → complete → extend</strong> strategy, re-planned against the verified state of the codebase on 7 September 2026.</li>
+<li><strong>Section 3</strong> annotates every tier expectation with its audited build status.</li>
+<li><strong>Section 4</strong> re-plans the remaining sprints member-by-member, with explicit <strong>P0/P1/P2 priorities</strong> and <strong>traceability IDs</strong> (<code>F##</code>, <code>B-#</code>, <code>I-#</code> refer to the master fix register in <code>WITS_QUEST_FIXES_AND_OUTSTANDING_FEATURES.md</code>).</li>
+<li><strong>Section 7</strong> (new) adds the risk register and the Advanced-tier descope decisions with re-entry criteria.</li>
+</ul>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ol>
+<li>System Context &amp; Software Background</li>
+<li>Project Execution Strategy &amp; Milestone Timeline</li>
+<li>Analysis of Project Tier Expectations</li>
+<li>Engineering &amp; Software Task Matrix</li>
+<li>Definition of Done &amp; QA Standard</li>
+<li>UI/UX Screen Specifications &amp; Component Breakdown</li>
+<li>Risk Register &amp; Descoping Decisions</li>
+</ol>
+<hr />
+<h2 id="1-system-context-software-background">1. System Context &amp; Software Background<a class="headerlink" href="#1-system-context-software-background" title="Permanent link">&para;</a></h2>
+<h3 id="11-what-is-wits-quest">1.1 What is Wits Quest?<a class="headerlink" href="#11-what-is-wits-quest" title="Permanent link">&para;</a></h3>
+<p>Wits Quest is a progressive, location-based web application (PWA) designed for the University of the Witwatersrand (Wits). Inspired by Pokémon GO and turn-based card strategy games, Wits Quest replaces traditional static campus tours with an interactive, location-gated trivia and collectible card battle experience. The software combines several complex computer science domains into a single unified web platform:</p>
+<ol>
+<li><strong>Geographic Information Systems (GIS) &amp; Geolocation Verification</strong>: Real-time interactive campus mapping with server-side mathematical validation of GPS coordinates.</li>
+<li><strong>Offline-First Synchronous &amp; Asynchronous Data Resilience</strong>: Ability to explore campus and complete challenges in signal "dead-zones", caching attempts locally and securely syncing with the server upon reconnection.</li>
+<li><strong>Turn-Based RPG Strategy &amp; Rule Engine</strong>: Card deck construction, stat attribute comparisons, CPU AI opponents, and real-time live WebSocket multiplayer.</li>
+<li><strong>Game Economy &amp; Progression Systems</strong>: Card rarities, category attributes, daily streaks, achievement hooks, and atomic peer-to-peer trading.</li>
+<li><strong>Security, Telemetry &amp; Behavioral Anti-Cheat</strong>: Speed-over-ground movement verification, anti-teleportation trajectory analysis, and trust-score computation.</li>
+<li><strong>Authoring &amp; Curation Governance Console</strong>: Multi-stage content lifecycle management and campus foot-traffic heatmaps.</li>
+</ol>
+<h3 id="12-system-architecture-overview-as-implemented-7-sep-2026">1.2 System Architecture Overview (as implemented, 7 Sep 2026)<a class="headerlink" href="#12-system-architecture-overview-as-implemented-7-sep-2026" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    subgraph PWA["Player PWA - frontend/ (React 18 + TypeScript 5.2 + Vite 5)"]
+        Screens["Screens and components: MapExplorer, TriviaModal, CardCollection, DeckBuilder, BattleArena, Profile, admin console"]
+        AuthCtx["AuthContext - JWT stored in localStorage"]
+        Engines["Client engines: battleEngine, battleAI (3 difficulties), antiCheat Haversine speed/teleport checks"]
+        OQ["IndexedDB offline queue (wits_quest_offline)"]
+        SW["Service Worker (sw.js)"]
+    end
+
+    subgraph API["Backend API - backend/ (Node 20 + Express 4.18 + TypeScript 5.2)"]
+        AuthMW["JWT authMiddleware + RBAC admin guard (Task 2.3.2)"]
+        Routes["REST routes: /api/auth, /api/users, /api/cards, /api/events, /api/trivia, /api/battle, /api/mock/telemetry"]
+        Sock["Socket.IO battle rooms (join_battle, submit_turn, round_outcome, player_disconnected)"]
+        Mail["nodemailer OTP (email verification and password reset)"]
+    end
+
+    subgraph DB["Supabase - PostgreSQL 15 + Storage"]
+        Core[("users, cards, user_cards, user_decks, battle_matches, async_pvp_challenges, avatars")]
+        Content[("events, trivia_questions")]
+        Telem[("telemetry_pings, audit_records")]
+        Images[("card-images storage bucket")]
+    end
+
+    subgraph Infra["CI/CD and Hosting"]
+        CI["GitHub Actions: tsc --noEmit, Vitest 80% coverage gates, builds, Gitea commit-status reflection"]
+        Vercel["Vercel - frontend (live)"]
+        Render["Render - backend (pending, Task 4.1)"]
+    end
+
+    Screens --&gt; Routes
+    AuthCtx --&gt; AuthMW
+    Engines --&gt; Sock
+    SW --&gt; OQ
+    OQ --&gt; Routes
+    Routes --&gt; AuthMW
+    Routes --&gt; Core
+    Routes --&gt; Content
+    Routes --&gt; Telem
+    Routes --&gt; Images
+    Routes --&gt; Mail
+    Sock --&gt; Core
+    CI --&gt; Vercel
+    CI --&gt; Render</code></pre>
+<h3 id="13-technology-stack-v1-recommendation-vs-implemented-reality">1.3 Technology Stack — v1 Recommendation vs Implemented Reality<a class="headerlink" href="#13-technology-stack-v1-recommendation-vs-implemented-reality" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Layer</th>
+<th style="text-align: left;">v1 Recommendation (4 Aug)</th>
+<th style="text-align: left;">Implemented (verified)</th>
+<th style="text-align: left;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Frontend</td>
+<td style="text-align: left;">React (Vite) or Next.js, TypeScript</td>
+<td style="text-align: left;">React 18.2 + Vite 5.4 + TypeScript 5.2</td>
+<td style="text-align: left;">As recommended</td>
+</tr>
+<tr>
+<td style="text-align: left;">Map &amp; Spatial</td>
+<td style="text-align: left;">Leaflet.js / Mapbox GL JS, OSM tiles</td>
+<td style="text-align: left;">Leaflet 1.9 + react-leaflet 4.2 + OSM</td>
+<td style="text-align: left;">Mapbox GL not adopted — OSM tiles are sufficient at campus scale</td>
+</tr>
+<tr>
+<td style="text-align: left;">Backend API</td>
+<td style="text-align: left;">Node.js with Express or NestJS</td>
+<td style="text-align: left;">Node 20 + Express 4.18 + TypeScript 5.2</td>
+<td style="text-align: left;">NestJS not adopted — Express matches team experience</td>
+</tr>
+<tr>
+<td style="text-align: left;">Database &amp; ORM</td>
+<td style="text-align: left;">PostgreSQL with Prisma ORM</td>
+<td style="text-align: left;">Supabase hosted PostgreSQL 15 via <code>@supabase/supabase-js</code></td>
+<td style="text-align: left;">Prisma not adopted — Supabase client + quoted camelCase columns; no ORM layer needed at current scale</td>
+</tr>
+<tr>
+<td style="text-align: left;">Real-time</td>
+<td style="text-align: left;">WebSockets (socket.io)</td>
+<td style="text-align: left;">Socket.IO 4.7 (server rooms + client)</td>
+<td style="text-align: left;">Live-battle room handler exists in-memory (Member 2 scope)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Offline</td>
+<td style="text-align: left;">Service Worker + IndexedDB</td>
+<td style="text-align: left;"><code>public/sw.js</code> + IndexedDB queue (<code>wits_quest_offline</code>)</td>
+<td style="text-align: left;">Queue service is built but <strong>not yet wired into the trivia flow</strong> (Task 2.3.5)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Security &amp; Auth</td>
+<td style="text-align: left;">Custom auth, Wits email validation</td>
+<td style="text-align: left;">JWT (7-day) + bcrypt(10) + <code>@students.wits.ac.za</code> validation + nodemailer OTP</td>
+<td style="text-align: left;">OTP codes still in-memory (Task 3.3)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Never adopted from v1 (now formally descoped, §7.2):</strong> Redis cache layer, PostGIS indexing, Mapbox GL, NestJS, Prisma, Glicko-2, Monte-Carlo balancing, 2PC trading engine, heatmap aggregation service.</p>
+<h3 id="14-verified-delivery-status-audit-of-7-sep-2026">1.4 Verified Delivery Status (audit of 7 Sep 2026)<a class="headerlink" href="#14-verified-delivery-status-audit-of-7-sep-2026" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tier</th>
+<th style="text-align: left;">Gap-analysis estimate</th>
+<th style="text-align: left;">Headline verified findings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Basic</td>
+<td style="text-align: left;">~85%</td>
+<td style="text-align: left;">Map, GPS gating (client-side), trivia marking, collection, CPU battle, admin authoring all work — but the <strong>integrity core is missing</strong>: no server-side location verification on attempts (F1), client-side battle resolution (F2), unauthenticated authoring via route shadowing (F4), no role guard (F5), repeat-answer farming (F6), Deck Builder unreachable (F13)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intermediate</td>
+<td style="text-align: left;">~35%</td>
+<td style="text-align: left;">Offline queue built but never enqueues (F42); async PvP not implemented (I-3); streaks never evaluated (F28); no achievements (F39); quest trails mock (I-6); curation lifecycle absent (I-7); leaderboard hardcoded (F18)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Advanced</td>
+<td style="text-align: left;">~15%</td>
+<td style="text-align: left;">Socket.IO live-battle rooms exist (in-memory); Elo + divisions exist but with conflicting thresholds (F26); territory/trading/heatmaps/trust-score are static mocks or absent</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-project-execution-strategy-milestone-timeline">2. Project Execution Strategy &amp; Milestone Timeline<a class="headerlink" href="#2-project-execution-strategy-milestone-timeline" title="Permanent link">&para;</a></h2>
+<h3 id="21-strategic-rationale-v2-consolidate-complete-extend">2.1 Strategic Rationale v2: Consolidate → Complete → Extend<a class="headerlink" href="#21-strategic-rationale-v2-consolidate-complete-extend" title="Permanent link">&para;</a></h3>
+<p>The v1 strategy ("The 2-Sprint Front-Load Push") committed to <strong>100% of Basic and 100% of Intermediate by 15 September</strong>. The front-load instinct was correct — it produced a working end-to-end product in Sprint 1 — but with eight days left in Sprint 2 the verified position is ~85% Basic and ~35% Intermediate, and the missing 15% of Basic is precisely the part the brief weights most heavily: <em>the location of a player's device must be treated "as a claim to be checked rather than as fact"</em>, a correct answer must award the card "once", and "the rules of a match should be the game's to enforce, not the player's". None of those three hold today.</p>
+<p>v2 therefore re-orders the remaining work under three rules:</p>
+<ol>
+<li><strong>Integrity before features.</strong> Every reward path (trivia, battle, streaks) becomes server-verified before any new feature consumes it. A reward handed out by an unverified endpoint devalues every system downstream of it.</li>
+<li><strong>Finish before new.</strong> Six built screens are currently unrouted (F14), the offline queue is built but unwired (F42), and the Deck Builder is imported but never rendered (F13). Wiring existing work is days; replacing it with new work is weeks.</li>
+<li><strong>Select Advanced by foundation, not ambition.</strong> Live PvP (socket handler exists) and ranked/Elo (exists, needs consolidation) are cheap Advanced wins. 2PC trading, Redis, PostGIS, procedural spawning and heatmaps have zero foundation and are descoped with re-entry criteria (§7.2).</li>
+</ol>
+<p>Each remaining sprint carries a <strong>theme</strong>, a <strong>priority ladder (P0 &gt; P1 &gt; P2)</strong> and <strong>exit criteria</strong>, so if time runs out the drop-order is pre-agreed rather than improvised.</p>
+<h3 id="22-official-milestone-schedule-unchanged-course-dates">2.2 Official Milestone Schedule (unchanged — course dates)<a class="headerlink" href="#22-official-milestone-schedule-unchanged-course-dates" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Milestone Event</th>
+<th style="text-align: left;">Deadline Date</th>
+<th style="text-align: left;">Target Scope &amp; Deliverable Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Group Selection</td>
+<td style="text-align: left;">26 July 2026</td>
+<td style="text-align: left;">Team formed (6 Members assigned)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Project Proposals</td>
+<td style="text-align: left;">31 July 2026</td>
+<td style="text-align: left;">Proposal submitted</td>
+</tr>
+<tr>
+<td style="text-align: left;">Project Assignments</td>
+<td style="text-align: left;">02 August 2026</td>
+<td style="text-align: left;">Official project allocation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Milestone 1: Sprint 1</td>
+<td style="text-align: left;">25 August 2026</td>
+<td style="text-align: left;">Basic Tier Complete: GIS, Trivia, CPU Battle, Auth</td>
+</tr>
+<tr>
+<td style="text-align: left;">Milestone 2: Sprint 2</td>
+<td style="text-align: left;">15 September 2026</td>
+<td style="text-align: left;">Intermediate Tier Complete: Offline Sync, Async PvP</td>
+</tr>
+<tr>
+<td style="text-align: left;">Milestone 3: Sprint 3</td>
+<td style="text-align: left;">29 September 2026</td>
+<td style="text-align: left;">Advanced Core Engine: WebSocket Live PvP, 2PC Trading</td>
+</tr>
+<tr>
+<td style="text-align: left;">Milestone 4: Final Submission</td>
+<td style="text-align: left;">11 October 2026</td>
+<td style="text-align: left;">Full System Polish: Territory Control, Elo Rating, Final Bug Fixes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-revised-sprint-plan-the-v2-roadmap">2.3 Revised Sprint Plan (the v2 roadmap)<a class="headerlink" href="#23-revised-sprint-plan-the-v2-roadmap" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Sprint</th>
+<th style="text-align: left;">Window</th>
+<th style="text-align: left;">Theme</th>
+<th style="text-align: left;">Exit criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Sprint 2 — Rescue Window</strong></td>
+<td style="text-align: left;">07 Sep → 15 Sep</td>
+<td style="text-align: left;"><strong>Integrity-Secured Core</strong></td>
+<td style="text-align: left;">All P0 tasks merged; P1 substantially merged; M2 acceptance (§2.4) demonstrable on a real device</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sprint 3</strong></td>
+<td style="text-align: left;">15 Sep → 29 Sep</td>
+<td style="text-align: left;"><strong>Intermediate Complete + Selective Advanced</strong></td>
+<td style="text-align: left;">Every Intermediate brief requirement (I-1…I-7) verifiably done; live PvP playable; M3 acceptance green</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sprint 4</strong></td>
+<td style="text-align: left;">29 Sep → 11 Oct</td>
+<td style="text-align: left;"><strong>Production Hardening &amp; Submission</strong></td>
+<td style="text-align: left;">Full stack deployed; CI green from <code>main</code>; docs/UML complete; feature freeze 04 Oct</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-revised-milestone-acceptance-replaces-v1s-100-100-by-15-sep">2.4 Revised Milestone Acceptance (replaces v1's "100% + 100% by 15 Sep")<a class="headerlink" href="#24-revised-milestone-acceptance-replaces-v1s-100-100-by-15-sep" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>M2 (15 Sep) — "Trusted Core".</strong> Someone <em>not</em> at a location cannot attempt its challenge (server-verified coordinates + once-only awarding, Tasks 2.3.1–2.3.3); authoring endpoints require ADMIN/LECTURER (Task 2.3.2); match rules enforced server-side (Task 2.2.2); offline attempts reconcile using capture-time coordinates (Task 2.3.5); leaderboard and streaks are live data (Tasks 2.5.2–2.5.3); event time-window states visible on the map (Task 2.1.1). Async PvP (Task 2.2.1) is the P2 stretch of this window — if it slips, its hard deadline is 22 Sep, not 15 Sep.</li>
+<li><strong>M3 (29 Sep) — "Intermediate Complete + Selective Advanced".</strong> Quest trails completed in order with nearby-unvisited surfacing (I-6); full curation lifecycle draft → review → publish with retirement and missed-question repair (I-7); achievements live (F39); duplicates worth something via the Forge (F40/F20); movement-history and low-accuracy corroboration server-side (F35–F37); live PvP playable with real decks and turn clocks (foundation exists); division thresholds unified (F26).</li>
+<li><strong>M4 (11 Oct) — "Submission".</strong> Backend deployed and reachable from the Vercel frontend (F47, F11); deploys only from <code>main</code> (F45); README/docs/UML consistent (F48–F53); regression pass on real devices on campus; zero known high-severity bugs.</li>
+</ul>
+<hr />
+<h2 id="3-analysis-of-project-tier-expectations-status-annotated">3. Analysis of Project Tier Expectations (status-annotated)<a class="headerlink" href="#3-analysis-of-project-tier-expectations-status-annotated" title="Permanent link">&para;</a></h2>
+<h3 id="31-basic-tier-expectations">3.1 Basic Tier Expectations<a class="headerlink" href="#31-basic-tier-expectations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Expectation</th>
+<th style="text-align: left;">Verified status</th>
+<th style="text-align: left;">Outstanding (traceability)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Campus map &amp; events (Leaflet, active markers)</td>
+<td style="text-align: left;"><strong>Built</strong> — MapExplorer + GeoJSON campus bounds</td>
+<td style="text-align: left;">Add time-window states UPCOMING/ACTIVE/EXPIRED (B-1)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Location verification (server-side coordinate checks)</td>
+<td style="text-align: left;"><strong>Missing</strong> — 25 m Haversine gate is client-only</td>
+<td style="text-align: left;">F1, F36 — Task 2.3.3 (P0)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trivia &amp; marking engine (server-side validation, varied formats)</td>
+<td style="text-align: left;"><strong>Built</strong> — MC + text, always reveals the answer</td>
+<td style="text-align: left;">Harden the answer path: F3, F4, F29</td>
+</tr>
+<tr>
+<td style="text-align: left;">Card collection &amp; deck builder</td>
+<td style="text-align: left;"><strong>Partial</strong> — collection works; Deck Builder unreachable; locked cards hidden</td>
+<td style="text-align: left;">F13, F25, F15 — Task 2.5.4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Card awarded <strong>once</strong> per event</td>
+<td style="text-align: left;"><strong>Missing</strong> — repeat submissions re-award every time</td>
+<td style="text-align: left;">F6 — Task 2.3.3 (P0)</td>
+</tr>
+<tr>
+<td style="text-align: left;">CPU battle minigame (rules enforced by the game)</td>
+<td style="text-align: left;"><strong>Partial</strong> — engine works but resolution is client-side</td>
+<td style="text-align: left;">F2, F31 — Task 2.2.2 (P0)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Admin console (place events, write questions, define cards)</td>
+<td style="text-align: left;"><strong>Partial</strong> — UI works; APIs unauthenticated via route shadowing</td>
+<td style="text-align: left;">F4, F5 — Tasks 2.3.1–2.3.2 (P0)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-intermediate-tier-expectations">3.2 Intermediate Tier Expectations<a class="headerlink" href="#32-intermediate-tier-expectations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Expectation</th>
+<th style="text-align: left;">Verified status</th>
+<th style="text-align: left;">Outstanding (traceability)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Offline signal resilience (attempt caching, checked "as it would have been at the time")</td>
+<td style="text-align: left;"><strong>Partial</strong> — queue service + reconnect listeners built, nothing enqueues</td>
+<td style="text-align: left;">F42, F43, F1 — Tasks 2.1.2, 2.3.5 (P1)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Movement anti-spoofing (speed-over-ground, server-side)</td>
+<td style="text-align: left;"><strong>Missing</strong> — detection runs only in the browser</td>
+<td style="text-align: left;">F35–F37 — Tasks 2.6.1–2.6.2, 3.6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Async PvP battle (persistent state, eventual forfeit)</td>
+<td style="text-align: left;"><strong>Missing</strong> — static mock screen; table exists in migration SQL</td>
+<td style="text-align: left;">I-3 — Task 2.2.1 (P2)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Progression &amp; economy (profiles, XP, achievements, streaks)</td>
+<td style="text-align: left;"><strong>Partial</strong> — XP works in battle only; streaks/achievements dead</td>
+<td style="text-align: left;">F18, F27, F28, F38, F39 — Tasks 2.5.1–2.5.3, 3.5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Guided trails &amp; radar (sequential quests, unvisited surfacing)</td>
+<td style="text-align: left;"><strong>Missing</strong> — hardcoded mock</td>
+<td style="text-align: left;">I-6 — Task 3.1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Curation governance (draft → review → publish)</td>
+<td style="text-align: left;"><strong>Missing</strong> — admins publish directly</td>
+<td style="text-align: left;">I-7 — Tasks 2.4.1 (seed), 3.4 (full)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-advanced-tier-expectations">3.3 Advanced Tier Expectations<a class="headerlink" href="#33-advanced-tier-expectations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Expectation</th>
+<th style="text-align: left;">Verified status</th>
+<th style="text-align: left;">v2 decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Live WebSocket PvP (sync battles, spectating)</td>
+<td style="text-align: left;"><strong>Partial</strong> — in-memory room handler + mock arena screen</td>
+<td style="text-align: left;"><strong>Selected</strong> — harden on existing foundation (Task 3.2)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Heuristic/ML anti-cheat trust score</td>
+<td style="text-align: left;"><strong>Missing</strong></td>
+<td style="text-align: left;">Descoped (§7.2)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Algorithmic dynamic event spawner</td>
+<td style="text-align: left;"><strong>Missing</strong></td>
+<td style="text-align: left;">Descoped (§7.2)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ranked matchmaking &amp; seasons (Elo/Glicko-2)</td>
+<td style="text-align: left;"><strong>Partial</strong> — Elo + divisions exist; mock ladder screen; conflicting thresholds</td>
+<td style="text-align: left;"><strong>Partially selected</strong> — unify thresholds (F26); seasons/queue descoped</td>
+</tr>
+<tr>
+<td style="text-align: left;">Territory &amp; zone control</td>
+<td style="text-align: left;"><strong>Missing</strong> — static SVG mock</td>
+<td style="text-align: left;">Descoped (§7.2)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Atomic P2P trading (2PC)</td>
+<td style="text-align: left;"><strong>Missing</strong> — client-side fairness mock</td>
+<td style="text-align: left;">Descoped (§7.2)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-engineering-software-task-matrix">4. Engineering &amp; Software Task Matrix<a class="headerlink" href="#4-engineering-software-task-matrix" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Task IDs <code>2.x.y</code> / <code>3.x.y</code> / <code>4.x</code> are new in v2. Traceability IDs (<code>F##</code>, <code>B-#</code>, <code>I-#</code>) reference <code>WITS_QUEST_FIXES_AND_OUTSTANDING_FEATURES.md</code>. Priorities: <strong>P0</strong> = must land by 11 Sep to make M2; <strong>P1</strong> = must land by 15 Sep; <strong>P2</strong> = stretch of the window, hard deadline 22 Sep.</p>
+</blockquote>
+<h3 id="41-sprint-2-rescue-window-integrity-secured-core-07-sep-15-sep">4.1 SPRINT 2 — Rescue Window: Integrity-Secured Core (07 Sep → 15 Sep)<a class="headerlink" href="#41-sprint-2-rescue-window-integrity-secured-core-07-sep-15-sep" title="Permanent link">&para;</a></h3>
+<p><strong>MEMBER 3 — Database Architecture &amp; Secure API</strong> <em>(critical path)</em></p>
+<ul>
+<li><strong>Task 2.3.1 (P0): Route Shadowing Elimination</strong></li>
+<li><em>Technical Explanation:</em> <code>server.ts</code> registers inline handlers (<code>POST /api/cards</code> at line 45, events CRUD, trivia authoring, <code>POST /api/events/:id/answer</code>) <em>before</em> mounting <code>contentRoutes</code> at line 364; Express matches in registration order, so the <code>authMiddleware</code>-protected versions never run. Delete the inline duplicates, keep the route-file versions, and add a route-inventory test asserting every state-changing route is authenticated.</li>
+<li><em>Traceability:</em> F4, B-3, B-6.</li>
+<li><strong>Task 2.3.2 (P0): RBAC Admin Guard</strong></li>
+<li><em>Technical Explanation:</em> Add <code>requireAdmin</code> middleware (verify JWT, then <code>users.role ∈ {ADMIN, LECTURER}</code>) and apply to all event/card/trivia authoring and telemetry-audit endpoints. Seeds one ADMIN account. Completes v1 Task 1.4.1, which was specified but never merged.</li>
+<li><em>Traceability:</em> F5, B-6.</li>
+<li><strong>Task 2.3.3 (P0): Server-Side Location Verification &amp; Award-Once Ledger</strong></li>
+<li><em>Technical Explanation:</em> Every trivia attempt submits <code>{lat, lng, accuracy, capturedAt}</code>; the server recomputes the Haversine distance against the event's coordinates and radius, checks <code>capturedAt</code> lies inside the event's active window, derives <code>userId</code> from the JWT (never the body), and records the attempt in a ledger so a correct answer awards the card <strong>once</strong>. This single task closes the brief's "claim, not fact" requirement.</li>
+<li><em>Traceability:</em> F1, F3, F6, B-2, B-4.</li>
+<li><strong>Task 2.3.4 (P0): Credential Rotation &amp; Environment Templates</strong></li>
+<li><em>Technical Explanation:</em> Rotate the Gmail app password and JWT secret currently printed in <code>deployment/RENDER_DEPLOYMENT.md</code>, strip the values from the document, un-ignore <code>.env.example</code>, and commit the templates.</li>
+<li><em>Traceability:</em> F7, F8.</li>
+<li><strong>Task 2.3.5 (P1): Offline Queue Wiring</strong></li>
+<li><em>Technical Explanation:</em> In <code>TriviaModal</code>, when <code>!navigator.onLine</code>, enqueue the attempt via <code>enqueueCheckIn()</code> with the coordinates and timestamp captured at attempt time (Task 2.1.2), render an "Offline Mode Active" badge, and replay through the protected check-in endpoint on reconnect so the server validates the attempt <em>as it would have been at the time</em>.</li>
+<li><em>Traceability:</em> F42, I-1.</li>
+</ul>
+<p><strong>MEMBER 2 — Turn-Based Battle Engine &amp; PvP</strong></p>
+<ul>
+<li><strong>Task 2.2.1 (P2): Async PvP Match Store &amp; Endpoints</strong></li>
+<li><em>Technical Explanation:</em> Implement <code>POST /api/battle/async/challenge</code>, <code>GET /api/battle/async/my-matches</code>, <code>POST /api/battle/async/play-turn</code> on the existing <code>async_pvp_challenges</code> table. The server holds match state between turns; a match whose <code>expiresAt</code> (24 h) passes without a defender turn resolves as a forfeit; completion stores <code>defenderTelemetry</code> (failed stat + deficit). Route <code>AsyncPvP.tsx</code>.</li>
+<li><em>Traceability:</em> I-3, F14, F17.</li>
+<li><strong>Task 2.2.2 (P0): Server-Side Round Resolution</strong></li>
+<li><em>Technical Explanation:</em> <code>POST /api/battle/record</code> must no longer trust the client-declared outcome: fetch the player's server-held deck, verify each claimed stat value, recompute round winners and the match result, then award XP/Essence/Elo. Consolidate the overlapping <code>/record</code> and <code>/result</code> endpoints into one implementation.</li>
+<li><em>Traceability:</em> F2, F31, B-5.</li>
+<li><strong>Task 2.2.3 (P1): Battle Hub Navigation</strong></li>
+<li><em>Technical Explanation:</em> Replace <code>alert("Multiplayer is coming soon!")</code> (<code>BattleArena.tsx:338</code>) with a mode selector navigating to CPU / Async PvP / Live PvP, each entry enabled as its backend lands.</li>
+<li><em>Traceability:</em> F17.</li>
+</ul>
+<p><strong>MEMBER 1 — Geolocation, Map &amp; Spatial Engine</strong></p>
+<ul>
+<li><strong>Task 2.1.1 (P1): Event Temporal State Engine</strong></li>
+<li><em>Technical Explanation:</em> Compute UPCOMING / ACTIVE / EXPIRED from <code>startDate</code>/<code>endDate</code> in one shared helper; render distinct marker styles and an explicit "passed" state so players tell at a glance which events are in reach, too far, or gone.</li>
+<li><em>Traceability:</em> B-1.</li>
+<li><strong>Task 2.1.2 (P1): Coordinate Capture Service</strong></li>
+<li><em>Technical Explanation:</em> One module returning <code>{lat, lng, accuracy, capturedAt}</code> from <code>watchPosition</code>, consumed by <code>TriviaModal</code> and the offline queue, so online and replayed attempts are verified against identical evidence. Consolidate the duplicated <code>CAMPUS_LANDMARKS</code> list while touching the map layer.</li>
+<li><em>Traceability:</em> F1, F42, F34.</li>
+</ul>
+<p><strong>MEMBER 5 — Card Collection, Deck Construction &amp; Progression</strong></p>
+<ul>
+<li><strong>Task 2.5.1 (P1): Shared Progression Helper</strong></li>
+<li><em>Technical Explanation:</em> Extract <code>applyXpAndLevel()</code> (implemented formula: level-up while <code>currentXP ≥ level × 200</code> — this replaces v1's <code>100 × level^1.5</code> sketch) and one <code>calculateDivisionTier()</code> (documented thresholds: Diamond ≥ 1800, Platinum ≥ 1500, Gold ≥ 1000, Silver ≥ 500 — resolving the 2000-vs-1800 conflict). Every XP-awarding path calls it, including trivia and the stat-budget scaling 300 → 350 (Lv.10) → 400 (Lv.20).</li>
+<li><em>Traceability:</em> F26, F27, F41.</li>
+<li><strong>Task 2.5.2 (P1): Live Leaderboard</strong></li>
+<li><em>Technical Explanation:</em> Replace <code>DEFAULT_PLAYERS</code> with a <code>GET /api/users/leaderboard</code> query sorted by <code>totalXP</code>/<code>eloRating</code>, rendering division badges and streaks.</li>
+<li><em>Traceability:</em> F18, I-4.</li>
+<li><strong>Task 2.5.3 (P1): Streak Evaluation &amp; Multipliers</strong></li>
+<li><em>Technical Explanation:</em> On the first <em>verified</em> check-in of each day, compare against <code>lastCheckInDate</code>: increment within 24 h, reset beyond 48 h, store the multiplier (1.0 / 1.10 @ 3 days / 1.25 @ 7 days) and apply it inside the shared XP helper.</li>
+<li><em>Traceability:</em> F28, F38, I-4.</li>
+<li><strong>Task 2.5.4 (P1): Collection &amp; Deck Reachability</strong></li>
+<li><em>Technical Explanation:</em> Add the missing <code>{screen === 'deck' &amp;&amp; &lt;DeckBuilder /&gt;}</code> block, remove the <code>unlocked</code>-only filter so locked cards render dimmed with "walk to unlock" hints, and implement the Profile quick-access hub using the already-passed <code>onNavigate</code> prop.</li>
+<li><em>Traceability:</em> F13, F25, F15, B-4, B-5.</li>
+</ul>
+<p><strong>MEMBER 6 — Custom Auth Security &amp; Audit Engine</strong></p>
+<ul>
+<li><strong>Task 2.6.1 (P0): Server-Side Velocity Engine</strong></li>
+<li><em>Technical Explanation:</em> On telemetry-ping ingestion, compute Haversine distance/velocity against the player's previous ping: speed &gt; 15 m/s (v1's 5 m/s draft was revised upward to tolerate GPS jitter) or ≥ 200 m within ≤ 5 s writes an <code>audit_records</code> violation. The browser keeps its checks for UX, but the server now decides.</li>
+<li><em>Traceability:</em> F35, I-2.</li>
+<li><strong>Task 2.6.2 (P1): Violation Gating</strong></li>
+<li><em>Technical Explanation:</em> When a trivia attempt arrives, inspect the player's recent violations and reject attempts made from flagged movement sessions — a proportionate response (block the attempt, not the account).</li>
+<li><em>Traceability:</em> F36, B-2.</li>
+</ul>
+<p><strong>MEMBER 4 — Admin Engine &amp; Data Services</strong></p>
+<ul>
+<li><strong>Task 2.4.1 (P1): Content Status Gate (curation seed)</strong></li>
+<li><em>Technical Explanation:</em> Add a <code>status</code> column (<code>draft → pending_review → published → retired</code>) to events and trivia; player-facing queries filter <code>published</code> only, so content no longer goes live as written. Full workflow UI follows in Sprint 3.</li>
+<li><em>Traceability:</em> I-7.</li>
+<li><strong>Task 2.4.2 (P1): Admin Role UX</strong></li>
+<li><em>Technical Explanation:</em> Gate the admin screens on the authenticated role (not just UI state), surface role in <code>AuthContext</code>, and add the CURATION nav tab scaffold.</li>
+<li><em>Traceability:</em> F5, F16.</li>
+</ul>
+<h3 id="42-sprint-3-intermediate-complete-selective-advanced-15-sep-29-sep">4.2 SPRINT 3 — Intermediate Complete + Selective Advanced (15 Sep → 29 Sep)<a class="headerlink" href="#42-sprint-3-intermediate-complete-selective-advanced-15-sep-29-sep" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Member</th>
+<th style="text-align: left;">Focus Area</th>
+<th style="text-align: left;">Core Task Summary</th>
+<th style="text-align: left;">Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">M1</td>
+<td style="text-align: left;">Quest Trails Engine</td>
+<td style="text-align: left;"><code>quest_trails</code> + <code>user_trail_progress</code> tables; fetch/progress/next-stop endpoints with ordered-completion validation; wire <code>QuestTrails.tsx</code>; surface nearby unvisited stops on the map</td>
+<td style="text-align: left;">I-6, F14, F21</td>
+</tr>
+<tr>
+<td style="text-align: left;">M2</td>
+<td style="text-align: left;">Live PvP Hardening</td>
+<td style="text-align: left;">Route <code>LivePvPArena</code> with real saved decks over the existing Socket.IO handler; 30 s turn clock; reconnect/<code>player_disconnected</code> handling; socket URL from <code>VITE_API_URL</code></td>
+<td style="text-align: left;">F24, F11, F14</td>
+</tr>
+<tr>
+<td style="text-align: left;">M3</td>
+<td style="text-align: left;">Supabase Resilience</td>
+<td style="text-align: left;">Wrap data calls with <code>mockDb</code> fallback (or clean 503s) so outages stop crashing auth; persist OTP codes with expiry; review service-worker caching so stale answers are never served during an offline attempt</td>
+<td style="text-align: left;">F30, F9, F12, F43</td>
+</tr>
+<tr>
+<td style="text-align: left;">M4</td>
+<td style="text-align: left;">Curation Workflow</td>
+<td style="text-align: left;"><code>AdminCuration.tsx</code> review board (draft → review → publish, retire), scheduled campaigns honouring <code>startDate</code>/<code>endDate</code>, per-question pass/fail counters surfacing frequently-missed questions for repair</td>
+<td style="text-align: left;">I-7, F16</td>
+</tr>
+<tr>
+<td style="text-align: left;">M5</td>
+<td style="text-align: left;">Economy Completion</td>
+<td style="text-align: left;"><code>achievements</code> + <code>user_achievements</code> schema, award logic on check-ins/battles/streaks, Profile display; scrap (duplicate → Essence) and upgrade (2 duplicates + 100 Essence → +5 all stats) endpoints wired into <code>CardForge.tsx</code></td>
+<td style="text-align: left;">F39, F40, F20, I-4, I-5</td>
+</tr>
+<tr>
+<td style="text-align: left;">M6</td>
+<td style="text-align: left;">Movement History &amp; Accuracy</td>
+<td style="text-align: left;">Trajectory analysis across <code>telemetry_pings</code> (journeys nobody could walk, attempts faster than the walk allows); low-accuracy fixes require corroboration before a check-in is trusted</td>
+<td style="text-align: left;">F37, I-2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-sprint-4-production-hardening-submission-29-sep-11-oct">4.3 SPRINT 4 — Production Hardening &amp; Submission (29 Sep → 11 Oct)<a class="headerlink" href="#43-sprint-4-production-hardening-submission-29-sep-11-oct" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Deployment completion:</strong> deploy the backend on Render, set <code>VITE_API_URL</code> on Vercel, point the Socket.IO client at the deployed URL — the live frontend currently has no API to talk to.</li>
+<li><strong>Branch discipline:</strong> production deploys trigger from <code>main</code> only (never a personal WIP branch); add the Gitea workflow or correct the README.</li>
+<li><strong>Containerisation:</strong> add the missing <code>deployment/Dockerfile</code> or retire the compose file.</li>
+<li><strong>Documentation pass:</strong> resolve the committed merge-conflict markers in the handover guide, reconcile the two division-tier definitions, author the remaining UML diagrams, backfill or remove empty meeting records, fix dead README links, and adopt one design system.</li>
+<li><strong>Regression:</strong> full backend + frontend test suites green with the 80% coverage gates; on-campus device bug bash (GPS, offline, live battle).</li>
+<li><strong>Stretch re-entry (only if all M3 acceptance is green by 26 Sep):</strong> territory map on the existing scaffold, or a Monte-Carlo balance report for the battle engine.</li>
+</ul>
+<blockquote>
+<p><strong>[ALERT] Final-Submission Notice:</strong> no feature work merges after <strong>04 October</strong>; the final week is bug-fix, documentation and demo preparation only.</p>
+</blockquote>
+<hr />
+<h2 id="5-definition-of-done-qa-standard">5. Definition of Done &amp; QA Standard<a class="headerlink" href="#5-definition-of-done-qa-standard" title="Permanent link">&para;</a></h2>
+<p>For any software task to be marked as complete, it must satisfy the following checklist:</p>
+<ol>
+<li><strong>Code Review:</strong> Merged via Pull Request with at least 1 peer approval.</li>
+<li><strong>Automated Testing:</strong> Unit or integration tests written and passing.</li>
+<li><strong>API Verification:</strong> Verified with valid status codes (200, 201) and JSON payloads — and, for any endpoint that awards or changes state, verified <strong>authenticated and server-validated</strong>.</li>
+<li><strong>No High Blockers:</strong> Zero unresolved high-severity bugs on the task.</li>
+<li><strong>CI Green (added in v2):</strong> <code>tsc --noEmit</code> clean and Vitest 80% coverage gates pass for both packages on the PR branch.</li>
+<li><strong>Secrets Hygiene (added in v2):</strong> no credentials in code or docs; configuration flows through <code>.env.example</code> templates.</li>
+<li><strong>Traceability (added in v2):</strong> the PR description references the Task ID and the fix-register ID(s) it closes.</li>
+</ol>
+<hr />
+<h2 id="6-uiux-screen-specifications-component-breakdown">6. UI/UX Screen Specifications &amp; Component Breakdown<a class="headerlink" href="#6-uiux-screen-specifications-component-breakdown" title="Permanent link">&para;</a></h2>
+<h3 id="61-selected-screen-components-status-annotated">6.1 Selected Screen Components (status-annotated)<a class="headerlink" href="#61-selected-screen-components-status-annotated" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Screen 2 — Campus Map:</strong> Full-screen Leaflet map, pulsing blue GPS dot, floating XP/Level progress badge. <em>Built (<code>MapExplorer.tsx</code>).</em> v2 adds: temporal state styling from Task 2.1.1 and nearby-unvisited trail surfacing from Task 3.1.</li>
+<li><strong>Screen 4 — Card Gallery:</strong> Responsive grid with rarity-specific borders (Gold, Purple, Blue, Gray) and "Scrap for Essence" buttons. <em>Built (<code>CardCollection.tsx</code>).</em> v2 adds: locked cards remain visible, dimmed, with unlock hints (Task 2.5.4); scrap buttons go live with Task 3.5.</li>
+<li><strong>Screen 6 — Combat Arena:</strong> 30-second circular countdown clock, card-vs-card collision animations, Elo change indicators. <em>Built (<code>BattleArena.tsx</code>).</em> v2 adds: the mode hub (CPU / Async / Live) replacing the placeholder alert (Task 2.2.3); async entries activate with Task 2.2.1.</li>
+<li><strong>Screen 10 — P2P Trade:</strong> Split-screen "Your Offer" vs "Their Offer" boxes with a stat-difference validation badge. <em>Static mock only (<code>Trades.tsx</code>, unrouted).</em> Backend descoped to the backlog (§7.2) — the screen stays parked until re-entry.</li>
+<li><strong>Screen 15 — Admin Heatmaps:</strong> Glowing intensity overlays of campus movement with time-range filters. <em>Not built.</em> Descoped (§7.2); <code>AntiCheatDashboard</code> remains the admin telemetry view.</li>
+</ul>
+<h3 id="62-navigation-reachability-matrix-new-in-v2">6.2 Navigation Reachability Matrix (new in v2)<a class="headerlink" href="#62-navigation-reachability-matrix-new-in-v2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Screen</th>
+<th style="text-align: left;">State</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>DeckBuilder</code></td>
+<td style="text-align: left;">Imported, never rendered</td>
+<td style="text-align: left;">Task 2.5.4 (P1)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>Profile</code> hub (<code>onNavigate</code>)</td>
+<td style="text-align: left;">Prop passed, unused</td>
+<td style="text-align: left;">Task 2.5.4 (P1)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>AsyncPvP</code></td>
+<td style="text-align: left;">Built, unrouted</td>
+<td style="text-align: left;">Task 2.2.1 (P2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>QuestTrails</code></td>
+<td style="text-align: left;">Mock, unrouted</td>
+<td style="text-align: left;">Task 3.1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>CardForge</code></td>
+<td style="text-align: left;">Static, unrouted</td>
+<td style="text-align: left;">Task 3.5</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>LivePvPArena</code></td>
+<td style="text-align: left;">Mock, unrouted</td>
+<td style="text-align: left;">Task 3.2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>Trades</code>, <code>TerritoryMap</code></td>
+<td style="text-align: left;">Static, unrouted</td>
+<td style="text-align: left;">Parked — re-entry per §7.2</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-risk-register-descoping-decisions">7. Risk Register &amp; Descoping Decisions<a class="headerlink" href="#7-risk-register-descoping-decisions" title="Permanent link">&para;</a></h2>
+<h3 id="71-risk-register">7.1 Risk Register<a class="headerlink" href="#71-risk-register" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Risk</th>
+<th style="text-align: left;">Impact</th>
+<th style="text-align: left;">Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Sprint 2 rescue slips (highest risk)</td>
+<td style="text-align: left;">M2 missed entirely</td>
+<td style="text-align: left;">Priority ladder P0 → P1 → P2 with a pre-agreed drop order; P0 merged by 11 Sep or the scope call is made then, not on the 14th</td>
+</tr>
+<tr>
+<td style="text-align: left;">Supabase outage during marking/demo</td>
+<td style="text-align: left;">Auth and all data paths fail</td>
+<td style="text-align: left;">Task 3.3 fallback wrapper; health endpoint survives data-layer failure</td>
+</tr>
+<tr>
+<td style="text-align: left;">GPS false positives punish honest players</td>
+<td style="text-align: left;">Poor campus play experience, missed marks</td>
+<td style="text-align: left;">Proportionate responses (attempt-level blocks, not bans); 15 m/s threshold; accuracy corroboration instead of rejection (Task 3.6)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Six-way merge conflicts</td>
+<td style="text-align: left;">Lost work, broken builds (one unresolved conflict is already committed — F49)</td>
+<td style="text-align: left;">Small PRs per task ID; trunk-based integration; the DoD review requirement</td>
+</tr>
+<tr>
+<td style="text-align: left;">Coverage gate friction as wiring lands</td>
+<td style="text-align: left;">CI red on large screens</td>
+<td style="text-align: left;">Tests written with the task (DoD #2/#5), not after</td>
+</tr>
+<tr>
+<td style="text-align: left;">Personal-branch production deploys</td>
+<td style="text-align: left;">Unreviewed code ships</td>
+<td style="text-align: left;">Task 4.x branch discipline; CI deploy triggers on <code>main</code> only</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-descope-register-advanced-tier-parked-with-re-entry-criteria">7.2 Descope Register (Advanced tier — parked with re-entry criteria)<a class="headerlink" href="#72-descope-register-advanced-tier-parked-with-re-entry-criteria" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Rationale</th>
+<th style="text-align: left;">Re-entry criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2PC atomic trading (v1 Sprint 3)</td>
+<td style="text-align: left;">Zero backend foundation; highest complexity-per-mark item in the brief</td>
+<td style="text-align: left;">M2 + M3 acceptance green by 26 Sep <strong>and</strong> two members free</td>
+</tr>
+<tr>
+<td style="text-align: left;">Redis session cache (v1 Sprint 3 alert)</td>
+<td style="text-align: left;">Never adopted; in-memory rooms + Postgres persistence suffice for 6-team scale</td>
+<td style="text-align: left;">Only with live-PvP load evidence</td>
+</tr>
+<tr>
+<td style="text-align: left;">PostGIS indexing (v1 Sprint 4)</td>
+<td style="text-align: left;">Campus-scale Haversine over ~dozens of events needs no spatial index</td>
+<td style="text-align: left;">Query times exceed 100 ms measured</td>
+</tr>
+<tr>
+<td style="text-align: left;">Procedural event spawner</td>
+<td style="text-align: left;">Admin console authoring already meets the tier requirement</td>
+<td style="text-align: left;">After curation (I-7) stabilises</td>
+</tr>
+<tr>
+<td style="text-align: left;">Heatmap analytics console</td>
+<td style="text-align: left;">No aggregation service; telemetry already serves anti-cheat</td>
+<td style="text-align: left;">After trust-score seed, post-submission</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trust-score engine (0–100)</td>
+<td style="text-align: left;">Depends on movement-history data that doesn't exist yet (lands Task 3.6)</td>
+<td style="text-align: left;">Post-submission / demo day stretch</td>
+</tr>
+<tr>
+<td style="text-align: left;">Territory control (v1 Sprint 4)</td>
+<td style="text-align: left;">Static mock only; faction model undefined</td>
+<td style="text-align: left;">Post-submission</td>
+</tr>
+<tr>
+<td style="text-align: left;">Monte-Carlo balancing (10,000 matches)</td>
+<td style="text-align: left;">Nice-to-have evidence, not a brief requirement</td>
+<td style="text-align: left;">Stretch re-entry per §4.3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Glicko-2</td>
+<td style="text-align: left;">Elo with K=32 already implemented</td>
+<td style="text-align: left;">Never (Elo retained)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale for descoping:</strong> the brief awards Advanced tier work as optional depth. A verifiably complete Basic + Intermediate product — every reward walked to, every match enforced by the game, offline attempts reconciled, curation governed — is worth more marks than a broken trading engine or an unused cache layer. These items are parked, not cancelled: each carries an explicit re-entry condition.</p>
+<hr />
+<p><em>Document note: v2 was prepared with the assistance of an AI coding agent, grounded in the official brief (<code>wits_quest.pdf</code>), the v1 guide of 4 August 2026, the team gap analysis, and a line-level audit of the current codebase (all file and line references verified against the working tree). Task-level detail for every traceability ID cited here lives in <code>WITS_QUEST_FIXES_AND_OUTSTANDING_FEATURES.md</code>.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../SPRINT1/" class="md-footer__link md-footer__link--next" aria-label="Next: Sprint 1 Specification">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Sprint 1 Specification
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

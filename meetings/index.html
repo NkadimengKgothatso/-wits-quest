@@ -6,13 +6,18 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Centralised documentation for Wits Quest — a location-aware, turn-based campus adventure game developed by Team Big-O for the Wits University Software Development Project (COMS3011A).
+">
       
       
       
-        <link rel="prev" href="../database/database-schema/">
+        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/meetings/">
       
       
-        <link rel="next" href="../development/architecture/">
+        <link rel="prev" href="../project/stakeholder-reviews/">
+      
+      
+        <link rel="next" href="../project/user-feedback/">
       
       
         
@@ -23,7 +28,7 @@
     
     
       
-        <title>Meeting Records - Wits-Quest Documentation</title>
+        <title>Meeting Records - Wits Quest Documentation</title>
       
     
     
@@ -49,6 +54,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -65,7 +72,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -90,7 +97,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Wits-Quest Documentation" class="md-header__button md-logo" aria-label="Wits-Quest Documentation" data-md-component="logo">
+    <a href=".." title="Wits Quest Documentation" class="md-header__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -104,7 +111,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Wits-Quest Documentation
+            Wits Quest Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -123,7 +130,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -133,7 +140,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -173,6 +180,8 @@
         </button>
       </nav>
       
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -188,6 +197,18 @@
 </div>
       
     
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+      </div>
     
   </nav>
   
@@ -214,14 +235,26 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Wits-Quest Documentation" class="md-nav__button md-logo" aria-label="Wits-Quest Documentation" data-md-component="logo">
+    <a href=".." title="Wits Quest Documentation" class="md-nav__button md-logo" aria-label="Wits Quest Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Wits-Quest Documentation
+    Wits Quest Documentation
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NkadimengKgothatso/-wits-quest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NkadimengKgothatso/-wits-quest
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -262,22 +295,29 @@
     
     
     
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    Project
+    Core Features
   
 
     
@@ -293,11 +333,39 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Project
+    Core Features
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/motivation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Motivation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -313,7 +381,7 @@
   <span class="md-ellipsis">
     
   
-    Overview
+    Game Overview & Tiers
   
 
     
@@ -383,6 +451,90 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/cpu-battle-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU Battle Rulebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/live-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/async-pvp-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async PvP Walkthrough
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -400,22 +552,29 @@
     
     
     
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    UML Diagrams
+    API
   
 
     
@@ -431,7 +590,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    UML Diagrams
+    API
   
 
           </label>
@@ -444,14 +603,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../uml/" class="md-nav__link">
+      <a href="../development/api-quickstart/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Overview
+    API Quick Start (Verified)
   
 
     
@@ -472,98 +631,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../uml/01_system_architecture/" class="md-nav__link">
+      <a href="../development/api-reference/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    System Architecture
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../uml/02_battle_state_machine/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Battle State Machine
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../uml/03_use_case_diagram/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Use Case Diagram
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../uml/04_erd_database_schema/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ERD Database Schema
+    API Reference
   
 
     
@@ -594,22 +669,29 @@
     
     
     
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    Database
+    Automated Testing
   
 
     
@@ -625,7 +707,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Database
+    Automated Testing
   
 
           </label>
@@ -638,14 +720,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../database/database-plan/" class="md-nav__link">
+      <a href="../development/testing/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Database Plan
+    Test Results & Coverage
   
 
     
@@ -659,6 +741,67 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Deployment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -666,14 +809,103 @@
   
   
     <li class="md-nav__item">
-      <a href="../database/database-schema/" class="md-nav__link">
+      <a href="../development/deployment/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Database Schema
+    Deployment & Hosting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stakeholder Reviews
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Stakeholder Reviews
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/stakeholder-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutor Review Records
   
 
     
@@ -706,22 +938,27 @@
     
     
     
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    Meetings
+    Team Meetings
   
 
     
@@ -732,12 +969,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Meetings
+    Team Meetings
   
 
           </label>
@@ -810,10 +1047,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#2026-08-06-team-meeting" class="md-nav__link">
+  <a href="#how-meetings-are-recorded" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2026-08-06 — Team Meeting
+        How meetings are recorded
       
     </span>
   </a>
@@ -821,10 +1058,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agenda" class="md-nav__link">
+  <a href="#client-stakeholder-sessions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Agenda:
+        Client &amp; stakeholder sessions
       
     </span>
   </a>
@@ -832,10 +1069,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decisions" class="md-nav__link">
+  <a href="#2026-09-28-final-client-meeting-prep-pr-process" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decisions:
+        2026-09-28 — Final Client Meeting Prep &amp; PR Process
       
     </span>
   </a>
@@ -843,10 +1080,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2026-08-17-sprint-planning-document-review" class="md-nav__link">
+  <a href="#2026-09-23-sprint-3-task-review-client-meeting-schedule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2026-08-17 — Sprint Planning &amp; Document Review
+        2026-09-23 — Sprint 3 Task Review &amp; Client Meeting Schedule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2026-09-14-sprint-2-final-sync-milestone-2-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-09-14 — Sprint 2 Final Sync (Milestone 2 Preparation)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2026-09-13-sprint-2-documentation-infrastructure-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-09-13 — Sprint 2: Documentation &amp; Infrastructure Sync
       
     </span>
   </a>
@@ -865,10 +1124,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2026-08-13-team-meeting" class="md-nav__link">
+  <a href="#2026-08-17-sprint-planning-document-review" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2026-08-13 — Team Meeting
+        2026-08-17 — Sprint Planning &amp; Document Review
       
     </span>
   </a>
@@ -876,10 +1135,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agenda_1" class="md-nav__link">
+  <a href="#2026-08-13-sprint-1-close-out" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Agenda:
+        2026-08-13 — Sprint 1 Close-Out
       
     </span>
   </a>
@@ -887,10 +1146,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decisions_1" class="md-nav__link">
+  <a href="#2026-08-06-team-meeting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decisions:
+        2026-08-06 — Team Meeting
       
     </span>
   </a>
@@ -923,22 +1182,29 @@
     
     
     
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    Development
+    User Feedback
   
 
     
@@ -949,12 +1215,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Development
+    User Feedback
   
 
           </label>
@@ -967,14 +1233,131 @@
   
   
     <li class="md-nav__item">
-      <a href="../development/architecture/" class="md-nav__link">
+      <a href="../project/user-feedback/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Architecture
+    Feedback Form & Responses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/files/wits-quest-master-architecture-task-specification-guide.pdf" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Architecture Guide (PDF)
   
 
     
@@ -1023,6 +1406,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../development/decisions-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../development/technical-decisions/" class="md-nav__link">
         
   
@@ -1031,6 +1442,1100 @@
     
   
     Technical Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/gitea-actions-migration-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gitea Actions Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracker
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bug Tracker
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/bug-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bug Tracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/fix-register/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fix Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/database-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/database-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/04_erd_database_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ERD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Third-Party Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Third-Party Code & Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/testing-documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/testing-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & CI/CD Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design (UML)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design (UML)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/01_system_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/class-diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/03_use_case_diagram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Diagram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/use-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case Description
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/02_battle_state_machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Battle State Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sequence Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/activity-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Activity Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/master-guide-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Master Guide V2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/SPRINT1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/WITS_QUEST_SPRINT1_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 1 Implementation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Feature Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2 Handover Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/WITS_QUEST_SPRINT3_GUIDE.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/SPRINT3_TASK_BOARD.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3 Task Board
   
 
     
@@ -1078,10 +2583,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#2026-08-06-team-meeting" class="md-nav__link">
+  <a href="#how-meetings-are-recorded" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2026-08-06 — Team Meeting
+        How meetings are recorded
       
     </span>
   </a>
@@ -1089,10 +2594,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agenda" class="md-nav__link">
+  <a href="#client-stakeholder-sessions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Agenda:
+        Client &amp; stakeholder sessions
       
     </span>
   </a>
@@ -1100,10 +2605,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decisions" class="md-nav__link">
+  <a href="#2026-09-28-final-client-meeting-prep-pr-process" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decisions:
+        2026-09-28 — Final Client Meeting Prep &amp; PR Process
       
     </span>
   </a>
@@ -1111,10 +2616,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2026-08-17-sprint-planning-document-review" class="md-nav__link">
+  <a href="#2026-09-23-sprint-3-task-review-client-meeting-schedule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2026-08-17 — Sprint Planning &amp; Document Review
+        2026-09-23 — Sprint 3 Task Review &amp; Client Meeting Schedule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2026-09-14-sprint-2-final-sync-milestone-2-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-09-14 — Sprint 2 Final Sync (Milestone 2 Preparation)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2026-09-13-sprint-2-documentation-infrastructure-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-09-13 — Sprint 2: Documentation &amp; Infrastructure Sync
       
     </span>
   </a>
@@ -1133,10 +2660,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2026-08-13-team-meeting" class="md-nav__link">
+  <a href="#2026-08-17-sprint-planning-document-review" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2026-08-13 — Team Meeting
+        2026-08-17 — Sprint Planning &amp; Document Review
       
     </span>
   </a>
@@ -1144,10 +2671,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agenda_1" class="md-nav__link">
+  <a href="#2026-08-13-sprint-1-close-out" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Agenda:
+        2026-08-13 — Sprint 1 Close-Out
       
     </span>
   </a>
@@ -1155,10 +2682,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decisions_1" class="md-nav__link">
+  <a href="#2026-08-06-team-meeting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decisions:
+        2026-08-06 — Team Meeting
       
     </span>
   </a>
@@ -1181,49 +2708,335 @@
                   
 
 
+  
+    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/meetings/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
 
 <h1 id="meeting-records">Meeting Records<a class="headerlink" href="#meeting-records" title="Permanent link">&para;</a></h1>
-<h2 id="2026-08-06-team-meeting">2026-08-06 — Team Meeting<a class="headerlink" href="#2026-08-06-team-meeting" title="Permanent link">&para;</a></h2>
-<p><img alt="Meeting on 2026-08-06" src="images/2026-08-06-meeting.jpeg" /></p>
-<p><strong>Attendees</strong>:</p>
-<h2 id="agenda"><strong>Agenda</strong>:<a class="headerlink" href="#agenda" title="Permanent link">&para;</a></h2>
-<h2 id="decisions"><strong>Decisions</strong>:<a class="headerlink" href="#decisions" title="Permanent link">&para;</a></h2>
-<p><strong>Action items</strong>:
-- [ ] Owner — task — due date</p>
-<h2 id="2026-08-17-sprint-planning-document-review">2026-08-17 — Sprint Planning &amp; Document Review<a class="headerlink" href="#2026-08-17-sprint-planning-document-review" title="Permanent link">&para;</a></h2>
-<p><img alt="Meeting on 2026-08-17" src="images/2026-08-17-meeting.jpg" /></p>
-<p><strong>Attendees</strong>: MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea</p>
-<p><strong>Agenda</strong>:
-- Sprint planning and task distribution
-- Document review and walkthrough
-- Progress check on individual deliverables</p>
-<p><strong>Decisions</strong>:
-- Tasks distributed among team members for Sprint 2</p>
-<p><strong>Action items</strong>:
-- [ ] All members — Complete assigned Sprint 2 tasks — 2026-08-22</p>
+<p>A log of <strong>internal team meetings</strong>, decisions, and action items throughout the project.</p>
+<h2 id="how-meetings-are-recorded">How meetings are recorded<a class="headerlink" href="#how-meetings-are-recorded" title="Permanent link">&para;</a></h2>
+<p>Every entry on this page follows the same fixed structure, in this order:</p>
+<ol>
+<li><strong>Date &amp; channel</strong> — when and where (video call, Discord voice, in person)</li>
+<li><strong>Attendees</strong> — who was present</li>
+<li><strong>Context / agenda</strong> — what the meeting was for</li>
+<li><strong>Decisions</strong> — what was agreed</li>
+<li><strong>Action items</strong> — owner, task, due date</li>
+</ol>
+<p>Entries are listed most recent first.</p>
+<h2 id="client-stakeholder-sessions">Client &amp; stakeholder sessions<a class="headerlink" href="#client-stakeholder-sessions" title="Permanent link">&para;</a></h2>
+<p>Meetings with the tutor / client are recorded <strong>separately</strong> on the <a href="../project/stakeholder-reviews/">Stakeholder Reviews</a> page — with minutes <strong>and a photo taken at the session</strong> — per the tutor's instruction. They do not appear on this page.</p>
+<hr />
+<h2 id="2026-09-28-final-client-meeting-prep-pr-process">2026-09-28 — Final Client Meeting Prep &amp; PR Process<a class="headerlink" href="#2026-09-28-final-client-meeting-prep-pr-process" title="Permanent link">&para;</a></h2>
+<p><strong>Channel:</strong> Big-O (SDP) Discord — Lounge voice channel</p>
+<p><img alt="Discord Lounge voice session — 2026-09-28" src="images/2026-09-28-discord-meeting.jpeg" /></p>
+<p><strong>Attendees:</strong> MCee, Juju, Kgothatso, Nontokozo, Oratile</p>
+<p><strong>Context:</strong> Preparation for the final client meeting and a reminder of how the team should handle testing and pull requests.</p>
+<p><strong>Decisions:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Decision</th>
+<th style="text-align: left;">Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Final client meeting</td>
+<td style="text-align: left;">2026-09-29 at 11:00 on Google Meet. This is the last meeting with the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Test locally before opening a PR</td>
+<td style="text-align: left;">Confirm every feature works locally first. The runners are slow, so they should not be the only test.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Project review</td>
+<td style="text-align: left;">Ask the extra tutor, Zayd, to review the project and give feedback.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Availability</td>
+<td style="text-align: left;">Mahlatse is available from 12:00.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Action items:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Owner</th>
+<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Due</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">Prepare for the final client meeting</td>
+<td style="text-align: left;">2026-09-29, 11:00</td>
+</tr>
+<tr>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">Have the Google Meet link ready</td>
+<td style="text-align: left;">2026-09-29, 11:00</td>
+</tr>
+<tr>
+<td style="text-align: left;">All members</td>
+<td style="text-align: left;">Test all implemented features locally</td>
+<td style="text-align: left;">Before each PR</td>
+</tr>
+<tr>
+<td style="text-align: left;">All members</td>
+<td style="text-align: left;">Only open a PR after local functionality is confirmed</td>
+<td style="text-align: left;">Ongoing</td>
+</tr>
+<tr>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">Coordinate with Mahlatse from 12:00</td>
+<td style="text-align: left;">2026-09-29</td>
+</tr>
+<tr>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">Request a project review from Zayd</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2026-09-23-sprint-3-task-review-client-meeting-schedule">2026-09-23 — Sprint 3 Task Review &amp; Client Meeting Schedule<a class="headerlink" href="#2026-09-23-sprint-3-task-review-client-meeting-schedule" title="Permanent link">&para;</a></h2>
+<p><strong>Channel:</strong> Big-O (SDP) Discord — Lounge voice channel</p>
+<p><img alt="Discord Lounge voice session — 2026-09-23" src="images/2026-09-23-discord-meeting.jpeg" /></p>
+<p><strong>Attendees:</strong> MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea</p>
+<p><strong>Context:</strong> Review of the tasks assigned for the current sprint, including the endpoint documentation, and agreement on the client meeting dates.</p>
+<p><strong>Decisions:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Decision</th>
+<th style="text-align: left;">Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Client meeting dates</td>
+<td style="text-align: left;">Friday during lunch time (agreed with the client), then Monday and Tuesday.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Documentation</td>
+<td style="text-align: left;">Oratile and Kgothatso work on the documentation, including the endpoint documentation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sprint deadline</td>
+<td style="text-align: left;">All sprint work, including the endpoint documentation, is due next Sunday.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Next internal meetings</td>
+<td style="text-align: left;">Monday and Thursday.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Also discussed:</strong> Oratile asked for the sound issue to be fixed, and Nontokozo asked whether SASCO won.</p>
+<p><strong>Action items:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Owner</th>
+<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Due</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Oratile &amp; Kgothatso</td>
+<td style="text-align: left;">Work on the documentation, including the endpoints</td>
+<td style="text-align: left;">Next Sunday</td>
+</tr>
+<tr>
+<td style="text-align: left;">Rea</td>
+<td style="text-align: left;">Fix the sound issue</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">Complete assigned sprint tasks</td>
+<td style="text-align: left;">Next Sunday</td>
+</tr>
+<tr>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">Attend the Monday and Thursday meetings</td>
+<td style="text-align: left;">Ongoing</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2026-09-14-sprint-2-final-sync-milestone-2-preparation">2026-09-14 — Sprint 2 Final Sync (Milestone 2 Preparation)<a class="headerlink" href="#2026-09-14-sprint-2-final-sync-milestone-2-preparation" title="Permanent link">&para;</a></h2>
+<p><strong>Channels:</strong> Software Design Project video call + Big-O (SDP) Discord — Lounge voice channel</p>
+<p><img alt="Discord Lounge voice session — 2026-09-14" src="images/2026-09-14-discord-meeting.jpeg" /></p>
+<p><strong>Context:</strong> Final full-team sync the night before the Milestone 2 deadline (2026-09-15). The team ran a video call to walk through Sprint 2 deliverables, then continued working together in the Discord Lounge voice channel.</p>
+<p><strong>Focus areas:</strong></p>
+<ul>
+<li>Review of Sprint 2 deliverables ahead of the Milestone 2 deadline</li>
+<li>Documentation completion (API reference, testing, methodology, and rubric-alignment pages)</li>
+<li>Final verification of battle (CPU / Async PvP / Live PvP), map, and authentication features</li>
+</ul>
+<hr />
+<h2 id="2026-09-13-sprint-2-documentation-infrastructure-sync">2026-09-13 — Sprint 2: Documentation &amp; Infrastructure Sync<a class="headerlink" href="#2026-09-13-sprint-2-documentation-infrastructure-sync" title="Permanent link">&para;</a></h2>
+<p><strong>Channel:</strong> Software Design Project Discord — General</p>
+<p><img alt="Team communication on Discord — Sprint 2" src="images/discord-team-communication.png" /></p>
+<p><strong>Context:</strong> Ongoing team communication during Sprint 2, covering infrastructure changes and documentation setup.</p>
+<p><strong>Key discussion points:</strong></p>
+<ul>
+<li>Lint configurations completed (ESLint + Prettier)</li>
+<li>Migration of GitHub Actions to Gitea Actions completed</li>
+<li>Repository separation (frontend / backend / docs) completed</li>
+<li>Documentation repository established as a dedicated repo</li>
+</ul>
+<p><strong>Decisions made:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Decision</th>
+<th style="text-align: left;">Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Separate docs repo</td>
+<td style="text-align: left;">Docs changes don't need the code CI pipeline; independent MkDocs deployment</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gitea Actions for CI/CD</td>
+<td style="text-align: left;">Keeps CI within the university Gitea instance</td>
+</tr>
+<tr>
+<td style="text-align: left;">3-repo split confirmed</td>
+<td style="text-align: left;">Frontend, backend, and docs each deploy independently</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <a href="../development/decisions-log/">Decisions Log</a> for full rationale.</p>
+<hr />
 <h2 id="2026-08-20-team-sync-progress-check">2026-08-20 — Team Sync &amp; Progress Check<a class="headerlink" href="#2026-08-20-team-sync-progress-check" title="Permanent link">&para;</a></h2>
 <p><img alt="Meeting on 2026-08-20" src="images/2026-08-20-meeting.jpg" /></p>
-<p><strong>Attendees</strong>: MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea</p>
-<p><strong>Agenda</strong>:
-- Sprint 2 progress update from each member
-- Integration of Supabase migration
-- Email verification feature discussion
-- Anti-cheat and content tab status</p>
-<p><strong>Decisions</strong>:
-- Database migration to Supabase confirmed as complete
-- Email verification feature assigned to Kgothatso
-- Remaining tasks: Content Tab (Nontokozo), Anti-Cheat merge (Oratile)</p>
-<p><strong>Action items</strong>:
-- [ ] Kgothatso — Email verification with nodemailer — 2026-08-22
-- [ ] Nontokozo — Content Tab implementation — TBD
-- [ ] Oratile — Anti-Cheat system merge — TBD</p>
-<h2 id="2026-08-13-team-meeting">2026-08-13 — Team Meeting<a class="headerlink" href="#2026-08-13-team-meeting" title="Permanent link">&para;</a></h2>
+<p><strong>Attendees:</strong> MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea</p>
+<p><strong>Agenda:</strong></p>
+<ul>
+<li>Sprint 2 progress update from each member</li>
+<li>Task allocation and card/event mechanics discussion</li>
+<li>Authentication, CI/CD pipeline, and testing status</li>
+</ul>
+<p><strong>Decisions:</strong></p>
+<ul>
+<li>Cards should only work at one event per player — flagged after first use (other players can still collect at the same location, but the same player cannot get it at another event)</li>
+<li>Map UI cleanup and "near me" functionality assigned to Junior</li>
+</ul>
+<p><strong>Action items:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Owner</th>
+<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Due</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Junior</td>
+<td style="text-align: left;">Clean out map UI and complete "near me" functionality</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">Rea</td>
+<td style="text-align: left;">Implement card-per-event flagging system</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">Kgothatso</td>
+<td style="text-align: left;">Auth system (email verification, login, registration)</td>
+<td style="text-align: left;">2026-08-22</td>
+</tr>
+<tr>
+<td style="text-align: left;">Clayton</td>
+<td style="text-align: left;">Game strategies, previous game history, CD pipeline, tests</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">Others</td>
+<td style="text-align: left;">Test and polish individual deliverables</td>
+<td style="text-align: left;">Ongoing</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2026-08-17-sprint-planning-document-review">2026-08-17 — Sprint Planning &amp; Document Review<a class="headerlink" href="#2026-08-17-sprint-planning-document-review" title="Permanent link">&para;</a></h2>
+<p><img alt="Meeting on 2026-08-17" src="images/2026-08-17-meeting.jpg" /></p>
+<p><strong>Attendees:</strong> MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea</p>
+<p><strong>Agenda:</strong></p>
+<ul>
+<li>Sprint planning and task distribution</li>
+<li>Document review and walkthrough</li>
+<li>Progress check on individual deliverables</li>
+</ul>
+<p><strong>Decisions:</strong></p>
+<ul>
+<li>Tasks distributed among team members for Sprint 2</li>
+</ul>
+<p><strong>Action items:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Owner</th>
+<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Due</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">All members</td>
+<td style="text-align: left;">Complete assigned Sprint 2 tasks</td>
+<td style="text-align: left;">2026-08-22</td>
+</tr>
+<tr>
+<td style="text-align: left;">---</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2026-08-13-sprint-1-close-out">2026-08-13 — Sprint 1 Close-Out<a class="headerlink" href="#2026-08-13-sprint-1-close-out" title="Permanent link">&para;</a></h2>
 <p><img alt="Meeting on 2026-08-13" src="images/2026-08-13-meeting.jpeg" /></p>
-<p><strong>Attendees</strong>:</p>
-<h2 id="agenda_1"><strong>Agenda</strong>:<a class="headerlink" href="#agenda_1" title="Permanent link">&para;</a></h2>
-<h2 id="decisions_1"><strong>Decisions</strong>:<a class="headerlink" href="#decisions_1" title="Permanent link">&para;</a></h2>
-<p><strong>Action items</strong>:
-- [ ] Owner — task — due date</p>
+<p><strong>Attendees:</strong> MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea</p>
+<p><strong>Context:</strong> Sprint 1 close-out. The team debriefed the tutor's Sprint 1 review (recorded in full on the <a href="../project/stakeholder-reviews/">Stakeholder Reviews</a> page) and triaged the feedback into the Sprint 2 plan.</p>
+<p><strong>Decisions:</strong></p>
+<ul>
+<li>Sprint 2 to include: automated code-quality checks (ESLint + Prettier), the three-repo separation, slimmer READMEs, and documentation of every tracked decision (Issues-vs-Projects, git standards, tech-stack rationale)</li>
+<li>Authentication to be reviewed against the security feedback — leading to the Supabase Auth migration</li>
+</ul>
+<p><strong>Action items:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Owner</th>
+<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Due</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">All members</td>
+<td style="text-align: left;">Carry the tutor's feedback points into Sprint 2 task selection</td>
+<td style="text-align: left;">Sprint 2 planning (2026-08-17)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2026-08-06-team-meeting">2026-08-06 — Team Meeting<a class="headerlink" href="#2026-08-06-team-meeting" title="Permanent link">&para;</a></h2>
+<p><img alt="Meeting on 2026-08-06" src="images/2026-08-06-meeting.jpeg" /></p>
+<p><em>Meeting notes pending.</em></p>
 
 
 
@@ -1254,6 +3067,46 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../project/stakeholder-reviews/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Tutor Review Records">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Tutor Review Records
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../project/user-feedback/" class="md-footer__link md-footer__link--next" aria-label="Next: Feedback Form &amp; Responses">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Feedback Form & Responses
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -1279,7 +3132,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.sections", "navigation.expand", "navigation.footer", "content.code.copy", "content.action.edit", "search.suggest", "search.highlight", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
