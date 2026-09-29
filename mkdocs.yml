@@ -86,6 +86,9 @@ nav:
   - Automated Testing:
       - Test Results & Coverage: development/testing.md
 
+  - Performance:
+      - Performance: development/performance.md
+
   - Deployment:
       - Deployment & Hosting: development/deployment.md
 
@@ -98,7 +101,7 @@ nav:
   - User Feedback:
       - Feedback Form & Responses: project/user-feedback.md
 
-  - Methodology:
+  - Project Methodology:
       - Methodology: project/methodology.md
       - Master Architecture Guide (PDF): project/files/wits-quest-master-architecture-task-specification-guide.pdf
       - Git Workflow: development/git-workflow.md
@@ -110,12 +113,12 @@ nav:
       - Bug Tracking: development/bug-tracking.md
       - Fix Register: development/fix-register.md
 
-  - Database Docs:
+  - Database Documentation:
       - Database Plan: database/database-plan.md
       - Database Schema: database/database-schema.md
       - ERD: uml/04_erd_database_schema.md
 
-  - Third-Party Docs:
+  - Third-Party Code Documentation:
       - Third-Party Code & Services: development/third-party.md
 
   - Testing Documentation:
