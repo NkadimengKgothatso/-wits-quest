@@ -2772,8 +2772,26 @@ and, at submission, API load handling and application load time / responsiveness
 <td>Pipeline runs both suites + gates on free cloud runners</td>
 <td><a href="../testing-plan/">Testing &amp; CI/CD plan</a></td>
 </tr>
+<tr>
+<td>2026-09-29</td>
+<td>Docs site — Home</td>
+<td>Lighthouse: Perf 76 · A11y 93 · Best Practices 96 · SEO 100. FCP 3.3 s, LCP 4.4 s, TBT 0 ms, CLS 0</td>
+<td>Lighthouse default <strong>mobile throttling</strong> from a South African connection; zero blocking time and zero layout shift — the FCP/LCP figures are network-bound, not app-bound</td>
+</tr>
+<tr>
+<td>2026-09-29</td>
+<td>Docs site — API Reference</td>
+<td>Lighthouse: Perf 72 · A11y 93 · Best Practices 96 · SEO 100. FCP 3.9 s, LCP 4.7 s, TBT 0 ms, CLS 0.028</td>
+<td>Same conditions as above; long single-page reference adds a little parse time</td>
+</tr>
 </tbody>
 </table>
+<p><strong>Reading of the 2026-09-29 results:</strong> with TBT at 0 ms and CLS ~0, the pages are not
+doing expensive work on the main thread and do not jump while loading — the "slow"
+FCP/LCP is dominated by network latency to GitHub Pages under simulated mobile
+conditions. Actions available if we want the score up: preload the theme fonts and
+self-host them (Google Fonts round-trip), and trim the largest-contentful hero text
+render path. Not blocking Sprint 3.</p>
 <h2 id="how-to-reproduce-the-measurements">How to reproduce the measurements<a class="headerlink" href="#how-to-reproduce-the-measurements" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># app bundle + build time</span>
 <span class="nb">cd</span><span class="w"> </span>frontend<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
