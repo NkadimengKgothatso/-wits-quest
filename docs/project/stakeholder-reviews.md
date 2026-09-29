@@ -19,7 +19,7 @@ Formal feedback sessions with the course tutor — the project's primary stakeho
 | Stakeholder | Provide a PDF review of the app | ✅ Received 2026-09-28 (see below) |
 | Team | Triage the review's improvements into the sprint plan | TBD |
 
-![Team Big-O on Google Meet with the stakeholder, 2026-09-28](images/2026-09-28-stakeholder-meeting.jpeg)
+![Team Big-O on Google Meet with the stakeholder, 2026-09-28](../meetings/images/2026-09-28-stakeholder-meeting.jpeg)
 
 ### Feedback received — App review notes (28/09/2026)
 
@@ -53,7 +53,7 @@ Formal feedback sessions with the course tutor — the project's primary stakeho
 | Map tooltip explaining the game (optional) and active-game alert with sound | Improvement (optional) | Pending triage |
 | Filter and search bars on the history page | Improvement | Pending triage |
 
-![Stakeholder app review notes, 2026-09-28](images/2026-09-28-stakeholder-review.png)
+![Stakeholder app review notes, 2026-09-28](../meetings/images/2026-09-28-stakeholder-review.png)
 
 ---
 
@@ -77,7 +77,7 @@ Formal feedback sessions with the course tutor — the project's primary stakeho
 | Team | Continue fixing the identified issues during development | Ongoing |
 | Team | Confirm the Monday meeting | TBD |
 
-![Team Big-O on Google Meet with the supervisor, 2026-09-26](images/2026-09-26-stakeholder-meeting.jpeg)
+![Team Big-O on Google Meet with the supervisor, 2026-09-26](../meetings/images/2026-09-26-stakeholder-meeting.jpeg)
 
 ---
 
@@ -107,7 +107,7 @@ Formal feedback sessions with the course tutor — the project's primary stakeho
 | Friend system for direct challenges | Logged as a **Sprint 3 backlog feature** — friends list with a direct "challenge a friend" flow |
 | Avatars instead of full names on the map | **Sprint 3 polish task** — show avatars on map markers to reduce clutter |
 
-![Team Big-O demoing the live app to stakeholders after the Sprint 2 review, 2026-09-15](images/2026-09-15-demo-feedback.jpg)
+![Team Big-O demoing the live app to stakeholders after the Sprint 2 review, 2026-09-15](../meetings/images/2026-09-15-demo-feedback.jpg)
 
 ---
 
@@ -139,7 +139,7 @@ The tutor reviewed each item from her [Sprint 1 feedback](#sprint-1-review-2026-
 - The tutor **confirmed the Sprint 1 feedback items are implemented** — the verification doubles as evidence of a working feedback loop: feedback received → triaged into the sprint plan → implemented → verified by the stakeholder.
 - Sprint 2 outcomes demonstrated: live app deployment, the user feedback survey with real responses ([User Feedback](user-feedback.md)), and the MkDocs documentation site.
 
-![Team Big-O with the course tutor after the Sprint 2 review, 2026-09-15](images/2026-09-15-tutor-review.jpg)
+![Team Big-O with the course tutor after the Sprint 2 review, 2026-09-15](../meetings/images/2026-09-15-tutor-review.jpg)
 
 ---
 
