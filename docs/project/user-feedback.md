@@ -2,7 +2,7 @@
 
 How Team Big-O collects and acts on feedback from real players — the survey instrument, what it asks, and how responses feed each sprint's retrospective and the next sprint's backlog. The deliverable is evidence of a real feedback loop: a structured instrument, real respondents, and documented outcomes across two rounds.
 
-**Jump to:** [Sprint 2 feedback](#sprint-2-user-feedback) · [Sprint 3 feedback](#sprint-3-user-feedback)
+**Jump to:** [Sprint 2 feedback](#sprint-2-user-feedback) · [Sprint 3 feedback](#sprint-3-user-feedback) · [Overall feedback](#overall-user-feedback)
 
 ---
 
@@ -711,3 +711,310 @@ The location-privacy concern from Sprint 2 was not repeated in this round, but i
 
 !!! tip "For the presentation"
     Sprint 2 and Sprint 3 together show the loop closing: the same instrument, two rounds of real players, and a clear list of what carried over (verification, instructions) and what changed (trivia unlocking, visual and reward scores). The [form link](#the-feedback-form) is the instrument; the charts and quotes are the outcomes. Numbers on this page were captured at 5 Sprint 3 responses.
+
+---
+
+## Overall User Feedback
+
+Both rounds combined: **10 real responses** (5 from Sprint 2, 5 from Sprint 3) to the same 21-question form. The Sprint 2 page counted 6 responses because it included one blank submission, which is excluded here. Battle and reward questions (Q11–Q14) have 9 responses because one Sprint 2 player skipped the gameplay section. Same chart style as above, recoloured to the Wits Quest palette.
+
+!!! note "Read with care"
+    Ten players is a small sample. Treat the percentages as directional signals for prioritising work, not as statistically reliable figures.
+
+### Who answered overall
+<div class="wq-grid">
+  <div class="wq-chart-card">
+    <h4>Q1 · Have you played Wits Quest before?</h4>
+    <div class="wq-n">10 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 80%, #d37a32 80% 100%)">
+        <div class="wq-donut-hole">10<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>First time<b>8 · 80%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>Once or twice<b>2 · 20%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>Regular player<b>0 · 0%</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q2 · Played a location-based game before?</h4>
+    <div class="wq-n">10 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 20%, #d37a32 20% 30%, #8b1c23 30% 100%)">
+        <div class="wq-donut-hole">10<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>Yes, regularly<b>2 · 20%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>Tried one before<b>1 · 10%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>No, this is my first<b>7 · 70%</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q3 · Experience with mobile or web games</h4>
+    <div class="wq-n">10 responses · 1 = Novice → 5 = Expert</div>
+    <div class="wq-bars">
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">5 · 50%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:20%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q4 · Comfort trying new apps or software</h4>
+    <div class="wq-n">10 responses · 1 = Not comfortable → 5 = Very comfortable</div>
+    <div class="wq-bars">
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:50%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:25%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">3 · 30%</span><div class="wq-bar-fill" style="height:75%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">4 · 40%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q5 · Device played on</h4>
+    <div class="wq-n">10 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 60%, #d37a32 60% 80%, #8b1c23 80% 90%, #caa25c 90% 100%)">
+        <div class="wq-donut-hole">10<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>Android phone<b>6 · 60%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>iPhone<b>2 · 20%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>Tablet<b>1 · 10%</b></li>
+        <li><span class="wq-dot" style="background:#caa25c"></span>Desktop or laptop<b>1 · 10%</b></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### Getting started overall
+
+<div class="wq-grid">
+  <div class="wq-chart-card">
+    <h4>Q6 · How easy was it to sign up and get started?</h4>
+    <div class="wq-n">10 responses · 1 = Very difficult → 5 = Very easy</div>
+    <div class="wq-bars">
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">5 · 50%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:20%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q7 · Anything block or confuse you at sign-up or login?</h4>
+    <div class="wq-n">10 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 20%, #d37a32 20% 60%, #caa25c 60% 90%, #496894 90% 100%)">
+        <div class="wq-donut-hole">10<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>Nothing, it was smooth<b>2 · 20%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>Verification email didn't arrive<b>4 · 40%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>Signup form was confusing<b>0 · 0%</b></li>
+        <li><span class="wq-dot" style="background:#caa25c"></span>I had login problems<b>3 · 30%</b></li>
+        <li><span class="wq-dot" style="background:#496894"></span>Other<b>1 · 10%</b></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### Gameplay overall
+
+<div class="wq-grid">
+  <div class="wq-chart-card">
+    <h4>Q9 · Finding your way around the campus map</h4>
+    <div class="wq-n">10 responses · 1 = Very confusing → 5 = Very easy</div>
+    <div class="wq-bars">
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:20%"></div></div>
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">5 · 50%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:20%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">3 · 30%</span><div class="wq-bar-fill" style="height:60%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q10 · Did trivia unlock when you reached a landmark?</h4>
+    <div class="wq-n">10 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 20%, #d37a32 20% 50%, #8b1c23 50% 60%, #caa25c 60% 100%)">
+        <div class="wq-donut-hole">10<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>Yes, every time<b>2 · 20%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>Sometimes<b>3 · 30%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>Never<b>1 · 10%</b></li>
+        <li><span class="wq-dot" style="background:#caa25c"></span>I didn't try the trivia<b>4 · 40%</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q11 · How fun are the card battles against the CPU?</h4>
+    <div class="wq-n">9 responses · 1 = Not fun → 5 = Very fun</div>
+    <div class="wq-bars">
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">3 · 33%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">3 · 33%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 22%</span><div class="wq-bar-fill" style="height:67%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 11%</span><div class="wq-bar-fill" style="height:33%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q12 · How fair did the CPU battles feel?</h4>
+    <div class="wq-n">9 responses · 1 = Very unfair → 5 = Very fair</div>
+    <div class="wq-bars">
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 22%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">5 · 56%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 22%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q13 · Did you collect any cards?</h4>
+    <div class="wq-n">9 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 22%, #d37a32 22% 33%, #8b1c23 33% 100%)">
+        <div class="wq-donut-hole">9<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>Yes<b>2 · 22%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>No<b>1 · 11%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>I didn't get that far<b>6 · 67%</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q14 · How motivating are the rewards?</h4>
+    <div class="wq-n">9 responses · 1 = Not motivating → 5 = Very motivating · XP, Essence, cards</div>
+    <div class="wq-bars">
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 11%</span><div class="wq-bar-fill" style="height:25%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 22%</span><div class="wq-bar-fill" style="height:50%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">4 · 44%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 22%</span><div class="wq-bar-fill" style="height:50%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q15 · Visual design and adventure theme</h4>
+    <div class="wq-n">10 responses · 1 = Poor → 5 = Excellent</div>
+    <div class="wq-bars">
+      <div class="wq-bar zero"><span class="wq-bar-val">0 · 0%</span><div class="wq-bar-fill"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:20%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:40%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">5 · 50%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+</div>
+
+### Performance and recommendation overall
+
+<div class="wq-grid">
+  <div class="wq-chart-card">
+    <h4>Q16 · Did the game feel fast or slow?</h4>
+    <div class="wq-n">10 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 70%, #d37a32 70% 90%, #caa25c 90% 100%)">
+        <div class="wq-donut-hole">10<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>Fast and responsive<b>7 · 70%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>A bit slow sometimes<b>2 · 20%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>Very slow<b>0 · 0%</b></li>
+        <li><span class="wq-dot" style="background:#caa25c"></span>Didn't notice<b>1 · 10%</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q17 · Text readable and buttons easy to tap?</h4>
+    <div class="wq-n">10 responses</div>
+    <div class="wq-donut-row">
+      <div class="wq-donut" style="background: conic-gradient(#1d3156 0% 90%, #caa25c 90% 100%)">
+        <div class="wq-donut-hole">10<br>responses</div>
+      </div>
+      <ul class="wq-legend">
+        <li><span class="wq-dot" style="background:#1d3156"></span>Yes, all good<b>9 · 90%</b></li>
+        <li><span class="wq-dot" style="background:#d37a32"></span>Text too small<b>0 · 0%</b></li>
+        <li><span class="wq-dot" style="background:#8b1c23"></span>Buttons hard to tap<b>0 · 0%</b></li>
+        <li><span class="wq-dot" style="background:#caa25c"></span>Other issues<b>1 · 10%</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wq-chart-card">
+    <h4>Q19 · How likely are you to recommend Wits Quest?</h4>
+    <div class="wq-n">10 responses · 1 = Not likely → 5 = Very likely</div>
+    <div class="wq-bars">
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:25%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">1 · 10%</span><div class="wq-bar-fill" style="height:25%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:50%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">2 · 20%</span><div class="wq-bar-fill" style="height:50%"></div></div>
+      <div class="wq-bar"><span class="wq-bar-val">4 · 40%</span><div class="wq-bar-fill" style="height:100%"></div></div>
+    </div>
+    <div class="wq-bar-lbl-row"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  </div>
+</div>
+
+### Average scores by sprint
+
+| Question | Sprint 2 | Sprint 3 | Overall |
+| :--- | :---: | :---: | :---: |
+| Q3 · Gaming experience | 3.2 | 3.0 | **3.1** |
+| Q4 · Comfort with new apps | 3.8 | 4.0 | **3.9** |
+| Q6 · Sign-up ease | 2.8 | 3.0 | **2.9** |
+| Q9 · Map navigation | 2.8 | 4.2 | **3.5** |
+| Q11 · Battle fun | 3.0 | 3.2 | **3.1** |
+| Q12 · Battle fairness | 3.0 | 3.4 | **3.2** |
+| Q14 · Reward motivation | 3.2 | 4.2 | **3.8** |
+| Q15 · Visual design & theme | 3.4 | 4.8 | **4.1** |
+| Q19 · Likelihood to recommend | 3.4 | 4.0 | **3.7** |
+
+### Recurring themes across all 10 players
+
+Tallied from the free-text answers (Q8, Q18, Q20, Q21) and the multiple-choice questions.
+
+| Theme | How many players | Evidence |
+| :--- | :---: | :--- |
+| **Sign-up / OTP verification problems** | 8 of 10 | Q7 — only 2 players reported a smooth sign-up; codes rejected, resend not working, login only succeeding after a retry or refresh |
+| **Asked for instructions on how to play** | 3 of 10 | Q18 and Q20 — general how-to-play guidance and battle rules |
+| **Trivia unlock is inconsistent** | 4 of 6 who tried it | Q10 — 2 "every time", 3 "sometimes", 1 "never"; 4 players didn't try trivia |
+| **Many players never reach the card loop** | 6 of 9 | Q13 — "I didn't get that far"; only 2 collected a card |
+| **Trivia needs more variety and replay** | 1 of 10 | Q18 — more varied questions, allow multiple plays |
+| **Trivia scroll direction and header buttons** | 1 of 10 | Q20 — swipe direction inverted; header buttons not responding |
+| **Location shown publicly (privacy)** | 1 of 10 | Q18 — location visible to everyone |
+| **Wants larger text and battle sound** | 1 of 10 | Q18 — bigger font, sound during battles |
+| **Explicit praise for the concept** | 5 of 10 | Exploring campus, rewards and leaderboard ranking, interface, "keep up the good work" |
+
+### What the overall picture tells us
+
+| Signal | Evidence | Where it goes |
+| :--- | :--- | :--- |
+| **Onboarding is the biggest drag on the experience.** Verification failures affect most players, and they are the first thing new players meet. | Q7 — 8 of 10 hit a problem; Q6 — average 2.9/5, and no player rated sign-up 5/5 in Sprint 2 | Priority #1 on the backlog; track in the [Bug Tracker](../development/bug-tracking.md) |
+| **Players don't know what to do once they're in.** Instructions were requested in both rounds, and most players never reached the card loop. | Q18, Q20; Q13 — 6 of 9 didn't get that far | Tutorial / how-to-play task, including battle rules |
+| **The core idea works.** Design, rewards and exploring campus score well, and half of players volunteered praise. | Q15 — average 4.1/5; Q14 — average 3.8/5; Q19 — 6 of 10 rated 4 or 5 | Keep as-is; highlight in the retrospective |
+| **Trivia needs work on both reliability and content.** Unlocking is improving but still inconsistent, and finished events leave nothing to replay. | Q10; Q18 trivia comments | Geofence re-tuning plus replayable trivia content |
+| **Battles are middling.** Fun and fairness sit around the middle of the scale, and players want clearer rules. | Q11 — average 3.1/5; Q12 — average 3.2/5 | CPU difficulty tuning and the [CPU Battle Rulebook](../development/cpu-battle-rules.md) |
+| **Performance and readability are solid.** | Q16 — 7 of 10 "fast and responsive", none "very slow"; Q17 — 9 of 10 "all good" | No action needed |
+
+### Suggested priorities for the next sprint
+
+1. Fix OTP verification and resend, and the retry/refresh login behaviour.
+2. Add a short how-to-play tutorial, including battle rules.
+3. Improve trivia: geofence reliability, swipe direction, more variety and replayability.
+4. Investigate the non-responsive header buttons.
+5. Review location-sharing defaults.
+6. Polish: larger text option and battle sound.
+
+!!! tip "For the presentation"
+    This section is the summary of the feedback loop: one instrument, two rounds, ten real players, and a ranked list of what to fix. The [form link](#the-feedback-form) is the instrument; the Sprint 2 and Sprint 3 sections hold the raw responses.
