@@ -11,13 +11,13 @@
       
       
       
-        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/development/architecture/">
+        <link rel="canonical" href="https://nkadimengkgothatso.github.io/-wits-quest/development/performance/">
       
       
-        <link rel="prev" href="../../uml/01_system_architecture/">
+        <link rel="prev" href="../testing/">
       
       
-        <link rel="next" href="../../uml/class-diagram/">
+        <link rel="next" href="../deployment/">
       
       
         
@@ -28,7 +28,7 @@
     
     
       
-        <title>Development Architecture - Wits Quest Documentation</title>
+        <title>Performance - Wits Quest Documentation</title>
       
     
     
@@ -81,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#architecture" class="md-skip">
+        <a href="#performance" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Development Architecture
+              Performance
             
           </span>
         </div>
@@ -752,8 +752,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -764,13 +766,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -791,7 +791,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -806,10 +806,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../performance/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -825,6 +852,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-we-measure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we measure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions-that-protect-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design decisions that protect performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-reproduce-the-measurements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to reproduce the measurements
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1894,8 +1985,6 @@
       
   
   
-    
-  
   
   
     
@@ -1908,11 +1997,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_15" >
         
           
           <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="">
@@ -1933,7 +2024,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_15">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1976,37 +2067,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Development Architecture
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -2022,131 +2086,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#repository-shape" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Repository shape
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#feature-to-file-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Feature-to-file map
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Feature-to-file map">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#map-location" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Map &amp; Location
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#trivia-cards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Trivia &amp; Cards
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#combat" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Combat
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#progression-economy-social" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Progression, Economy &amp; Social
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#auth-offline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Auth &amp; Offline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#admin-console" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Admin Console
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data layer
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2667,10 +2606,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#repository-shape" class="md-nav__link">
+  <a href="#what-we-measure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Repository shape
+        What we measure
       
     </span>
   </a>
@@ -2678,93 +2617,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#feature-to-file-map" class="md-nav__link">
+  <a href="#design-decisions-that-protect-performance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Feature-to-file map
+        Design decisions that protect performance
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Feature-to-file map">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#map-location" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Map &amp; Location
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#trivia-cards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Trivia &amp; Cards
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#combat" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Combat
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#progression-economy-social" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Progression, Economy &amp; Social
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#auth-offline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Auth &amp; Offline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#admin-console" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Admin Console
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-layer" class="md-nav__link">
+  <a href="#results-log" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Data layer
+        Results log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-reproduce-the-measurements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to reproduce the measurements
       
     </span>
   </a>
@@ -2788,7 +2666,7 @@
 
 
   
-    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/development/architecture.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/NkadimengKgothatso/-wits-quest/edit/main/docs/development/performance.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -2796,70 +2674,117 @@
   
 
 
-<h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
-<h2 id="repository-shape">Repository shape<a class="headerlink" href="#repository-shape" title="Permanent link">&para;</a></h2>
-<p>Wits Quest is a monorepo with a root orchestration <code>package.json</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;dev:frontend&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npm --prefix frontend run dev&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;dev:backend&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npm --prefix backend run dev&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;install:all&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npm --prefix frontend install &amp;&amp; npm --prefix backend install&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+<h1 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h1>
+<p>How Wits Quest is measured, monitored and kept free of performance issues —
+covering the rubric's performance criteria: <strong>no performance issues</strong> (Sprint 3)
+and, at submission, API load handling and application load time / responsiveness.</p>
+<h2 id="what-we-measure">What we measure<a class="headerlink" href="#what-we-measure" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Metric</th>
+<th>Tool</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App</td>
+<td>First contentful paint / full load</td>
+<td>Lighthouse (Chrome DevTools)</td>
+<td>FCP &lt; 1.8 s, Lighthouse ≥ 90 on Performance</td>
+</tr>
+<tr>
+<td>App</td>
+<td>Runtime responsiveness</td>
+<td>Chrome DevTools Performance tab</td>
+<td>No dropped/long tasks over 200 ms during a battle</td>
+</tr>
+<tr>
+<td>App</td>
+<td>Bundle size</td>
+<td><code>vite build</code> output report</td>
+<td>Initial JS bundle kept small via route-level code splitting</td>
+</tr>
+<tr>
+<td>API</td>
+<td>First-request latency</td>
+<td><code>curl -w</code> timing against the deployed API</td>
+<td>Cold start + first request &lt; 2 s</td>
+</tr>
+<tr>
+<td>API</td>
+<td>Load handling</td>
+<td>Supertest suites under CI (functional); load spot-checks with <code>autocannon</code></td>
+<td>No errors at 50 concurrent requests on the REST endpoints</td>
+</tr>
+<tr>
+<td>API</td>
+<td>Uptime / crashes</td>
+<td>Deployment platform logs (see <a href="../deployment/">Deployment</a>)</td>
+<td>No crashes during a standard play session</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>Suite wall time</td>
+<td>Vitest run summary</td>
+<td>Full CI pipeline (both packages + gates) &lt; 10 min</td>
+</tr>
+</tbody>
+</table>
+<h2 id="design-decisions-that-protect-performance">Design decisions that protect performance<a class="headerlink" href="#design-decisions-that-protect-performance" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Server-authoritative state.</strong> Battle state, ELO and anti-cheat validation live in
+  the backend, so the client never re-simulates a full battle — payloads over the
+  socket are small diffs, not full state dumps.</li>
+<li><strong>Offline queue.</strong> Actions taken offline are queued client-side and replayed when
+  connectivity returns (<a href="../testing/">services tests</a>), so poor network degrades
+  gracefully instead of blocking the UI.</li>
+<li><strong>Pooled/lazy data access.</strong> Leaderboards and card collections page their queries
+  against Supabase rather than fetching whole tables.</li>
+<li><strong>Excluded-but-verified heavy screens.</strong> The socket-heavy PvP arenas are kept out
+  of jsdom coverage by design and verified against the real backend
+  (<a href="../testing-documentation/">testing documentation</a>) — unit-testing them would
+  measure the mocks, not performance.</li>
+</ul>
+<h2 id="results-log">Results log<a class="headerlink" href="#results-log" title="Permanent link">&para;</a></h2>
+<p>Recorded per sprint; update this table when a new measurement is taken.</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Area</th>
+<th>Result</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-09</td>
+<td>Tests</td>
+<td>Frontend 132/132 passing; both packages clear the 80% coverage gate</td>
+<td><a href="../testing/">Testing</a></td>
+</tr>
+<tr>
+<td>2026-09</td>
+<td>CI</td>
+<td>Pipeline runs both suites + gates on free cloud runners</td>
+<td><a href="../testing-plan/">Testing &amp; CI/CD plan</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-reproduce-the-measurements">How to reproduce the measurements<a class="headerlink" href="#how-to-reproduce-the-measurements" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># app bundle + build time</span>
+<span class="nb">cd</span><span class="w"> </span>frontend<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
+
+<span class="c1"># full test + coverage gates (both packages)</span>
+<span class="nb">cd</span><span class="w"> </span>frontend<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
+<span class="nb">cd</span><span class="w"> </span>backend<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># API first-request timing (adjust URL to the deployment in deployment.md)</span>
+curl<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-s<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;dns:%{time_namelookup} connect:%{time_connect} ttfb:%{time_starttransfer} total:%{time_total}\n&quot;</span><span class="w"> </span>https://&lt;deployed-api&gt;/api/health
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>wits-quest/
-├── frontend/     # PWA client
-├── backend/      # API server
-├── docs/         # this MkDocs site
-├── mkdocs.yml
-└── package.json  # root orchestration scripts
-</code></pre></div>
-<p>Run <code>npm run install:all</code> once to install both workspaces, then <code>npm run dev:frontend</code> / <code>npm run dev:backend</code> in separate terminals during development.</p>
-<h2 id="feature-to-file-map">Feature-to-file map<a class="headerlink" href="#feature-to-file-map" title="Permanent link">&para;</a></h2>
-<p>This mirrors the team's domain ownership in <a href="../../project/scope/">Scope</a>, listing the concrete screen/module each feature lives in.</p>
-<h3 id="map-location">Map &amp; Location<a class="headerlink" href="#map-location" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>MapExplorer.tsx</code></strong> — primary gameplay hub: GIS map, landmark events, GPS fix, distance calc, nearby player avatars. Owner: Member 1.</li>
-<li>Distance check uses the <strong>Haversine formula</strong> between user GPS <code>(lat1, lon1)</code> and landmark <code>(lat2, lon2)</code>:
-    <code>d = 2r · arcsin(√(sin²((lat2−lat1)/2) + cos(lat1)·cos(lat2)·sin²((lon2−lon1)/2)))</code></li>
-<li>States: <strong>IN RADIUS</strong> (<code>d ≤ 25m</code>, trivia unlocks) vs <strong>OUT OF RANGE</strong> (<code>d &gt; 25m</code>, event locked).</li>
-</ul>
-<h3 id="trivia-cards">Trivia &amp; Cards<a class="headerlink" href="#trivia-cards" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>TriviaModal.tsx</code></strong> — location-gated trivia UI. Owners: Members 3 &amp; 5.</li>
-<li><strong><code>CardCollection.tsx</code></strong> — inventory gallery. Owner: Member 5.</li>
-</ul>
-<h3 id="combat">Combat<a class="headerlink" href="#combat" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>DeckBuilder.tsx</code></strong> — deck construction (5 cards, 300 stat cap, 1 Legendary cap). Owner: Member 5.</li>
-<li><strong><code>BattleArena.tsx</code></strong> — turn-based CPU battles. Owner: Member 2.</li>
-<li><strong><code>AsyncPvP.tsx</code></strong> — turn-based async challenges. Owner: Member 2.</li>
-<li><strong><code>LivePvPArena.tsx</code></strong> — real-time WebSocket battles. Owner: Member 2.</li>
-</ul>
-<h3 id="progression-economy-social">Progression, Economy &amp; Social<a class="headerlink" href="#progression-economy-social" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>Leaderboard.tsx</code></strong> — campus rankings. Owner: Member 5.</li>
-<li><strong><code>QuestTrails.tsx</code></strong> — sequential landmark chains. Owner: Member 5.</li>
-<li><strong><code>Trades.tsx</code></strong> — peer card trading. Owner: Member 5.</li>
-<li><strong><code>CardForge.tsx</code></strong> — card crafting/upgrading. Owner: Member 5.</li>
-<li><strong><code>TerritoryMap.tsx</code></strong> — zone control. Owner: Member 6.</li>
-<li><strong><code>RankedMatchmaking.tsx</code></strong> — Elo-based matchmaking, plus the velocity trajectory anti-cheat engine. Owner: Member 6.</li>
-</ul>
-<h3 id="auth-offline">Auth &amp; Offline<a class="headerlink" href="#auth-offline" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>Login.tsx</code></strong>, ServiceWorker, IndexedDB, custom JWT auth. Owner: Member 3.</li>
-</ul>
-<h3 id="admin-console">Admin Console<a class="headerlink" href="#admin-console" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>AdminEvents.tsx</code></strong> — spatial event placement.</li>
-<li><strong><code>AdminContent.tsx</code></strong> — question &amp; card authoring.</li>
-<li><strong><code>AdminCuration.tsx</code></strong> — curation/review governance.</li>
-<li><strong><code>AdminAntiCheat.tsx</code></strong> — anti-cheat audit log.</li>
-<li><strong><code>AdminAnalytics.tsx</code></strong> — campus heatmaps &amp; telemetry.</li>
-</ul>
-<p>All owned by Member 4.</p>
-<h2 id="data-layer">Data layer<a class="headerlink" href="#data-layer" title="Permanent link">&para;</a></h2>
-<p>See <a href="../../database/database-plan/">Database Plan</a> and <a href="../../database/database-schema/">Database Schema</a> for the full entity design (<code>users</code>, <code>cards</code>, <code>user_cards</code>, <code>user_decks</code>, <code>battle_matches</code>, <code>async_pvp_challenges</code>).</p>
 
 
 
@@ -2895,7 +2820,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../uml/01_system_architecture/" class="md-footer__link md-footer__link--prev" aria-label="Previous: System Architecture">
+          <a href="../testing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Test Results &amp; Coverage">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2905,20 +2830,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                System Architecture
+                Test Results & Coverage
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../uml/class-diagram/" class="md-footer__link md-footer__link--next" aria-label="Next: Class Diagram">
+          <a href="../deployment/" class="md-footer__link md-footer__link--next" aria-label="Next: Deployment &amp; Hosting">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Class Diagram
+                Deployment & Hosting
               </div>
             </div>
             <div class="md-footer__button md-icon">
