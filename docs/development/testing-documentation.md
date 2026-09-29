@@ -12,6 +12,10 @@ How Wits Quest is tested end to end, organised around the three pillars of the T
 | **Automated testing** | Vitest suites with coverage gates, enforced on every commit and every push by CI | [Test Results & Coverage](testing.md), [Testing & CI/CD Plan](testing-plan.md) |
 | **Test policy** | The standing rules every change must satisfy — Definition of Done, coverage gates, severity blocking | [Methodology — Definition of Done](../project/methodology.md#definition-of-done), [Bug Tracking](bug-tracking.md) |
 
+**Sprint 3 snapshot (frontend, 2026-09-29):** 20 test files, 163 tests, all passing. Coverage is 89.21% statements, 83.03% branches, 83.33% functions and 89.21% lines, above both the current 60% gate and the final 80% gate. Full breakdown in [Testing & CI/CD Plan](testing-plan.md#6-sprint-3-status).
+
+![Frontend test run and V8 coverage report, 2026-09-29](images/2026-09-29-frontend-coverage.jpeg)
+
 ---
 
 ## 1. User feedback — the formal process
@@ -31,21 +35,30 @@ The mechanical layer runs without human intervention:
 | Stage | What runs | Where |
 | :--- | :--- | :--- |
 | Pre-commit | ESLint + Prettier via husky `lint-staged` — badly formatted code cannot be committed at all | Every developer's machine |
-| CI on every push | `tsc --noEmit`, ESLint, and the full Vitest suite with **80% coverage gates** for both packages | The CI pipeline ([Testing & CI/CD Plan](testing-plan.md)) |
+| CI on every push | `tsc --noEmit`, ESLint, and the full Vitest suite for **both code bases**, failing the build under the **60% coverage gate** (rising to **80%** for the final submission) | The CI pipeline ([Testing & CI/CD Plan](testing-plan.md)) |
 | Deploy gate | Only `main` deploys, and only builds that passed the full gate | Vercel / Render / GitHub Pages ([Deployment](deployment.md)) |
 
-Local procedure: run `npm test` (or the coverage variant) per package; tests live next to the code they cover. The tooling — Vitest, Testing Library, husky — is catalogued in [Third-Party Code & Services](third-party.md), and the current results and coverage live in [Test Results & Coverage](testing.md).
+**Test layers**
+
+| Layer | Tooling | Scope |
+| :--- | :--- | :--- |
+| Backend API tests | Vitest + Supertest | Every endpoint: auth, validation, status codes, error handling |
+| Frontend UI tests | Vitest + React Testing Library (jsdom) | Screens, components, contexts, and user flows |
+| Unit tests | Vitest | Game logic (battle engine, AI, Elo), anti-cheat, services, offline queue |
+
+Local procedure: run `npm test` (which runs `vitest run --coverage`) per package; tests live next to the code they cover. The tooling — Vitest, Testing Library, Supertest, husky — is catalogued in [Third-Party Code & Services](third-party.md), and the current results and coverage live in [Test Results & Coverage](testing.md).
 
 ## 3. Policy around tests
 
 The standing rules, sourced from [Methodology](../project/methodology.md#definition-of-done) and [Bug Tracking](bug-tracking.md):
 
 1. **No task is done without tests** — every software task carries unit or integration tests, written with the feature (DoD clause 2).
-2. **Coverage gates are hard** — both packages must meet the 80% Vitest coverage gate in CI; a red suite or failing typecheck blocks the merge (DoD clause 5).
-3. **API changes are verified live** — every state-changing endpoint is checked authenticated and server-validated (DoD clause 3).
-4. **Two-way traceability** — every PR cites its task and fix-register IDs, so any fix can be traced to its evidence and vice versa (DoD clause 7).
-5. **Blocking rule** — zero open high-severity bugs at any milestone gate; gameplay fixes must be verified on a real phone on campus.
-6. **Honest reporting** — results are published as-is, including gaps: Sprint 1 shipped with no automated checks and that was recorded openly rather than hidden ([Stakeholder Reviews](../project/stakeholder-reviews.md)).
+2. **Every new feature ships with both test types** — API tests (Supertest) for backend changes and UI tests (React Testing Library) for frontend changes, in the same PR as the feature.
+3. **Coverage gates are hard and staged** — CI reports coverage for both code bases and **fails under 60%** (the rubric's advanced band), **rising to 80% for the final submission**. A red suite, a failing typecheck or a coverage drop below the current gate blocks the merge (DoD clause 5).
+4. **API changes are verified live** — every state-changing endpoint is checked authenticated and server-validated (DoD clause 3).
+5. **Two-way traceability** — every PR cites its task and fix-register IDs, so any fix can be traced to its evidence and vice versa (DoD clause 7).
+6. **Blocking rule** — zero open high-severity bugs at any milestone gate; gameplay fixes must be verified on a real phone on campus.
+7. **Honest reporting** — results are published as-is, including gaps: Sprint 1 shipped with no automated checks and that was recorded openly rather than hidden ([Stakeholder Reviews](../project/stakeholder-reviews.md)); the current per-file coverage gaps are listed in [Testing & CI/CD Plan](testing-plan.md#known-gaps-reported-honestly).
 
 !!! tip "For the presentation"
-    This page is the map; the linked pages are the evidence. Walk the criterion pillar by pillar — the form and its response charts, the CI workflow and coverage table, then the six policy clauses above.
+    This page is the map; the linked pages are the evidence. Walk the criterion pillar by pillar — the form and its response charts, the CI workflow and coverage table, then the seven policy clauses above.
