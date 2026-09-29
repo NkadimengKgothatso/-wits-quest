@@ -82,6 +82,7 @@ nav:
   - API:
       - API Quick Start (Verified): development/api-quickstart.md
       - API Reference: development/api-reference.md
+      - Endpoint Catalogue: development/api-endpoints.md
 
   - Automated Testing:
       - Test Results & Coverage: development/testing.md
