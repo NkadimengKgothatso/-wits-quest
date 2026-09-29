@@ -49,6 +49,18 @@ conditions. Actions available if we want the score up: preload the theme fonts a
 self-host them (Google Fonts round-trip), and trim the largest-contentful hero text
 render path. Not blocking Sprint 3.
 
+## AI usage attribution
+
+Per the course AI policy, the following AI assistance is declared for this page and its measurements:
+
+| Item | Declaration |
+| --- | --- |
+| Tool | Qoder AI coding agent (IDE-integrated agent) |
+| Model | *GLM, trained by Z.ai* — update this field to match the model shown in the Qoder model selector when the log is finalized |
+| Purpose | Editing/structuring this performance documentation; running the Lighthouse audits against the deployed site; committing and deploying the results |
+| Not AI-generated | The Lighthouse measurements themselves are tool-generated audit output of the real site; the test/coverage figures come from the project's own Vitest/CI runs |
+| Responsibility | All content above was reviewed by the team before submission; the team remains responsible for its accuracy |
+
 ## How to reproduce the measurements
 
 ```bash
