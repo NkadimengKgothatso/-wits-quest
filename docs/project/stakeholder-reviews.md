@@ -1,48 +1,84 @@
 # Stakeholder Reviews
 
 Formal feedback sessions with the course tutor — the project's primary stakeholder reviewer. These records are kept **separate from internal team meetings** (per the tutor's own instruction) and every future session is recorded the same way: **minutes plus a photo with the stakeholder**, dated.
-## Stakeholder Check-in — 2026-09-28
- 
-**Type:** Follow-up meeting with the stakeholder (Google Meet)
+
+## Stakeholder Check-in & App Review — 2026-09-28
+
+**Type:** Follow-up meeting with the stakeholder (Google Meet), followed by a written app review
 **Attendees:** Team Big-O and the stakeholder (online, 6 participants)
- 
+
 ### What was discussed
- 
+
 - The team asked the stakeholder for a **PDF review of the app**.
 - The live app link ([wits-quest.vercel.app](https://wits-quest.vercel.app/)) was shared in the call chat.
+
 ### Action items
- 
+
 | Owner | Task | Due |
 | :--- | :--- | :--- |
-| Stakeholder | Provide a PDF review of the app | TBD |
- 
+| Stakeholder | Provide a PDF review of the app | ✅ Received 2026-09-28 (see below) |
+| Team | Triage the review's improvements into the sprint plan | TBD |
+
 ![Team Big-O on Google Meet with the stakeholder, 2026-09-28](images/2026-09-28-stakeholder-meeting.jpeg)
- 
+
+### Feedback received — App review notes (28/09/2026)
+
+**Application reviewed:** [wits-quest.vercel.app](https://wits-quest.vercel.app/)
+
+#### Highlights
+
+> **Admin page.** Liked the anti-cheat page for being able to audit activity, since it extends beyond the brief.
+
+> **Overall.** Generally the team has met the brief, with no major points of improvement.
+
+#### General notes
+
+> **Dark mode.** Make sure text boxes are visible even in dark mode (e.g. the username text box whites out the text in dark mode).
+
+#### Improvements
+
+> **Battle page.** Accompanying sound effects for the battle choice buttons, as well as when you win or lose.
+
+> **Map page (optional).** Tool-tip explanation of how the game works initially. Also, if a game is active, getting an alert to participate (also a sound effect for alerts).
+
+> **History page.** Filter and search bars for when your history page gets long and you need to be able to categorise your history.
+
+### How the team responded
+
+| Feedback | Type | Response / where it goes |
+| :--- | :--- | :--- |
+| Anti-cheat admin page praised; brief met | Highlight | No action needed — recorded as positive validation of the admin audit feature |
+| Text boxes unreadable in dark mode (username field) | Bug / accessibility | Pending triage |
+| Sound effects on battle choice buttons, win and lose | Improvement | Pending triage |
+| Map tooltip explaining the game (optional) and active-game alert with sound | Improvement (optional) | Pending triage |
+| Filter and search bars on the history page | Improvement | Pending triage |
+
+![Stakeholder app review notes, 2026-09-28](images/2026-09-28-stakeholder-review.png)
+
 ---
- 
+
 ## Supervisor Meeting — 2026-09-26
- 
+
 **Type:** Supervisor check-in (Google Meet)
 **Attendees:** Team Big-O and the supervisor (online, 6 participants)
- 
+
 ### Summary
- 
+
 | Topic | Outcome |
 | :--- | :--- |
 | App review | The team asked the supervisor to review the application and give feedback |
 | Next meeting | Rescheduled to Monday (to be confirmed) |
 | Advice received | Keep working on the identified issues and address them as development progresses |
- 
+
 ### Action items
- 
+
 | Owner | Task | Due |
 | :--- | :--- | :--- |
 | Team | Continue fixing the identified issues during development | Ongoing |
 | Team | Confirm the Monday meeting | TBD |
- 
+
 ![Team Big-O on Google Meet with the supervisor, 2026-09-26](images/2026-09-26-stakeholder-meeting.jpeg)
- 
----
+
 ---
 
 ## Live Demo & New Feedback — 2026-09-15
