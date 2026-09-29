@@ -902,6 +902,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ai-usage-attribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI usage attribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-to-reproduce-the-measurements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2639,6 +2650,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ai-usage-attribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI usage attribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-to-reproduce-the-measurements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2792,6 +2814,38 @@ FCP/LCP is dominated by network latency to GitHub Pages under simulated mobile
 conditions. Actions available if we want the score up: preload the theme fonts and
 self-host them (Google Fonts round-trip), and trim the largest-contentful hero text
 render path. Not blocking Sprint 3.</p>
+<h2 id="ai-usage-attribution">AI usage attribution<a class="headerlink" href="#ai-usage-attribution" title="Permanent link">&para;</a></h2>
+<p>Per the course AI policy, the following AI assistance is declared for this page and its measurements:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Declaration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tool</td>
+<td>Qoder AI coding agent (IDE-integrated agent)</td>
+</tr>
+<tr>
+<td>Model</td>
+<td><em>GLM, trained by Z.ai</em> — update this field to match the model shown in the Qoder model selector when the log is finalized</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Editing/structuring this performance documentation; running the Lighthouse audits against the deployed site; committing and deploying the results</td>
+</tr>
+<tr>
+<td>Not AI-generated</td>
+<td>The Lighthouse measurements themselves are tool-generated audit output of the real site; the test/coverage figures come from the project's own Vitest/CI runs</td>
+</tr>
+<tr>
+<td>Responsibility</td>
+<td>All content above was reviewed by the team before submission; the team remains responsible for its accuracy</td>
+</tr>
+</tbody>
+</table>
 <h2 id="how-to-reproduce-the-measurements">How to reproduce the measurements<a class="headerlink" href="#how-to-reproduce-the-measurements" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># app bundle + build time</span>
 <span class="nb">cd</span><span class="w"> </span>frontend<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
