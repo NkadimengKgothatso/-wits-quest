@@ -76,6 +76,7 @@ nav:
       - Requirements: project/requirements.md
       - Scope: project/scope.md
       - CPU Battle Rulebook: development/cpu-battle-rules.md
+      - Enhanced Battle System (Proposal): project/enhanced-battle-system.md
       - Live PvP Walkthrough: development/live-pvp-walkthrough.md
       - Async PvP Walkthrough: development/async-pvp-walkthrough.md
 

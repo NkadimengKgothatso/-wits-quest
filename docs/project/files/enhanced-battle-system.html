@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wits Quest Avatar Battles</title>
+<meta name="description" content="Team Big-O proposal: turning card battles into turn-based avatar fights driven by the cards.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Plus+Jakarta+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{color-scheme:light}
+body{margin:0}
+/* Layout: one reading column of parchment "scroll" sections, with the playable battle arena as the single wide, dark centrepiece. */
+:root {
+  --bg: #fdf6e3;          /* parchment */
+  --panel: #f5ecd7;       /* sepia */
+  --line: #e2cfa2;        /* sand */
+  --ink: #2e2013;
+  --ink-soft: #6a5236;
+  --navy: #1d3156;
+  --navy-2: #3a5580;
+  --gold: #d37a32;
+  --gold-soft: #caa25c;
+  --crimson: #8b1c23;
+  --arena: #14223c;
+  --arena-ink: #f5ecd7;
+  --good: #2f7d4f;
+  --r-common: #8a8070;
+  --r-uncommon: #2f7d4f;
+  --r-rare: #2f62a8;
+  --r-epic: #7b3fa0;
+  --r-legendary: #c98a1c;
+  --font-display: "Cinzel", Georgia, "Times New Roman", serif;
+  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111b30; --panel: #1a2944; --line: #2c4166; --ink: #f1e6cc; --ink-soft: #b9a98a;
+    --navy: #e8d5a8; --navy-2: #caa25c; --gold: #e3974f; --gold-soft: #caa25c; --crimson: #e0636b;
+    --arena: #0b1324; --arena-ink: #f5ecd7; --good: #5cbf85;
+    --r-common: #a39a89; --r-uncommon: #5cbf85; --r-rare: #6b9be0; --r-epic: #b07ad6; --r-legendary: #e6b04a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111b30; --panel: #1a2944; --line: #2c4166; --ink: #f1e6cc; --ink-soft: #b9a98a;
+  --navy: #e8d5a8; --navy-2: #caa25c; --gold: #e3974f; --gold-soft: #caa25c; --crimson: #e0636b;
+  --arena: #0b1324; --arena-ink: #f5ecd7; --good: #5cbf85;
+  --r-common: #a39a89; --r-uncommon: #5cbf85; --r-rare: #6b9be0; --r-epic: #b07ad6; --r-legendary: #e6b04a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 0 64px; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--navy); text-wrap: balance; line-height: 1.15; margin: 0; }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); }
+h3 { font-size: 1.1rem; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+.muted { color: var(--ink-soft); }
+section { padding-block: 56px 0; display: grid; gap: 20px; }
+section > header { display: grid; gap: 8px; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+code, .mono { font-family: var(--font-mono); font-size: .85em; }
+
+/* Hero */
+.hero { padding-block: 56px 8px; display: grid; gap: 18px; border-bottom: 1px solid var(--line); padding-bottom: 36px; }
+.hero h1 { font-size: clamp(2.1rem, 6vw, 3.6rem); font-weight: 800; }
+.hero .lede { font-size: 1.15rem; max-width: 58ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font-size: .78rem; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); background: var(--panel); }
+.tag.status { border-color: var(--gold); color: var(--gold); font-weight: 700; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .9rem; }
+.toc a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px dashed var(--line); }
+.toc a:hover { color: var(--gold); border-color: var(--gold); }
+
+/* Core idea flow */
+.flow { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; }
+.flow .step { flex: 1 1 140px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 4px; min-width: 0; }
+.flow .step b { font-family: var(--font-display); color: var(--navy); }
+.flow .step span { font-size: .85rem; color: var(--ink-soft); }
+.flow .step.engine { background: var(--navy); border-color: var(--navy); }
+.flow .step.engine b, .flow .step.engine span { color: var(--bg); }
+.flow .arrow { align-self: center; color: var(--gold); font-weight: 700; }
+@media (max-width: 640px) { .flow { flex-direction: column; } .flow .arrow { transform: rotate(90deg); } }
+
+/* Cards */
+.deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.card {
+  --rc: var(--r-common);
+  position: relative; text-align: left; font: inherit; color: var(--ink); cursor: pointer;
+  background: var(--panel); border: 2px solid var(--rc); border-radius: 12px; padding: 12px; display: grid; gap: 8px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.card:hover { transform: translateY(-3px); }
+.card[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--rc); }
+.card[aria-pressed="true"]::after { content: "In deck"; position: absolute; top: -10px; right: 10px; background: var(--rc); color: var(--bg); font-size: .68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; letter-spacing: .06em; text-transform: uppercase; }
+.card[data-rarity="Uncommon"] { --rc: var(--r-uncommon); }
+.card[data-rarity="Rare"] { --rc: var(--r-rare); }
+.card[data-rarity="Epic"] { --rc: var(--r-epic); }
+.card[data-rarity="Legendary"] { --rc: var(--r-legendary); background: linear-gradient(160deg, var(--panel) 60%, color-mix(in srgb, var(--r-legendary) 22%, var(--panel))); }
+.card .top { display: flex; justify-content: space-between; gap: 6px; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+.card .rar { color: var(--rc); font-weight: 700; }
+.card .cat { color: var(--ink-soft); }
+.card .name { font-family: var(--font-display); font-weight: 600; font-size: .98rem; color: var(--navy); line-height: 1.2; }
+.card .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; font-family: var(--font-mono); font-size: .72rem; text-align: center; font-variant-numeric: tabular-nums; }
+.card .stats div { background: var(--bg); border-radius: 4px; padding: 3px 0; }
+.card .stats small { display: block; color: var(--ink-soft); font-size: .6rem; }
+.card .abil { font-size: .78rem; border-top: 1px dashed var(--line); padding-top: 6px; }
+.card .abil b { color: var(--gold); }
+
+.builder { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 800px) { .builder { grid-template-columns: 1fr; } }
+.avatar-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 12px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); }
+.avatar-panel h3 { display: flex; justify-content: space-between; align-items: baseline; }
+.statrow { display: grid; grid-template-columns: 44px 1fr 44px; gap: 8px; align-items: center; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.statrow .bar { height: 8px; border-radius: 4px; background: var(--bg); overflow: hidden; }
+.statrow .bar i { display: block; height: 100%; background: var(--gold); border-radius: 4px; transition: width .4s ease; }
+.statrow .lbl { font-family: var(--font-mono); color: var(--ink-soft); }
+.statrow .val { text-align: right; font-family: var(--font-mono); }
+.style-chip { font-size: .8rem; background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+.hint { font-size: .85rem; color: var(--ink-soft); }
+
+/* Arena */
+.arena {
+  background: radial-gradient(ellipse at 50% 120%, #2a4170 0%, var(--arena) 60%);
+  color: var(--arena-ink); border-radius: 18px; padding: 22px; display: grid; gap: 18px; overflow: hidden;
+}
+.arena h3, .arena .eyebrow { color: #e8d5a8; }
+.vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 12px; }
+.fighter { display: grid; gap: 8px; justify-items: center; text-align: center; min-width: 0; }
+.fighter .who { font-family: var(--font-display); font-size: 1rem; }
+.fighter .sub { font-size: .75rem; color: #a4b5d1; }
+.fig { width: 112px; height: 132px; position: relative; transition: transform .25s ease; }
+.fig svg { width: 100%; height: 100%; display: block; }
+.fig.lunge-r { transform: translateX(36px) scale(1.05); }
+.fig.lunge-l { transform: translateX(-36px) scale(1.05); }
+.fig.hit { animation: shake .35s; }
+.fig.shielded::before { content: ""; position: absolute; inset: -10px; border-radius: 50%; border: 3px solid #b0cbe6; box-shadow: 0 0 22px #b0cbe6; opacity: .85; }
+.fig.ko { opacity: .35; transform: rotate(-8deg) translateY(10px); }
+.dmg { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; color: #ffb3a7; pointer-events: none; animation: rise 1s forwards; text-shadow: 0 2px 6px #000; }
+.dmg.heal { color: #b0cbe6; }
+@keyframes shake { 0%,100% { translate: 0 } 25% { translate: -6px } 75% { translate: 6px } }
+@keyframes rise { from { opacity: 1; top: 10px } to { opacity: 0; top: -30px } }
+.hp { width: 100%; max-width: 240px; display: grid; gap: 4px; }
+.hp .track { height: 12px; border-radius: 6px; background: rgba(255,255,255,.12); overflow: hidden; }
+.hp .fill { height: 100%; width: 100%; background: linear-gradient(90deg, #5cbf85, #9be0a8); transition: width .5s ease, background .3s; }
+.hp .fill.mid { background: linear-gradient(90deg, #d39b32, #f0c46a); }
+.hp .fill.low { background: linear-gradient(90deg, #b8323b, #e0636b); }
+.hp .num { font-family: var(--font-mono); font-size: .8rem; font-variant-numeric: tabular-nums; }
+.vs-mark { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: #fed6ce; text-shadow: 0 0 20px rgba(254,214,206,.45); }
+.callout { min-height: 2.2em; text-align: center; font-family: var(--font-display); font-size: 1.25rem; color: #fed6ce; letter-spacing: .04em; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.btn { font: inherit; font-weight: 700; font-size: .9rem; border-radius: 10px; padding: 10px 16px; cursor: pointer; border: 1px solid #496894; background: rgba(73,104,148,.35); color: #f5ecd7; min-width: 110px; }
+.btn:hover:not(:disabled) { background: rgba(73,104,148,.6); }
+.btn.special { border-color: #fed6ce; box-shadow: 0 0 16px rgba(254,214,206,.35); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn small { display: block; font-weight: 500; font-size: .7rem; color: #a4b5d1; }
+.log { background: rgba(0,0,0,.25); border-radius: 10px; padding: 10px 14px; font-size: .82rem; max-height: 170px; overflow-y: auto; display: grid; gap: 4px; font-variant-numeric: tabular-nums; }
+.log div { color: #c9d4e6; }
+.log div b { color: #fed6ce; font-weight: 700; }
+.log div.sys { color: #e8d5a8; }
+.result { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+.result div { background: rgba(255,255,255,.06); border-radius: 10px; padding: 10px; text-align: center; }
+.result b { display: block; font-family: var(--font-display); font-size: 1.3rem; color: #fed6ce; font-variant-numeric: tabular-nums; }
+.result span { font-size: .72rem; color: #a4b5d1; text-transform: uppercase; letter-spacing: .08em; }
+.arena-foot { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; font-size: .8rem; color: #a4b5d1; }
+.arena-foot select, .arena-foot button { font: inherit; background: rgba(255,255,255,.08); color: #f5ecd7; border: 1px solid #496894; border-radius: 8px; padding: 5px 10px; }
+.arena-foot option { color: #1d3156; }
+
+/* Engine split */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .split { grid-template-columns: 1fr; } }
+.side { border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.side.server { background: var(--panel); border-color: var(--navy-2); }
+.side ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: .92rem; }
+.formula { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: .85rem; white-space: pre; }
+
+/* Styles tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: inherit; font-size: .9rem; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--navy); color: var(--bg); border-color: var(--navy); }
+.tabpanel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+@media (max-width: 640px) { .tabpanel { grid-template-columns: 1fr; } }
+.tabpanel dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: .92rem; }
+.tabpanel dt { font-weight: 700; color: var(--ink-soft); }
+.tabpanel dd { margin: 0; }
+.radar svg { width: 100%; max-width: 240px; height: auto; display: block; margin: 0 auto; }
+
+/* Rarity ladder */
+.ladder { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; align-items: end; }
+@media (max-width: 640px) { .ladder { grid-template-columns: 1fr; } .ladder .rung { height: auto !important; } }
+.rung { --rc: var(--r-common); border: 2px solid var(--rc); border-radius: 12px; padding: 12px; display: grid; gap: 4px; align-content: start; background: color-mix(in srgb, var(--rc) 10%, var(--bg)); }
+.rung b { font-family: var(--font-display); color: var(--rc); }
+.rung span { font-size: .82rem; }
+.rung .cap { font-family: var(--font-mono); font-size: .72rem; color: var(--ink-soft); }
+.balance { border-left: 4px solid var(--gold); padding: 10px 14px; background: var(--panel); border-radius: 0 10px 10px 0; font-size: .95rem; }
+
+/* Table */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; min-width: 520px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-display); font-size: .82rem; color: var(--navy); background: var(--panel); letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.keep { background: color-mix(in srgb, var(--good) 16%, var(--bg)); color: var(--good); }
+.pill.ext { background: color-mix(in srgb, var(--gold) 18%, var(--bg)); color: var(--gold); }
+
+/* CPU + abilities */
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 720px) { .trio { grid-template-columns: 1fr; } }
+.tier { border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+.tier .pips { display: flex; gap: 4px; }
+.tier .pips i { width: 18px; height: 6px; border-radius: 3px; background: var(--line); }
+.tier .pips i.on { background: var(--crimson); }
+.tier ul { margin: 0; padding-left: 18px; font-size: .88rem; }
+.abilities { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.ability { background: var(--panel); border-radius: 12px; padding: 14px; display: grid; gap: 4px; }
+.ability b { font-family: var(--font-display); color: var(--navy); }
+.ability span { font-size: .88rem; }
+.ability em { font-style: normal; font-size: .72rem; color: var(--gold); text-transform: uppercase; letter-spacing: .08em; }
+.loop { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-family: var(--font-display); font-size: 1.05rem; color: var(--navy); }
+.loop span.sep { color: var(--gold); }
+
+/* Decisions */
+.decisions { display: grid; gap: 12px; }
+.decision { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+@media (max-width: 560px) { .decision { grid-template-columns: 1fr; gap: 4px; } }
+.decision .state { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.decision .state.agreed { color: var(--good); }
+.decision .state.open { color: var(--gold); }
+.decision p { font-size: .95rem; }
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .85rem; color: var(--ink-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Feature proposal · Battle system</span>
+  <h1>Let the cards fight</h1>
+  <p class="lede">Right now a battle is two cards and a number comparison. This proposal keeps every card rule we already have, but turns your deck into an avatar that fights turn by turn on screen. You still pick the moves. The cards still decide what happens.</p>
+  <div class="meta">
+    <span class="tag status">Proposal, not built yet</span>
+    <span class="tag">Team Big-O · COMS3011A</span>
+    <span class="tag">Extends: CPU battles, Live PvP, Async PvP</span>
+  </div>
+  <nav class="toc" aria-label="On this page">
+    <a href="#idea">The idea</a><a href="#deck">Build a deck</a><a href="#arena">Try a battle</a><a href="#engine">Battle engine</a><a href="#styles">Fighting styles</a><a href="#rarity">Rarity</a><a href="#brief">Fit with the brief</a><a href="#cpu">CPU opponents</a><a href="#decisions">Decisions</a>
+  </nav>
+</header>
+
+<section id="idea">
+  <header>
+    <span class="eyebrow">The idea</span>
+    <h2>The avatar is just the cards, drawn</h2>
+    <p class="muted">The avatar does not replace anything. It is a picture of what the deck can do. Every number on screen still comes from a card.</p>
+  </header>
+  <div class="flow" role="list">
+    <div class="step" role="listitem"><b>Player</b><span>Picks a deck using the existing deck rules</span></div>
+    <span class="arrow" aria-hidden="true">→</span>
+    <div class="step" role="listitem"><b>Cards</b><span>ATK, DEF, SPD, BRN, category, rarity, ability</span></div>
+    <span class="arrow" aria-hidden="true">→</span>
+    <div class="step engine" role="listitem"><b>Battle engine</b><span>Runs on the server and works out every result</span></div>
+    <span class="arrow" aria-hidden="true">→</span>
+    <div class="step" role="listitem"><b>Avatar</b><span>Shows the result as attacks, shields and HP</span></div>
+    <span class="arrow" aria-hidden="true">→</span>
+    <div class="step" role="listitem"><b>Match history</b><span>Winner, damage and cards used get saved</span></div>
+  </div>
+</section>
+
+<section id="deck">
+  <header>
+    <span class="eyebrow">Step 1</span>
+    <h2>Build a deck, watch the avatar change</h2>
+    <p class="muted">Tap cards to add or remove them. Pick three for this demo (the real game keeps its 5-card deck). The avatar's stats are the average of its cards, and the category you use most sets its fighting style.</p>
+  </header>
+  <div class="builder">
+    <div class="deck-grid" id="collection"></div>
+    <aside class="avatar-panel" aria-live="polite">
+      <h3><span>Your avatar</span><span class="mono muted" id="deckCount">0 / 3</span></h3>
+      <div id="avatarStats"></div>
+      <div class="style-chip" id="avatarStyle"></div>
+      <p class="hint" id="deckHint"></p>
+    </aside>
+  </div>
+</section>
+
+<section id="arena">
+  <header>
+    <span class="eyebrow">Step 2</span>
+    <h2>Take your turn</h2>
+    <p class="muted">A playable sketch of the turn loop, using the deck you built above against a CPU deck. The faster avatar opens. Pick an action, then the CPU answers.</p>
+  </header>
+  <div class="arena">
+    <div class="vs">
+      <div class="fighter">
+        <span class="who">You</span>
+        <span class="sub" id="pStyle"></span>
+        <div class="fig" id="pFig"></div>
+        <div class="hp"><div class="track"><div class="fill" id="pHp"></div></div><span class="num" id="pHpNum"></span></div>
+      </div>
+      <span class="vs-mark">VS</span>
+      <div class="fighter">
+        <span class="who">CPU</span>
+        <span class="sub" id="cStyle"></span>
+        <div class="fig" id="cFig"></div>
+        <div class="hp"><div class="track"><div class="fill" id="cHp"></div></div><span class="num" id="cHpNum"></span></div>
+      </div>
+    </div>
+    <div class="callout" id="callout" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn" id="aAttack" type="button">Attack<small>damage from ATK</small></button>
+      <button class="btn" id="aDefend" type="button">Defend<small>halve the next hit</small></button>
+      <button class="btn special" id="aSpecial" type="button">Special<small id="specialName"></small></button>
+      <button class="btn" id="aSwitch" type="button">Switch card<small id="activeName"></small></button>
+    </div>
+    <div class="result" id="result" hidden></div>
+    <div class="log" id="log" aria-live="polite"></div>
+    <div class="arena-foot">
+      <label for="difficulty">CPU difficulty
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+      <button type="button" id="restart">Restart battle</button>
+    </div>
+  </div>
+  <p class="hint">Numbers here are placeholders to show the shape of the system. Real balance values would come out of playtesting.</p>
+</section>
+
+<section id="engine">
+  <header>
+    <span class="eyebrow">Under the hood</span>
+    <h2>The server decides, the browser just shows it</h2>
+    <p class="muted">We already moved battle logic server-side in Sprint 3. This keeps it there. The animation is only allowed to play what the server has already resolved, so nobody can change a result from their browser.</p>
+  </header>
+  <div class="split">
+    <div class="side server">
+      <h3>Server (battle engine)</h3>
+      <ul>
+        <li>Whose turn it is</li>
+        <li>Whether the chosen action is allowed</li>
+        <li>Card attributes and ability effects</li>
+        <li>Damage, shields and remaining HP</li>
+        <li>Victory, defeat and saving the match</li>
+      </ul>
+    </div>
+    <div class="side">
+      <h3>Client (React app)</h3>
+      <ul>
+        <li>Sends the chosen action</li>
+        <li>Plays the attack, shield or KO animation</li>
+        <li>Updates HP bars from the server's numbers</li>
+        <li>Shows the battle log and final result</li>
+      </ul>
+    </div>
+  </div>
+  <div class="formula">turnResult = resolveTurn(battleState, playerId, action)
+  └─ calculateDamage(attacker, defender, ability)
+       = ATK × 3 × 100 / (100 + DEF)  × ability bonus  × shield factor
+  └─ returns new HP, effects, and an event list the client animates</div>
+</section>
+
+<section id="styles">
+  <header>
+    <span class="eyebrow">Categories</span>
+    <h2>Each category fights differently</h2>
+    <p class="muted">Card categories are mostly labels today. Here they give the avatar a playstyle, so mixing categories becomes a real choice.</p>
+  </header>
+  <div class="tabs" role="tablist" id="styleTabs"></div>
+  <div class="tabpanel" role="tabpanel" id="stylePanel"></div>
+</section>
+
+<section id="rarity">
+  <header>
+    <span class="eyebrow">Rarity</span>
+    <h2>Rarer cards hit harder, but not too hard</h2>
+    <p class="muted">The brief asks for rarity levels. Rarity unlocks better abilities, while stat ranges overlap so a common deck is never hopeless.</p>
+  </header>
+  <div class="ladder" id="ladder"></div>
+  <p class="balance">The goal: a player who reads the battle well, with a sensible deck, should be able to beat someone who just owns rarer cards. Abilities have cooldowns and stats are averaged across the deck, which stops one Legendary from carrying everything.</p>
+</section>
+
+<section id="brief">
+  <header>
+    <span class="eyebrow">Marking criteria</span>
+    <h2>Nothing from the brief gets dropped</h2>
+    <p class="muted">Every original requirement still holds. The avatar layer sits on top of the existing card mechanics.</p>
+  </header>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Original requirement</th><th>In the avatar battle</th><th>Status</th></tr></thead>
+      <tbody id="reqRows"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="cpu">
+  <header>
+    <span class="eyebrow">Extension</span>
+    <h2>CPU opponents with a bit of personality</h2>
+    <p class="muted">The difficulty picker in the demo above uses these three rules.</p>
+  </header>
+  <div class="trio">
+    <div class="tier"><div class="pips"><i class="on"></i><i></i><i></i></div><h3>Easy</h3><p>Picks a random action that is allowed.</p></div>
+    <div class="tier"><div class="pips"><i class="on"></i><i class="on"></i><i></i></div><h3>Medium</h3><p>Looks at its own health and uses its special when it is ready.</p></div>
+    <div class="tier"><div class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></div><h3>Hard</h3><ul><li>Remembers your last moves</li><li>Shields before your special lands</li><li>Saves its special to finish you off</li></ul></div>
+  </div>
+</section>
+
+<section id="abilities">
+  <header>
+    <span class="eyebrow">Extension</span>
+    <h2>Abilities that only make sense at Wits</h2>
+    <p class="muted">Tie abilities to places and stories players discover on campus, so it doesn't feel like a generic monster game.</p>
+  </header>
+  <div class="abilities">
+    <div class="ability"><em>Landmark</em><b>Great Hall</b><span>Raises a shield that absorbs the next hit.</span></div>
+    <div class="ability"><em>Alumni</em><b>Wits Intelligence</b><span>Your next strategic attack does more damage.</span></div>
+    <div class="ability"><em>Landmark</em><b>Library Research</b><span>Reveals the opponent's next planned move.</span></div>
+    <div class="ability"><em>Student Life</em><b>Campus Sprint</b><span>Speed boost, so you act first next round.</span></div>
+    <div class="ability"><em>History</em><b>History Lesson</b><span>Weakens an opponent who repeats the same ability.</span></div>
+  </div>
+  <div class="loop" aria-label="Exploration leads to learning, cards and battle">
+    <span>Exploration</span><span class="sep">→</span><span>Learning</span><span class="sep">→</span><span>Cards</span><span class="sep">→</span><span>Battle</span>
+  </div>
+</section>
+
+<section id="decisions">
+  <header>
+    <span class="eyebrow">Decisions</span>
+    <h2>What this proposal commits to, and what the team still needs to decide</h2>
+  </header>
+  <div class="decisions">
+    <div class="decision"><span class="state agreed">Proposed</span><p><b>Keep it turn-based.</b> The brief says turn-based, and a real-time fighter would be a different game. Animations play between turns.</p></div>
+    <div class="decision"><span class="state agreed">Proposed</span><p><b>Cards stay the source of truth.</b> The avatar never has stats of its own. If you remove the visuals, the battle still works.</p></div>
+    <div class="decision"><span class="state agreed">Proposed</span><p><b>Battle logic stays on the server.</b> Same reason we moved battles server-side in Sprint 3: the client can't be trusted with results.</p></div>
+    <div class="decision"><span class="state open">Open</span><p><b>What the avatar looks like.</b> Options are a Wits student, a mascot creature, or a historical figure per category. Needs a quick team vote.</p></div>
+    <div class="decision"><span class="state open">Open</span><p><b>How we balance rarity.</b> The averaging and cooldown idea needs playtesting with real card data before we lock numbers.</p></div>
+    <div class="decision"><span class="state open">Open</span><p><b>Scope for this sprint.</b> We could ship the CPU version first and add avatars to PvP once it feels right.</p></div>
+  </div>
+</section>
+
+<footer>Wits Quest · Team Big-O · Enhanced battle system proposal. Sample cards and numbers on this page are illustrative.</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var CARDS = [
+    { id: "sci", name: "Wits Scientist", cat: "Alumni", rarity: "Uncommon", atk: 55, def: 40, spd: 50, brn: 85, ability: "Analytical Strike", desc: "Hits using BRN instead of ATK." },
+    { id: "ath", name: "Wits Athlete", cat: "Student Life", rarity: "Common", atk: 60, def: 45, spd: 88, brn: 40, ability: "Quick Attack", desc: "Fast hit that also lifts SPD." },
+    { id: "his", name: "Historical Figure", cat: "History", rarity: "Rare", atk: 50, def: 85, spd: 35, brn: 60, ability: "Historical Shield", desc: "Blocks most of the next hit." },
+    { id: "alu", name: "Wits Alumni", cat: "Alumni", rarity: "Rare", atk: 80, def: 65, spd: 70, brn: 75, ability: "Legacy Strike", desc: "Extra damage against History decks." },
+    { id: "gh", name: "Great Hall", cat: "Landmark", rarity: "Epic", atk: 45, def: 90, spd: 30, brn: 55, ability: "Great Hall", desc: "Shield plus a small heal." },
+    { id: "cul", name: "Cullen Library", cat: "Landmark", rarity: "Legendary", atk: 60, def: 75, spd: 45, brn: 92, ability: "Library Research", desc: "Next attack ignores DEF." }
+  ];
+  var CPU_DECK = [
+    { name: "Wits Architect", cat: "Landmark", rarity: "Uncommon", atk: 58, def: 80, spd: 52, brn: 60, ability: "Great Hall" },
+    { name: "Wits Historian", cat: "History", rarity: "Uncommon", atk: 52, def: 82, spd: 40, brn: 70, ability: "Historical Shield" },
+    { name: "Wits Alumni", cat: "Alumni", rarity: "Rare", atk: 80, def: 65, spd: 70, brn: 75, ability: "Legacy Strike" }
+  ];
+  var STYLES = {
+    "Alumni": { color: "#2f62a8", good: "Strategic attacks", weak: "Lower defence", blurb: "Thinkers. High BRN feeds special abilities that hit hard when timed well.", shape: [55, 50, 55, 90] },
+    "History": { color: "#8b1c23", good: "Defensive abilities and shields", weak: "Lower speed", blurb: "Tanks. They soak damage and wait for the opponent to run out of options.", shape: [50, 90, 35, 60] },
+    "Landmark": { color: "#c98a1c", good: "Buffs and defensive effects", weak: "Weaker raw attacks", blurb: "Control. Shields, small heals and effects that shape the next few turns.", shape: [45, 80, 40, 65] },
+    "Student Life": { color: "#2f7d4f", good: "Fast attacks and status effects", weak: "Fragile when hit", blurb: "Speed. They act first and chip away before the other side settles in.", shape: [65, 45, 90, 45] }
+  };
+  var RARITY = [
+    { name: "Common", text: "Simple abilities", cap: "stats 30–65" },
+    { name: "Uncommon", text: "Improved abilities", cap: "stats 40–75" },
+    { name: "Rare", text: "Stronger abilities", cap: "stats 50–85" },
+    { name: "Epic", text: "Powerful, specialised abilities", cap: "stats 55–90" },
+    { name: "Legendary", text: "Unique abilities", cap: "stats 60–95" }
+  ];
+  var REQS = [
+    ["Collectible cards", "Cards are still collected on campus and still matter", "keep"],
+    ["Card attributes", "ATK, DEF, SPD and BRN decide damage and turn order", "keep"],
+    ["Card categories", "Category sets the avatar's fighting style", "ext"],
+    ["Card rarity", "Rarity unlocks stronger abilities", "ext"],
+    ["Deck building", "Same deck rules, the deck becomes the avatar", "keep"],
+    ["Turn-based match", "Strictly one action per turn", "keep"],
+    ["Computer opponent", "CPU controls its avatar at three difficulties", "ext"],
+    ["Player vs player", "Two player avatars, live or async", "keep"],
+    ["Match persistence", "Battle state saved after every turn", "keep"],
+    ["Rules enforced by the game", "Server validates and resolves every action", "keep"],
+    ["Finished matches kept", "Result, damage dealt and cards used go to match history", "keep"]
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var deck = ["sci", "ath", "his"];
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function cardHTML(c) {
+    return '<div class="top"><span class="rar">' + c.rarity + '</span><span class="cat">' + c.cat + '</span></div>' +
+      '<div class="name">' + esc(c.name) + '</div>' +
+      '<div class="stats"><div><small>ATK</small>' + c.atk + '</div><div><small>DEF</small>' + c.def + '</div><div><small>SPD</small>' + c.spd + '</div><div><small>BRN</small>' + c.brn + '</div></div>' +
+      '<div class="abil"><b>' + esc(c.ability) + '</b><br>' + esc(c.desc) + '</div>';
+  }
+
+  function buildAvatar(cards) {
+    var n = cards.length || 1, sum = { atk: 0, def: 0, spd: 0, brn: 0 }, cats = {};
+    cards.forEach(function (c) { sum.atk += c.atk; sum.def += c.def; sum.spd += c.spd; sum.brn += c.brn; cats[c.cat] = (cats[c.cat] || 0) + 1; });
+    var style = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; })[0] || "Alumni";
+    var a = { atk: Math.round(sum.atk / n), def: Math.round(sum.def / n), spd: Math.round(sum.spd / n), brn: Math.round(sum.brn / n), style: style, cards: cards };
+    a.maxHp = 700 + a.def * 3;
+    return a;
+  }
+
+  function renderCollection() {
+    var root = $("collection");
+    root.innerHTML = "";
+    CARDS.forEach(function (c) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "card"; b.dataset.rarity = c.rarity; b.id = "card-" + c.id;
+      b.setAttribute("aria-pressed", deck.indexOf(c.id) > -1 ? "true" : "false");
+      b.innerHTML = cardHTML(c);
+      b.addEventListener("click", function () { toggle(c.id); });
+      root.appendChild(b);
+    });
+  }
+
+  function toggle(id) {
+    var i = deck.indexOf(id);
+    if (i > -1) deck.splice(i, 1);
+    else if (deck.length < 3) deck.push(id);
+    else { $("deckHint").textContent = "Your deck is full. Remove a card first."; return; }
+    renderCollection(); renderAvatarPanel(); resetBattle();
+  }
+
+  function deckCards() { return deck.map(function (id) { return CARDS.filter(function (c) { return c.id === id; })[0]; }); }
+
+  function renderAvatarPanel() {
+    var cards = deckCards(), a = buildAvatar(cards);
+    $("deckCount").textContent = cards.length + " / 3";
+    var rows = [["HP", a.maxHp, 1000], ["ATK", a.atk, 100], ["DEF", a.def, 100], ["SPD", a.spd, 100], ["BRN", a.brn, 100]];
+    $("avatarStats").innerHTML = rows.map(function (r) {
+      var v = cards.length ? r[1] : 0;
+      return '<div class="statrow"><span class="lbl">' + r[0] + '</span><span class="bar"><i style="width:' + Math.min(100, v / r[2] * 100) + '%"></i></span><span class="val">' + v + '</span></div>';
+    }).join("");
+    var s = STYLES[a.style];
+    $("avatarStyle").innerHTML = cards.length ? '<b>Style: ' + a.style + '</b><br>Strong at ' + s.good.toLowerCase() + '. Weak spot: ' + s.weak.toLowerCase() + '.' : "<b>No cards yet</b><br>Add cards to give the avatar stats.";
+    $("deckHint").textContent = cards.length < 3 ? "Pick " + (3 - cards.length) + " more to fill the deck." : "Deck ready. Scroll down to battle with it.";
+  }
+
+  /* ---------- Avatar drawing ---------- */
+  function figSVG(color, flip) {
+    return '<svg viewBox="0 0 112 132" aria-hidden="true"' + (flip ? ' style="transform:scaleX(-1)"' : '') + '>' +
+      '<ellipse cx="56" cy="126" rx="34" ry="5" fill="rgba(0,0,0,.35)"/>' +
+      '<path d="M30 124 L38 78 Q56 66 74 78 L82 124 Z" fill="' + color + '"/>' +
+      '<path d="M38 80 Q56 92 74 80 L72 70 Q56 62 40 70 Z" fill="#fed6ce" opacity=".25"/>' +
+      '<circle cx="56" cy="50" r="18" fill="#f2d3b8"/>' +
+      '<path d="M38 46 Q40 26 56 28 Q74 26 75 46 Q66 36 56 38 Q46 36 38 46 Z" fill="#1d3156"/>' +
+      '<rect x="60" y="47" width="6" height="3" rx="1.5" fill="#1d3156"/>' +
+      '<path d="M74 84 L98 64" stroke="#e8d5a8" stroke-width="5" stroke-linecap="round"/>' +
+      '<circle cx="99" cy="63" r="5" fill="#fed6ce"/>' +
+      '</svg>';
+  }
+
+  /* ---------- Battle ---------- */
+  var B = null, busy = false, reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function fighter(cards, name) {
+    var a = buildAvatar(cards);
+    return { name: name, atk: a.atk, def: a.def, spd: a.spd, brn: a.brn, style: a.style, cards: cards, maxHp: a.maxHp, hp: a.maxHp,
+      shield: 0, pierce: false, cooldown: 0, active: 0, dealt: 0, taken: 0, history: [] };
+  }
+
+  function resetBattle() {
+    var cards = deckCards();
+    if (!cards.length) cards = [CARDS[1]];
+    B = { p: fighter(cards, "You"), c: fighter(CPU_DECK, "CPU"), round: 1, over: false, turn: null };
+    B.c.active = 2;
+    B.turn = B.p.spd >= B.c.spd ? "p" : "c";
+    $("pStyle").textContent = B.p.style + " style";
+    $("cStyle").textContent = B.c.style + " style";
+    $("pFig").innerHTML = figSVG(STYLES[B.p.style].color, false);
+    $("cFig").innerHTML = figSVG(STYLES[B.c.style].color, true);
+    ["pFig", "cFig"].forEach(function (id) { $(id).className = "fig"; });
+    $("log").innerHTML = ""; $("result").hidden = true; $("result").innerHTML = "";
+    log('<b>Battle start.</b> You have SPD ' + B.p.spd + ', CPU has ' + B.c.spd + '. ' + (B.turn === "p" ? "You move first." : "CPU moves first."), true);
+    $("callout").textContent = B.turn === "p" ? "Your turn" : "CPU is thinking…";
+    paint();
+    if (B.turn === "c") { busy = true; setTimeout(cpuTurn, 900); }
+  }
+
+  function log(html, sys) {
+    var d = document.createElement("div");
+    if (sys) d.className = "sys";
+    d.innerHTML = html;
+    $("log").prepend(d);
+  }
+
+  function paint() {
+    [["p", "pHp", "pHpNum"], ["c", "cHp", "cHpNum"]].forEach(function (k) {
+      var f = B[k[0]], pct = Math.max(0, f.hp / f.maxHp * 100), el = $(k[1]);
+      el.style.width = pct + "%";
+      el.className = "fill" + (pct < 30 ? " low" : pct < 60 ? " mid" : "");
+      $(k[2]).textContent = "HP " + Math.max(0, f.hp) + " / " + f.maxHp;
+    });
+    var act = B.p.cards[B.p.active];
+    $("specialName").textContent = B.p.cooldown ? act.ability + " (ready in " + B.p.cooldown + ")" : act.ability;
+    $("activeName").textContent = "active: " + act.name;
+    var lock = busy || B.over || B.turn !== "p";
+    $("aAttack").disabled = lock; $("aDefend").disabled = lock;
+    $("aSpecial").disabled = lock || B.p.cooldown > 0;
+    $("aSwitch").disabled = lock || B.p.cards.length < 2;
+  }
+
+  function damage(att, def, base, mult) {
+    var effDef = att.pierce ? 0 : def.def;
+    var dmg = base * 3 * 100 / (100 + effDef) * (mult || 1);
+    if (def.shield) { dmg *= (1 - def.shield); def.shield = 0; }
+    att.pierce = false;
+    return Math.max(5, Math.round(dmg));
+  }
+
+  function popNumber(figId, text, heal) {
+    var s = document.createElement("span");
+    s.className = "dmg" + (heal ? " heal" : "");
+    s.textContent = text;
+    $(figId).appendChild(s);
+    setTimeout(function () { s.remove(); }, 1000);
+  }
+
+  function hasHistory(f) { return f.cards.some(function (c) { return c.cat === "History"; }); }
+
+  function act(side, action) {
+    var me = B[side], foe = B[side === "p" ? "c" : "p"];
+    var meFig = side === "p" ? "pFig" : "cFig", foeFig = side === "p" ? "cFig" : "pFig";
+    var who = side === "p" ? "You" : "CPU", call = "", line = "", dmg = 0;
+    me.history.push(action);
+    if (action === "attack") {
+      dmg = damage(me, foe, me.atk);
+      call = who === "You" ? "Attack!" : "CPU attacks!";
+      line = '<b>' + who + '</b> attack for ' + dmg + ' damage.';
+    } else if (action === "defend") {
+      me.shield = 0.5;
+      call = who + " brace" + (who === "CPU" ? "s" : "");
+      line = '<b>' + who + '</b> defend. The next hit is halved.';
+    } else if (action === "switch") {
+      me.active = (me.active + 1) % me.cards.length;
+      call = "Switch to " + me.cards[me.active].name;
+      line = '<b>' + who + '</b> switch the active card to ' + esc(me.cards[me.active].name) + '.';
+    } else {
+      var card = me.cards[me.active], ab = card.ability;
+      me.cooldown = 3;
+      call = ab.toUpperCase() + "!";
+      if (ab === "Analytical Strike") { dmg = damage(me, foe, me.brn, 1.4); line = '<b>' + who + '</b> use Analytical Strike. BRN-based hit for ' + dmg + '.'; }
+      else if (ab === "Quick Attack") { dmg = damage(me, foe, me.atk, 1.2); me.spd += 10; line = '<b>' + who + '</b> use Quick Attack for ' + dmg + ' and gain 10 SPD.'; }
+      else if (ab === "Legacy Strike") { var bonus = hasHistory(foe) ? 1.6 : 1.3; dmg = damage(me, foe, me.atk, bonus); line = '<b>' + who + '</b> use Legacy Strike for ' + dmg + (bonus > 1.5 ? ', boosted against History cards.' : '.'); }
+      else if (ab === "Historical Shield") { me.shield = 0.75; line = '<b>' + who + '</b> raise a Historical Shield. The next hit loses 75%.'; }
+      else if (ab === "Great Hall") { me.shield = 0.6; var heal = Math.min(80, me.maxHp - me.hp); me.hp += heal; popNumber(meFig, "+" + heal, true); line = '<b>' + who + '</b> call on the Great Hall: shield up and ' + heal + ' HP back.'; }
+      else if (ab === "Library Research") { me.pierce = true; dmg = damage(me, foe, me.brn, 0.6); me.pierce = true; line = '<b>' + who + '</b> use Library Research for ' + dmg + '. Next attack ignores DEF.'; }
+    }
+    if (who === "CPU") line = line.replace("<b>CPU</b> attack ", "<b>CPU</b> attacks ").replace("<b>CPU</b> defend.", "<b>CPU</b> defends.").replace("<b>CPU</b> use ", "<b>CPU</b> uses ").replace("<b>CPU</b> raise ", "<b>CPU</b> raises ").replace("<b>CPU</b> call ", "<b>CPU</b> calls ").replace("<b>CPU</b> switch ", "<b>CPU</b> switches ");
+    $("callout").textContent = call;
+    log('R' + B.round + ' · ' + line);
+
+    var fig = $(meFig);
+    if (dmg && !reduced) fig.classList.add(side === "p" ? "lunge-r" : "lunge-l");
+    setTimeout(function () {
+      fig.classList.remove("lunge-r", "lunge-l");
+      if (dmg) {
+        foe.hp -= dmg; me.dealt += dmg; foe.taken += dmg;
+        var ff = $(foeFig); ff.classList.remove("hit"); void ff.offsetWidth; ff.classList.add("hit");
+        popNumber(foeFig, "-" + dmg);
+      }
+      $(meFig).classList.toggle("shielded", me.shield > 0);
+      $(foeFig).classList.toggle("shielded", foe.shield > 0);
+      paint();
+      if (foe.hp <= 0) return finish(side);
+      endTurn(side);
+    }, reduced ? 50 : 320);
+  }
+
+  function endTurn(side) {
+    var me = B[side];
+    if (me.cooldown) me.cooldown--;
+    if (side === "c") B.round++;
+    B.turn = side === "p" ? "c" : "p";
+    if (B.turn === "c") { busy = true; paint(); setTimeout(cpuTurn, reduced ? 300 : 950); }
+    else { busy = false; setTimeout(function () { if (!B.over) $("callout").textContent = "Your turn"; }, 600); paint(); }
+  }
+
+  function cpuChoose() {
+    var c = B.c, p = B.p, lvl = $("difficulty").value, opts = ["attack", "defend"];
+    if (!c.cooldown) opts.push("special");
+    if (lvl === "easy") return opts[Math.floor(Math.random() * opts.length)];
+    var ab = c.cards[c.active].ability, hpPct = c.hp / c.maxHp;
+    var defensive = ab === "Historical Shield" || ab === "Great Hall";
+    if (lvl === "hard") {
+      var lastP = p.history[p.history.length - 1];
+      if (!c.shield && p.cooldown === 0 && p.history.length && lastP !== "special" && hpPct < 0.7) return defensive && !c.cooldown ? "special" : "defend";
+      var finisher = c.cards.findIndex(function (k) { return k.ability === "Legacy Strike"; });
+      if (!c.cooldown && finisher > -1 && c.active !== finisher && p.hp < 260) return "switch";
+      if (!c.cooldown && ab === "Legacy Strike") return "special";
+      if (!c.cooldown && defensive && hpPct < 0.5) return "special";
+      return "attack";
+    }
+    if (hpPct < 0.35 && !c.shield) return !c.cooldown && defensive ? "special" : "defend";
+    if (!c.cooldown) return "special";
+    return "attack";
+  }
+
+  function cpuTurn() {
+    if (B.over) return;
+    act("c", cpuChoose());
+  }
+
+  function finish(winner) {
+    B.over = true; busy = false;
+    var w = winner === "p" ? "You win" : "CPU wins";
+    $("callout").textContent = w + "!";
+    $(winner === "p" ? "cFig" : "pFig").classList.add("ko");
+    log('<b>' + w + '.</b> Match saved to history.', true);
+    var r = $("result");
+    r.innerHTML = '<div><b>' + (winner === "p" ? "You" : "CPU") + '</b><span>Winner</span></div>' +
+      '<div><b>' + B.round + '</b><span>Rounds</span></div>' +
+      '<div><b>' + B.p.cards.length + '</b><span>Cards used</span></div>' +
+      '<div><b>' + B.p.dealt + '</b><span>Damage dealt</span></div>' +
+      '<div><b>' + B.p.taken + '</b><span>Damage taken</span></div>';
+    r.hidden = false;
+    paint();
+  }
+
+  function playerAct(a) { if (busy || B.over || B.turn !== "p") return; busy = true; paint(); act("p", a); }
+  $("aAttack").addEventListener("click", function () { playerAct("attack"); });
+  $("aDefend").addEventListener("click", function () { playerAct("defend"); });
+  $("aSpecial").addEventListener("click", function () { playerAct("special"); });
+  $("aSwitch").addEventListener("click", function () { playerAct("switch"); });
+  $("restart").addEventListener("click", function () { busy = false; resetBattle(); });
+
+  /* ---------- Styles tabs with radar ---------- */
+  function radar(shape, color) {
+    var labels = ["ATK", "DEF", "SPD", "BRN"], cx = 120, cy = 110, R = 80;
+    var pt = function (i, v) { var ang = -Math.PI / 2 + i * Math.PI / 2; return [cx + Math.cos(ang) * R * v / 100, cy + Math.sin(ang) * R * v / 100]; };
+    var grid = [25, 50, 75, 100].map(function (v) { return '<polygon points="' + [0, 1, 2, 3].map(function (i) { return pt(i, v).join(","); }).join(" ") + '" fill="none" stroke="var(--line)"/>'; }).join("");
+    var poly = '<polygon points="' + shape.map(function (v, i) { return pt(i, v).join(","); }).join(" ") + '" fill="' + color + '" fill-opacity=".3" stroke="' + color + '" stroke-width="2"/>';
+    var lab = labels.map(function (l, i) { var p = pt(i, 122); return '<text x="' + p[0] + '" y="' + (p[1] + 4) + '" text-anchor="middle" font-size="11" font-family="JetBrains Mono, monospace" fill="var(--ink-soft)">' + l + '</text>'; }).join("");
+    return '<svg viewBox="0 0 240 225" role="img" aria-label="Typical stat shape">' + grid + poly + lab + '</svg>';
+  }
+  function renderStyle(name) {
+    var s = STYLES[name];
+    Array.prototype.forEach.call($("styleTabs").children, function (b) { b.setAttribute("aria-selected", b.textContent === name ? "true" : "false"); });
+    $("stylePanel").innerHTML = '<div style="display:grid;gap:12px;align-content:start;min-width:0"><h3>' + name + ' cards</h3><p>' + s.blurb + '</p><dl><dt>Strength</dt><dd>' + s.good + '</dd><dt>Weakness</dt><dd>' + s.weak + '</dd></dl></div><div class="radar">' + radar(s.shape, s.color) + '</div>';
+  }
+  Object.keys(STYLES).forEach(function (k, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.setAttribute("role", "tab"); b.textContent = k; b.id = "tab-" + i;
+    b.addEventListener("click", function () { renderStyle(k); });
+    $("styleTabs").appendChild(b);
+  });
+  renderStyle("Alumni");
+
+  /* ---------- Rarity ladder ---------- */
+  $("ladder").innerHTML = RARITY.map(function (r, i) {
+    return '<div class="rung" style="--rc:var(--r-' + r.name.toLowerCase() + ');height:' + (110 + i * 22) + 'px"><b>' + r.name + '</b><span>' + r.text + '</span><span class="cap">' + r.cap + '</span></div>';
+  }).join("");
+
+  /* ---------- Requirements ---------- */
+  $("reqRows").innerHTML = REQS.map(function (r) {
+    return '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td><span class="pill ' + r[2] + '">' + (r[2] === "keep" ? "Still required" : "Extended") + '</span></td></tr>';
+  }).join("");
+
+  renderCollection(); renderAvatarPanel(); resetBattle();
+})();
+</script>
+</body>
+</html>
