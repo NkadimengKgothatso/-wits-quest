@@ -74,27 +74,32 @@ nav:
       - Core Features: project/core-features.md
       - Features by Sprint: project/sprint-features.md
       - Game Overview & Tiers: project/overview.md
-      - Motivation: project/motivation.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
+      - Motivation: project/motivation.md
 
   - API:
       - API Quick Start: development/api-quickstart.md
       - Endpoint Catalogue: development/api-endpoints.md
       - Swagger UI: development/swagger.md
 
-  - Testing Documentation:
-      - Testing Documentation: development/testing-documentation.md
-      - Automated Testing: development/testing.md
+  - Project Methodology:
+      - Methodology: project/methodology.md
+      - Git Workflow: development/git-workflow.md
+      - Decisions Log: development/decisions-log.md
+      - Technical Decisions: development/technical-decisions.md
+      - Master Architecture Guide (PDF): project/files/wits-quest-master-architecture-task-specification-guide.pdf
 
-  - Performance:
-      - Performance: development/performance.md
-
-  - Deployment:
-      - Deployment & Hosting: development/deployment.md
-
-  - Stakeholder Reviews:
-      - Tutor Review Records: project/stakeholder-reviews.md
+  - Sprints:
+      - Overview: sprints/README.md
+      - Master Guide V2: sprints/master-guide-v2.md
+      - Sprint 1 Plan: sprints/SPRINT1.md
+      - Sprint 1 Team Guide: sprints/WITS_QUEST_SPRINT1_GUIDE.md
+      - Sprint 2 Plan: sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md
+      - Sprint 2 Team Guide: sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE.md
+      - Sprint 3 Plan: sprints/SPRINT3_TASK_BOARD.md
+      - Sprint 3 Team Guide: sprints/WITS_QUEST_SPRINT3_GUIDE.md
+      - Sprint 4 Plan: sprints/SPRINT4_PLAN.md
 
   - Team Meetings:
       - Meeting Records: meetings/index.md
@@ -102,15 +107,21 @@ nav:
   - User Feedback:
       - Feedback Form & Responses: project/user-feedback.md
 
-  - Project Methodology:
-      - Methodology: project/methodology.md
-      - Master Architecture Guide (PDF): project/files/wits-quest-master-architecture-task-specification-guide.pdf
-      - Git Workflow: development/git-workflow.md
-      - Decisions Log: development/decisions-log.md
-      - Technical Decisions: development/technical-decisions.md
+  - Stakeholder Reviews:
+      - Tutor Review Records: project/stakeholder-reviews.md
+
+  - Testing Documentation:
+      - Testing Documentation: development/testing-documentation.md
+      - Automated Testing: development/testing.md
 
   - Bug Tracker:
       - Bug Tracking: development/bug-tracking.md
+
+  - Performance:
+      - Performance: development/performance.md
+
+  - Deployment:
+      - Deployment & Hosting: development/deployment.md
 
   - Database Documentation:
       - Database Plan: database/database-plan.md
@@ -118,9 +129,6 @@ nav:
       - Database Diagram: database/database-diagram.md
       - ERD: uml/04_erd_database_schema.md
       - Data & Privacy: database/data-privacy.md
-
-  - Third-Party Code Documentation:
-      - Third-Party Code & Services: development/third-party.md
 
   - System Design (UML):
       - System Architecture: uml/01_system_architecture.md
@@ -135,13 +143,5 @@ nav:
           - Live PvP: development/live-pvp-walkthrough.md
           - Async PvP: development/async-pvp-walkthrough.md
 
-  - Sprints:
-      - Overview: sprints/README.md
-      - Master Guide V2: sprints/master-guide-v2.md
-      - Sprint 1 Plan: sprints/SPRINT1.md
-      - Sprint 1 Team Guide: sprints/WITS_QUEST_SPRINT1_GUIDE.md
-      - Sprint 2 Plan: sprints/SPRINT2_FEATURE_SELECTION_AND_TASK_GUIDE.md
-      - Sprint 2 Team Guide: sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE.md
-      - Sprint 3 Plan: sprints/SPRINT3_TASK_BOARD.md
-      - Sprint 3 Team Guide: sprints/WITS_QUEST_SPRINT3_GUIDE.md
-      - Sprint 4 Plan: sprints/SPRINT4_PLAN.md
+  - Third-Party Code Documentation:
+      - Third-Party Code & Services: development/third-party.md

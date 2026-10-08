@@ -13,6 +13,16 @@
 
 | If you want to know… | Read |
 | :--- | :--- |
+| What the game does | [Core Features](project/core-features.md), [Features by Sprint](project/sprint-features.md), [Requirements](project/requirements.md) |
+| How to call the API | [API Quick Start](development/api-quickstart.md), [Endpoint Catalogue](development/api-endpoints.md), [Swagger UI](development/swagger.md) |
+| How the team works | [Methodology](project/methodology.md), [Sprints](sprints/README.md), [Meetings](meetings/index.md), [Git Workflow](development/git-workflow.md) |
+| What users and the tutor said | [User Feedback](project/user-feedback.md), [Stakeholder Reviews](project/stakeholder-reviews.md) |
+| How it is tested | [Testing Documentation](development/testing-documentation.md), [Automated Testing](development/testing.md), [Bug Tracking](development/bug-tracking.md) |
+| How fast it is | [Performance](development/performance.md) |
+| How it is hosted | [Deployment](development/deployment.md) |
+| How it is built | [Database Schema](database/database-schema.md), [System Architecture](uml/01_system_architecture.md), [Third-Party Code](development/third-party.md) |
+
+--- | :--- |
 | What the game is and what it does | [Game Overview](project/overview.md), [Requirements](project/requirements.md) |
 | How to call the API | [API Quick Start](development/api-quickstart.md), [Endpoint Catalogue](development/api-endpoints.md) |
 | How it is built | [System Architecture](uml/01_system_architecture.md), [Database Schema](database/database-schema.md) |
