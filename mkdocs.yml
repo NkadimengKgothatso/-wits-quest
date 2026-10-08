@@ -83,8 +83,9 @@ nav:
       - Endpoint Catalogue: development/api-endpoints.md
       - Swagger UI: development/swagger.md
 
-  - Automated Testing:
-      - Test Results & Coverage: development/testing.md
+  - Testing Documentation:
+      - Testing Documentation: development/testing-documentation.md
+      - Automated Testing: development/testing.md
 
   - Performance:
       - Performance: development/performance.md
@@ -120,9 +121,6 @@ nav:
 
   - Third-Party Code Documentation:
       - Third-Party Code & Services: development/third-party.md
-
-  - Testing Documentation:
-      - Testing Documentation: development/testing-documentation.md
 
   - System Design (UML):
       - System Architecture: uml/01_system_architecture.md
