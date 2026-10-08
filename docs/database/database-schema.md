@@ -1,6 +1,6 @@
 # Database Schema
 
-Every table in the Wits Quest database, what it stores, and its main columns. The database is PostgreSQL on Supabase. For why it's built this way, see [Database Plan](database-plan.md). For a diagram of how the tables connect, see the [ERD](../uml/04_erd_database_schema.md).
+Every table in the Wits Quest database, what it stores, and its main columns. The database is PostgreSQL on Supabase. For why it's built this way, see [Database Plan](database-plan.md). For a picture of the whole database, see the [ERD](../uml/04_erd_database_schema.md#the-whole-database).
 
 There are **27 tables** in eight groups:
 

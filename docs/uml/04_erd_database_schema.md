@@ -6,6 +6,18 @@ How the database tables link to each other. To keep the diagrams readable, each 
 
 ---
 
+## The whole database
+
+Every table and every column in one picture, with each link drawn as an arrow to the table it points to. Click it to open it full size and zoom in.
+
+[![The full Wits Quest database: 27 tables in 8 groups](../database/images/database-diagram.svg)](../database/images/database-diagram.svg)
+
+[Download as PNG](../database/images/database-diagram.png)
+
+The diagrams below show the same links split into three smaller pictures.
+
+---
+
 ## Players, cards, events and battles
 
 ```mermaid
