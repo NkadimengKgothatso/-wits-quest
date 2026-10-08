@@ -37,7 +37,7 @@ Marks come from eight things: user feedback, automated testing, features, API, p
 | 24  | As a **player**, I find real campus content in the game (many events, questions and cards), not test data, so that the game feels finished.                                                                                                                 | Nontokozo                    |     M3      |
 | 25  | As a **player**, I can join a ranked queue, get matched with someone of similar Elo, and climb a ladder that resets each season, so that competitive play is fair and fresh.                                                                                | Nontokozo                    |    Final    |
 | 26  | As a **player**, I can earn influence in a campus zone and take it over from other players, and the map shows who holds each zone live, so that campus becomes contested.                                                                                   | Nontokozo                    |    Final    |
-| 27  | **All project documentation.**                                                                                                                                                                                                                              | Kgothatso & Oratile (shared) | M3 + Final  |
+| 27  | **All project documentation.**                                                                                                                                                                                                                              | Kgothatso                    | M3 + Final  |
 
 ## 2. Who Does What
 
