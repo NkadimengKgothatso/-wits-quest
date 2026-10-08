@@ -1,162 +1,346 @@
 # Database Schema
 
-Full column-level specifications for each table. See [Database Plan](database-plan.md) for the ERD and how these tables relate.
+Every table in the Wits Quest database, what it stores, and its main columns. The database is PostgreSQL on Supabase. For why it's built this way, see [Database Plan](database-plan.md). For a diagram of how the tables connect, see the [ERD](../uml/04_erd_database_schema.md).
 
-## `users` — Student Registration & Profile State
+There are **27 tables** in eight groups:
 
-Authentication credentials, student identification, progression levels, XP, Essence currency, streak multipliers, and competitive Elo ladder standing.
+| Group | Tables |
+| :--- | :--- |
+| [Players and cards](#players-and-cards) | `users`, `avatars`, `cards`, `user_cards`, `user_decks` |
+| [Events and trivia](#events-and-trivia) | `campaigns`, `events`, `event_attempts`, `trivia_questions`, `user_trivia_attempts` |
+| [Battles](#battles) | `battle_matches`, `async_pvp_challenges` |
+| [Trading](#trading) | `trade_offers`, `trade_offer_items` |
+| [Quest trails and territory](#quest-trails-and-territory) | `quest_trails`, `quest_trail_steps`, `user_quest_progress`, `territories`, `territory_influence` |
+| [Ranked seasons](#ranked-seasons) | `seasons`, `season_snapshots` |
+| [Anti-cheat](#anti-cheat) | `telemetry_pings`, `telemetry_flags`, `telemetry_audit`, `trust_tier_history` |
+| [Achievements](#achievements) | `achievements`, `user_achievements` |
 
-| Column Name        | Data Type      | Constraints         | Description                                            |
-| :----------------- | :------------- | :------------------ | :----------------------------------------------------- |
-| `id`               | `VARCHAR(36)`  | `PRIMARY KEY`       | Unique User UUID / Student ID                          |
-| `email`            | `VARCHAR(255)` | `UNIQUE, NOT NULL`  | Wits student email (`@students.wits.ac.za`)            |
-| `studentNumber`    | `VARCHAR(20)`  | `UNIQUE, NOT NULL`  | Wits student reference number                          |
-| `username`         | `VARCHAR(50)`  | `UNIQUE, NOT NULL`  | Explorer avatar display name                           |
-| `passwordHash`     | `VARCHAR(255)` | `NOT NULL`          | Bcrypted secure password hash                          |
-| `role`             | `ENUM`         | `DEFAULT 'STUDENT'` | `STUDENT`, `ADMIN`, `LECTURER`                         |
-| `level`            | `INTEGER`      | `DEFAULT 1`         | Current player level (`Lv.1` → `Lv.28`)                |
-| `currentXP`        | `INTEGER`      | `DEFAULT 0`         | XP accumulated within current level                    |
-| `totalXP`          | `INTEGER`      | `DEFAULT 0`         | Lifetime XP score                                      |
-| `essenceBalance`   | `INTEGER`      | `DEFAULT 100`       | Shard currency for Card Forge upgrades                 |
-| `dailyStreakCount` | `INTEGER`      | `DEFAULT 1`         | Consecutive 24-hr check-in streak                      |
-| `lastCheckInDate`  | `TIMESTAMP`    | `NOT NULL`          | Timestamp of last GPS landmark check-in                |
-| `streakMultiplier` | `FLOAT`        | `DEFAULT 1.0`       | `1.0` (0d), `1.10` (+10% at 3d), `1.25` (+25% at 7d)   |
-| `eloRating`        | `INTEGER`      | `DEFAULT 1000`      | Competitive Ranked rating score                        |
-| `divisionTier`     | `ENUM`         | `DEFAULT 'GOLD'`    | `BRONZE`, `SILVER`, `GOLD`, `PLATINUM`, `DIAMOND`      |
-| `pvpWins`          | `INTEGER`      | `DEFAULT 0`         | Total PvP victory counter                              |
-| `pvpLosses`        | `INTEGER`      | `DEFAULT 0`         | Total PvP defeat counter                               |
-| `pvpDraws`         | `INTEGER`      | `DEFAULT 0`         | Total PvP tie counter                                  |
-| `maxStatBudget`    | `INTEGER`      | `DEFAULT 300`       | Max stat points allowed per deck (upgrades with level) |
-| `legendaryCap`     | `INTEGER`      | `DEFAULT 1`         | Maximum Legendary cards allowed in deck                |
-| `createdAt`        | `TIMESTAMP`    | `DEFAULT NOW()`     | Registration timestamp                                 |
-| `updatedAt`        | `TIMESTAMP`    | `DEFAULT NOW()`     | Last profile update timestamp                          |
+**How to read the tables below**
 
-## `cards` — Master Landmark Card Catalog
+- Column names in `camelCase` are written in quotes in SQL (for example `"eloRating"`), because the backend sends them exactly like that. The anti-cheat, achievement, season, territory and trading tables use `snake_case` instead.
+- **PK** is the primary key, **FK** is a link to another table, and **unique** means no two rows can share that value.
+- Most ids are text (for example `card-008`). Player ids are the `uuid` that Supabase Auth gives each account.
+- Unless it says otherwise, deleting a player also deletes their rows in every other table.
 
-Master reference catalog defining landmark collectible cards across Wits campus.
+---
 
-| Column Name   | Data Type      | Constraints   | Description                                              |
-| :------------ | :------------- | :------------ | :------------------------------------------------------- |
-| `id`          | `VARCHAR(36)`  | `PRIMARY KEY` | Card identifier (`card-101`)                             |
-| `name`        | `VARCHAR(100)` | `NOT NULL`    | Card name (e.g. _Great Hall Pillars_)                    |
-| `category`    | `ENUM`         | `NOT NULL`    | `Science`, `History`, `Landmarks`, `Lifestyle`, `Sports` |
-| `rarity`      | `ENUM`         | `NOT NULL`    | `Common`, `Rare`, `Epic`, `Legendary`                    |
-| `baseAttack`  | `INTEGER`      | `NOT NULL`    | Base ATK value                                           |
-| `baseDefense` | `INTEGER`      | `NOT NULL`    | Base DEF value                                           |
-| `baseSpeed`   | `INTEGER`      | `NOT NULL`    | Base SPD value                                           |
-| `baseBrains`  | `INTEGER`      | `NOT NULL`    | Base BRN value                                           |
-| `totalStats`  | `INTEGER`      | `NOT NULL`    | Sum of base stat points                                  |
-| `imageUrl`    | `VARCHAR(255)` | `NOT NULL`    | WebP artwork path                                        |
-| `landmarkId`  | `VARCHAR(36)`  | `NULLABLE`    | Associated campus landmark ID                            |
+## Players and cards
 
-## `user_cards` — Student Inventory & Card Upgrades
+### `users`
 
-Tracks cards owned by each student along with upgrade levels from the Card Forge.
+One row per player. The `id` is the player's Supabase Auth account id, so passwords and logins are handled by Supabase Auth, not this table.
 
-| Column Name    | Data Type     | Constraints     | Description                                  |
-| :------------- | :------------ | :-------------- | :------------------------------------------- |
-| `id`           | `VARCHAR(36)` | `PRIMARY KEY`   | Inventory record ID                          |
-| `userId`       | `VARCHAR(36)` | `FOREIGN KEY`   | References `users.id`                        |
-| `cardId`       | `VARCHAR(36)` | `FOREIGN KEY`   | References `cards.id`                        |
-| `level`        | `INTEGER`     | `DEFAULT 1`     | Forge upgrade level (+5 all stats per level) |
-| `attackBonus`  | `INTEGER`     | `DEFAULT 0`     | Accumulated ATK bonus                        |
-| `defenseBonus` | `INTEGER`     | `DEFAULT 0`     | Accumulated DEF bonus                        |
-| `speedBonus`   | `INTEGER`     | `DEFAULT 0`     | Accumulated SPD bonus                        |
-| `brainsBonus`  | `INTEGER`     | `DEFAULT 0`     | Accumulated BRN bonus                        |
-| `quantity`     | `INTEGER`     | `DEFAULT 1`     | Duplicate count for scrapping                |
-| `acquiredAt`   | `TIMESTAMP`   | `DEFAULT NOW()` | Acquisition timestamp                        |
+| Column | Type | Default | What it holds |
+| :--- | :--- | :--- | :--- |
+| `id` | uuid | | PK, FK to `auth.users` |
+| `email` | text | | Wits email, unique |
+| `studentNumber` | text | | Student number, unique |
+| `username` | text | | Display name |
+| `role` | text | `STUDENT` | `STUDENT`, `ADMIN` or `LECTURER` |
+| `isOnline` | boolean | false | Shown in the live PvP lobby |
+| `level` | integer | 1 | Player level |
+| `currentXP` / `totalXP` | integer | 0 | XP in this level / XP ever earned |
+| `essenceBalance` | integer | 100 | Essence, spent in the Card Forge |
+| `dailyStreakCount` | integer | 1 | Days in a row the player checked in |
+| `lastCheckInDate` | timestamptz | now | Last daily check-in |
+| `streakMultiplier` | float | 1.0 | XP bonus from the streak |
+| `eloRating` | integer | 1000 | Ranked rating |
+| `divisionTier` | text | `GOLD` | Bronze, Silver, Gold, Platinum or Diamond |
+| `pvpWins` / `pvpLosses` / `pvpDraws` | integer | 0 | PvP record |
+| `maxStatBudget` | integer | 2000 | Most stat points a deck may cost |
+| `legendaryCap` | integer | 1 | Most Legendary cards allowed in a deck |
+| `avatar` | text | `owl` | Chosen avatar (an `avatars` id) |
+| `lastAction` / `lastActionAt` | text / timestamptz | | Last thing the player did, for the admin view |
+| `createdAt` / `updatedAt` | timestamptz | now | When the account was made / last changed |
 
-## `user_decks` — Constructed Battle Decks
+### `avatars`
 
-Stores custom 5-card battle decks created by students under budget constraints.
+The avatars players can pick from: `id`, `emoji`, `label`, and optional `cssClass` and `description`.
 
-| Column Name     | Data Type     | Constraints     | Description                                        |
-| :-------------- | :------------ | :-------------- | :------------------------------------------------- |
-| `id`            | `VARCHAR(36)` | `PRIMARY KEY`   | Deck ID                                            |
-| `userId`        | `VARCHAR(36)` | `FOREIGN KEY`   | References `users.id`                              |
-| `deckName`      | `VARCHAR(50)` | `NOT NULL`      | Deck display name                                  |
-| `cardIds`       | `JSON`        | `NOT NULL`      | Array of exactly 5 card IDs                        |
-| `totalStatCost` | `INTEGER`     | `NOT NULL`      | Sum of stat costs (must be ≤ `user.maxStatBudget`) |
-| `isDefault`     | `BOOLEAN`     | `DEFAULT FALSE` | Active battle deck indicator                       |
-| `createdAt`     | `TIMESTAMP`   | `DEFAULT NOW()` | Creation timestamp                                 |
-| `updatedAt`     | `TIMESTAMP`   | `DEFAULT NOW()` | Update timestamp                                   |
+### `cards`
 
-## `battle_matches` — Combat History & Logs
+The master list of every card in the game.
 
-Logs end-of-match outcomes across CPU, Live WebSocket, and Async PvP modes.
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK, for example `card-008` |
+| `name` | text | Card name |
+| `category` | text | Science, History, Landmarks, Lifestyle or Sports |
+| `rarity` | text | Common, Rare, Epic or Legendary |
+| `baseAttack`, `baseDefense`, `baseSpeed`, `baseBrains` | integer | The four battle stats |
+| `totalStats` | integer | Sum of the four stats (counts toward the deck budget) |
+| `imageUrl` | text | Card picture (Supabase Storage) |
+| `landmarkId` | text | The campus landmark it belongs to (optional) |
+| `status` | text | `draft`, `review`, `published` or `retired` (default `published`) |
+| `reviewRequestedBy` / `reviewRequestedAt` | text / timestamptz | Which admin sent it for review, and when |
 
-| Column Name           | Data Type     | Constraints     | Description                          |
-| :-------------------- | :------------ | :-------------- | :----------------------------------- |
-| `id`                  | `VARCHAR(36)` | `PRIMARY KEY`   | Match UUID                           |
-| `matchType`           | `ENUM`        | `NOT NULL`      | `CPU`, `LIVE_PVP`, `ASYNC_PVP`       |
-| `challengerId`        | `VARCHAR(36)` | `FOREIGN KEY`   | References `users.id`                |
-| `opponentId`          | `VARCHAR(36)` | `FOREIGN KEY`   | References `users.id` or `'CPU_BOT'` |
-| `winnerId`            | `VARCHAR(36)` | `NOT NULL`      | Winner User ID or `'DRAW'`           |
-| `roundsWonChallenger` | `INTEGER`     | `NOT NULL`      | Rounds won by challenger             |
-| `roundsWonOpponent`   | `INTEGER`     | `NOT NULL`      | Rounds won by opponent               |
-| `xpAwarded`           | `INTEGER`     | `NOT NULL`      | XP granted to winner/loser           |
-| `essenceAwarded`      | `INTEGER`     | `NOT NULL`      | Essence granted                      |
-| `eloChange`           | `INTEGER`     | `NOT NULL`      | Elo points delta (+15 to +25)        |
-| `roundsData`          | `JSON`        | `NOT NULL`      | Detailed round stat picks & outcomes |
-| `createdAt`           | `TIMESTAMP`   | `DEFAULT NOW()` | Match timestamp                      |
+Players only see `published` cards. A `retired` card is hidden from the catalogue, but players who own it keep it.
 
-## `async_pvp_challenges` — Async Turn Queue & Defensive Telemetry
+### `user_cards`
 
-Manages asynchronous turn-based challenges and stores failure feedback for offline defenders.
+The cards each player owns (their inventory). One row per player per card.
 
-| Column Name         | Data Type     | Constraints         | Description                                             |
-| :------------------ | :------------ | :------------------ | :------------------------------------------------------ |
-| `id`                | `VARCHAR(36)` | `PRIMARY KEY`       | Challenge ID                                            |
-| `challengerId`      | `VARCHAR(36)` | `FOREIGN KEY`       | Initiated by player                                     |
-| `defenderId`        | `VARCHAR(36)` | `FOREIGN KEY`       | Challenged offline player                               |
-| `status`            | `ENUM`        | `DEFAULT 'PENDING'` | `PENDING_DEFENDER_TURN`, `COMPLETED`, `EXPIRED`         |
-| `currentRound`      | `INTEGER`     | `DEFAULT 1`         | Active round number                                     |
-| `defenderTelemetry` | `JSON`        | `NULLABLE`          | Defensive failure report (failed stat, deficit, advice) |
-| `expiresAt`         | `TIMESTAMP`   | `NOT NULL`          | 24-hour expiration timestamp                            |
-| `createdAt`         | `TIMESTAMP`   | `DEFAULT NOW()`     | Creation timestamp                                      |
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK |
+| `userId` | uuid | FK to `users` |
+| `cardId` | text | FK to `cards` |
+| `level` | integer | Card level, raised in the Forge (default 1) |
+| `attackBonus`, `defenseBonus`, `speedBonus`, `brainsBonus` | integer | Extra stats from Forge upgrades (default 0) |
+| `quantity` | integer | How many copies the player has (default 1) |
+| `acquiredAt` | timestamptz | When they got it |
 
-## `avatars` — Profile Avatar Catalog
+### `user_decks`
 
-Customizable avatar emojis available to students for their profile.
+Saved battle decks.
 
-| Column Name   | Data Type      | Constraints   | Description                            |
-| :------------ | :------------- | :------------ | :------------------------------------- |
-| `id`          | `VARCHAR(50)`  | `PRIMARY KEY` | Avatar identifier (e.g. `owl`, `lion`) |
-| `emoji`       | `VARCHAR(10)`  | `NOT NULL`    | Emoji character                        |
-| `label`       | `VARCHAR(50)`  | `NOT NULL`    | Display name                           |
-| `cssClass`    | `VARCHAR(50)`  | `NOT NULL`    | CSS class for animation styling        |
-| `description` | `VARCHAR(100)` | `NOT NULL`    | Short description                      |
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK |
+| `userId` | uuid | FK to `users` |
+| `deckName` | text | Name of the deck |
+| `cardIds` | jsonb | List of the 5 card ids |
+| `totalStatCost` | integer | Total stats of the deck (must fit `maxStatBudget`) |
+| `isDefault` | boolean | The deck used in battles |
+| `createdAt` / `updatedAt` | timestamptz | |
 
-## `events` — Campus Landmark Events
+---
 
-Geofenced campus events linked to landmark trivia challenges. Students walk within the radius and answer a trivia question to earn card rewards and XP.
+## Events and trivia
 
-| Column Name    | Data Type          | Constraints             | Description                                            |
-| :------------- | :----------------- | :---------------------- | :----------------------------------------------------- |
-| `id`           | `VARCHAR(36)`      | `PRIMARY KEY`           | Event ID                                               |
-| `name`         | `VARCHAR(100)`     | `NOT NULL`              | Event/landmark name                                    |
-| `lat`          | `DOUBLE PRECISION` | `NOT NULL`              | Latitude of event center                               |
-| `lng`          | `DOUBLE PRECISION` | `NOT NULL`              | Longitude of event center                              |
-| `radius`       | `INTEGER`          | `DEFAULT 25`            | Geofence radius in meters                              |
-| `startDate`    | `TIMESTAMP`        | `NULLABLE`              | Event start date                                       |
-| `endDate`      | `TIMESTAMP`        | `NULLABLE`              | Event end date                                         |
-| `active`       | `INTEGER`          | `DEFAULT 1`             | 1 = active, 0 = inactive                               |
-| `cardReward`   | `VARCHAR(36)`      | `FOREIGN KEY, NULLABLE` | References `cards.id` — card awarded on correct answer |
-| `xpAward`      | `INTEGER`          | `DEFAULT 100`           | XP awarded on correct answer                           |
-| `essenceAward` | `INTEGER`          | `DEFAULT 50`            | Essence awarded on correct answer                      |
-| `createdAt`    | `TIMESTAMP`        | `DEFAULT NOW()`         | Creation timestamp                                     |
+### `campaigns`
 
-## `trivia_questions` — Event Trivia Questions
+A named time window, like "Term 3" or "Open Day". Events in a campaign are only shown to players while the campaign is running. Columns: `id`, `name`, `description`, `startDate`, `endDate`, `createdAt`. Deleting a campaign leaves its events without one.
 
-Stores the trivia question for each event. One question per event (create-or-replace on POST). Answers are withheld from the GET response to prevent client-side cheating.
+### `events`
 
-| Column Name       | Data Type     | Constraints             | Description                                   |
-| :---------------- | :------------ | :---------------------- | :-------------------------------------------- |
-| `id`              | `VARCHAR(36)` | `PRIMARY KEY`           | Question ID                                   |
-| `eventId`         | `VARCHAR(36)` | `FOREIGN KEY`           | References `events.id` (cascade delete)       |
-| `question`        | `TEXT`        | `NOT NULL`              | Question text                                 |
-| `questionType`    | `VARCHAR(10)` | `NOT NULL DEFAULT 'mc'` | `mc` (multiple choice) or `text` (text match) |
-| `options`         | `JSONB`       | `NULLABLE`              | Array of 4 option strings (MC only)           |
-| `correctIndex`    | `INTEGER`     | `NULLABLE`              | Index of correct option (MC only)             |
-| `acceptedAnswers` | `JSONB`       | `NULLABLE`              | Array of accepted answer strings (text only)  |
-| `createdAt`       | `TIMESTAMP`   | `DEFAULT NOW()`         | Creation timestamp                            |
+A place on campus where players answer trivia to earn rewards.
+
+| Column | Type | Default | What it holds |
+| :--- | :--- | :--- | :--- |
+| `id` | text | | PK |
+| `name` | text | | Event name |
+| `lat`, `lng` | float | | Location |
+| `radius` | integer | 25 | How close (in metres) a player must be |
+| `startDate`, `endDate` | timestamptz | | When it runs |
+| `active` | integer | 1 | 1 = running, 0 = not (a number, not true/false) |
+| `cardReward` | text | | FK to `cards`: the card it gives |
+| `xpAward` | integer | 100 | XP it gives |
+| `essenceAward` | integer | 50 | Essence it gives |
+| `autoPlaced` | integer | 0 | 1 = placed by the automatic event rotation, 0 = placed by an admin |
+| `status` | text | `published` | `draft`, `review`, `published` or `retired` |
+| `reviewRequestedBy` / `reviewRequestedAt` | text / timestamptz | | Who sent it for review, and when |
+| `campaignId` | text | | FK to `campaigns` (optional) |
+| `qr_secret` | text | | Secret behind the event's QR code. The API never sends it to the app |
+| `createdAt` | timestamptz | now | |
+
+### `event_attempts`
+
+Records that a player completed an event: `userId`, `eventId`, `completedAt`. The pair (`userId`, `eventId`) is unique, so an event can only be completed once per player.
+
+### `trivia_questions`
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK |
+| `eventId` | text | FK to `events` |
+| `orderIndex` | integer | Order of the question within the event |
+| `question` | text | The question |
+| `questionType` | text | `mc` (multiple choice) or `text` (typed answer) |
+| `options` | jsonb | The choices, for multiple choice |
+| `correctAnswer` | text | The right answer. Never sent to the app |
+| `acceptedAnswers` | jsonb | Other accepted spellings, for typed answers |
+| `status` | text | `draft`, `review`, `published` or `retired` |
+| `reviewRequestedBy` / `reviewRequestedAt` | text / timestamptz | Who sent it for review, and when |
+| `createdAt` | timestamptz | |
+
+### `user_trivia_attempts`
+
+Each player's answer to a question: `userId`, `triviaId`, `isCorrect`, `created_at`. The pair (`userId`, `triviaId`) is unique, so a question can only be answered once. The time is used by the anti-cheat check that spots impossible travel between two events.
+
+---
+
+## Battles
+
+### `battle_matches`
+
+The result of every finished battle.
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK |
+| `matchType` | text | `CPU`, `LIVE_PVP` or `ASYNC_PVP` |
+| `challengerId` | uuid | FK to `users` |
+| `opponentId` | text | The other player's id, or `CPU_BOT` |
+| `winnerId` | text | The winner's id, or `DRAW` |
+| `roundsWonChallenger` / `roundsWonOpponent` | integer | Rounds each side won |
+| `xpAwarded` / `essenceAwarded` | integer | Rewards given |
+| `eloChange` | integer | How much the rating moved |
+| `roundsData` | jsonb | Every round: cards played, stat chosen, who won |
+| `createdAt` | timestamptz | |
+
+`opponentId` and `winnerId` are not links to `users`, because they can also hold `CPU_BOT` or `DRAW`.
+
+### `async_pvp_challenges`
+
+A turn-based battle played over time, where each player moves when it suits them.
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK |
+| `challengerId` / `defenderId` | uuid | FKs to `users` |
+| `status` | text | `PENDING_ACCEPTANCE`, `CHALLENGER_TURN`, `DEFENDER_TURN`, `COMPLETED`, `EXPIRED` or `DECLINED` |
+| `currentRound` / `maxRounds` | integer | Round now / rounds in total (5) |
+| `challengerDeckIds` / `defenderDeckIds` | jsonb | Each side's deck |
+| `roundsHistory` | jsonb | Finished rounds. Whose turn it is is worked out from this |
+| `pendingPick` | jsonb | The card and stat picked this round, waiting for the other player |
+| `defensiveTelemetry` | jsonb | Data about the defender's choices |
+| `expiresAt` | timestamptz | When the challenge runs out |
+| `createdAt` | timestamptz | |
+
+---
+
+## Trading
+
+### `trade_offers`
+
+One row per trade between two players.
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | uuid | PK |
+| `sender_id` / `receiver_id` | uuid | FKs to `users`. A player can't trade with themselves |
+| `status` | text | `pending`, `accepted`, `rejected` or `cancelled` |
+| `created_at` / `responded_at` | timestamptz | When it was sent / answered |
+| `expires_at` | timestamptz | 24 hours after it was sent |
+
+### `trade_offer_items`
+
+The cards in a trade: `trade_id` (FK to `trade_offers`), `user_id` (who gives the card), `user_card_id` (FK to `user_cards`), and `quantity` (must be more than 0). A card can't be deleted while it is part of a trade.
+
+---
+
+## Quest trails and territory
+
+### `quest_trails`
+
+A chain of events to complete in order, with a bonus at the end.
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK |
+| `name`, `description` | text | |
+| `rewardCardId` | text | FK to `cards`: bonus card (optional) |
+| `rewardXp` / `rewardEssence` | integer | Bonus XP / Essence |
+| `status` | text | `draft`, `published` or `retired` (default `draft`) |
+| `createdAt` | timestamptz | |
+
+### `quest_trail_steps`
+
+The events in a trail: `trailId`, `eventId`, `orderIndex`. The pair (`trailId`, `orderIndex`) is unique, so each step number is used once.
+
+### `user_quest_progress`
+
+Each player's progress on a trail: `userId`, `trailId`, `currentStep`, `completedAt`. The pair (`userId`, `trailId`) is unique, which stops the trail bonus being paid twice.
+
+### `territories`
+
+Campus zones that players compete to own.
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK |
+| `name`, `description` | text | |
+| `north_lat`, `south_lat`, `east_lng`, `west_lng` | float | The zone's edges |
+| `owner_id` / `owner_username` | uuid / text | Who owns it now |
+| `captured_at` | timestamptz | When it last changed owner |
+| `capture_count` | integer | How many times it has changed owner |
+| `created_at` | timestamptz | |
+
+### `territory_influence`
+
+Each player's influence in each zone: `territory_id`, `user_id`, `username`, `influence`, `updated_at`. The key is the pair (`territory_id`, `user_id`). Completing an event in a zone gives +10 influence and winning a battle there gives +5. The player with the most influence owns the zone, and the owner keeps it on a tie.
+
+---
+
+## Ranked seasons
+
+### `seasons`
+
+Ranked seasons: `id`, `name`, `start_date`, `end_date`, `is_active`. The database starts with one active season, `season_1`.
+
+### `season_snapshots`
+
+The final leaderboard of a season, saved when it ends: `season_id`, `user_id`, `username`, `final_elo`, `rank`. The key is the pair (`season_id`, `user_id`).
+
+---
+
+## Anti-cheat
+
+### `telemetry_pings`
+
+The player's location, sent by the app while they play.
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | bigint | PK, counts up automatically |
+| `user_id` | uuid | FK to `users` |
+| `lat`, `lng` | float | Position |
+| `timestamp` | timestamptz | When it was recorded |
+| `accuracy` | float | GPS accuracy in metres |
+| `source` | text | `qr` when the player checked in by scanning a QR code |
+
+### `telemetry_flags`
+
+Suspicious movement found automatically: `user_id`, `ping_id` (the ping that caused it), `flag_type` (`speed`, `teleport` or `poor_accuracy`), `details`, `created_at`.
+
+### `telemetry_audit`
+
+What admins did about a flagged player: `user_id`, `incident_id`, `action` (`warned`, `suspended` or `false_positive`), `admin_email`, `timestamp`. Rows are only ever added, never changed.
+
+### `trust_tier_history`
+
+Every change to a player's trust tier: `user_id`, `old_tier`, `new_tier`, `old_score`, `new_score`, `reason`, `created_at`. The trust score itself is worked out from the flags each time, not stored.
+
+---
+
+## Achievements
+
+### `achievements`
+
+The achievements players can unlock.
+
+| Column | Type | What it holds |
+| :--- | :--- | :--- |
+| `id` | text | PK, for example `first_card` |
+| `name`, `description`, `icon`, `category` | text | What players see |
+| `rule_type` | text | What is counted: `cards_collected`, `deck_size`, `battles_won`, `battles_played` or `level_reached` |
+| `target_value` | integer | The number needed to unlock it |
+| `created_by` | text | The admin who made it |
+| `active` | boolean | Only active achievements can be unlocked |
+
+### `user_achievements`
+
+Which player unlocked which achievement, and when: `user_id`, `achievement_id`, `unlocked_at`. The pair (`user_id`, `achievement_id`) is unique.
+
+---
+
+## Database functions
+
+Some actions change several rows that must all change together, or none at all. These run as functions inside the database. Each one locks the rows it uses, so two requests at the same moment can't spend the same cards or Essence twice. Only the backend can call them.
+
+| Function | What it does |
+| :--- | :--- |
+| `forge_scrap(inventory_id, user_id)` | Turns one spare copy of a card into Essence: Common 5, Rare 25, Epic 35, Legendary 50. The player must have at least 2 copies. |
+| `forge_upgrade(inventory_id, user_id)` | Costs 100 Essence and 2 copies (the player needs at least 3). The card goes up 1 level and gets +5 to every stat. |
+| `create_trade_offer(...)` | Creates a trade and its cards in one step. |
+| `accept_trade_offer(trade_id, receiver_id)` | Swaps the cards. Refuses if the trade isn't pending or has expired, if either account is under 7 days old or suspended, if either player has already made 5 trades today, or if a player no longer has the cards. |
+| `add_territory_influence(territory_id, user_id, username, amount)` | Adds influence in a zone and changes the owner if the player now has the most. |
+
+## Security
+
+- Only the backend reads and writes the database. It uses Supabase's service-role key, which stays on the server.
+- The app only has Supabase's public key, which it uses to log players in. That key has **no access** to any table or function.
+- Row-level security is switched on for every table, with no rules that let anyone else in.
+
+This was set by the [lock-down migration](database-plan.md#changes-to-the-database) on 29 September 2026. Before it, anyone with the public key could have changed their own Essence or Elo directly.
