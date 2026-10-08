@@ -3,7 +3,7 @@
 Every REST endpoint of the live Wits Quest API, with its full working address. The list was checked against the code on `main` that Render deploys (`backend/src/routes/` and `server.ts`, last changed 1 October 2026).
 
 !!! tip "Try them in the browser"
-    The **Swagger UI** is live at [wits-quest.onrender.com/api/docs](https://wits-quest.onrender.com/api/docs). The **On Swagger** column shows which endpoints are on it. **Try it out** sends a real request and shows the response. The raw OpenAPI 3.0 file is at [wits-quest.onrender.com/api/openapi.json](https://wits-quest.onrender.com/api/openapi.json).
+    The **Swagger UI** is live at [wits-quest.onrender.com/api/docs](https://wits-quest.onrender.com/api/docs), and you can also use it inside these docs on the [Swagger UI](swagger.md) page. The **On Swagger** column shows which endpoints are on it. **Try it out** sends a real request and shows the response. The raw OpenAPI 3.0 file is at [wits-quest.onrender.com/api/openapi.json](https://wits-quest.onrender.com/api/openapi.json).
 
 Public `GET` endpoints are links, so you can open them straight from this page. Replace `{id}`-style parts with a real id. Every endpoint also works with `/api/v1` in place of `/api`.
 

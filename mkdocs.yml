@@ -81,7 +81,7 @@ nav:
   - API:
       - API Quick Start: development/api-quickstart.md
       - Endpoint Catalogue: development/api-endpoints.md
-      - Swagger UI (live): https://wits-quest.onrender.com/api/docs
+      - Swagger UI: development/swagger.md
 
   - Automated Testing:
       - Test Results & Coverage: development/testing.md
