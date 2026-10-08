@@ -14,7 +14,7 @@ For the features built this sprint, see [Features by Sprint](../project/sprint-f
 | :--- | :--- |
 | **Nontokozo** | Add pictures to the cards |
 | **Oratile** | Add sound to the game |
-| **Kgothatso & Oratile** | Clean up the documentation |
+| **Kgothatso** | Clean up the documentation |
 | **Junior & Mahlatse** | Build the new ideas the team agrees on |
 | **Rea** | Review the UI design and suggest or make changes |
 | **Mahlatse** | Set up the live app and clean its data |
