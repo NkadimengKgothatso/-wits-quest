@@ -1,4 +1,4 @@
-# Wits Quest (COMS3011A Project 6) — Sprint 2 Handover Guide
+# Sprint 2 Team Guide
 
 **Prepared by:** Mahlatse Clayton
 **Date:** 8 September 2026

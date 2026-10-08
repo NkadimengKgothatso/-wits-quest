@@ -1,4 +1,4 @@
-# Wits Quest (COMS3011A Project 6): Sprint 3 Guide
+# Sprint 3 Team Guide
 
 **Prepared by:** Mahlatse Clayton · **Date:** 23 Sep 2026
 **Sprint:** 15 → 29 Sep · **Milestone 3 demo: Tue 29 Sep** · **Final submission: Sun 11 Oct**

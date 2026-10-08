@@ -1,8 +1,8 @@
-# Wits Quest — Sprint 3 Task Board
+# Sprint 3 Plan
 
 **Sprint:** 15 → 29 Sep 2026 · **Milestone 3 demo: Tue 29 Sep** · **Final submission: Sun 11 Oct**
 
-This page distributes the [Sprint 3 Guide](./WITS_QUEST_SPRINT3_GUIDE.md) into one checklist per team member. Each row is a task from the guide, with its story number, due date, fix IDs (`F##`) and files. Update your own rows as work moves, the same day it moves. This board is part of the methodology evidence.
+This page distributes the [Sprint 3 Team Guide](./WITS_QUEST_SPRINT3_GUIDE.md) into one checklist per team member. Each row is a task from the guide, with its story number, due date, fix IDs (`F##`) and files. Update your own rows as work moves, the same day it moves. This board is part of the methodology evidence.
 
 **Status key:** ⬜ Not started · 🔄 In progress · 🔍 In review · ✅ Merged and verified
 

@@ -1,4 +1,4 @@
-# Wits Quest - Sprint 1 Implementation Guide
+# Sprint 1 Team Guide
 
 ## 1. Technology Stack Explained Simply
 

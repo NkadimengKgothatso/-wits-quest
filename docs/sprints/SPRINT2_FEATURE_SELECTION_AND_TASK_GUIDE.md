@@ -1,4 +1,4 @@
-# Wits Quest — Sprint 2 Feature Guide & Team Task Selection Matrix
+# Sprint 2 Plan
 
 > **Document Purpose**: This guide is designed for the Wits Quest development team (COMS3011A Project 6). It breaks down all features across the **Basic**, **Intermediate**, and **Advanced** tiers, details the exact updates and polishing required for Sprint 2, and maps out actionable tasks so every team member can choose what to take on.
 
