@@ -325,6 +325,17 @@ Which player unlocked which achievement, and when: `user_id`, `achievement_id`, 
 
 ---
 
+## Old tables in the live database
+
+The live Supabase database still has two tables that the code doesn't use. They aren't in `schema.sql`, so a fresh database won't have them.
+
+| Table | What it was | Replaced by |
+| :--- | :--- | :--- |
+| `battle_match_records` | Battle history with `snake_case` columns, used until August 2026 | `battle_matches` |
+| `email_verification_codes` | Email check codes (`userId`, `code`, `expiresAt`, `used`). No code in the repo has ever used it; it was made directly in Supabase | Supabase Auth, which handles email checks |
+
+They can be dropped once we're sure nothing in them is needed.
+
 ## Database functions
 
 Some actions change several rows that must all change together, or none at all. These run as functions inside the database. Each one locks the rows it uses, so two requests at the same moment can't spend the same cards or Essence twice. Only the backend can call them.
