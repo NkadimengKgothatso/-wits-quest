@@ -20,6 +20,38 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ---
 
+## 2026-10-08 — Overall App Testing
+
+**Channel:** Big-O (SDP) Discord — Lounge voice channel
+
+![Discord Lounge voice session — 2026-10-08](images/2026-10-08-discord-meeting.jpeg)
+
+**Attendees:** MCee, Juju, Kgothatso, Oratile
+
+**Context:** The team went through the whole app together to find what still needs fixing before submission. MCee shared their screen and walked through the app, including the admin console's card editor.
+
+**Decisions:**
+
+| Decision | Detail |
+| :--- | :--- |
+| Card pictures | Some cards still have no picture. This needs fixing. |
+| Clean the live app | Remove test data so only the default/starter cards, events and other real content are left. |
+| Campus testing | Anyone on campus tomorrow tests the app on their phone: create events and walk around campus. |
+| Map markers | Show each player's avatar on the map page instead of a number. |
+| Ideas to look at | Sound effects in battle mode, a theme for the game, and a tournament mode. |
+
+**Action items:**
+
+| Owner | Task | Due |
+| :--- | :--- | :--- |
+| Team | Add pictures to every card that's missing one | Before submission |
+| Team | Clean the live database, keeping only the default content | Before submission |
+| Anyone on campus | Test on phones: create events and walk around campus | 2026-10-09 |
+| Team | Change the number on the map page to the player's avatar | Before submission |
+| Team | Look into battle sounds, a game theme and a tournament mode | TBD |
+
+---
+
 ## 2026-09-28 — Final Client Meeting Prep & PR Process
 
 **Channel:** Big-O (SDP) Discord — Lounge voice channel
