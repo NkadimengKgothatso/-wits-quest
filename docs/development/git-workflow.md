@@ -8,13 +8,13 @@ The team's rules for branches, commits and merging. Git hooks check most of them
 
 | Repository | What it holds | How changes reach `main` |
 | :--- | :--- | :--- |
-| `Wits-Quest` (Gitea) | All app code: frontend and backend | Pull request with one approval |
+| `Wits-Quest` (Gitea) | All app code: frontend and backend | Pull request, or the integration lead merges the branch |
 | `Wits-Quest-frontend` / `Wits-Quest-Backend` (Gitea) | Read-only copies of the frontend and backend | Updated automatically by `sync-mirrors.yml` |
 | `Wits-Quest-Documentation` (Gitea, mirrored on GitHub) | This documentation site | Committed on GitHub `main`, then pushed to Gitea |
 
 ## Branches
 
-`main` must always work, so nobody pushes code straight to it. Every feature or fix gets its own branch, named after the person and the work:
+`main` must always work. Every feature or fix gets its own branch, named after the person and the work. The only commits made straight to `main` are small integration fixes by the integration lead (Mahlatse), needed when combined branches don't work together.
 
 | Kind | Format | Example |
 | :--- | :--- | :--- |
@@ -39,10 +39,10 @@ chore: remove the unused DeckBuilder screen
 
 ## Merging
 
-1. Open a pull request into `main`.
-2. Get at least one teammate's approval.
+1. Test the feature locally first (agreed on 28 Sep).
+2. Open a pull request into `main` on Gitea, or ask the integration lead to merge your branch.
 3. All checks must pass (below).
-4. Mention the issue it closes (`closes #42`), so Gitea closes the issue on merge.
+4. If it fixes a bug issue, mention it (`closes #42`) so Gitea closes the issue on merge.
 
 ## Automatic checks
 
