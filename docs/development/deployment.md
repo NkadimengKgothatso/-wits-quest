@@ -9,7 +9,7 @@ Where each part of Wits Quest is hosted and how it gets there.
 | Part | Hosted on | Address |
 | :--- | :--- | :--- |
 | **App** (React) | Vercel | [wits-quest.vercel.app](https://wits-quest.vercel.app) |
-| **API** (Node.js + Express + Socket.IO) | Render (free plan) | [wits-quest.onrender.com/api](https://wits-quest.onrender.com/api/health) |
+| **API** (Node.js + Express + Socket.IO) | Render (free plan) | [wits-quest.onrender.com/api/health](https://wits-quest.onrender.com/api/health) |
 | **Database, login and file storage** | Supabase (PostgreSQL) | Managed by Supabase |
 | **Documentation** (this site) | GitHub Pages | [nkadimengkgothatso.github.io/-wits-quest](https://nkadimengkgothatso.github.io/-wits-quest/) |
 

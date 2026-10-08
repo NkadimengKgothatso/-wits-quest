@@ -9,7 +9,7 @@ Public `GET` endpoints are links, so you can open them straight from this page. 
 
 **Calling the API**
 
-- Base URL: `https://wits-quest.onrender.com/api` (also `https://wits-quest.onrender.com/api/v1`). Locally it is `http://localhost:3000/api`.
+- Base URL: `https://wits-quest.onrender.com/api` (also `https://wits-quest.onrender.com/api/v1`). Locally it is `http://localhost:3000/api`. The base URL on its own isn't an endpoint and returns `No such endpoint`; use the full addresses below.
 - 🌐 **Public** endpoints need no token. 🔒 **Login** endpoints need a bearer token:
   `POST /auth/token` with an email + password, copy `access_token`, paste it into
   Swagger UI's **Authorize** button (JWT, ~1 hour validity). 🛡️ **Admin** endpoints

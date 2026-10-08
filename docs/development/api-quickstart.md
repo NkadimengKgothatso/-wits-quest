@@ -8,14 +8,16 @@ The full list of endpoints is in the [Endpoint Catalogue](api-endpoints.md).
 
 ## Base URLs
 
-| Where | URL |
-| :--- | :--- |
-| Live API | `https://wits-quest.onrender.com/api` |
-| Versioned base (use this for new clients) | `https://wits-quest.onrender.com/api/v1` |
-| Swagger page (try every endpoint in the browser) | [wits-quest.onrender.com/api/docs](https://wits-quest.onrender.com/api/docs) |
-| Local development | `http://localhost:3000/api` |
+The base URL is the start of every endpoint's address. It isn't an endpoint by itself, so opening `https://wits-quest.onrender.com/api` on its own returns `No such endpoint: GET /api`. Add an endpoint's path to the end, for example `/health`.
 
-Every route works under both `/api` and `/api/v1`. The app uses `/api`. External users should use `/api/v1`.
+| Where | Base URL | Working example |
+| :--- | :--- | :--- |
+| Live API | `https://wits-quest.onrender.com/api` | [https://wits-quest.onrender.com/api/health](https://wits-quest.onrender.com/api/health) |
+| Versioned live API (use this for new clients) | `https://wits-quest.onrender.com/api/v1` | [https://wits-quest.onrender.com/api/v1/health](https://wits-quest.onrender.com/api/v1/health) |
+| Swagger UI (try every endpoint in the browser) | | [https://wits-quest.onrender.com/api/docs](https://wits-quest.onrender.com/api/docs), or the [Swagger UI](swagger.md) page in these docs |
+| Local development | `http://localhost:3000/api` | `http://localhost:3000/api/health` |
+
+Every route works under both `/api` and `/api/v1`. The app uses `/api`. External users should use `/api/v1`. The full list of paths is in the [Endpoint Catalogue](api-endpoints.md).
 
 !!! note "First request can be slow"
     The backend runs on Render's free plan, which sleeps when idle. The first request after a quiet period can take up to a minute while it wakes up.
