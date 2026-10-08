@@ -42,7 +42,7 @@ Each sprint's plan and team guide are on the [Sprints](../sprints/README.md) pag
 | **Product owner** | The client and the tutor | Set the brief, review each milestone and give the feedback we act on ([Stakeholder Reviews](stakeholder-reviews.md)) |
 | **Integration lead** | Mahlatse | Merges members' branches into `main`, fixes problems that only show up once everything is combined, and keeps the deploy working |
 | **Feature owners** | Every member | Each member owns their features from the screen to the database: building, testing and documenting them |
-| **Documentation** | Kgothatso and Oratile | Keep this site in step with the app (shared with feature owners, who document their own work) |
+| **Documentation** | Kgothatso  | Keep this site in step with the app (shared with feature owners, who document their own work) |
 
 We don't have a dedicated Scrum Master. Meetings are run by whoever calls them, and the action items are written down so everyone knows who does what.
 
