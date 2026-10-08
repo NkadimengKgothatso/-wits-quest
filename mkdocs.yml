@@ -114,6 +114,7 @@ nav:
   - Database Documentation:
       - Database Plan: database/database-plan.md
       - Database Schema: database/database-schema.md
+      - Database Diagram: database/database-diagram.md
       - ERD: uml/04_erd_database_schema.md
 
   - Third-Party Code Documentation:
