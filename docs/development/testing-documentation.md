@@ -41,7 +41,7 @@ To run them: `npm test` inside `frontend/` or `backend/`. Each test file sits ne
 ## 3. Rules for tests
 
 1. **No task is done without tests.** New features come with tests in the same pull request: API tests for backend changes, UI tests for frontend changes.
-2. **Coverage can't drop below the gate.** The frontend gate is 80% and the backend gate is 60% (target 80%). Below that, the test run fails and the push is blocked.
+2. **Coverage can't drop below the gate.** The frontend gate is 80% and the backend gate is 60% (target 80%). On 8 Oct the frontend was at 92% and the backend at 70%. Below that, the test run fails and the push is blocked.
 3. **All tests must pass** before a push or a merge.
 4. **Changes that alter data are checked on the server,** with the login and input checks tested.
 5. **No high-severity bugs open** at a milestone, and game fixes are re-tested on a real phone on campus.
