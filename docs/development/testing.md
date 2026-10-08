@@ -24,9 +24,25 @@ No tests failed or were skipped.
 | Backend tests | 452 (29 files) | 552 (39 files) | +100 tests, +10 files |
 | Backend statement coverage | 63.91% | 70.08% | +6.17 points |
 
-![Frontend test run and coverage report, 29 Sep 2026](images/2026-09-29-frontend-coverage.jpeg)
+### Screenshots of the 8 October run
 
-*Frontend `npm test` output from the 29 September run: 20 files and 163 tests passing, with the coverage report.*
+=== "Frontend"
+
+    ![Frontend test run and coverage report, 8 Oct 2026](images/2026-10-08-frontend-tests.png)
+
+    *Frontend `npm test`: 27 files and 193 tests passing, and 92.15% statement coverage.*
+
+=== "Backend"
+
+    ![Backend test run and coverage report, 8 Oct 2026](images/2026-10-08-backend-tests.png)
+
+    *Backend `npm test`: 39 files and 552 tests passing, and 70.08% statement coverage.*
+
+=== "Frontend, 29 Sep (earlier run)"
+
+    ![Frontend test run and coverage report, 29 Sep 2026](images/2026-09-29-frontend-coverage.jpeg)
+
+    *Frontend `npm test` from 29 September: 20 files and 163 tests passing.*
 
 The **coverage gate** is the minimum coverage set in each code base's test config. If coverage drops below it, the test run fails. The frontend gate is 80% (`frontend/vite.config.ts`). The backend gate is 60% (`backend/vitest.config.ts`). Backend coverage is now 70%, so the gate could be raised to 70%, and our goal is 80%.
 
@@ -48,7 +64,7 @@ The API tests call real endpoints with Supertest, using a fake database so no re
 - **Also tested:** QR check-in, trust scores and the trust gate, admin-only route guards, automatic event placement, live battle socket events, starter decks for new players, the deck budget, and the Swagger docs routes.
 - **Error cases:** database failures, expired trades and missing settings all return the right error code instead of crashing.
 
-Largest backend test files: `content.test.ts` (60 tests), `trades.test.ts` (38), `auth.test.ts` (30), `contentLifecycle.test.ts` (27), `battleSocketHandler.test.ts` (25), `asyncBattle.test.ts` (25) and `server.test.ts` (23).
+Largest backend test files: `content.test.ts` (60 tests), `contentLifecycle.test.ts` (47), `trades.test.ts` (38), `auth.test.ts` (30), `battleSocketHandler.test.ts` (25), `asyncBattle.test.ts` (25) and `server.test.ts` (23).
 
 ### Frontend (UI tests and unit tests)
 
@@ -69,7 +85,7 @@ Largest backend test files: `content.test.ts` (60 tests), `trades.test.ts` (38),
 | OpenRouteService directions | It's an outside service | Tests use a fake response; the real one is checked by hand |
 | Database seed scripts | They run once to load content | Checked by looking at the data in Supabase |
 
-**Where backend coverage is lowest:** the database and seed files in `src/db` (about 2%), `db/achievements.ts` (26%), `routes/telemetry.ts` (32%), `routes/battle.ts` (37%) and `routes/ranked.ts` (61%). These are the next targets for raising the backend gate to 80%.
+**Where backend coverage is lowest:** the database and seed files in `src/db` (about 2%), the achievement rules in `utils/achievements.ts` (26%) and `routes/adminAchievements.ts` (31%), `routes/telemetry.ts` (32%), `routes/battle.ts` (37%) and `routes/ranked.ts` (61%). These are the next targets for raising the backend gate to 80%.
 
 ---
 
