@@ -54,7 +54,7 @@ Marks come from eight things: user feedback, automated testing, features, API, p
    - Audit every endpoint: correct HTTP method, sensible paths, no duplicate or leftover routes, one error format, proper status codes.
    - Version the API under `/api/v1` and keep the old paths working.
    - Measure and fix the slow parts: the trust-score endpoint queries the database twice per player, and the analytics endpoints read up to 5000 rows each.
-   - Record before-and-after timings for the demo and hand the endpoint list to Kgothatso and Oratile for the API reference.
+   - Record before-and-after timings for the demo and hand the endpoint list to Kgothatso for the API reference.
 
 ### Oratile: Anti-Cheat
 
@@ -73,7 +73,7 @@ Marks come from eight things: user feedback, automated testing, features, API, p
 2. **Analytics (M3).** Pass rates per **question**, and card drop rates compared with the intended rate for each rarity, on the Analytics screen. Rea's "Needs repair" flag uses the per-question numbers.
 3. **Streaks (M3).** Consecutive days grow the streak and a missed day resets it. XP is multiplied ×1.10 at 3 days and ×1.25 at 7. (F28, F38)
 
-### Kgothatso & Oratile (shared): Documentation — rubric: Documentation 15%
+### Kgothatso: Documentation — rubric: Documentation 15%
 
 All project documentation is solely yours, and it carries 15% of the Milestone 3 mark on its own. It must cover **features, API, database and testing**, plus the evidence for methodology, stakeholder and user feedback that other criteria are marked on.
 
@@ -90,7 +90,7 @@ All project documentation is solely yours, and it carries 15% of the Milestone 3
 5. **User testing (M3) — rubric: User Feedback 10%, Improvement 5%.**
    - Run **two rounds** of sessions with at least 8 students who aren't on the team: one round this week, one after the fixes.
    - Use a set script (sign up, walk to an event, answer, battle, trade) and a short Google Form: what was confusing, what broke, rate each screen 1–5.
-   - Log every finding in the bug tracker, fix what you can before 29 Sep, and keep a "you said → we changed → commit" list for the demo. Hand it to Kgothatso and Oratile for the docs.
+   - Log every finding in the bug tracker, fix what you can before 29 Sep, and keep a "you said → we changed → commit" list for the demo. Hand it to Kgothatso for the docs.
 
 ### Junior: Trading, Map, Security & Quality
 
@@ -131,7 +131,7 @@ All project documentation is solely yours, and it carries 15% of the Milestone 3
 - Log every bug you find in the tracker, including ones from user testing.
 - Follow the git methodology: a branch per task, a PR with a description and a reviewer, no direct pushes to `main`.
 - Move your card on the sprint board the day you start and the day you finish. The board is the evidence for the methodology mark.
-- Be at the daily stand-up. Kgothatso and Oratile keep the notes.
+- Be at the daily stand-up. Kgothatso keeps the notes.
 
 ## 3. Rubric Coverage (Milestone 3)
 
@@ -140,11 +140,11 @@ All project documentation is solely yours, and it carries 15% of the Milestone 3
 | **User Feedback**          |  10%   | Two rounds of testing with 8+ students, a feedback form, findings logged, changes shipped | Rea (everyone helps run sessions)                                         |
 | **Automated Testing**      |  10%   | Over 60% coverage on both code bases, with API tests and UI tests, enforced in CI         | Junior (gate); everyone writes tests                                      |
 | **Feature Implementation** |  20%   | Stories 1–26 working, with no severe bugs                                                 | Everyone                                                                  |
-| **API Implementation**     |  20%   | Every endpoint working, consistent design, versioned, documented, reachable from outside  | Mahlatse (design), Junior (availability), Kgothatso & Oratile (reference) |
+| **API Implementation**     |  20%   | Every endpoint working, consistent design, versioned, documented, reachable from outside  | Mahlatse (design), Junior (availability), Kgothatso (reference) |
 | **Performance**            |   5%   | Measured page and API timings, with the slow endpoints fixed                              | Mahlatse                                                                  |
-| **Improvement**            |   5%   | A "you said → we changed → commit" list from testing and lecturer feedback                | Rea + Kgothatso & Oratile                                                 |
-| **Documentation**          |  15%   | MkDocs site covering features, API, database and testing, with no broken links            | Kgothatso & Oratile                                                       |
-| **Project Methodology**    |  15%   | Sprint board history, stand-up and meeting notes, git flow in the PR history, burndown    | Everyone; evidence compiled by Kgothatso & Oratile                        |
+| **Improvement**            |   5%   | A "you said → we changed → commit" list from testing and lecturer feedback                | Rea + Kgothatso                                                 |
+| **Documentation**          |  15%   | MkDocs site covering features, API, database and testing, with no broken links            | Kgothatso                                                       |
+| **Project Methodology**    |  15%   | Sprint board history, stand-up and meeting notes, git flow in the PR history, burndown    | Everyone; evidence compiled by Kgothatso                               |
 
 **Carried into Milestone 4 (11 Oct):** accessibility, aesthetics, UX and responsiveness (Rea); database structure, deployment and real data (Nontokozo + Mahlatse); API architecture, deployment and load performance (Mahlatse + Junior); coverage above 80% (everyone); the external API integration (Junior); project and bug tracker evidence (Junior).
 

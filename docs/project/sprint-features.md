@@ -93,4 +93,4 @@ Every feature in the brief was done by the end of Sprint 3, so Sprint 4 (29 Sep 
 | Friends: recent opponents, friend requests, rivals, and blocking | Junior, Mahlatse |
 | Ideas to look at: a game theme and a tournament mode | Team |
 
-Sprint 4 also covers non-feature work: a UI review in every theme (Rea), the documentation clean-up (Kgothatso and Oratile), cleaning test data out of the live app (Mahlatse), and testing on phones around campus (everyone).
+Sprint 4 also covers non-feature work: a UI review in every theme (Rea), the documentation clean-up (Kgothatso), cleaning test data out of the live app (Mahlatse), and testing on phones around campus (everyone).

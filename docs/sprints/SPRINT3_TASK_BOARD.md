@@ -14,7 +14,7 @@ This page distributes the [Sprint 3 Team Guide](./WITS_QUEST_SPRINT3_GUIDE.md) i
 | Member | Area | Stories | M3 | Final |
 | :--- | :--- | :---: | :---: | :---: |
 | **Mahlatse** | Check-ins, Battles & API | 1, 2, 3, 4, 5 | 5 | 0 |
-| **Oratile** | Anti-Cheat & Documentation | 6, 7, 8 (+27 docs) | 2 | 1 |
+| **Oratile** | Anti-Cheat | 6, 7, 8 | 2 | 1 |
 | **Kgothatso** | Achievements, Analytics, Streaks & Documentation | 9, 10, 11 (+27 docs) | 3 | 0 |
 | **Rea** | Mobile UI, Curation & User Testing | 12, 13, 14, 15, 16 | 5 | 0 |
 | **Junior** | Trading, Map, Security & Quality | 17, 18, 19, 20, 21 | 4 | 1 |
@@ -31,8 +31,8 @@ Work that unblocks someone else. If you own the left column, land it early.
 | Kgothatso | Rea | Per-question pass rates for the "Needs repair" flag | Before Curation review |
 | Nontokozo | Junior | Quest trails, so "next stop" can point to the next trail step | Before map demo |
 | Nontokozo | Kgothatso | Server-side trail completion, so the `trail_finished` achievement rule can be enabled | Before achievements demo |
-| Mahlatse | Kgothatso & Oratile | Final endpoint list and before/after timings for the API reference | Sun 27 Sep |
-| Rea | Kgothatso & Oratile | "You said → we changed → commit" list and testing findings | After each testing round |
+| Mahlatse | Kgothatso | Final endpoint list and before/after timings for the API reference | Sun 27 Sep |
+| Rea | Kgothatso | "You said → we changed → commit" list and testing findings | After each testing round |
 | Rea | Everyone | **Mobile-checked** sign-off on every new screen before it merges | Every PR |
 | Junior | Everyone | Coverage gate in CI (60%, then 80%) so tests ship with each feature | Sat 26 Sep |
 | Mahlatse | Nontokozo | Pairing on live PvP socket code for ranked matchmaking (Final) | Final |
@@ -43,7 +43,7 @@ flowchart LR
     K2[Kgothatso: per-question pass rates] --> R4[Rea: Needs repair flag]
     N2[Nontokozo: quest trails] --> J3[Junior: next stop]
     N2 --> K1[Kgothatso: trail_finished rule]
-    M5[Mahlatse: endpoint list] --> D[Kgothatso and Oratile: API docs]
+    M5[Mahlatse: endpoint list] --> D[Kgothatso: API docs]
     R5[Rea: testing findings] --> D
     J4[Junior: coverage gate] --> ALL[Everyone: tests in same PR]
 ```
@@ -58,14 +58,13 @@ flowchart LR
 | 4 | Spectate: "Watch" button on live matches, plus a full two-phone test of live PvP | M3 | — | Live PvP screens | ⬜ | |
 | 5 | API design and performance: endpoint audit, `/api/v1` versioning (old paths keep working), fix slow trust-score and analytics queries, record before/after timings, hand endpoint list to docs | M3 | — | All routes; trust-score and analytics endpoints | ⬜ | |
 
-## Oratile — Anti-Cheat & Documentation
+## Oratile — Anti-Cheat
 
 | Story | Task | Due | Fix IDs | Files / where | Status | PR / evidence |
 | :-: | :--- | :--- | :--- | :--- | :---: | :--- |
 | 6 | Walking-time check: refuse and flag an answer that comes faster than the walk between events allows | M3 | — | Builds on Mahlatse's location check | ⬜ | |
 | 7 | QR proof: scan a QR code at the landmark when GPS is too poor; admins print each event's code from the console | M3 | — | Admin console, map/trivia flow | ⬜ | |
 | 8 | Trust responses: stricter checks → rewards held for review → no cards, ranked or trading; count duplicate answers and accounts that only play each other | Final | — | Anti-cheat services, admin console | ⬜ | |
-| 27 | Documentation (shared with Kgothatso): features, API, database, testing, plus methodology, stakeholder and user-feedback evidence | M3 + Final | — | `docs/` | ⬜ | |
 
 ## Kgothatso — Achievements, Analytics, Streaks & Documentation
 
@@ -74,7 +73,7 @@ flowchart LR
 | 9 | Admin-created achievements: rule type, target, name, icon; server checks after every answer and match; pop-up on unlock; replace hard-coded list and remove the two sign-up badges | M3 | — | `utils/achievements.ts`, admin console | ⬜ | |
 | 10 | Analytics: pass rate per question and card drop rate vs intended rate per rarity | M3 | — | Analytics screen | ⬜ | |
 | 11 | Streaks: consecutive days grow it, a missed day resets it, XP ×1.10 at 3 days and ×1.25 at 7 | M3 | F28, F38 | Progression routes | ⬜ | |
-| 27 | Documentation (shared with Oratile) and methodology evidence: board history, stand-up and meeting notes, PR history, burndown | M3 + Final | — | `docs/` | ⬜ | |
+| 27 | Documentation (features, API, database, testing) and methodology evidence: stakeholder and user-feedback evidence, board history, stand-up and meeting notes, PR history, burndown | M3 + Final | — | `docs/` | ⬜ | |
 
 ## Rea — Mobile UI, Curation & User Testing
 
@@ -106,7 +105,7 @@ flowchart LR
 | 25 | Ranked + seasons: queue by similar Elo, only ranked matches change Elo, seasons archive and soft-reset (pair with Mahlatse on live PvP sockets) | Final | F19 | Ranked matchmaking | ⬜ | |
 | 26 | Territory: campus zones, influence from answers and wins, most influence holds the zone, server settles simultaneous moves, live map | Final | F23 | `TerritoryMap.tsx`, territories | ⬜ | |
 
-## Documentation deliverables (Kgothatso & Oratile)
+## Documentation deliverables (Kgothatso)
 
 Documentation carries 15% of the Milestone 3 mark, and other criteria are marked from the evidence it holds.
 
@@ -127,7 +126,7 @@ Documentation carries 15% of the Milestone 3 mark, and other criteria are marked
 - Log every bug you find in the tracker, including ones from user testing.
 - Follow the git methodology: a branch per task, a PR with a description and a reviewer, no direct pushes to `main`.
 - Move your card on the sprint board the day you start and the day you finish.
-- Be at the daily stand-up. Kgothatso and Oratile keep the notes.
+- Be at the daily stand-up. Kgothatso keeps the notes.
 
 ## Done Means
 

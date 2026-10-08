@@ -32,7 +32,7 @@ For the features built this sprint, see [Features by Sprint](../project/sprint-f
 - An on/off switch for sound in the Me tab that remembers the choice.
 - Keep the sounds short and quiet, because players are walking around campus.
 
-## Kgothatso & Oratile: documentation
+## Kgothatso: documentation
 
 - Make the README and these docs match the app as it is now: the new look and 4 themes, the six tabs (Map, Cards, Quests, Battle, Ranks, Me), the draft → review → published flow, contested zones, and the two-turn live battles.
 - Bring the [UML diagrams](../uml/01_system_architecture.md) up to date, including territory influence in the ERD and the pick and answer turns in the battle state diagram.
