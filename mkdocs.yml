@@ -80,8 +80,7 @@ nav:
       - Async PvP Walkthrough: development/async-pvp-walkthrough.md
 
   - API:
-      - API Quick Start (Verified): development/api-quickstart.md
-      - API Reference: development/api-reference.md
+      - API Quick Start: development/api-quickstart.md
       - Endpoint Catalogue: development/api-endpoints.md
 
   - Automated Testing:
@@ -108,11 +107,9 @@ nav:
       - Git Workflow: development/git-workflow.md
       - Decisions Log: development/decisions-log.md
       - Technical Decisions: development/technical-decisions.md
-      - Gitea Actions Migration: development/gitea-actions-migration-plan.md
 
   - Bug Tracker:
       - Bug Tracking: development/bug-tracking.md
-      - Fix Register: development/fix-register.md
 
   - Database Documentation:
       - Database Plan: database/database-plan.md
@@ -123,19 +120,13 @@ nav:
       - Third-Party Code & Services: development/third-party.md
 
   - Testing Documentation:
-      - Overview: development/testing-documentation.md
-      - Testing & CI/CD Plan: development/testing-plan.md
+      - Testing Documentation: development/testing-documentation.md
 
   - System Design (UML):
       - System Architecture: uml/01_system_architecture.md
       - Development Architecture: development/architecture.md
-      - Class Diagram: uml/class-diagram.md
       - Use Case Diagram: uml/03_use_case_diagram.md
-      - Use Case Description: uml/use-case.md
       - Battle State Machine: uml/02_battle_state_machine.md
-      - Sequence Diagrams: uml/sequence-diagrams.md
-      - Activity Diagrams: uml/activity-diagrams.md
-      - UML Overview: uml/index.md
 
   - Sprints:
       - Overview: sprints/README.md
