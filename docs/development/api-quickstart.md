@@ -1,153 +1,103 @@
-# API Quick Start — Verified Working Routes
+# API Quick Start
 
-The exact commands to run the backend locally and exercise **every endpoint that was verified to respond** on the running server, from a PowerShell terminal (the team default). The full route catalogue — including routes with known defects, which will misbehave if you call them — lives in the [API Reference](api-reference.md). Routes flagged ⚠/◐ there are deliberately excluded here; see [Routes to avoid in a demo](#routes-to-avoid-in-a-demo) below.
+Wits Quest has a **hand-written REST API** (Express + TypeScript) and a **Socket.IO** connection for live battles. Supabase stores the data and handles login, but it does not generate any of our endpoints. Every route is code the team wrote.
+
+The full list of endpoints is in the [Endpoint Catalogue](api-endpoints.md).
 
 ---
 
-## 1. Install dependencies and start the backend
+## Base URLs
 
-```powershell
-# from the repo root (skip if already done)
-npm run install:all
+| Where | URL |
+| :--- | :--- |
+| Live API | `https://wits-quest.onrender.com/api` |
+| Versioned base (use this for new clients) | `https://wits-quest.onrender.com/api/v1` |
+| Swagger page (try every endpoint in the browser) | [wits-quest.onrender.com/api/docs](https://wits-quest.onrender.com/api/docs) |
+| Local development | `http://localhost:3000/api` |
 
-cd backend
-npm run dev
-```
+Every route works under both `/api` and `/api/v1`. The app uses `/api`. External users should use `/api/v1`.
 
-Runs on `http://localhost:3000` (the `PORT` in `backend/.env`), auto-restarts on file changes. **Leave this terminal open** — everything else runs in a second terminal.
+!!! note "First request can be slow"
+    The backend runs on Render's free plan, which sleeps when idle. The first request after a quiet period can take up to a minute while it wakes up.
 
-## 2. (Optional) Start the frontend — only needed to obtain a login token
-
-```powershell
-cd frontend
-npm run dev
-```
-
-Runs on `http://localhost:5173`. You only need it for step 4, to log in and grab a token.
-
-## 3. Health check — no auth required
-
-```powershell
-curl.exe http://localhost:3000/api/health
-```
-
-Expected:
-
-```json
-{ "status": "ok", "service": "Wits Quest API (Supabase)", "timestamp": "..." }
-```
-
-!!! note "Use `curl.exe`, not bare `curl`"
-    PowerShell aliases `curl` to `Invoke-WebRequest`, which behaves differently (no `-H`/`-d` like real curl). If the health check doesn't respond, the backend isn't actually running or is on a different port — check the terminal from step 1 for errors.
-
-## 4. Get a token once, reuse it for every authenticated call
-
-Protected routes need a Supabase JWT in the `Authorization` header. The backend never mints tokens — it verifies the one Supabase Auth issued at login.
-
-1. Open the running frontend (step 2) in a browser and log in.
-2. In DevTools (F12 → **Console**) run:
-
-```js
-JSON.parse(localStorage.getItem(Object.keys(localStorage).find((k) => k.includes('auth-token'))))
-  .access_token;
-```
-
-3. Copy the printed string (starts with `eyJ...`) and store it in the terminal you'll run curl from:
-
-```powershell
-$env:TOKEN = '<paste-token-here>'
-```
-
-The variable lasts only for that terminal session, and the token itself expires after ~1 hour — re-run this step in any new terminal. Verify it works:
-
-```powershell
-curl.exe http://localhost:3000/api/auth/me -H "Authorization: Bearer $env:TOKEN"
-```
-
-Expected: a JSON user object with your profile (level, XP, essence, avatar, …). PowerShell-native alternative: `Invoke-RestMethod http://localhost:3000/api/auth/me -Headers @{ Authorization = "Bearer $env:TOKEN" }`.
-
-## 5. The verified routes
-
-| Method | Route | Auth | Verified response |
-| :--- | :--- | :--- | :--- |
-| GET | `/api/health` | — | Liveness probe: `{ "status": "ok", … }` |
-| GET | `/api/cards` | — | Published card catalogue |
-| GET | `/api/users/leaderboard` | — | Real division ladder (top 100) |
-| GET | `/api/avatars` | — | Avatar catalogue |
-| GET | `/api/auth/me` | Bearer | Your own profile |
-| GET | `/api/battle/history` | Bearer | Your CPU/PvP battle history |
-| GET | `/api/battle/async/my-matches` | Bearer | Async PvP matches bucketed Your Turn / Waiting / Challenges / History |
-| POST | `/api/player/deck` | Bearer | Save your default deck (body below) |
-| GET | `/api/users/:id/cards` | — | Another player's card collection |
-| GET | `/api/users/:id/decks` | — | Another player's decks |
-
-## 6. Copy-paste calls
-
-**No auth required:**
-
-```powershell
-curl.exe http://localhost:3000/api/cards
-curl.exe http://localhost:3000/api/users/leaderboard
-curl.exe http://localhost:3000/api/avatars
-```
-
-**Auth required (uses `$env:TOKEN` from step 4):**
-
-```powershell
-curl.exe http://localhost:3000/api/auth/me -H "Authorization: Bearer $env:TOKEN"
-curl.exe http://localhost:3000/api/battle/history -H "Authorization: Bearer $env:TOKEN"
-curl.exe http://localhost:3000/api/battle/async/my-matches -H "Authorization: Bearer $env:TOKEN"
-```
-
-**Save your default deck (POST with a JSON body):**
-
-```powershell
-curl.exe -X POST http://localhost:3000/api/player/deck `
-  -H "Authorization: Bearer $env:TOKEN" `
-  -H "Content-Type: application/json" `
-  -d '{\"deckName\":\"My Deck\",\"cardIds\":[\"card-008\",\"card-009\",\"card-010\",\"card-011\",\"card-012\"]}'
-```
-
-PowerShell line-continuation is a backtick (`` ` ``) at the end of the line, not `\`. The JSON body quotes are escaped with `\"` because PowerShell is already inside single quotes.
-
-**Routes that take another user's id** — get your own id from the `/api/auth/me` response:
-
-```powershell
-curl.exe http://localhost:3000/api/users/<user-id>/cards
-curl.exe http://localhost:3000/api/users/<user-id>/decks
-```
-
-**Bash equivalent (Git Bash / WSL / macOS / Linux)** — `export` instead of `$env:`, bare `curl` works, and `\` for line continuation:
+## 1. Check the API is up
 
 ```bash
-export TOKEN='<paste-token-here>'
+curl https://wits-quest.onrender.com/api/health
+```
 
-curl http://localhost:3000/api/auth/me \
-  -H "Authorization: Bearer $TOKEN"
+```json
+{ "status": "ok", "service": "Wits Quest API (Supabase)", "timestamp": "...", "commit": "..." }
+```
 
-curl -X POST http://localhost:3000/api/player/deck \
+## 2. Get a login token
+
+Most endpoints need a token in the header: `Authorization: Bearer <token>`.
+
+The backend never creates passwords or tokens itself. Supabase Auth issues the token, and the backend checks it on every request.
+
+```bash
+curl -X POST https://wits-quest.onrender.com/api/auth/token \
+  -H "Content-Type: application/json" \
+  -d '{"email":"<your email>","password":"<your password>"}'
+```
+
+Copy `access_token` from the response. It lasts about one hour. On the Swagger page, paste it into the **Authorize** button instead.
+
+## 3. Make calls
+
+```bash
+export TOKEN='<paste token here>'
+
+# No login needed
+curl https://wits-quest.onrender.com/api/cards
+curl https://wits-quest.onrender.com/api/users/leaderboard
+
+# Login needed
+curl https://wits-quest.onrender.com/api/auth/me -H "Authorization: Bearer $TOKEN"
+curl https://wits-quest.onrender.com/api/battle/history -H "Authorization: Bearer $TOKEN"
+
+# Save a deck (5 cards you own)
+curl -X POST https://wits-quest.onrender.com/api/player/deck \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"deckName":"My Deck","cardIds":["card-008","card-009","card-010","card-011","card-012"]}'
 ```
 
-## Routes to avoid in a demo
+!!! tip "Using PowerShell?"
+    Type `curl.exe` instead of `curl`, store the token with `$env:TOKEN = '...'`, and end continued lines with a backtick (`` ` ``) instead of `\`.
 
-Some routes in the [API Reference](api-reference.md) are listed for completeness but have known defects — calling them live produces errors or misleading behaviour:
+## Access levels
 
-- `POST /api/battle/result` — overlapping legacy reward endpoint, unauthenticated; being consolidated with `/record` ([F15](fix-register.md)).
-- `POST /api/events/:id/answer` — legacy duplicate that trusts `userId` from the request body; slated for removal ([F3](fix-register.md)).
-- `PUT /api/users/:id` — works, but has no ownership check yet.
-- Authoring routes (`POST /api/cards`, `POST/PUT/DELETE /api/events`, …) — no ADMIN role guard yet ([F5](fix-register.md)).
+| Level | Who can call it |
+| :--- | :--- |
+| **Public** | Anyone, no token |
+| **Login** | Any signed-in player |
+| **Admin** | Signed-in accounts with the ADMIN role (the authoring console) |
 
-## Testing without a live server
+Admin endpoints return `403` for normal players. Calls without a valid token return `401`.
 
-To check backend logic without hitting a real server:
+## Responses and errors
 
-```powershell
+- Requests and responses are JSON.
+- Success uses `200` (read or update) or `201` (created).
+- Errors return a JSON body like `{ "error": "Event not found" }` with a matching status: `400` bad input, `401` not logged in, `403` not allowed, `404` not found, `409` conflict (for example, answering an event twice), `410` removed endpoint, `500` server error.
+
+## Live battles (Socket.IO)
+
+Live PvP and the ranked queue use Socket.IO on the same server, not REST. The main events are `lobby:challenge`, `lobby:challenge_response`, `set_active_card`, `respond_turn`, `ranked:queue` and `leave_battle`. See the [Live PvP Walkthrough](live-pvp-walkthrough.md) for the full flow.
+
+## External API: walking directions
+
+`GET /routing/route` returns a walking route to the next event. The backend calls the **OpenRouteService** Directions API (`foot-walking`), so the API key stays on the server. If OpenRouteService fails, the app draws a straight line instead. The app also caches routes so it doesn't repeat the same request.
+
+## Run the API locally
+
+```bash
 cd backend
-npm test                                   # full suite
-npx vitest run src/routes/deck.test.ts     # one file
+npm install
+npm run dev        # http://localhost:3000
+npm test           # run the backend tests
 ```
 
-For how the backend is laid out route-by-route, see [Development Architecture](architecture.md).
+The backend needs `SUPABASE_URL` and `SUPABASE_KEY` in `backend/.env`. `OPENROUTESERVICE_API_KEY` is optional (without it, routes fall back to a straight line).

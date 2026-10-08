@@ -1,74 +1,64 @@
 # Git Workflow
 
-The team's agreed standard for branches, commits, and merges across the three repositories (frontend, backend, docs). It is **enforced, not just suggested**: husky pre-commit hooks run linting on every commit, and the CI pipeline gates every merge to `main`.
+The team's rules for branches, commits and merging. Git hooks check most of them automatically.
+
+---
 
 ## Repositories
 
-| Repository | Contents | Merges to `main` via |
+| Repository | What it holds | How changes reach `main` |
 | :--- | :--- | :--- |
-| `Wits-Quest` (source, Gitea) | Monorepo working tree — frontend + backend + shared tooling | Pull request, 1 peer approval, CI green |
-| `Wits-Quest-Frontend` / `Wits-Quest-Backend` (Gitea) | Automated read-only mirrors of the split packages | Pushed automatically by `sync-mirrors.yml` |
-| `Wits-Quest-Documentation` (this repo) | MkDocs site, sprint guides, implementation plans | Direct commits on a working branch, then fast-forward to `main` (docs-only changes run no code CI — Decision [D-02](decisions-log.md)) |
+| `Wits-Quest` (Gitea) | All app code: frontend and backend | Pull request with one approval |
+| `Wits-Quest-frontend` / `Wits-Quest-Backend` (Gitea) | Read-only copies of the frontend and backend | Updated automatically by `sync-mirrors.yml` |
+| `Wits-Quest-Documentation` (Gitea, mirrored on GitHub) | This documentation site | Committed on GitHub `main`, then pushed to Gitea |
 
-## Branch naming
+## Branches
 
-Branches are named `type/owner-short-description`, so the author and purpose are visible in every log and PR list:
+`main` must always work, so nobody pushes code straight to it. Every feature or fix gets its own branch, named after the person and the work:
 
-| Branch type | Format | Example |
+| Kind | Format | Example |
 | :--- | :--- | :--- |
-| Feature | `feature/<member>-<short-description>` | `feature/junior-map-explorer` |
-| Bug fix | `fix/<fix-id>-<short-description>` | `fix/f6-repeat-farming` |
-| Documentation | `docs/<topic>` | `docs/stakeholder-reviews` |
-| Tooling / CI | `chore/<topic>` | `chore/gitea-actions-migration` |
+| Feature | `<name>/<feature>` | `Nontokozo/quest-trails` |
+| Fix | `<name>/fix-<problem>` | `mahlatse/fix-signup-db-fallback` |
+| Docs | `<name>/<topic>` | `Kgothatso/documatation_migration` |
 
-Rules:
+## Commit messages
 
-- `main` is always deployable/demo-ready — **no direct pushes to `main`** in the code repos once past early scaffolding.
-- One branch per feature or fix; fix branches carry the `F##` ID from the [fix register](fix-register.md) so the defect→branch→PR chain is traceable.
-
-## Commit format
-
-The team uses **Conventional Commits** — `type(scope): imperative summary` — so six contributors' history stays scannable and each commit declares what it touches:
+We use **Conventional Commits**: `type(area): what changed`, written as an instruction.
 
 ```
-feat(battle): add server-side round resolution for CPU battles
-fix(deck): reject 6th card and enforce 300-point stat budget
-docs: record Sprint 1 tutor review and close documentation gaps
-ci: migrate GitHub Actions workflows to Gitea Actions
-chore(deps): bump backend dependencies
+feat(trails): the map flags each trail's next stop
+fix(async-pvp): an overdue round no longer crashes the server
+docs: record Sprint 3 meetings
+chore: remove the unused DeckBuilder screen
 ```
 
-- **Types used in this project:** `feat`, `fix`, `docs`, `ci`, `chore`, `refactor`, `test`.
-- **Scope = domain:** `map`, `battle`, `auth`, `deck`, `cards`, `api`, `db`, `ui`, `forge`, `telemetry`, `admin` (matches the domain-ownership table in [Methodology](../project/methodology.md)).
-- **Summary rules:** imperative mood ("add", not "added"), lowercase after the colon, no trailing period, under ~72 characters.
-- **Issue linkage:** commits and PR descriptions reference the work they close — `closes #42`, `fixes #10` — so Gitea auto-closes the Issue and links the traceability chain (Decision [D-01](decisions-log.md#d-01-issues-over-projects-for-work-tracking)).
+- **Types:** `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `ci`.
+- **Area:** the part of the game, like `map`, `battle`, `auth`, `trails` or `admin`.
+- Keep the summary short, with no full stop at the end.
 
-## Merge rules
+## Merging
 
-1. **Pull request into `main`** for all code changes — no exceptions past scaffolding.
-2. **At least one peer approval** required (Definition of Done, [Methodology](../project/methodology.md)).
-3. **CI must be green** on the PR branch: lint, `tsc --noEmit`, and Vitest with the 80% coverage gates for both packages.
-4. **PR description cites its IDs** — the Issue number and any fix-register `F##` IDs it resolves.
-5. **Docs repo only:** documentation changes may be committed directly to a working branch and fast-forwarded to `main`, because docs changes deliberately run no code CI pipeline (Decision [D-02](decisions-log.md)).
+1. Open a pull request into `main`.
+2. Get at least one teammate's approval.
+3. All checks must pass (below).
+4. Mention the issue it closes (`closes #42`), so Gitea closes the issue on merge.
 
-## Enforcement
+## Automatic checks
 
-The standard is enforced automatically — a non-conforming commit cannot reach `main` silently:
-
-| Gate | Where it runs | What it does |
+| When | Check | What happens if it fails |
 | :--- | :--- | :--- |
-| **husky + lint-staged** | Pre-commit, locally | ESLint `--fix` + Prettier on staged files — badly formatted code never gets committed |
-| **ESLint + Prettier** | CI, every push | Full-repo lint and format check |
-| **TypeScript** | CI, every push | `tsc --noEmit` on both packages |
-| **Vitest** | CI, every push | Full test suite with 80% coverage gates |
+| Every commit | ESLint and Prettier on the changed files (husky + lint-staged) | The commit is blocked |
+| Every push | Full lint, type-check, and all frontend and backend tests (husky pre-push) | The push is blocked |
+| On demand | The same checks on the Gitea runners (`.gitea/workflows/ci.yml`) | The run is marked failed |
+| Push to `main` | Deploy to Vercel, Render and GitHub Pages (`.github/workflows/ci.yml`) | The deploy is skipped or marked failed |
 
-Sprint 1 shipped with none of this — the gap was flagged in the tutor's Sprint 1 review and closed in Sprint 2 (see [Technical Decisions](technical-decisions.md) and the [review record](../project/stakeholder-reviews.md)).
+The Gitea runners were slow during Sprint 3, so the full test run moved to the pre-push hook on each developer's machine. Gitea CI can still be run by hand.
 
-## PR checklist
+## Pull request checklist
 
-- [ ] Feature matches the requirement tier it targets (Basic/Intermediate/Advanced — see [Requirements](../project/requirements.md))
-- [ ] No client-trusted state for anything server-authoritative (location, answers, match outcomes)
-- [ ] Relevant docs page updated (this site, `docs/`)
-- [ ] Tested against both `npm run dev:frontend` and `npm run dev:backend`
-- [ ] Works on a real phone on campus (GPS, geofence, offline behaviour)
-- [ ] PR description references the Issue ID and fix-register IDs it closes
+- [ ] Anything that matters for fairness (location, answers, battle results) is checked on the server, not trusted from the app
+- [ ] Tests added or updated
+- [ ] Docs updated if the feature, an endpoint or a table changed
+- [ ] Tried on a real phone if it's a game feature
+- [ ] Pull request says which issue it closes

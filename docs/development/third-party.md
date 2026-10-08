@@ -3,7 +3,7 @@
 Every library, framework, and external service the project depends on, verified against the actual `package.json` manifests of the [source repo](https://sdp.ms.wits.ac.za/big-o/Wits-Quest) (frontend, backend, and root). Written to satisfy the brief's third-party code documentation requirement — for the *reasoning* behind the bigger architectural choices, see [Technical Decisions](technical-decisions.md).
 
 !!! info "Licensing stance"
-    All dependencies are permissively licensed open source (MIT, Apache-2.0, ISC, or BSD). No paid API keys are required anywhere in the stack — a deliberate constraint for a course project.
+    All dependencies are permissively licensed open source (MIT, Apache-2.0, ISC, or BSD). The only API key we use is a free OpenRouteService key for walking directions.
 
 !!! note "Sprint 2 auth migration"
     The biggest third-party change in Sprint 2: authentication moved from a hand-rolled JWT + bcrypt + nodemailer stack to **Supabase Auth**. `jsonwebtoken`, `bcrypt`, and `nodemailer` were removed from the backend entirely — the backend now *verifies* Supabase-issued tokens rather than minting its own, and Supabase delivers the email OTPs. See the migration plan in the source repo (`personal/supabase-auth-migration-plan.md`).
@@ -22,6 +22,8 @@ From `frontend/package.json`:
 | **leaflet** + **react-leaflet** | ^1.9.4 / ^4.2.1 | Campus map rendering | Open-source renderer that displays Wits campus maps **without paid Google Maps API keys** — an explicit Sprint 1 decision ([SPRINT1.md](../sprints/SPRINT1.md)) |
 | **lucide-react** | ^0.344.0 | Icon set | Tree-shakeable SVG icons for the bottom nav, top bar, and screen chrome |
 | **canvas-confetti** | ^1.9.2 | Unlock/celebration animations | Lightweight particle effects for card-unlock moments; mocked in the test suite rather than snapshot-tested |
+| **html5-qrcode** | ^2.3.8 | QR scanner | Lets players scan an event's printed QR code with the phone camera when GPS is too weak |
+| **qrcode** | ^1.5.4 | QR generator | Draws the QR code admins print for each event |
 | **socket.io-client** | ^4.8.3 | Live PvP WebSocket client | Matches the backend's Socket.IO server for turn timers and synchronized two-player state |
 | **@supabase/supabase-js** | ^2.112.3 | Supabase Auth client + database access | Talks to Supabase Auth directly from the browser using the **anon key** (sign-up, sign-in, session refresh); never sees the service-role key |
 
@@ -62,8 +64,9 @@ From the monorepo root `package.json` — shared lint/format/commit gates:
 | **Supabase** | Postgres 15 + **Auth** + Storage + Realtime | Four subsystems in one free-tier service — see the breakdown below |
 | **Vercel** | Frontend hosting | Automatic builds from the main branch |
 | **Render** | Backend hosting | Configured via `render.yaml` at the source-repo root; health probe at `/api/health` |
-| **Gitea** (`sdp.ms.wits.ac.za`) | Source control + CI | University-hosted; native **Gitea Actions** pipelines now live (`.gitea/workflows/`): `ci.yml` (lint, typecheck, both test suites with the 80% coverage gate, production builds) and `sync-mirrors.yml` (subtree-split pushes to the frontend/backend/docs mirror repos) |
-| **GitHub** | Public mirror + these docs | Source repo is mirrored to GitHub for visibility; the monorepo's `docs/` subtree is split into this repository and published to GitHub Pages |
+| **OpenRouteService** | Walking directions (external API) | The backend calls its Directions API (`foot-walking`) to draw the route to the next event; the API key stays on the server |
+| **Gitea** (`sdp.ms.wits.ac.za`) | Source control + CI | University-hosted. `.gitea/workflows/ci.yml` runs lint, type-check and both test suites on demand; `sync-mirrors.yml` copies the frontend and backend into their own repos |
+| **GitHub Actions** | Deployment | On every push to `main`, deploys the app to Vercel and the API to Render |
 | **GitHub Pages** | This documentation site | MkDocs Material build, deployed from the docs workflow |
 | **Google Forms** | User feedback survey | The [feedback form](../project/user-feedback.md) used for the Sprint 2 user-feedback cycle |
 | **Figma** | Design workspace | The design system (parchment/gold/navy palette, typography) that this documentation site's theme mirrors |
@@ -98,6 +101,6 @@ These are as much a part of the third-party story as what we *do* use:
 
 ## Attribution notes
 
-- The **Haversine formula** used for the 25 m geofence is standard public-domain spherical-trigonometry mathematics — implemented in-house, not copied from a library.
+- The **Haversine formula** used for the distance check is standard public-domain spherical-trigonometry mathematics — implemented in-house, not copied from a library.
 - **Game content** — campus landmark trivia, card definitions, and stat values — is original team-authored material. Wits campus coordinates are factual data.
 - Battle rules, engine logic, and the Kudu CPU AI are original implementations, documented in the [CPU Battle Rules](cpu-battle-rules.md) rulebook.

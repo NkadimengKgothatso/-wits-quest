@@ -17,7 +17,6 @@ erDiagram
     USER {
         uuid id PK
         string email
-        string passwordHash
         int level
         int xp
         int trustScore

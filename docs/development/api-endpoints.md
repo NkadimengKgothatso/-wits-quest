@@ -1,9 +1,8 @@
 # API Endpoint Catalogue
 
-Every REST endpoint of the Wits Quest backend, generated from the single source of
-truth in the code: [`backend/src/docs/openapi.ts`](https://sdp.ms.wits.ac.za/big-o/Wits-Quest/src/branch/mahlatse/real-curation/backend/src/docs/openapi.ts).
-That spec is served live as **Swagger UI at `/api/docs`** (every endpoint can be
-tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
+Every REST endpoint of the Wits Quest backend, checked against the route files in the backend code (`backend/src/routes/` and `server.ts`) on 1 October 2026.
+
+You can try the endpoints in the browser on the **Swagger page** at [`/api/docs`](https://wits-quest.onrender.com/api/docs). The raw OpenAPI 3.0 file is at `/api/openapi.json`.
 
 **Calling the API**
 
@@ -20,9 +19,12 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | Method | Path | Auth | Summary |
 | --- | --- | --- | --- |
 | `GET` | `/health` | Public | Server status and deployed commit |
+| `GET` | `/docs` | Public | Swagger page for trying the API |
+| `GET` | `/openapi.json` | Public | The OpenAPI 3.0 description of the API |
 | `POST` | `/auth/token` | Public | Log in and get an access token (paste it into Authorize 🔒) |
 | `GET` | `/auth/me` | Login | Your profile (Elo, XP, Essence, streak…) |
 | `POST` | `/auth/complete-signup` | Login | Create your game profile after sign-up (no body) |
+| `DELETE` | `/auth/me` | Login | Delete your own account and its game data |
 
 ## Players
 
@@ -31,9 +33,12 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | `GET` | `/users` | Public | All players |
 | `GET` | `/users/leaderboard` | Public | Leaderboard |
 | `GET` | `/users/{id}` | Public | One player |
+| `GET` | `/users/{id}/cards` | Public | A player's card collection |
+| `GET` | `/users/{id}/decks` | Public | A player's decks |
 | `PUT` | `/users/{id}` | Login | Update your own profile (username, avatar, isOnline) |
 | `POST` | `/player/deck` | Login | Save your deck (5 owned cards, within budget) |
 | `GET` | `/avatars` | Public | Avatar catalogue |
+| `POST` | `/avatars` | Admin | Add an avatar |
 
 ## Events & trivia
 
@@ -42,6 +47,9 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | `GET` | `/events` | Public | Published campus events |
 | `GET` | `/cards` | Public | Published card catalogue |
 | `GET` | `/events/{eventId}/next-trivia` | Login | Next unanswered question at an event |
+| `GET` | `/events/{id}/trivia` | Login | An event's question (answer not included) |
+| `POST` | `/events/{id}/answer` | Login | Answer a single-question event (location-checked) |
+| `POST` | `/checkin/qr` | Login | Prove you are at an event by scanning its QR code (when GPS is weak) |
 | `POST` | `/trivia/answer` | Login | Answer a multi-question event step (location-checked) |
 | `GET` | `/player/completed-events` | Login | Events you have completed |
 
@@ -91,6 +99,7 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | `POST` | `/trails/{id}/progress` | Login | Complete the current step (its event must be completed) |
 | `GET` | `/territories` | Public | Campus zones and their owners |
 | `GET` | `/territories/{id}` | Public | One zone with its events |
+| `POST` | `/territories/{id}/claim` | Admin | Set a zone's owner by hand (admin override) |
 | `GET` | `/routing/route` | Login | Walking route between two points (OpenRouteService) |
 
 ## Anti-cheat & telemetry
@@ -105,6 +114,11 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | `GET` | `/telemetry/audit` | Admin | Moderation audit log |
 | `GET` | `/telemetry/suspended` | Admin | Suspended players |
 | `GET` | `/telemetry/trust-scores` | Admin | Trust score for every player |
+| `GET` | `/telemetry/trust-score/{userId}` | Admin | Trust score for one player |
+| `GET` | `/telemetry/trust-history/{userId}` | Admin | One player's trust-level changes |
+| `POST` | `/telemetry/audit` | Admin | Record a moderation action (warn, suspend, clear) |
+| `GET` | `/telemetry/status/{userId}` | Public | Whether an account is suspended |
+| `GET` | `/telemetry/achievements/{userId}` | Login | A player's achievements (yourself, or anyone if admin) |
 
 ## Admin: content
 
@@ -114,11 +128,22 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | `GET` | `/cards/all` | Admin | Every card, any status |
 | `GET` | `/trivia` | Admin | Trivia questions |
 | `POST` | `/events` | Admin | Create an event (starts as draft) |
-| `PATCH` | `/events/{id}/status` | Admin | Move an event: draft → review → published (second admin) → retired |
+| `PUT` | `/events/{id}` | Admin | Edit an event |
+| `DELETE` | `/events/{id}` | Admin | Delete an event |
+| `POST` | `/events/{id}/trivia` | Admin | Create or replace an event's question |
+| `POST` | `/events/{eventId}/generate-qr` | Admin | Create the QR code for an event |
+| `POST` | `/trivia` | Admin | Create a trivia question |
+| `GET` | `/trivia/performance` | Admin | Questions with low pass rates that need repair |
+| `POST` | `/cards` | Admin | Create a card (starts as draft) |
+| `POST` | `/cards/upload` | Admin | Upload a card image (max 5 MB) |
+| `PATCH` | `/events/{id}/status` | Admin | Move an event: draft → review → published → retired |
 | `PATCH` | `/cards/{id}/status` | Admin | Move a card through the lifecycle |
 | `PATCH` | `/trivia/{id}/status` | Admin | Move a question through the lifecycle |
 | `POST` | `/events/auto-place` | Admin | Rotate auto-placed events across campus now |
 | `GET` | `/campaigns` | Admin | Scheduling campaigns (terms / open days) |
+| `POST` | `/campaigns` | Admin | Create a campaign |
+| `PUT` | `/campaigns/{id}` | Admin | Edit a campaign |
+| `DELETE` | `/campaigns/{id}` | Admin | Delete a campaign |
 
 ## Admin: progression
 
@@ -127,6 +152,7 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | `GET` | `/achievements/all` | Admin | Every achievement rule |
 | `POST` | `/achievements` | Admin | Create an achievement rule |
 | `PATCH` | `/achievements/{id}/deactivate` | Admin | Deactivate a rule |
+| `PATCH` | `/achievements/{id}` | Admin | Edit a rule (name, icon, target; not its type) |
 | `GET` | `/trails/all` | Admin | Every quest trail, any status, with steps |
 | `POST` | `/trails` | Admin | Create a trail (draft) |
 | `POST` | `/trails/{id}/steps` | Admin | Add an event as the next step |
@@ -134,6 +160,9 @@ tried in the browser) and as **raw OpenAPI 3.0 at `/api/openapi.json`**.
 | `GET` | `/telemetry/analytics/active-players` | Admin | Daily active players |
 | `GET` | `/telemetry/analytics/question-pass-rates` | Admin | Pass rate per question |
 | `GET` | `/telemetry/analytics/rarity-drop-rates` | Admin | Card drops per rarity vs target |
+| `GET` | `/telemetry/analytics/card-rates` | Admin | How many copies of each card players own |
+| `GET` | `/telemetry/analytics/trivia-rates` | Admin | Correct vs wrong answers per question |
+| `GET` | `/telemetry/analytics/event-popularity` | Admin | Which locations players visit most and least |
+| `GET` | `/telemetry/analytics/checkin-sources` | Admin | Share of check-ins made by GPS vs QR code |
 
-*Total: 70 documented endpoints. Regenerate this table from `openapi.ts`
-whenever routes change — keep the docs in step with the routers.*
+*Total: 101 endpoints. One old endpoint, `POST /trivia/checkin`, still exists but only returns `410 Gone`, so it is not listed.*

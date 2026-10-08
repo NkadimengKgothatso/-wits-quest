@@ -42,7 +42,7 @@ The location claim from a player's device is never trusted outright — it's tre
 - **Trading** — implemented secure card trading with transaction-based swaps and restrictions to prevent card funneling.
 - **Quest Trails** — implemented ordered event trails that players must complete sequentially to receive a completion reward.
 - **Mobile & Accessibility Improvements** — improved the application for mobile devices and accessibility, including responsive layouts, touch targets, semantic HTML and ARIA support.
-- **Content Review Workflow** — implemented a draft, review and publish workflow requiring approval from a second administrator.
+- **Content Review Workflow** — content moves from draft to review to published (and later retired), instead of going live as soon as it is written.
 - **Campaign Management** — implemented campaigns with configurable start and end dates, allowing events to automatically become active and retire.
 - **Needs Repair Questions** — implemented question-performance monitoring to identify questions with unusually low pass rates for review and repair.
 - **Real Campus Content** — populated the production database with real campus events, questions and collectible card content.

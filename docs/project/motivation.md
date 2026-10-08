@@ -27,7 +27,7 @@ The battle system is deliberately *Top Trumps*-simple — turn-based, attribute-
 
 ## Why integrity is the backbone
 
-A location game lives or dies on one question: *can you fake being there?* If players could answer trivia from their couch, the whole concept would collapse — the exploration **is** the game. That's why "trust nothing from the client" became the architectural backbone: location claims, answers, and battle outcomes are verified server-side. Trusting the phone would have been far easier to build — and would have made the game meaningless. (The concrete defects this guards against are catalogued in [Fix Register F1–F6](../development/fix-register.md).)
+A location game lives or dies on one question: *can you fake being there?* If players could answer trivia from their couch, the whole concept would collapse — the exploration **is** the game. That's why "trust nothing from the client" became the architectural backbone: location claims, answers, and battle outcomes are verified server-side. Trusting the phone would have been far easier to build — and would have made the game meaningless.
 
 ## Why the Wits theme
 

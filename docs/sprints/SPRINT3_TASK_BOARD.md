@@ -113,11 +113,11 @@ Documentation carries 15% of the Milestone 3 mark, and other criteria are marked
 | Deliverable | Where it lives | Fed by | Status |
 | :--- | :--- | :--- | :---: |
 | Features | [Project Overview](../project/overview.md), [Requirements](../project/requirements.md) | Every member's finished stories | ⬜ |
-| API reference and quick start | [API Reference](../development/api-reference.md), [API Quick Start](../development/api-quickstart.md) | Mahlatse's endpoint list; Junior's availability check | ⬜ |
+| API reference and quick start | [Endpoint Catalogue](../development/api-endpoints.md), [API Quick Start](../development/api-quickstart.md) | Mahlatse's endpoint list; Junior's availability check | ⬜ |
 | Database | [Database Plan](../database/database-plan.md), [Schema](../database/database-schema.md) | Migrations in `docs/database/migrations/` | ⬜ |
 | Testing | [Test Results & Coverage](../development/testing.md), [Testing Documentation](../development/testing-documentation.md) | Junior's CI coverage reports | ⬜ |
 | User feedback and improvement list | [User Feedback](../project/user-feedback.md) | Rea's two testing rounds | ⬜ |
-| Bug tracker and fix register | [Bug Tracking](../development/bug-tracking.md), [Fix Register](../development/fix-register.md) | Everyone logs bugs; Junior maintains labels and links | ⬜ |
+| Bug tracker and fix register | [Bug Tracking](../development/bug-tracking.md) | Everyone logs bugs; Junior maintains labels and links | ⬜ |
 | Methodology evidence | [Methodology](../project/methodology.md), [Meetings](../meetings/index.md), [Git Workflow](../development/git-workflow.md) | Sprint board history, stand-up notes, PR history, burndown | ⬜ |
 | No broken links on the site | `mkdocs build` in CI | Everyone who edits docs | ⬜ |
 

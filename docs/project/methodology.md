@@ -1,94 +1,74 @@
 # Project Methodology
 
-How Team Big-O plans, prioritises, reviews, and delivers Wits Quest — the process behind the product, as required by the Milestone 2 brief.
+How the team plans, builds, reviews and delivers Wits Quest.
 
 ---
 
-## Master architecture & task specification guide
+## Approach: Agile, in sprints
 
-The full master specification the sprints execute against — system architecture, the member-by-member task matrix, the priority ladder (P0 > P1 > P2), and the Definition of Done. It is the source document for the sprint plans and selection guides in [Sprints](../sprints/README.md).
+We work in short sprints that line up with the course milestones. Each sprint has a goal, a prioritised task list, and a clear "done" line.
 
-**📄 [Download the Master Architecture & Task Specification Guide (PDF)](files/wits-quest-master-architecture-task-specification-guide.pdf)**
-
----
-
-## Approach: sprint-based agile
-
-The project runs as a sequence of **timeboxed sprints anchored to the official course milestones**, with each sprint carrying a theme, a priority ladder, and pre-agreed exit criteria:
-
-| Sprint | Window | Theme | Exit criteria |
+| Sprint | Dates | Goal | Done when |
 | :--- | :--- | :--- | :--- |
-| **Sprint 1** | → 25 Aug | Basic Tier foundation | GIS map, trivia, CPU battle, auth working; every screen owned end-to-end by one member |
-| **Sprint 2 — "Rescue Window"** | 07 → 15 Sep | Integrity-Secured Core | All P0 merged; P1 substantially merged; M2 acceptance demonstrable **on a real device** |
-| **Sprint 3** | 15 → 29 Sep | Intermediate Complete + Selective Advanced | Every Intermediate requirement (I-1…I-7) verifiably done; live PvP playable |
-| **Sprint 4** | 29 Sep → 11 Oct | Production Hardening & Submission | Full stack deployed; CI green from `main`; docs complete; **feature freeze 04 Oct** |
+| **Sprint 1** | to 25 Aug | Basic tier foundation | Map, trivia, CPU battle and login working |
+| **Sprint 2** | 7 to 15 Sep | Make the core secure and reliable | Server checks answers and battles; works on a real phone |
+| **Sprint 3** | 15 to 29 Sep | Intermediate tier plus selected Advanced features | Every Intermediate feature done; live PvP playable |
+| **Sprint 4** | 29 Sep to 11 Oct | Polish and submit | Everything deployed, tests passing, docs complete; feature freeze on 4 Oct |
 
-
+Each sprint's plan and team guide are on the [Sprints](../sprints/README.md) page. The original plan for the whole project is the [Master Architecture Guide (PDF)](files/wits-quest-master-architecture-task-specification-guide.pdf), later updated as [Master Guide V2](../sprints/master-guide-v2.md).
 
 ---
 
-## Team structure
+## Team
 
-Six members, each owning a vertical domain end-to-end (design, UI, UX, and interactive logic) — see [Scope](scope.md):
+Six members, each owning one area from screen to database:
 
-| Member | Domain |
+| Member | Area |
 | :--- | :--- |
-| Junior | Geolocation, campus map & spatial engine |
-| Mahlatse | Turn-based battle engine & PvP (CPU / Async / Live) |
-| Kgothatso | Database architecture, secure API & authentication |
-| Rea | Admin authoring console (events, trivia, cards) |
-| Nontokozo | Card collection, deck construction & progression |
-| Oratile | Anti-cheat telemetry & analytics |
+| Junior | Map, location, walking directions and trading |
+| Mahlatse | Battles: CPU, live, async and spectating |
+| Kgothatso | Database, API, login, achievements and streaks |
+| Rea | Admin console, content curation and event placement |
+| Nontokozo | Cards, forge, trails, territory and ranked seasons |
+| Oratile | Anti-cheat, QR check-in and analytics |
 
-Domain ownership keeps every screen single-owner during a sprint; cross-domain work (shared battle resolution, reward logic) is extracted into shared modules by the domain owner who built it.
+## Planning and tracking
 
-## Planning & tracking
+- **Gitea Issues** hold every task and bug, with labels (`bug`, `feature`, `docs`, `infrastructure`), a sprint milestone and an owner. Pull requests close issues with `closes #N`. Why we chose Issues: [Decision D-01](../development/decisions-log.md#d-01-gitea-issues-for-tracking-work).
+- Each sprint starts with a **plan** and a **team guide** that split the work by person.
+- Each sprint has **team meetings**, recorded with decisions and action items on the [Meetings](../meetings/index.md) page.
+- **Tutor reviews** are recorded separately on [Stakeholder Reviews](stakeholder-reviews.md), with what we changed in response.
 
-- **Gitea Issues** is the single work tracker — labels (`bug`/`feature`/`docs`/`infrastructure`), sprint milestones, and assignees, with PRs auto-closing issues via `closes #N` (rationale in [Decision D-01](../development/decisions-log.md#d-01-issues-over-projects-for-work-tracking)).
-- The **master fix register** (`F##` IDs) provides stable, auditable traceability from defect to fix to PR; every task in the [task matrix](../sprints/master-guide-v2.md) cites its traceability IDs.
-- Each sprint opens with a **selection & handover guide** (see [Sprints](../sprints/README.md)) allocating the task matrix member-by-member with technical explanations.
-- Sprint boundaries are marked by full-team syncs; meetings are [logged with decisions and action items](../meetings/index.md).
+### Plan, build, walkthrough
 
-### Plan → build → walkthrough cycle
+Bigger features follow three steps:
 
-Non-trivial features follow a documented three-step cycle:
-
-1. **Implementation plan** (before coding) — approach, files to touch, risks, and what is deliberately *not* done, committed to `implementation-plans/`.
-2. **Implementation** — feature branch, reviewed PR, CI gates.
-3. **Walkthrough** (after merge) — what actually changed, what was verified live against the real backend and Supabase, and what was deliberately deferred. The `battle-ai/` folder indexes this cycle for the entire battle domain.
-
-This is why the documentation can show not just *what* the system does but *how it was verified* — including manual smoke tests for the socket-heavy screens.
+1. **Plan** before coding: the approach, which files change, and the risks.
+2. **Build** on a feature branch, reviewed through a pull request.
+3. **Walkthrough** after merging: what changed and how it was checked against the real backend. The [Live PvP](../development/live-pvp-walkthrough.md) and [Async PvP](../development/async-pvp-walkthrough.md) walkthroughs are examples.
 
 ---
 
-## Code-quality gates
+## Code quality
 
-Sprint 1 shipped with **no automated code-quality checks** — a gap flagged in the tutor's Sprint 1 review ([Stakeholder Reviews](stakeholder-reviews.md)). Sprint 2 closed it:
+Sprint 1 had no automatic code checks, and the tutor pointed this out in the Sprint 1 review. Since Sprint 2:
 
-- **ESLint + Prettier** run on every commit via husky `lint-staged` pre-commit hooks — badly formatted code cannot be committed at all.
-- **CI enforces the full gate on every push**: lint, `tsc --noEmit`, and the Vitest test suite with 80% coverage gates for both packages.
+- **Before every commit**, husky runs ESLint and Prettier on the changed files. Badly formatted code can't be committed.
+- **Before every push**, husky runs the full check: lint, type-check and all tests for both frontend and backend. A failing check stops the push.
 
-The enforcement table (what runs where) is in [Git Workflow](../development/git-workflow.md); the tooling itself is documented in [Third-Party Code & Services](../development/third-party.md).
+Details are on the [Git Workflow](../development/git-workflow.md) page.
 
 ---
-
-## Git workflow
-
-- **Feature branches** off `main`, one branch per feature or fix (`feature/<member>-<desc>` or `<name>/<feature>`); no direct pushes to `main` past early scaffolding.
-- **Conventional Commits** across six contributors — `feat(map): …`, `fix(auth): …`, `docs(database): …`.
-- **Pull requests** merge everything, with at least one peer approval required. Full details in [Git Workflow](../development/git-workflow.md).
-- The repository is split into three repos (frontend, backend, docs) so documentation changes don't run the code CI pipeline (Decision D-03).
 
 ## Definition of Done
 
-No software task is marked complete until it satisfies all seven clauses ([Master Guide V2 §5](../sprints/master-guide-v2.md)):
+A task is done only when all of these are true:
 
-1. **Code review** — merged via PR with at least 1 peer approval.
-2. **Automated testing** — unit or integration tests written and passing.
-3. **API verification** — valid status codes and payloads; any state-changing endpoint verified **authenticated and server-validated**.
-4. **No high blockers** — zero unresolved high-severity bugs on the task.
-5. **CI green** — `tsc --noEmit` clean and Vitest 80% coverage gates pass for both packages on the PR branch.
-6. **Secrets hygiene** — no credentials in code or docs; configuration flows through `.env.example` templates.
-7. **Traceability** — the PR description references the Task ID and fix-register IDs it closes.
-
-Sprint 2 adds a field clause: the feature must **work on a real phone on campus** — GPS, geofence, and offline behaviour included. See [Testing](../development/testing.md) for how the quality gates are enforced in CI.
+1. It was merged through a pull request with at least one teammate's approval.
+2. It has tests, and all tests pass.
+3. Any endpoint that changes data checks the login and validates the input on the server.
+4. It has no open high-severity bugs.
+5. Type-check, lint and coverage checks pass.
+6. No passwords or keys are in the code or docs.
+7. The pull request names the issue it closes.
+8. Game features work on a real phone on campus (GPS, distance check, offline mode).

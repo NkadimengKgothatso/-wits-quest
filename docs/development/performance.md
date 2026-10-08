@@ -1,53 +1,75 @@
 # Performance
 
-How Wits Quest is measured, monitored and kept free of performance issues —
-covering the rubric's performance criteria: **no performance issues** (Sprint 3)
-and, at submission, API load handling and application load time / responsiveness.
+How fast the app and API are, how we measure it, and what we did to keep them fast.
 
-## What we measure
+---
 
-| Area | Metric | Tool | Target |
-| --- | --- | --- | --- |
-| App | First contentful paint / full load | Lighthouse (Chrome DevTools) | FCP < 1.8 s, Lighthouse ≥ 90 on Performance |
-| App | Runtime responsiveness | Chrome DevTools Performance tab | No dropped/long tasks over 200 ms during a battle |
-| App | Bundle size | `vite build` output report | Initial JS bundle kept small via route-level code splitting |
-| API | First-request latency | `curl -w` timing against the deployed API | Cold start + first request < 2 s |
-| API | Load handling | Supertest suites under CI (functional); load spot-checks with `autocannon` | No errors at 50 concurrent requests on the REST endpoints |
-| API | Uptime / crashes | Deployment platform logs (see [Deployment](deployment.md)) | No crashes during a standard play session |
-| Tests | Suite wall time | Vitest run summary | Full CI pipeline (both packages + gates) < 10 min |
+## App: PageSpeed Insights (29 September 2026)
 
-## Design decisions that protect performance
+We tested the live app ([wits-quest.vercel.app](https://wits-quest.vercel.app)) with Google PageSpeed Insights (Lighthouse), desktop mode.
 
-- **Server-authoritative state.** Battle state, ELO and anti-cheat validation live in
-  the backend, so the client never re-simulates a full battle — payloads over the
-  socket are small diffs, not full state dumps.
-- **Offline queue.** Actions taken offline are queued client-side and replayed when
-  connectivity returns ([services tests](testing.md)), so poor network degrades
-  gracefully instead of blocking the UI.
-- **Pooled/lazy data access.** Leaderboards and card collections page their queries
-  against Supabase rather than fetching whole tables.
-- **Excluded-but-verified heavy screens.** The socket-heavy PvP arenas are kept out
-  of jsdom coverage by design and verified against the real backend
-  ([testing documentation](testing-documentation.md)) — unit-testing them would
-  measure the mocks, not performance.
+![PageSpeed Insights scores, desktop, 29 Sep 2026](images/2026-09-29-pagespeed-scores.jpeg)
 
-## Results log
+| Category | Score |
+| :--- | :--- |
+| Performance | **99** |
+| Accessibility | **97** |
+| Best Practices | **100** |
+| SEO | **90** |
 
-Recorded per sprint; update this table when a new measurement is taken.
+![PageSpeed Insights loading metrics, desktop, 29 Sep 2026](images/2026-09-29-pagespeed-metrics.jpeg)
 
-| Date | Area | Result | Notes |
-| --- | --- | --- | --- |
-| 2026-09 | Tests | Frontend 132/132 passing; both packages clear the 80% coverage gate | [Testing](testing.md) |
-| 2026-09 | CI | Pipeline runs both suites + gates on free cloud runners | [Testing & CI/CD plan](testing-plan.md) |
-| 2026-09-29 | Docs site — Home | Lighthouse: Perf 76 · A11y 93 · Best Practices 96 · SEO 100. FCP 3.3 s, LCP 4.4 s, TBT 0 ms, CLS 0 | Lighthouse default **mobile throttling** from a South African connection; zero blocking time and zero layout shift — the FCP/LCP figures are network-bound, not app-bound |
-| 2026-09-29 | Docs site — API Reference | Lighthouse: Perf 72 · A11y 93 · Best Practices 96 · SEO 100. FCP 3.9 s, LCP 4.7 s, TBT 0 ms, CLS 0.028 | Same conditions as above; long single-page reference adds a little parse time |
+| Metric | Result | What it means |
+| :--- | :--- | :--- |
+| First Contentful Paint | 0.7 s | Time until something appears on screen |
+| Largest Contentful Paint | 0.9 s | Time until the main content appears |
+| Total Blocking Time | 0 ms | How long the page is frozen and can't respond |
+| Cumulative Layout Shift | 0 | How much the page jumps around while loading |
+| Speed Index | 0.7 s | How quickly the page fills in |
 
-**Reading of the 2026-09-29 results:** with TBT at 0 ms and CLS ~0, the pages are not
-doing expensive work on the main thread and do not jump while loading — the "slow"
-FCP/LCP is dominated by network latency to GitHub Pages under simulated mobile
-conditions. Actions available if we want the score up: preload the theme fonts and
-self-host them (Google Fonts round-trip), and trim the largest-contentful hero text
-render path. Not blocking Sprint 3.
+All five are in Google's "good" range. These are lab results from one run, so they vary a little each time.
+
+### Accessibility finding
+
+![PageSpeed Insights accessibility audit, 29 Sep 2026](images/2026-09-29-pagespeed-accessibility.png)
+
+One issue was flagged: the page has no `<main>` landmark, so screen-reader users can't jump straight to the main content. The fix is to wrap the main content in a `<main>` element. The tutor also found that text boxes are hard to see in dark mode ([Stakeholder Reviews](../project/stakeholder-reviews.md)), which automated checks don't catch.
+
+![Accessibility audit summary, 29 Sep 2026](images/2026-09-29-pagespeed-audit-summary.jpeg)
+
+### Still to do
+
+- Add the `<main>` landmark and re-run the audit.
+- Record a **mobile** run. Most players use phones, and the mobile test simulates a slower phone and network.
+
+---
+
+## Documentation site: Lighthouse (29 September 2026)
+
+| Page | Performance | Accessibility | Best Practices | SEO | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Home | 76 | 93 | 96 | 100 | Mobile test from South Africa. Loading 3.3 s, main content 4.4 s, no blocking, no layout shift |
+
+The page does no heavy work (0 ms blocking time). The slower load comes from network distance to GitHub Pages under the simulated mobile connection.
+
+---
+
+## API
+
+| What | How we check it |
+| :--- | :--- |
+| First request | Render's free plan sleeps when idle, so the first request can take up to a minute. After that, responses are fast. |
+| Slow requests | The server logs any request that takes longer than 500 ms, with its route and time, so we can find and fix slow queries. |
+| Crashes | Render's logs. An overdue async round used to crash the server; that was fixed on 30 Sep. |
+
+---
+
+## What keeps it fast
+
+- **The server holds the game state.** During battles, only small updates go over the socket, not the whole match.
+- **Offline queue.** Without signal, answers are saved on the phone and sent later, so the app doesn't freeze.
+- **Bounded queries.** Analytics only read recent data (for example the last few days of GPS pings) instead of whole tables.
+- **Cached routes.** Walking directions are cached on the phone, so the same route isn't requested twice.
 
 ## AI usage attribution
 
@@ -61,16 +83,12 @@ Per the course AI policy, the following AI assistance is declared for this page 
 | Not AI-generated | The Lighthouse measurements themselves are tool-generated audit output of the real site; the test/coverage figures come from the project's own Vitest/CI runs |
 | Responsibility | All content above was reviewed by the team before submission; the team remains responsible for its accuracy |
 
-## How to reproduce the measurements
+## How to repeat the measurements
 
 ```bash
-# app bundle + build time
-cd frontend && npm run build
-
-# full test + coverage gates (both packages)
-cd frontend && npm run test
-cd backend  && npm run test
-
-# API first-request timing (adjust URL to the deployment in deployment.md)
-curl -o /dev/null -s -w "dns:%{time_namelookup} connect:%{time_connect} ttfb:%{time_starttransfer} total:%{time_total}\n" https://<deployed-api>/api/health
+cd frontend && npm run build      # build size and time
+curl -o /dev/null -s -w "first byte: %{time_starttransfer}s  total: %{time_total}s\n" \
+  https://wits-quest.onrender.com/api/health
 ```
+
+For the app scores, open [PageSpeed Insights](https://pagespeed.web.dev/) and enter `https://wits-quest.vercel.app`.

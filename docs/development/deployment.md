@@ -1,70 +1,67 @@
 # Deployment
 
-Where every part of Wits Quest is hosted, how it gets there, and how to reproduce it.
+Where each part of Wits Quest is hosted and how it gets there.
 
 ---
 
-## Deployment map
+## What runs where
 
-Wits Quest ships as **three independently deployed repositories** (Decision D-03), so a documentation change never triggers the code pipeline and vice versa:
+| Part | Hosted on | Address |
+| :--- | :--- | :--- |
+| **App** (React) | Vercel | [wits-quest.vercel.app](https://wits-quest.vercel.app) |
+| **API** (Node.js + Express + Socket.IO) | Render (free plan) | [wits-quest.onrender.com/api](https://wits-quest.onrender.com/api/health) |
+| **Database, login and file storage** | Supabase (PostgreSQL) | Managed by Supabase |
+| **Documentation** (this site) | GitHub Pages | [nkadimengkgothatso.github.io/-wits-quest](https://nkadimengkgothatso.github.io/-wits-quest/) |
 
-| Component | Repository | Platform | Status |
-| :--- | :--- | :--- | :--- |
-| **Frontend** (React app) | `big-o/Wits-Quest-frontend` | **Vercel** — automatic production builds from `main` | ✅ Live at [wits-quest.vercel.app](https://wits-quest.vercel.app/) |
-| **Backend** (Node/Express API) | `big-o/Wits-Quest-Backend` | **Render** — Node web service configured via `render.yaml` | ⚠ Configured; live verification pending (F47) |
-| **Documentation** (this site) | `big-o/Wits-Quest-Documentation` | **GitHub Pages** — MkDocs built by GitHub Actions | ✅ Live at [nkadimengkgothatso.github.io/-wits-quest](https://nkadimengkgothatso.github.io/-wits-quest/) |
+## How a change goes live
 
-The CI/CD pipeline that typechecks, lints, tests, and deploys on every push is documented in the [Gitea Actions Migration Plan](gitea-actions-migration-plan.md) and [Testing](testing.md); the hosting rationale is in [Third-Party Code & Services](third-party.md).
+Every push to `main` in the source repo runs `.github/workflows/ci.yml`, which:
 
-## Frontend — Vercel
+1. **Deploys the app to Vercel** with the Vercel command-line tool.
+2. **Starts a Render deploy** for the API through Render's deploy hook, pinned to that exact commit.
+3. **Waits until the API is live** by calling `/api/health` until it reports the new commit (up to 20 minutes).
 
-- Connected to the frontend repository; **every push to `main` triggers a production build automatically**.
-- Configuration flows through the Vercel dashboard — secrets are never committed; local development uses `.env.example` templates.
-- `VITE_API_URL` tells the frontend where the backend lives; it is set once the Render service is live.
+Tests run before the push, in the pre-push hook on the developer's machine (see [Git Workflow](git-workflow.md#automatic-checks)).
 
-## Backend — Render
+This documentation site deploys separately: every push to `main` in the docs repo builds the site with MkDocs and publishes it to GitHub Pages (`.github/workflows/deploy-docs.yml`).
 
-The backend deploys to [Render](https://render.com) as a Node.js web service:
+## API settings (Render)
+
+Set in `render.yaml`:
 
 | Setting | Value |
 | :--- | :--- |
-| Service name | `wits-quest-backend` |
-| Runtime | Node |
-| Root directory | `backend` |
-| Branch | `main` |
-| Build command | `npm install && npm run build` |
-| Start command | `npm start` |
-| Health check path | `/api/health` |
+| Root folder | `backend` |
+| Build | `npm install && npm run build` |
+| Start | `npm start` |
+| Health check | `/api/health` |
+| Auto-deploy | Off (GitHub Actions triggers deploys instead) |
 
-Required environment variables (set in the **Render dashboard only** — never in the repo):
+Secrets are entered in the Render dashboard only, never in the code:
 
-| Key | Description |
+| Variable | What it's for |
 | :--- | :--- |
+| `SUPABASE_URL`, `SUPABASE_KEY` | Connects to the database and checks login tokens (service-role key) |
+| `OPENROUTESERVICE_API_KEY` | Walking directions. Without it the map draws a straight line instead |
+| `CORS_ORIGINS` | Extra app addresses allowed to call the API (optional) |
 | `NODE_ENV` | `production` |
-| `PORT` | Render assigns this automatically; the backend honours it |
-| `JWT_SECRET` | Strong random string for signing tokens |
-| `SMTP_HOST` / `SMTP_PORT` | Gmail SMTP relay (`smtp.gmail.com`, `465`) for verification emails |
-| `SMTP_USER` / `SMTP_PASS` | Google account + Google **App Password** |
-| `SUPABASE_URL` / `SUPABASE_KEY` | Supabase project credentials |
 
-After deploying, verify the health endpoint:
+## App settings (Vercel)
 
-```bash
-curl https://wits-quest-backend.onrender.com/api/health
-# → { "status": "ok", "service": "Wits Quest API (Supabase)", "timestamp": "..." }
-```
+| Variable | What it's for |
+| :--- | :--- |
+| `VITE_API_URL` | Where the API lives (`https://wits-quest.onrender.com`) |
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | Lets the app sign players in with Supabase Auth (public anon key only) |
 
-Then set `VITE_API_URL=https://wits-quest-backend.onrender.com` on Vercel so the live frontend talks to the live API (this also fixes the hardcoded localhost socket client — F11).
+## Database changes
 
-!!! warning "Credential hygiene (learned the hard way)"
-    Real credentials were once committed inside a deployment document — Fix **F7**. They have been stripped; all secrets now live exclusively in platform dashboards, and every copy of this guide carries placeholders only.
+Changes to the database are SQL files in the source repo (`docs/database/migrations/`), named by date. They are run once in the Supabase SQL editor, in date order. See [Database Schema](../database/database-schema.md).
 
-## Documentation — GitHub Pages
+## Rules
 
-This site is built with MkDocs (Material) and deployed by GitHub Actions (`.github/workflows/deploy-docs.yml`): every push to `main` builds the site and publishes it with `actions/deploy-pages`. The source of truth is the Gitea documentation repo; GitHub is the deployment mirror.
+- Only `main` deploys. Work-in-progress branches never go live.
+- Secrets live only in the Vercel, Render and Supabase dashboards.
+- Feature freeze for the final submission is **4 October**.
 
-## Deployment rules
-
-- Production deploys trigger from **`main` only** — never from a personal WIP branch (F45).
-- Every deployed change has passed CI: `tsc --noEmit`, ESLint, the Vitest suite, and the 80% coverage gates ([Definition of Done](../project/methodology.md#definition-of-done)).
-- Feature freeze for final submission is **04 Oct** ([Methodology](../project/methodology.md)).
+!!! note "Cold starts"
+    Render's free plan sleeps after a period with no traffic, so the first request can take up to a minute. After that, the API responds normally.

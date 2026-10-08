@@ -1,28 +1,41 @@
-# Wits Quest - System Architecture Diagram
+# System Architecture
+
+How the parts of Wits Quest fit together. The app and the API are separate programs that talk over HTTPS and WebSockets.
 
 ```mermaid
 graph TD
-    subgraph Client ["Client Layer"]
-        PWA["Frontend PWA Client - React / Vite"]
-        SW["ServiceWorker and IndexedDB Engine"]
-        Map["Leaflet GIS Spatial Renderer"]
+    subgraph Phone ["Player's phone or browser"]
+        App["React app (Vite)<br/>hosted on Vercel"]
+        Queue["Offline answer queue<br/>(IndexedDB)"]
+        Map["Campus map<br/>(Leaflet)"]
     end
 
-    subgraph API_Layer ["API and Realtime Layer"]
-        API["Express / Node.js Backend API"]
-        WS["Socket.io Real-Time Battle Server"]
+    subgraph Server ["Backend on Render"]
+        API["Express REST API<br/>/api and /api/v1"]
+        WS["Socket.IO<br/>live battles and ranked queue"]
     end
 
-    subgraph Data_Layer ["Data and Cache Layer"]
-        DB[("PostgreSQL / PostGIS Database")]
-        Cache[("Redis Battle State Store")]
+    subgraph Supabase ["Supabase"]
+        DB[("PostgreSQL database")]
+        Auth["Supabase Auth<br/>sign-up, login, password reset"]
+        Store["Storage<br/>card images"]
     end
 
-    PWA <--> SW
-    PWA <--> Map
-    PWA <-->|HTTPS / REST| API
-    PWA <-->|WebSockets| WS
+    ORS["OpenRouteService<br/>walking directions"]
+
+    App <--> Queue
+    App <--> Map
+    App -->|sign in| Auth
+    App <-->|HTTPS + login token| API
+    App <-->|WebSocket| WS
+    API -->|checks token| Auth
     API <--> DB
-    API <--> Cache
-    WS <--> Cache
+    WS <--> DB
+    API --> Store
+    API -->|walking route| ORS
 ```
+
+- **The app** shows the map, cards and battles. It signs players in directly with Supabase Auth and sends the login token with every API call.
+- **The API** checks the token, applies all the game rules (location, answers, battles, rewards) and reads and writes the database. Live battles run over Socket.IO on the same server, which keeps the match state while it's being played.
+- **Supabase** provides the database, login and image storage. It does not generate our API. Every endpoint is our own code.
+- **OpenRouteService** is the external API we call for walking directions to the next event.

@@ -90,13 +90,12 @@ erDiagram
     }
 ```
 
-> Note: this diagram is written in Mermaid syntax. The default `mkdocs` theme in `mkdocs.yml` doesn't render Mermaid natively — see [UML overview](../uml/index.md#how-to-add-a-diagram) for how to enable it or export a static image instead.
 
 ## Student registration seeding workflow
 
-When a new student registers (`POST /api/auth/register`):
+After a new player signs up with Supabase Auth, the app calls `POST /api/auth/complete-signup`, which:
 
-1. **Insert into `users`** — creates the user profile with baseline level 1, 1000 Elo rating, a 300-point stat budget, 100 Essence shards, and `divisionTier = 'GOLD'`.
+1. **Insert into `users`** — creates the player's profile: level 1, Elo 1000, 100 Essence and a deck stat budget of 2000.
 2. **Insert into `user_cards`** — assigns 5 starter landmark cards to the student's inventory.
 3. **Insert into `user_decks`** — builds a starter 5-card deck from those cards.
 
@@ -112,4 +111,3 @@ Ranked division tiers are computed dynamically from `user.eloRating`:
 | Platinum | 1500 – 1799 |
 | Diamond  | 1800+       |
 
-The [Feature Handover Guide](../development/technical-decisions.md) additionally ties division to Total XP bands for the campus leaderboard view — reconcile the two if leaderboard divisions and matchmaking divisions are meant to be the same value.

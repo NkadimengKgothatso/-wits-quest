@@ -49,7 +49,7 @@ The clincher for a student team: one free tier instead of stitching three togeth
 ## Location is a claim, not a fact
 
 **Decision**: Every GPS report from the client is treated as unverified input, checked against distance thresholds and (at the Intermediate tier) movement history before being trusted.
-**Why**: A card is only worth collecting if it had to be walked to — trusting client-reported GPS outright would let anyone spoof a location and defeat the entire premise of the game. See [Architecture § Map & Location](architecture.md#map--location) for the Haversine radius check, and Requirements → Intermediate for movement-history anti-spoofing.
+**Why**: A card is only worth collecting if it had to be walked to — trusting client-reported GPS outright would let anyone spoof a location and defeat the entire premise of the game. See [Development Architecture](architecture.md#key-rules-in-the-code) for how the server checks location.
 
 ## Server-authoritative trivia and combat
 
@@ -63,7 +63,7 @@ The clincher for a student team: one free tier instead of stitching three togeth
 
 ## Deck constraints as anti-power-creep
 
-**Decision**: Decks are capped at exactly 5 cards, a 300-point total stat budget (scaling with player level), and at most 1 Legendary card.
+**Decision**: A deck has exactly 5 cards, a total stat budget of 2000 points, and at most 1 Legendary card. (The budget started at 300 and was raised to 2000 on 30 Sep after the cards were rebalanced. A 5-card deck now costs about 1000.)
 **Why**: Prevents a high-level player from simply stacking 5 Legendaries and trivializing matchmaking; keeps early-game and late-game decks comparably competitive.
 
 ## Async PvP telemetry as a retention hook
@@ -79,9 +79,9 @@ The clincher for a student team: one free tier instead of stitching three togeth
 ## Real-time match transport: WebSockets
 
 **Decision**: Live PvP (`LivePvPArena.tsx`) uses WebSockets rather than polling.
-**Owner**: Member 2.
+**Owner**: Mahlatse.
 **Why**: Turn timers, simultaneous state for both players, and spectating all need low-latency bidirectional updates that polling can't deliver cleanly.
 
 ---
 
-_Add new entries above this line, most recent first, as decisions are made during development._
+
