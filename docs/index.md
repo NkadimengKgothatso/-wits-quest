@@ -22,14 +22,6 @@
 | How it is hosted | [Deployment](development/deployment.md) |
 | How it is built | [Database Schema](database/database-schema.md), [System Architecture](uml/01_system_architecture.md), [Third-Party Code](development/third-party.md) |
 
---- | :--- |
-| What the game is and what it does | [Game Overview](project/overview.md), [Requirements](project/requirements.md) |
-| How to call the API | [API Quick Start](development/api-quickstart.md), [Endpoint Catalogue](development/api-endpoints.md) |
-| How it is built | [System Architecture](uml/01_system_architecture.md), [Database Schema](database/database-schema.md) |
-| How it is tested | [Test Results & Coverage](development/testing.md), [Testing Documentation](development/testing-documentation.md) |
-| How it is hosted | [Deployment](development/deployment.md) |
-| How the team works | [Methodology](project/methodology.md), [Git Workflow](development/git-workflow.md), [Meetings](meetings/index.md) |
-| What users and the tutor said | [User Feedback](project/user-feedback.md), [Stakeholder Reviews](project/stakeholder-reviews.md) |
 
 ---
 
