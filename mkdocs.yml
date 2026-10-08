@@ -71,13 +71,12 @@ nav:
   - Home: index.md
 
   - Core Features:
-      - Motivation: project/motivation.md
+      - Core Features: project/core-features.md
+      - Features by Sprint: project/sprint-features.md
       - Game Overview & Tiers: project/overview.md
+      - Motivation: project/motivation.md
       - Requirements: project/requirements.md
       - Scope: project/scope.md
-      - CPU Battle Rulebook: development/cpu-battle-rules.md
-      - Live PvP Walkthrough: development/live-pvp-walkthrough.md
-      - Async PvP Walkthrough: development/async-pvp-walkthrough.md
 
   - API:
       - API Quick Start: development/api-quickstart.md
@@ -142,3 +141,6 @@ nav:
       - Sprint 2 Team Guide: sprints/WITS_QUEST_SPRINT2_HANDOVER_GUIDE.md
       - Sprint 3 Team Guide: sprints/WITS_QUEST_SPRINT3_GUIDE.md
       - Sprint 3 Plan: sprints/SPRINT3_TASK_BOARD.md
+      - "Dev Notes: CPU Battle Rules": development/cpu-battle-rules.md
+      - "Dev Notes: Live PvP Build": development/live-pvp-walkthrough.md
+      - "Dev Notes: Async PvP Build": development/async-pvp-walkthrough.md

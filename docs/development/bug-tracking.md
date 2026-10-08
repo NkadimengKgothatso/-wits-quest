@@ -45,7 +45,7 @@ graph LR
 
 | Bug | Fix |
 | :--- | :--- |
-| Trivia could be answered from anywhere, because only the app checked distance | The server now checks the player's position and the event's time window ([Sprint 3](../project/overview.md#sprint-3-core-features)) |
+| Trivia could be answered from anywhere, because only the app checked distance | The server now checks the player's position and the event's time window ([Sprint 3](../project/sprint-features.md#sprint-3-fair-play-and-depth)) |
 | CPU battle results were decided by the app | Battles now run on the server, which decides each round and the rewards |
 | A correct answer could be submitted again and again for more rewards | Each player can answer each event once; repeats are rejected |
 | Admin endpoints could be called by any logged-in player | Admin-only endpoints now check the ADMIN role |
