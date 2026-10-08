@@ -42,7 +42,7 @@ Each sprint's plan and team guide are on the [Sprints](../sprints/README.md) pag
 | **Product owner** | The client and the tutor | Set the brief, review each milestone and give the feedback we act on ([Stakeholder Reviews](stakeholder-reviews.md)) |
 | **Integration lead** | Mahlatse | Merges members' branches into `main`, fixes problems that only show up once everything is combined, and keeps the deploy working |
 | **Feature owners** | Every member | Each member owns their features from the screen to the database: building, testing and documenting them |
-| **Documentation** | Kgothatso  | Keep this site in step with the app (shared with feature owners, who document their own work) |
+| **Documentation** | Kgothatso | Keep this site in step with the app (shared with feature owners, who document their own work) |
 
 We don't have a dedicated Scrum Master. Meetings are run by whoever calls them, and the action items are written down so everyone knows who does what.
 
@@ -54,7 +54,7 @@ We don't have a dedicated Scrum Master. Meetings are run by whoever calls them, 
 | Junior | Campus map and location, walking directions, trading, automatic event placement, code quality checks |
 | Kgothatso | Login and sign-up, achievements, daily streaks, analytics, documentation |
 | Nontokozo | Card collection and decks, Card Forge, quest trails, ranked seasons, territory control, real campus content, card pictures |
-| Oratile | Anti-cheat and trust scores, QR code check-in, sound, documentation |
+| Oratile | Anti-cheat and trust scores, QR code check-in, sound |
 | Rea | Admin console, content review (draft to published), campaigns, mobile layout and UI review |
 
 Who built which feature in each sprint is on [Features by Sprint](sprint-features.md).
