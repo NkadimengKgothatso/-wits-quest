@@ -128,7 +128,10 @@ nav:
       - System Architecture: uml/01_system_architecture.md
       - Development Architecture: development/architecture.md
       - Use Case Diagram: uml/03_use_case_diagram.md
-      - Battle State Machine: uml/02_battle_state_machine.md
+      - Class Diagram: uml/05_class_diagram.md
+      - Sequence Diagrams: uml/06_sequence_diagrams.md
+      - Activity Diagrams: uml/07_activity_diagrams.md
+      - State Diagrams: uml/02_battle_state_machine.md
 
   - Sprints:
       - Overview: sprints/README.md
