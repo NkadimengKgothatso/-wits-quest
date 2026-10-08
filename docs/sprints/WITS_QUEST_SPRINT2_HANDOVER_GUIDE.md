@@ -15,7 +15,7 @@ Who does what, with each task explained in simple words. Fix IDs (`F##`) point t
 | **Mahlatse** | PvP & Offline | Async PvP, live PvP, offline answers, battle hub, CPU battle rules, real streaks |
 | **Junior** | Quality, Map & Repos | Lints, event time states, online player pings on map, card awarded once, repo split |
 | **Rea** | Admin & Curation | Draft → publish for events, questions and cards; only admins can author; curation completion; automatic event placement |
-| **Keoratile** | Anti-Cheat & Analytics | Analytics dashboard, achievements, movement checks, trust score |
+| **Oratile** | Anti-Cheat & Analytics | Analytics dashboard, achievements, movement checks, trust score |
 
 ## 2. Who Does What
 
@@ -53,7 +53,7 @@ Who does what, with each task explained in simple words. Fix IDs (`F##`) point t
 3. **Curation completion** — the rest of the content lifecycle: a review step between draft and publish (a second admin approves before anything goes live), campaigns scheduled around a term or an open day, and questions everybody gets wrong automatically surfaced on the console so they can be repaired. Extends the `status` column and admin screens from task 1. (I-7)
 4. **Automatic event placement** — instead of placing every event by hand, the game spreads events across campus itself: it picks spots along walkable paths, keeps events apart from each other, keeps a sensible number live at once, and moves them around over time so no part of campus stays empty. A placement service in the backend, triggered from the admin console.
 
-### Keoratile — Anti-Cheat & Analytics
+### Oratile — Anti-Cheat & Analytics
 1. **Analytics dashboard** — a new admin screen showing how the game is actually being played: which events draw players and which are ignored, which questions everyone aces (too easy) or everyone bombs, and whether cards are coming out at the rate we intended. New AdminAnalytics screen fed from the existing telemetry/events/battle data. (brief: the console "should show how the game is actually being played")
 2. **Achievements** — badges that give players reasons to keep going: first card collected, first battle won, 10 battles, reaching level 5/10, completing a full deck — shown on the Profile as locked/unlocked. New achievements tables, award logic on the existing XP/battle/card events, and a Profile section. (F39)
 3. **Movement checks** — the game looks at how a player has been moving, not just where they claim to be: journeys nobody could have walked (moving faster than possible between two points) and GPS fixes too poor to rely on. The telemetry pings players already send get checked on the server as they arrive, and suspicious movement is flagged. (F35–F37, I-2)

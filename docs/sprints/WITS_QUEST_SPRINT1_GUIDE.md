@@ -133,9 +133,9 @@
 
 ---
 
-### Task Allocation 6: Keoratile (Anti-Cheat and Ranked Logic Lead)
+### Task Allocation 6: Oratile (Anti-Cheat and Ranked Logic Lead)
 
-- **Assigned Student**: Keoratile (Member 6)
+- **Assigned Student**: Oratile (Member 6)
 - **Target Files**: [AdminAntiCheat.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminAntiCheat.tsx), [RankedMatchmaking.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/RankedMatchmaking.tsx), and backend speed check handlers.
 - **Goal**: Detect GPS spoofing (teleportation across campus), manage anti-cheat telemetry on the Admin site, and calculate Elo rating changes after matches.
 
@@ -166,7 +166,7 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 2. **Map Exploration Step**:
    Student opens [MapExplorer.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/MapExplorer.tsx). Junior's map module renders Wits campus map with landmark pins. Geolocation tracks student position.
 3. **Distance Verification Step**:
-   When student moves near a landmark pin, Haversine formula evaluates straight-line distance. Keoratile's anti-cheat module checks movement velocity. If distance is less than or equal to 25 meters and velocity is normal, the **"Start Trivia Challenge"** button unlocks.
+   When student moves near a landmark pin, Haversine formula evaluates straight-line distance. Oratile's anti-cheat module checks movement velocity. If distance is less than or equal to 25 meters and velocity is normal, the **"Start Trivia Challenge"** button unlocks.
 4. **Trivia and Card Unlock Step**:
    Student opens [TriviaModal.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/TriviaModal.tsx) and selects answer. Correct answer adds landmark card to `user_cards` table and triggers celebration toast.
 5. **Deck Construction Step**:
@@ -187,5 +187,5 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 - [x] Deck builder enforcing 5-card size, 300 stat cap, and 1 Legendary card limit (Nontokozo).
 - [x] 5-round card attribute battle arena against AI opponent (Mahlatse).
 - [x] Admin console forms for landmark and card creation (Rea).
-- [x] Anti-cheat speed verification and Elo calculations (Keoratile).
+- [x] Anti-cheat speed verification and Elo calculations (Oratile).
 - [x] Leaderboard rendering student rankings, total XP, and Elo division tiers (Nontokozo).

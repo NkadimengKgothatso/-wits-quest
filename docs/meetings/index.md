@@ -26,9 +26,9 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ![Discord Lounge voice session — 2026-10-08](images/2026-10-08-discord-meeting.jpeg)
 
-**Attendees:** MCee, Juju, Kgothatso, Oratile
+**Attendees:** Mahlatse, Junior, Kgothatso, Oratile
 
-**Context:** The team went through the whole app together to find what still needs fixing before submission. MCee shared their screen and walked through the app, including the admin console's card editor.
+**Context:** The team went through the whole app together to find what still needs fixing before submission. Mahlatse shared their screen and walked through the app, including the admin console's card editor.
 
 **Decisions:**
 
@@ -58,7 +58,7 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ![Discord Lounge voice session — 2026-09-28](images/2026-09-28-discord-meeting.jpeg)
 
-**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile
+**Attendees:** Mahlatse, Junior, Kgothatso, Nontokozo, Oratile
 
 **Context:** Preparation for the final client meeting and a reminder of how the team should handle testing and pull requests.
 
@@ -90,7 +90,7 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ![Discord Lounge voice session — 2026-09-23](images/2026-09-23-discord-meeting.jpeg)
 
-**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea
+**Attendees:** Mahlatse, Junior, Kgothatso, Nontokozo, Oratile, Rea
 
 **Context:** Review of the tasks assigned for the current sprint, including the endpoint documentation, and agreement on the client meeting dates.
 
@@ -165,7 +165,7 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ![Meeting on 2026-08-20](images/2026-08-20-meeting.jpg)
 
-**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea
+**Attendees:** Mahlatse, Junior, Kgothatso, Nontokozo, Oratile, Rea
 
 **Agenda:**
 
@@ -194,7 +194,7 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ![Meeting on 2026-08-17](images/2026-08-17-meeting.jpg)
 
-**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea
+**Attendees:** Mahlatse, Junior, Kgothatso, Nontokozo, Oratile, Rea
 
 **Agenda:**
 
@@ -217,7 +217,7 @@ Meetings with the tutor / client are recorded **separately** on the [Stakeholder
 
 ![Meeting on 2026-08-13](images/2026-08-13-meeting.jpeg)
 
-**Attendees:** MCee, Juju, Kgothatso, Nontokozo, Oratile, Rea
+**Attendees:** Mahlatse, Junior, Kgothatso, Nontokozo, Oratile, Rea
 
 **Context:** Sprint 1 close-out. The team debriefed the tutor's Sprint 1 review (recorded in full on the [Stakeholder Reviews](../project/stakeholder-reviews.md) page) and triaged the feedback into the Sprint 2 plan.
 

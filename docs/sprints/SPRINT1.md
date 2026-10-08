@@ -108,13 +108,13 @@
 
 ---
 
-### oratile (Member 6)
+### Oratile (Member 6)
 
 - **Assigned Pages & Modules**:
   - [AdminAntiCheat.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminAntiCheat.tsx)
   - [RankedMatchmaking.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/RankedMatchmaking.tsx)
 - **UI and UX Ownership**:
-  - **100% Owned by Keoratile**. Keoratile is fully responsible for designing the user interface and user experience of the Admin Anti-Cheat telemetry management console and Ranked Matchmaking screen.
+  - **100% Owned by Oratile**. Oratile is fully responsible for designing the user interface and user experience of the Admin Anti-Cheat telemetry management console and Ranked Matchmaking screen.
   - Must design the Admin Anti-Cheat dashboard featuring flagged GPS speed violation logs, suspicious teleport alert tables, student audit records, and ranked division tier cards (Bronze, Silver, Gold, Platinum, Diamond).
 - **Functional Logic & Integration**:
   - Implement GPS teleportation velocity verification: $v = \Delta d / \Delta t$. If velocity $v > 15\text{ m/s}$ (54 km/h), flag movement as suspicious GPS spoofing and record alert in anti-cheat telemetry.
@@ -133,7 +133,7 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 2. **Map Exploration Step**:
    Student opens [MapExplorer.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/MapExplorer.tsx). Junior's map module renders Wits campus map with landmark pins. Geolocation tracks student position.
 3. **Distance Verification Step**:
-   When student moves near a landmark pin, Haversine formula evaluates straight-line distance. Keoratile's anti-cheat module checks movement velocity. If distance is less than or equal to 25 meters and velocity is normal, the **"Start Trivia Challenge"** button unlocks.
+   When student moves near a landmark pin, Haversine formula evaluates straight-line distance. Oratile's anti-cheat module checks movement velocity. If distance is less than or equal to 25 meters and velocity is normal, the **"Start Trivia Challenge"** button unlocks.
 4. **Trivia and Card Unlock Step**:
    Student opens [TriviaModal.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/TriviaModal.tsx) and selects answer. Correct answer adds landmark card to `user_cards` table and triggers celebration toast.
 5. **Profile and Card Collection View**:
@@ -157,5 +157,5 @@ The step-by-step lifecycle of a player session in Sprint 1 is structured as foll
 - [x] Deck builder enforcing 5-card size, 300 stat cap, and 1 Legendary card limit (Nontokozo - [DeckBuilder.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/DeckBuilder.tsx)).
 - [x] 5-round card attribute battle arena against AI opponent (Mahlatse - [BattleArena.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/BattleArena.tsx)).
 - [x] Admin console forms for landmark placement and card creation (Rea - [AdminEvents.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminEvents.tsx), [AdminContent.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminContent.tsx)).
-- [x] Anti-cheat speed verification and Admin telemetry management (Keoratile - [AdminAntiCheat.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminAntiCheat.tsx)).
+- [x] Anti-cheat speed verification and Admin telemetry management (Oratile - [AdminAntiCheat.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/admin/AdminAntiCheat.tsx)).
 - [x] Leaderboard rendering student rankings, total XP, and Elo division tiers (Nontokozo - [Leaderboard.tsx](file:///c:/Users/mahla/critical_projects/wits_quest/frontend/src/screens/Leaderboard.tsx)).

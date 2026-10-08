@@ -24,7 +24,7 @@ Following our Sprint 1 review and project requirements audit, the primary goals 
 | **3** | **Auth Bug Fix, Offline Sync & Database**      | **Kgothatso** (Member 3) | `auth.ts`, `Login.tsx`, `offlineQueue.ts`, `mockDb.ts`                        | **CRITICAL** |    High    |
 | **4** | **Admin Governance, Curation & Analytics**     | **Rea** (Member 4)       | `AdminCuration.tsx`, `AdminAnalytics.tsx`, `AdminContent.tsx`                 |  **MEDIUM**  |   Medium   |
 | **5** | **Progression, Deck Builder, Trails & Forge**  | **Nontokozo** (Member 5) | `CardCollection.tsx`, `DeckBuilder.tsx`, `Leaderboard.tsx`, `QuestTrails.tsx` |   **HIGH**   |   Medium   |
-| **6** | **Anti-Cheat Trust Score, Ranked & Territory** | **Keoratile** (Member 6) | `antiCheat.ts`, `RankedMatchmaking.tsx`, `TerritoryMap.tsx`                   |  **MEDIUM**  |    High    |
+| **6** | **Anti-Cheat Trust Score, Ranked & Territory** | **Oratile** (Member 6) | `antiCheat.ts`, `RankedMatchmaking.tsx`, `TerritoryMap.tsx`                   |  **MEDIUM**  |    High    |
 
 ---
 
@@ -163,7 +163,7 @@ Following our Sprint 1 review and project requirements audit, the primary goals 
 
 ### Domain 5: Progression, Deck Builder, Trails & Forge
 
-- **Assigned Lead**: **Nontokozo / Nontobeko** (Member 5)
+- **Assigned Lead**: **Nontokozo** (Member 5)
 - **Current Status**: Card collection works, but locked cards are hidden, and DeckBuilder is not mounted in routing.
 - **What Needs to be Polished / Built**:
 
@@ -207,7 +207,7 @@ Following our Sprint 1 review and project requirements audit, the primary goals 
 
 ### Domain 6: Anti-Cheat Trust Score, Ranked & Territory
 
-- **Assigned Lead**: **Keoratile / Kea** (Member 6)
+- **Assigned Lead**: **Oratile** (Member 6)
 - **Current Status**: Speed violation and teleport alerts exist in `antiCheat.ts`; user schema tracks Elo.
 - **What Needs to be Polished / Built**:
 
