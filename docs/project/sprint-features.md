@@ -1,6 +1,6 @@
 # Features by Sprint
 
-Which game features were built in each sprint. For what each feature does, see [Core Features](core-features.md). For the full plans and task lists, see the Sprints section.
+Which game features were built in each sprint, from Sprint 1 to Sprint 4. For what each feature does, see [Core Features](core-features.md). For the full plans and task lists, see the Sprints section.
 
 ---
 
@@ -62,3 +62,35 @@ Making the game hard to cheat, and adding more to do.
 | Real campus content: cards, events and trivia | Nontokozo |
 
 Sprint 3 also included work that isn't a game feature: making the app work well on phones, API clean-up and versioning, speed fixes, security fixes, and more automated tests. These are covered under [API](../development/api-endpoints.md), [Performance](../development/performance.md) and [Test Results](../development/testing.md).
+
+## Sprint 4: polish and submit
+
+Every feature in the brief was done by the end of Sprint 3, so Sprint 4 (29 Sep to 11 Oct) is for finishing, polishing and testing. New features stopped on 4 Oct. The full task list is in the [Sprint 4 Plan](../sprints/SPRINT4_PLAN.md).
+
+**Built:**
+
+| Feature | Owner |
+| :--- | :--- |
+| New look with 4 themes to choose from: Wits Night, Daylight, Wits Blue and Pink | Mahlatse |
+| Six tabs: Map, Cards, Quests, Battle, Ranks and Me | Mahlatse, Nontokozo |
+| First-time walkthrough with Kudu | Mahlatse |
+| Card pictures in battles and the deck editor, and icons instead of emojis | Mahlatse |
+| Quest trails screen, with each trail's next stop flagged on the map | Nontokozo, Mahlatse |
+| Live challenges arrive on any screen | Mahlatse |
+| Live battles in two turns: the answering player sees the stat picked, not the card | Mahlatse |
+| Spectators see the whole match play out, not just the score | Mahlatse |
+| Contested zones, safe when two players capture at the same time | Mahlatse |
+| The map still shows with no signal | Mahlatse |
+| Trading moved onto the Cards page | Mahlatse |
+
+**Planned:**
+
+| Feature | Owner |
+| :--- | :--- |
+| Pictures for every card | Nontokozo |
+| Sound effects, with an on/off switch | Oratile |
+| Player avatars on the map instead of numbers | Team |
+| Friends: recent opponents, friend requests, rivals, and blocking | Junior, Mahlatse |
+| Ideas to look at: a game theme and a tournament mode | Team |
+
+Sprint 4 also covers non-feature work: a UI review in every theme (Rea), the documentation clean-up (Kgothatso and Oratile), cleaning test data out of the live app (Mahlatse), and testing on phones around campus (everyone).

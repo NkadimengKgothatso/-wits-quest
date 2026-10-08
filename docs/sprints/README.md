@@ -34,3 +34,13 @@ Sprint 3 finished the Basic and Intermediate tiers, including server-side locati
 | :--- | :--- |
 | [Sprint 3 Plan](./SPRINT3_TASK_BOARD.md) | Task board with owners and status for Sprint 3 |
 | [Sprint 3 Team Guide](./WITS_QUEST_SPRINT3_GUIDE.md) | What each member builds in Sprint 3 and what done means |
+
+---
+
+## Sprint 4 — Polish & Submission
+
+Sprint 4 finishes the app for submission: a new look with themes, card pictures, sound, a UI review, the documentation clean-up, cleaning the live data, and testing on phones around campus. Feature freeze was 4 Oct and submission is 11 Oct.
+
+| Document | Description |
+| :--- | :--- |
+| [Sprint 4 Plan](./SPRINT4_PLAN.md) | Who does what, the testing checklist and the hand-in steps |

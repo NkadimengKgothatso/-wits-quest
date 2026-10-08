@@ -54,6 +54,14 @@ Walk to real places on the Wits campus, answer trivia there to win cards, build 
 | **Quest trails** | A chain of events to visit in order, with a bonus at the end. |
 | **Territory control** | Campus is split into zones. Completing events and winning battles in a zone builds influence, and the player with the most influence owns it. |
 
+## Look and feel
+
+| Feature | What it does |
+| :--- | :--- |
+| **Themes** | Choose from 4 themes: Wits Night, Daylight, Wits Blue and Pink. |
+| **Six tabs** | Map, Cards, Quests, Battle, Ranks and Me. |
+| **First-time walkthrough** | Kudu shows new players how the game works. |
+
 ## Fair play
 
 | Feature | What it does |
