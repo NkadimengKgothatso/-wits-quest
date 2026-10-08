@@ -15,7 +15,14 @@ Run on 8 October 2026 against the latest code on `main` (last changed 1 October)
 
 No tests failed or were skipped.
 
-### Progress since the last run
+## Previous results (29 September 2026)
+
+| Code base | Tools | Tests | Statements | Branches | Functions | Lines | Coverage gate |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Frontend** | Vitest + React Testing Library | 163 passing (20 files) | 89.21% | 83.03% | 83.33% | 89.21% | 80% ✅ |
+| **Backend** | Vitest + Supertest | 452 passing (29 files) | 63.91% | 78.74% | 70.90% | 63.91% | 60% ✅ |
+
+## Progress since the last run
 
 | Code base | 29 Sep | 8 Oct | Change |
 | :--- | :--- | :--- | :--- |
@@ -24,7 +31,7 @@ No tests failed or were skipped.
 | Backend tests | 452 (29 files) | 552 (39 files) | +100 tests, +10 files |
 | Backend statement coverage | 63.91% | 70.08% | +6.17 points |
 
-### Screenshots of the 8 October run
+## Screenshots
 
 === "Frontend"
 
