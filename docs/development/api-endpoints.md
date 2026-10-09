@@ -104,7 +104,7 @@ Public `GET` endpoints are links, so you can open them straight from this page. 
 | `GET` | [`https://wits-quest.onrender.com/api/territories`](https://wits-quest.onrender.com/api/territories) | Public | Campus zones and their owners | ✅ |
 | `GET` | `https://wits-quest.onrender.com/api/territories/{id}` | Public | One zone with its events | ✅ |
 | `POST` | `https://wits-quest.onrender.com/api/territories/{id}/claim` | Admin | Set a zone's owner by hand (admin override) | ✅ |
-| `GET` | `https://wits-quest.onrender.com/api/routing/route` | Login | Walking route between two points (OpenRouteService) | ✅ |
+| `GET` | `https://wits-quest.onrender.com/api/routing/route` | Login | Walking route between two points (OpenRouteService, then FOSSGIS if it fails; cached for an hour) | ✅ |
 
 ## Anti-cheat & telemetry
 

@@ -82,7 +82,7 @@ Largest backend test files: `content.test.ts` (60 tests), `contentLifecycle.test
 | :--- | :--- | :--- |
 | Live PvP screens and real socket connections | Fake sockets in a test only test the fakes | Two real players on two devices against the live server |
 | Real GPS on a phone | Tests can't move a phone around campus | Walking to events on campus with a phone |
-| OpenRouteService directions | It's an outside service | Tests use a fake response; the real one is checked by hand |
+| OpenRouteService and FOSSGIS directions | It's an outside service | Tests use a fake response; the real one is checked by hand |
 | Database seed scripts | They run once to load content | Checked by looking at the data in Supabase |
 
 **Where backend coverage is lowest:** the database and seed files in `src/db` (about 2%), the achievement rules in `utils/achievements.ts` (26%) and `routes/adminAchievements.ts` (31%), `routes/telemetry.ts` (32%), `routes/battle.ts` (37%) and `routes/ranked.ts` (61%). These are the next targets for raising the backend gate to 80%.

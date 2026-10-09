@@ -91,7 +91,26 @@ Live PvP and the ranked queue use Socket.IO on the same server, not REST. The ma
 
 ## External API: walking directions
 
-`GET /routing/route` returns a walking route to the next event. The backend calls the **OpenRouteService** Directions API (`foot-walking`), so the API key stays on the server. If OpenRouteService fails, the app draws a straight line instead. The app also caches routes so it doesn't repeat the same request.
+`GET /routing/route` returns a walking route to the next event. The backend tries two routing services in turn, so the map almost always shows a real path:
+
+1. **OpenRouteService** Directions API (`foot-walking`). The backend calls it, so the API key stays on the server.
+2. **FOSSGIS walking router** (`routing.openstreetmap.de`), used if OpenRouteService fails, for example because its daily quota is used up or it is rate limited. This free OpenStreetMap service needs no key and has no daily quota. The backend reshapes its answer into the same format as OpenRouteService, so the map reads both routes the same way.
+3. **Straight line**, drawn by the app only if both services fail.
+
+Routes from either service are cached for an hour, so the same request isn't sent again.
+
+```mermaid
+flowchart TD
+    A[App asks GET /routing/route] --> C{Route in the<br/>one-hour cache?}
+    C -->|Yes| R[Return cached route]
+    C -->|No| O[Call OpenRouteService<br/>foot-walking]
+    O -->|OK| S[Cache for 1 hour<br/>and return route]
+    O -->|Fails: quota, rate limit, error| F[Call FOSSGIS<br/>walking router]
+    F -->|OK| N[Reshape to the<br/>OpenRouteService format]
+    N --> S
+    F -->|Fails| E[Return an error]
+    E --> L[App draws a<br/>straight line]
+```
 
 ## Run the API locally
 
@@ -102,4 +121,4 @@ npm run dev        # http://localhost:3000
 npm test           # run the backend tests
 ```
 
-The backend needs `SUPABASE_URL` and `SUPABASE_KEY` in `backend/.env`. `OPENROUTESERVICE_API_KEY` is optional (without it, routes fall back to a straight line).
+The backend needs `SUPABASE_URL` and `SUPABASE_KEY` in `backend/.env`. `OPENROUTESERVICE_API_KEY` is optional. Without it, routes come from the FOSSGIS walking router, and the app draws a straight line only if that fails too.

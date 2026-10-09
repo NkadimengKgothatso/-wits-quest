@@ -66,7 +66,8 @@ From the monorepo root `package.json` — shared lint/format/commit gates:
 | **Supabase** | Postgres 15 + **Auth** + Storage + Realtime | Four subsystems in one free-tier service — see the breakdown below |
 | **Vercel** | Frontend hosting | Automatic builds from the main branch |
 | **Render** | Backend hosting | Configured via `render.yaml` at the source-repo root; health probe at `/api/health` |
-| **OpenRouteService** | Walking directions (external API) | The backend calls its Directions API (`foot-walking`) to draw the route to the next event; the API key stays on the server |
+| **OpenRouteService** | Walking directions (external API) | The backend calls its Directions API (`foot-walking`) to draw the route to the next event; the API key stays on the server. Routes are cached for an hour |
+| **FOSSGIS walking router** (`routing.openstreetmap.de`) | Backup walking directions | Used when OpenRouteService fails (quota used up, rate limited or down). Free OpenStreetMap service with no key and no daily quota; the backend reshapes its answer to match OpenRouteService. Route data © OpenStreetMap contributors (ODbL) |
 | **Gitea** (`sdp.ms.wits.ac.za`) | Source control + CI | University-hosted. `.gitea/workflows/ci.yml` runs lint, type-check and both test suites on demand; `sync-mirrors.yml` copies the frontend and backend into their own repos |
 | **GitHub Actions** | Deployment | On every push to `main`, deploys the app to Vercel and the API to Render |
 | **GitHub Pages** | This documentation site | MkDocs Material build, deployed from the docs workflow |

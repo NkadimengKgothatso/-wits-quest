@@ -34,6 +34,7 @@ flowchart LR
         ST[Storage<br/>card pictures]
     end
     ORS[OpenRouteService<br/>walking directions]
+    FOS[FOSSGIS router<br/>backup directions]
     GP[GitHub Pages<br/>this documentation]
 
     B -->|HTTPS: loads the app| FE
@@ -43,6 +44,7 @@ flowchart LR
     API -->|service-role key| DB
     API -->|checks login tokens| AUTH
     API -->|route requests| ORS
+    API -.->|if OpenRouteService fails| FOS
     B -.->|reads| GP
 ```
 
@@ -135,7 +137,7 @@ Secrets are entered in the Render dashboard only, never in the code:
 | Variable | What it's for |
 | :--- | :--- |
 | `SUPABASE_URL`, `SUPABASE_KEY` | Connects to the database and checks login tokens (service-role key) |
-| `OPENROUTESERVICE_API_KEY` | Walking directions. Without it the map draws a straight line instead |
+| `OPENROUTESERVICE_API_KEY` | Walking directions. Without it routes come from the FOSSGIS walking router, and the map draws a straight line only if that fails too |
 | `CORS_ORIGINS` | Extra app addresses allowed to call the API (optional) |
 | `NODE_ENV` | `production` |
 

@@ -32,7 +32,7 @@
 | **Frontend** | React 18 + TypeScript, built with Vite, hosted on Vercel |
 | **Backend** | Node.js + Express REST API and Socket.IO for live battles, hosted on Render |
 | **Database and login** | Supabase (PostgreSQL, Supabase Auth, file storage) |
-| **External API** | OpenRouteService for walking directions to the next event |
+| **External API** | OpenRouteService for walking directions to the next event, with the FOSSGIS router as a backup |
 | **Testing** | Vitest on both frontend and backend, with React Testing Library and Supertest |
 | **Code quality** | ESLint, Prettier and husky git hooks |
 | **Team** | 6 members, each owning one area of the game |
