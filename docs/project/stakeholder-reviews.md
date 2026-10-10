@@ -127,7 +127,7 @@ The tutor reviewed each item from her [Sprint 1 feedback](#sprint-1-review-2026-
 | Three-repo separation (no monorepo) | Frontend, backend, and documentation live in separate repositories, kept in sync |
 | README slimmed to basics | READMEs now only cover what the app is and how to run it; the detail moved to this site |
 | Why Issues, not Projects | Recorded in [Decision D-01](../development/decisions-log.md#d-01-gitea-issues-for-tracking-work) |
-| Git methodology standard | Branch-naming structure and Conventional Commits documented in [Git Workflow](../development/git-workflow.md) |
+| Git methodology standard | Branch-naming structure and Conventional Commits documented in [Git Methodology](../development/git-workflow.md) |
 | Project methodology / roadmap | [Methodology](methodology.md) and [Sprints](../sprints/README.md) pages |
 | Security — OAuth, no password hashing | Auth migrated to Supabase Auth; the custom JWT + bcrypt code was removed |
 | Tech-stack rationale | Team-specific reasoning documented in [Technical Decisions](../development/technical-decisions.md) |
@@ -180,7 +180,7 @@ Every point was triaged into the Sprint 2 plan and is now addressed in the docum
 | Three-repo separation (no monorepo) | Completed in Sprint 2: frontend, backend, and docs are separate repositories kept in sync by automated mirror pushes (Decisions [D-02](../development/decisions-log.md) and [D-03](../development/decisions-log.md)). |
 | README too long | READMEs slimmed to the basics — what the project is and how to run it. The full detail lives on this documentation site, including the [tech-stack manifest](../development/third-party.md) moved out of the README. |
 | Why Issues, not Projects | Documented in [Decision D-01](../development/decisions-log.md#d-01-gitea-issues-for-tracking-work) — organisation-level scope, linking overhead, and redundancy with Issues. |
-| Git methodology standard | The team's actual standard — branch-naming structure, Conventional Commits format, merge rules — is documented in [Git Workflow](../development/git-workflow.md). |
+| Git methodology standard | The team's actual standard — branch-naming structure, Conventional Commits format, merge rules — is documented in [Git Methodology](../development/git-workflow.md). |
 | Project methodology / roadmap | [Methodology](methodology.md) covers the sprint skeleton, planning rules, and roadmap; [Sprints](../sprints/README.md) records the per-sprint plans and handovers. |
 | Security / OAuth / password hashing | Sprint 2 migrated authentication to **Supabase Auth** — the custom JWT + bcrypt implementation was fully removed, so our code never touches password hashes. Rationale in [Technical Decisions](../development/technical-decisions.md). |
 | Why React / Node / Supabase / MapBox-vs-Leaflet | Personal, team-specific reasons for each choice — plus a Supabase-vs-competition comparison and the MapBox-vs-Leaflet evaluation — are documented in [Technical Decisions](../development/technical-decisions.md). |

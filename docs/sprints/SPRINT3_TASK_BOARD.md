@@ -117,7 +117,7 @@ Documentation carries 15% of the Milestone 3 mark, and other criteria are marked
 | Testing | [Test Results & Coverage](../development/testing.md), [Testing Documentation](../development/testing-documentation.md) | Junior's CI coverage reports | ⬜ |
 | User feedback and improvement list | [User Feedback](../project/user-feedback.md) | Rea's two testing rounds | ⬜ |
 | Bug tracker and fix register | [Bug Tracking](../development/bug-tracking.md) | Everyone logs bugs; Junior maintains labels and links | ⬜ |
-| Methodology evidence | [Methodology](../project/methodology.md), [Meetings](../meetings/index.md), [Git Workflow](../development/git-workflow.md) | Sprint board history, stand-up notes, PR history, burndown | ⬜ |
+| Methodology evidence | [Methodology](../project/methodology.md), [Meetings](../meetings/index.md), [Git Methodology](../development/git-workflow.md) | Sprint board history, stand-up notes, PR history, burndown | ⬜ |
 | No broken links on the site | `mkdocs build` in CI | Everyone who edits docs | ⬜ |
 
 ## Everyone

@@ -1,5 +1,8 @@
 # Project Methodology
 
+!!! info "This page is our project methodology"
+    It covers how the team runs the project: Agile Scrum in four sprints, roles, meetings, reviews and the Definition of Done. How we use Git (branches, commits, pull requests and merging) is a separate topic, on [Git Methodology](../development/git-workflow.md).
+
 How the team plans, builds, reviews and delivers Wits Quest. This page describes the process we actually followed, backed by our meeting records, sprint plans and git history.
 
 ---
@@ -73,6 +76,7 @@ Who built which feature in each sprint is on [Features by Sprint](sprint-feature
 
 ## Tracking work
 
+- **Gitea Issues** are our project tracker: every task has an owner and a sprint milestone, and pull requests close them automatically ([Project Tracker](../tools/project-tracker.md)).
 - **Sprint task lists:** each sprint plan lists every task with its owner and status. The [Sprint 3 Plan](../sprints/SPRINT3_TASK_BOARD.md) is a full task board, and the [Sprint 4 Plan](../sprints/SPRINT4_PLAN.md) lists who does what.
 - **Bugs** go into Gitea Issues with a severity and an owner ([Bug Tracking](../development/bug-tracking.md)).
 - **Decisions** are recorded with the reason for them ([Decisions Log](../development/decisions-log.md)).
@@ -99,7 +103,7 @@ flowchart TD
 4. **Deploy:** every push to `main` deploys automatically ([Deployment](../development/deployment.md)).
 5. **Check on phones:** game features are tried on real phones on campus, and anything broken becomes a bug.
 
-Details and naming rules are on the [Git Workflow](../development/git-workflow.md) page.
+Details and naming rules are on the [Git Methodology](../development/git-workflow.md) page.
 
 ### Commit messages
 

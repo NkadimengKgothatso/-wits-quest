@@ -1,36 +1,30 @@
-# Wits Quest — Documentation
+# Wits Quest: Documentation
 
-Centralised documentation for **Wits Quest** — a location-aware, turn-based campus adventure game that turns the Wits University campus into a Pokémon GO–style exploration and collectible card battle game. Developed by Team Big-O for the University of the Witwatersrand Software Development Project (COMS3011A).
+The documentation for **Wits Quest**, a campus game for Wits University. Players walk to real places on campus, answer a trivia question to win a card, and battle with their cards. Built by Team Big-O for COMS3011A Software Development Project, 2026.
 
-All documentation — requirements, architecture, UML, database design, API reference, testing, sprints, meeting records, and decision logs — lives on the **documentation site**, not in this README.
+**Read the docs: https://nkadimengkgothatso.github.io/-wits-quest/**
 
-## Reading the documentation
+## Links
 
-The docs are built with MkDocs (Material theme) from the `docs/` directory in this repository:
+| What | Where |
+| :--- | :--- |
+| **Documentation site** | https://nkadimengkgothatso.github.io/-wits-quest/ |
+| **Test and performance results** | https://nkadimengkgothatso.github.io/-wits-quest/development/test-report/ |
+| **Play the game** | https://wits-quest.vercel.app |
+| **API (Swagger UI)** | https://wits-quest.onrender.com/api/docs |
+| **Source code** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
+| **This repo on Gitea** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation |
+| **This repo on GitHub** | https://github.com/NkadimengKgothatso/-wits-quest |
 
-- **Live documentation:** https://nkadimengkgothatso.github.io/-wits-quest/
+## What's in the docs
 
-## Running the docs locally
+Core features · Tech stack · API architecture and endpoints · Project and Git methodology · Development plan, roadmap, system and UI design · Tools (project tracker, bug tracker, code quality) · Sprints and meetings · User feedback, user experience, accessibility and improvement · Stakeholder reviews · Testing and performance · Deployment · Production data · Database · Third-party code.
+
+## Run the docs locally
 
 ```bash
 pip install mkdocs-material
-mkdocs serve
+mkdocs serve        # http://localhost:8000
 ```
 
-Then open **http://localhost:8000** in your browser.
-
-## Repository Links
-
-| Resource | URL |
-| :--- | :--- |
-| **Source Code (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest |
-| **Documentation (Gitea)** | https://sdp.ms.wits.ac.za/big-o/Wits-Quest-Documentation |
-| **Documentation (GitHub)** | https://github.com/NkadimengKgothatso/-wits-quest |
-| **Live Documentation (MkDocs)** | https://nkadimengkgothatso.github.io/-wits-quest/ |
-| **Live Application** | https://wits-quest.vercel.app |
-
----
-
-<div align="center">
-  <sub>Developed for the Wits University Software Development Project by Team Big-O.</sub>
-</div>
+The pages are in `docs/`, and the sidebar is set in `mkdocs.yml`. Run `mkdocs build --strict` before pushing to catch broken links.

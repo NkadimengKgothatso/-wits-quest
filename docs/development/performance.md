@@ -4,6 +4,9 @@ How fast the app and API are, how we measure it, and what we did to keep them fa
 
 ---
 
+!!! success "Newest run: 9 and 10 October 2026"
+    These runs tested the live app and API. The load test sent 2,976 API requests, and none failed. Lighthouse on a phone scored Login 49 and Map 67, with accessibility from 92 to 100 across 19 screens and themes. Full results are on [Test Results at a Glance](test-report.md), with the [PDF report](../reports/performance-and-coverage-report.pdf).
+
 ## Summary
 
 ```mermaid

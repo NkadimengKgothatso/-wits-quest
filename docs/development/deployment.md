@@ -10,7 +10,7 @@ Where each part of Wits Quest is hosted and how it gets there.
 | :--- | :--- | :--- |
 | **App** (React) | Vercel | [wits-quest.vercel.app](https://wits-quest.vercel.app) |
 | **API** (Node.js + Express + Socket.IO) | Render (free plan) | [wits-quest.onrender.com/api/health](https://wits-quest.onrender.com/api/health) |
-| **Database, login and file storage** | Supabase (PostgreSQL) | Managed by Supabase |
+| **Database, login and file storage** | Supabase cloud (PostgreSQL 15), deployed and live | [kbazdskiqglyxsdvopsa.supabase.co](https://kbazdskiqglyxsdvopsa.supabase.co) ([details below](#database)) |
 | **Documentation** (this site) | GitHub Pages | [nkadimengkgothatso.github.io/-wits-quest](https://nkadimengkgothatso.github.io/-wits-quest/) |
 
 ## Deployment diagram
@@ -58,7 +58,7 @@ Every push to `main` in the source repo runs `.github/workflows/ci.yml`, which:
 2. **Starts a Render deploy** for the API through Render's deploy hook, pinned to that exact commit.
 3. **Waits until the API is live** by calling `/api/health` until it reports the new commit (up to 20 minutes).
 
-Tests run before the push, in the pre-push hook on the developer's machine (see [Git Workflow](git-workflow.md#automatic-checks)).
+Tests run before the push, in the pre-push hook on the developer's machine (see [Git Methodology](git-workflow.md#automatic-checks)).
 
 ```mermaid
 flowchart TD
@@ -147,6 +147,18 @@ Secrets are entered in the Render dashboard only, never in the code:
 | :--- | :--- |
 | `VITE_API_URL` | Where the API lives (`https://wits-quest.onrender.com`) |
 | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | Lets the app sign players in with Supabase Auth (public anon key only) |
+
+## Database
+
+**The database is deployed.** It runs on Supabase's hosted cloud as project `kbazdskiqglyxsdvopsa`, at `https://kbazdskiqglyxsdvopsa.supabase.co`. It's the same database the live app and API use, and it holds the real game content: 50 cards, 51 events and 50 trivia questions on 10 Oct ([Production Data](../database/production-data.md)).
+
+| | |
+| :--- | :--- |
+| **Project URL** | `https://kbazdskiqglyxsdvopsa.supabase.co`. This is the API address the app and backend connect to. Opening it in a browser without a key gives an error, because every request needs an API key |
+| **Dashboard** | [supabase.com/dashboard/project/kbazdskiqglyxsdvopsa](https://supabase.com/dashboard/project/kbazdskiqglyxsdvopsa) (team members' Supabase login only) |
+| **What's in it** | PostgreSQL 15 with the 27 game tables ([Database Schema](../database/database-schema.md)), Supabase Auth for accounts, and Storage for card pictures |
+| **Who connects** | The API on Render, with the service-role key (`SUPABASE_KEY`). The app connects only to Supabase Auth, with the public anon key, to sign players in |
+| **How to see it's live** | [wits-quest.onrender.com/api/health](https://wits-quest.onrender.com/api/health) answers `"service": "Wits Quest API (Supabase)"`, and every game screen loads its data from this database |
 
 ## Database changes
 

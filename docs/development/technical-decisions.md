@@ -10,7 +10,7 @@ A running log of the significant technical choices behind Wits Quest and the rea
 ## Code-quality gates: ESLint + Prettier + husky
 
 **Decision**: Every commit passes ESLint and Prettier on staged files via a husky `lint-staged` pre-commit hook, and CI runs the full lint + typecheck + test suite on every push.
-**Why**: Sprint 1 shipped with **no automated code-quality checks** — a gap called out in the tutor's Sprint 1 review. With six people committing to shared repositories, style drift and unused-variable rot compound quickly; hooks make the standard self-enforcing instead of something reviewers police by hand. Full enforcement table in [Git Workflow](git-workflow.md).
+**Why**: Sprint 1 shipped with **no automated code-quality checks** — a gap called out in the tutor's Sprint 1 review. With six people committing to shared repositories, style drift and unused-variable rot compound quickly; hooks make the standard self-enforcing instead of something reviewers police by hand. Full enforcement table in [Git Methodology](git-workflow.md).
 
 ## Frontend: React (with Vite)
 

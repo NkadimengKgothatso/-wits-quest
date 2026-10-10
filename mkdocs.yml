@@ -78,17 +78,44 @@ nav:
       - Scope: project/scope.md
       - Motivation: project/motivation.md
 
+  - Tech Stack:
+      - Tech Stack: project/tech-stack.md
+
   - API:
+      - API Architecture: development/api-architecture.md
       - API Quick Start: development/api-quickstart.md
       - Endpoint Catalogue: development/api-endpoints.md
       - Swagger UI: development/swagger.md
 
-  - Project Methodology:
-      - Methodology: project/methodology.md
-      - Git Workflow: development/git-workflow.md
+  - Methodology:
+      - Project Methodology: project/methodology.md
+      - Git Methodology: development/git-workflow.md
       - Decisions Log: development/decisions-log.md
       - Technical Decisions: development/technical-decisions.md
       - Master Architecture Guide (PDF): project/files/wits-quest-master-architecture-task-specification-guide.pdf
+
+  - Planning & Design:
+      - Development Plan: planning/development-plan.md
+      - Roadmap: planning/roadmap.md
+      - UI Design: planning/ui-design.md
+      - System Design:
+          - Overview: planning/system-design.md
+          - System Architecture: uml/01_system_architecture.md
+          - Development Architecture: development/architecture.md
+          - Use Case Diagram: uml/03_use_case_diagram.md
+          - Class Diagram: uml/05_class_diagram.md
+          - Sequence Diagrams: uml/06_sequence_diagrams.md
+          - Activity Diagrams: uml/07_activity_diagrams.md
+          - State Diagrams: uml/02_battle_state_machine.md
+      - Feature Guides:
+          - Battle Rules: development/cpu-battle-rules.md
+          - Live PvP: development/live-pvp-walkthrough.md
+          - Async PvP: development/async-pvp-walkthrough.md
+
+  - Tools:
+      - Project Tracker: tools/project-tracker.md
+      - Bug Tracker: development/bug-tracking.md
+      - Code Quality: tools/code-quality.md
 
   - Sprints:
       - Overview: sprints/README.md
@@ -107,15 +134,25 @@ nav:
   - User Feedback:
       - Feedback Form & Responses: project/user-feedback.md
 
+  - User Experience:
+      - User Experience: ux/user-experience.md
+      - Responsiveness: ux/responsiveness.md
+      - Structure: ux/structure.md
+
+  - Accessibility:
+      - Accessibility: ux/accessibility.md
+
+  - Improvement:
+      - Improvement from Feedback: project/improvement.md
+
   - Stakeholder Reviews:
       - Tutor Review Records: project/stakeholder-reviews.md
 
   - Testing Documentation:
+      - Test Results at a Glance: development/test-report.md
       - Testing Documentation: development/testing-documentation.md
       - Automated Testing: development/testing.md
-
-  - Bug Tracker:
-      - Bug Tracking: development/bug-tracking.md
+      - Full Report (PDF): reports/performance-and-coverage-report.pdf
 
   - Performance:
       - Performance: development/performance.md
@@ -123,25 +160,15 @@ nav:
   - Deployment:
       - Deployment & Hosting: development/deployment.md
 
+  - Production Data:
+      - Production Data: database/production-data.md
+
   - Database Documentation:
       - Database Plan: database/database-plan.md
       - Database Schema: database/database-schema.md
       - Database Diagram: database/database-diagram.md
       - ERD: uml/04_erd_database_schema.md
       - Data & Privacy: database/data-privacy.md
-
-  - System Design (UML):
-      - System Architecture: uml/01_system_architecture.md
-      - Development Architecture: development/architecture.md
-      - Use Case Diagram: uml/03_use_case_diagram.md
-      - Class Diagram: uml/05_class_diagram.md
-      - Sequence Diagrams: uml/06_sequence_diagrams.md
-      - Activity Diagrams: uml/07_activity_diagrams.md
-      - State Diagrams: uml/02_battle_state_machine.md
-      - Feature Guides:
-          - Battle Rules: development/cpu-battle-rules.md
-          - Live PvP: development/live-pvp-walkthrough.md
-          - Async PvP: development/async-pvp-walkthrough.md
 
   - Third-Party Code Documentation:
       - Third-Party Code & Services: development/third-party.md

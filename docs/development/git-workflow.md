@@ -1,6 +1,12 @@
-# Git Workflow
+# Git Methodology
 
-The team's rules for branches, commits and merging. Git hooks check most of them automatically.
+This is our **Git methodology**: how we use Git day to day. It covers the repositories, branch names, commit messages, merging and the automatic checks, and git hooks enforce most of the rules.
+
+!!! info "Git methodology and project methodology are different things"
+    - **Git methodology (this page)** is how code moves through Git: branches, commits, pull requests and merges.
+    - **[Project methodology](../project/methodology.md)** is how the team runs the whole project: Agile Scrum in four sprints, roles, meetings, reviews and the Definition of Done.
+
+    Our Git methodology is a **feature-branch workflow**. `main` is always deployable, every piece of work gets its own short-lived branch named after its owner, and work goes back into `main` through a pull request or the integration lead.
 
 ---
 

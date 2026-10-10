@@ -4,7 +4,10 @@ What our automated tests cover, the latest results, and what we don't test autom
 
 ---
 
-## Latest results (8 October 2026)
+!!! success "Newest run: 10 October 2026"
+    946 tests, all passing (628 backend, 318 frontend). Backend coverage is 81.75%; frontend is 92.18% on the gated files and 52.34% across all code. Full tables and screenshots are on [Test Results at a Glance](test-report.md), with the [PDF report](../reports/performance-and-coverage-report.pdf).
+
+## Results on 8 October 2026
 
 Run on 8 October 2026 against the latest code on `main` (last changed 1 October), which is the version deployed on Render and Vercel.
 
