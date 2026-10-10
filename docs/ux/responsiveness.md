@@ -17,8 +17,25 @@ flowchart LR
 | **Small phones** (under 430 px) | Tighter spacing and smaller headings so everything fits without sideways scrolling |
 | **Phones** (430 to 640 px) | The main design: full-width screens, the six-tab bar at the bottom within thumb reach, and sheets that slide up from the bottom |
 | **Tablets** (640 to 960 px) | The cards grid shows more columns; content is centred with a maximum width so lines don't get too long |
-| **Laptops** (over 960 px) | Game screens sit in a centred column (up to 560 to 680 px wide) so they look like the phone version; the map fills the window; the admin console shows its sidebar next to the content |
+| **Laptops** (over 960 px) | Screens use the extra width: the cards become two columns of wide tiles, all filter chips fit on one row, the map fills the window and the bottom bar spreads out. Forms and pop-up sheets stay in a centred column (560 to 680 px) so they're easy to read. The admin console shows its sidebar next to the content |
 | **Narrow admin windows** | The admin event editor switches from side-by-side map and form to stacked |
+
+=== "Phone (390 px)"
+
+    ![Cards on a phone: two narrow columns of cards, chips scroll sideways](images/phone-cards.png){ width="260" }
+
+=== "Laptop (1366 px)"
+
+    ![Cards on a laptop: two columns of wide tiles, all chips on one row](images/laptop-cards.png)
+
+=== "Login on a laptop"
+
+    ![Login on a laptop: content stays centred](images/laptop-login.png)
+
+The same Cards screen on a phone and a laptop. On the phone the cards are narrow and the filter chips scroll sideways; on the laptop all the chips fit on one row and the cards become wide tiles.
+
+!!! note "About these screenshots"
+    Taken on 10 Oct from a local build of the app with sample player data ("Thandi" is not a real player). The fonts are the browser's fallbacks, because Google Fonts couldn't be loaded where the screenshots were taken.
 
 How it's built:
 

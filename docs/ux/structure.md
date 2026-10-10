@@ -26,6 +26,29 @@ flowchart TB
     ME --> APP["Appearance (themes)"]
 ```
 
+=== "Cards"
+
+    ![Cards tab](images/phone-cards.png){ width="240" }
+
+=== "Quests"
+
+    ![Quests tab: a trail with its next stop](images/phone-quests.png){ width="240" }
+
+=== "Battle"
+
+    ![Battle tab: CPU, live, async, ranked, spectate, territory](images/phone-battle.png){ width="240" }
+
+=== "Ranks"
+
+    ![Ranks tab: podium and leaderboard](images/phone-ranks.png){ width="240" }
+
+=== "Me"
+
+    ![Me tab: profile, stats and achievements](images/phone-me.png){ width="240" }
+
+!!! note "About these screenshots"
+    Taken on 10 Oct from a local build of the app with sample player data ("Thandi" is not a real player). The fonts are the browser's fallbacks, because Google Fonts couldn't be loaded where the screenshots were taken.
+
 | Tab | What's in it | Opens from inside it |
 | :--- | :--- | :--- |
 | **Map** | The campus map, events near you, walking directions; tap a glowing event to answer its trivia | Trivia, QR scanner |
@@ -57,3 +80,5 @@ We kept the structure flat on purpose. In Sprint 4 the screens were grouped into
 | **Kudu, the guide** | Top bar, login and battle screens | The mascot appears with short notes, and is the CPU opponent in battles |
 | **Player handbook** | [Game Overview & Tiers](../project/overview.md), [Core Features](../project/core-features.md) and the [CPU Battle Rules](../development/cpu-battle-rules.md) | How to play, how cards and battles work, and the battle rules in full |
 | **Clear labels** | Everywhere | Every tab and button has a word label as well as an icon |
+
+![The first-run walkthrough with Kudu, step 1 of 3](images/phone-onboarding.png){ width="260" }

@@ -51,6 +51,13 @@ We want every error to say **what went wrong and what to do next**, in plain wor
 | Moved impossibly fast (anti-cheat) | **"That was quick!"**. The answer isn't counted, and there's no accusation |
 | A move that isn't allowed in a battle | "It's not your turn to pick." / "That card has already been played this match." |
 
+<div markdown style="display:flex;gap:16px;flex-wrap:wrap">
+![Sign-in rejects a non-Wits email before sending](images/phone-login-email-error.png){ width="220" }
+![Wrong password: Invalid login credentials](images/phone-login-error.png){ width="220" }
+</div>
+
+*Left: the email is checked before anything is sent. Right: a wrong password gets a plain message.*
+
 ### Errors the player can't fix
 
 | Situation | What happens |
@@ -61,6 +68,13 @@ We want every error to say **what went wrong and what to do next**, in plain wor
 | **Walking-route service down** | The app tries the backup router, then draws a straight line, so the map always shows a way to the event |
 | **Server asleep (free hosting)** | The first request after a quiet spell can take up to a minute while Render starts the server again. We keep it awake with a ping during marking |
 | **Storage blocked (private browsing)** | The theme and onboarding settings still work for that session; they just aren't saved |
+
+![Offline banner: answers will sync when reconnected](images/phone-offline.png){ width="240" }
+
+*With no signal, the top bar says "Offline" and a banner explains that answers will sync later. (The map tiles are blank because this was taken offline.)*
+
+!!! note "About these screenshots"
+    Taken on 10 Oct from a local build of the app with sample player data ("Thandi" is not a real player). The fonts are the browser's fallbacks, because Google Fonts couldn't be loaded where the screenshots were taken.
 
 ```mermaid
 flowchart LR

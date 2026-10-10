@@ -100,4 +100,47 @@ Trivia unlocking "every time" went from **0%** of players in Sprint 2 to **40%**
 
 Screenshots of the changes in the app.
 
-The walkthrough and the four themes are shown on [Accessibility](../ux/accessibility.md) and [User Experience](../ux/user-experience.md).
+=== "How to play"
+
+    ![The Kudu walkthrough on first sign-in, answering "give instructions on how to play"](../ux/images/phone-onboarding.png){ width="260" }
+
+    Players and the stakeholder both asked for instructions, so new players now get a three-step walkthrough with Kudu.
+
+=== "New look and themes"
+
+    <div markdown style="display:flex;gap:12px;flex-wrap:wrap">
+    ![Wits Night](../ux/images/theme-night.png){ width="170" }
+    ![Daylight](../ux/images/theme-day.png){ width="170" }
+    ![Wits Blue](../ux/images/theme-blue.png){ width="170" }
+    ![Pink](../ux/images/theme-pink.png){ width="170" }
+    </div>
+
+    The visual design scored 3.4 / 5 in Sprint 2. The redesign added card photos and four themes, chosen under Me → Appearance; every colour comes from tested theme tokens, which also fixed the dark-mode text boxes the stakeholder reported.
+
+=== "Finding your way"
+
+    ![Quests: a trail with its next stop and the distance to it](../ux/images/phone-quests.png){ width="260" }
+
+    Map navigation scored 2.8 / 5 in Sprint 2. Trails now show the next stop and how far away it is, the map flags it, and walking directions lead there. The score rose to 4.2 / 5.
+
+=== "Clear sign-in errors"
+
+    <div markdown style="display:flex;gap:12px;flex-wrap:wrap">
+    ![A non-Wits email is rejected before sending](../ux/images/phone-login-email-error.png){ width="220" }
+    ![A wrong password gets a plain message](../ux/images/phone-login-error.png){ width="220" }
+    </div>
+
+    Sign-up was the top complaint. The form now checks the email and password before sending, and every error is in plain words.
+
+=== "Six tabs"
+
+    <div markdown style="display:flex;gap:12px;flex-wrap:wrap">
+    ![Battle hub](../ux/images/phone-battle.png){ width="200" }
+    ![Ranks](../ux/images/phone-ranks.png){ width="200" }
+    ![Me](../ux/images/phone-me.png){ width="200" }
+    </div>
+
+    Players asked how to find things. Everything now sits in six tabs, each one tap away, with every battle mode in one Battle hub.
+
+!!! note "About these screenshots"
+    Taken on 10 Oct from a local build of the app with sample player data ("Thandi" is not a real player). The fonts are the browser's fallbacks, because Google Fonts couldn't be loaded where the screenshots were taken.

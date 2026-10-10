@@ -18,6 +18,29 @@ Players choose a theme under **Me → Appearance**. They can also pick **Auto**,
 | **Pink** | Rose with bubblegum accents | Players who want a softer palette. Warnings stay coral, never pink, so they still stand out |
 | **Auto** | Night or Daylight, following the phone | Players who already use the phone's dark mode or a night schedule |
 
+=== "Wits Night"
+
+    ![Cards in Wits Night](images/theme-night.png){ width="240" }
+
+=== "Daylight"
+
+    ![Cards in Daylight](images/theme-day.png){ width="240" }
+
+=== "Wits Blue"
+
+    ![Cards in Wits Blue](images/theme-blue.png){ width="240" }
+
+=== "Pink"
+
+    ![Cards in Pink](images/theme-pink.png){ width="240" }
+
+=== "Choosing a theme"
+
+    ![Me, Appearance: four theme tiles, Auto and Reduce motion](images/phone-appearance.png){ width="240" }
+
+!!! note "About these screenshots"
+    Taken on 10 Oct from a local build of the app with sample player data ("Thandi" is not a real player). The fonts are the browser's fallbacks, because Google Fonts couldn't be loaded where the screenshots were taken.
+
 Each theme is a set of colour tokens (`frontend/src/theme/themes.css`). Every screen uses those tokens, never fixed colours, so all screens follow the theme the same way.
 
 ### Contrast in every theme
